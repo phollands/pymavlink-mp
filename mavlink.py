@@ -56,10 +56,12 @@ class MAVLink_message(object):
     def fieldnames(self):
         return self._fieldnames
 
+    def msgId(self):
+        return self._header.msgId
+
     def __str__(self):
         ret = '{'
         for a in self._fieldnames:
-            print(a)
             v = getattr(self, a)
             ret += '%s : %s, ' % (a, v)
         ret = ret[0:-2] + '}'
@@ -1033,6 +1035,10 @@ class MAVLink_debug_message(MAVLink_message):
 	def pack(self, mav):
 		return MAVLink_message.pack(self, mav, struct.pack('>Bf', self.ind, self.value))
 
+class MAVError(Exception):
+	def __init__(self, msg):
+            Exception.__init__(self, msg)
+            
 class MAVLink(object):
 	def __init__(self, file, srcSystem=0, srcComponent=0):
 		self.seq = 0
@@ -1047,6 +1053,15 @@ class MAVLink(object):
 
 	def decode(self, msgbuf):
 		magic, mlen, seq, srcSystem, srcComponent, msgId = struct.unpack('cBBBBB', msgbuf[:6])
+                if magic != 'U':
+                    raise MAVError('invalid MAVLink prefix')
+                if mlen != len(msgbuf)-8:
+                    raise MAVError('invalid MAVLink message length')
+                crc, = struct.unpack('<H', msgbuf[-2:])
+                crc2 = x25crc(msgbuf[1:-2])
+                if crc != crc2:
+                    raise MAVError('invalid MAVLink CRC 0x%04x should be 0x%04x' % (crc, crc2))
+                
 		if msgId == MAVLINK_MSG_ID_HEARTBEAT:
 			type, autopilot, mavlink_version = struct.unpack('>BBB', msgbuf[6:-2])
 			return MAVLink_heartbeat_message(type, autopilot, mavlink_version)
