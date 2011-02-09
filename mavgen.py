@@ -200,12 +200,20 @@ class MAVLink_%s_message(MAVLink_message):
 def generate_mavlink_class(outf, msgs):
     print("Generating MAVLink class")
 
+    outf.write("\n\nmavlink_map = {\n");
+    for m in msgs:
+        outf.write("\tMAVLINK_MSG_ID_%s : ( '%s', MAVLink_%s_message ),\n" % (
+            m.name.upper(), m.fmtstr, m.name.lower()))
+    outf.write("}\n\n")
+    
     outf.write("""
 class MAVError(Exception):
+	'''MAVLink error class'''
 	def __init__(self, msg):
             Exception.__init__(self, msg)
             
 class MAVLink(object):
+	'''MAVLink protocol handling class'''
 	def __init__(self, file, srcSystem=0, srcComponent=0):
 		self.seq = 0
 		self.file = file
@@ -213,27 +221,35 @@ class MAVLink(object):
 		self.srcComponent = srcComponent
 
 	def send(self, mavmsg):
+		'''send a MAVLink message'''
 		buf = mavmsg.pack(self)
 		self.file.write(buf)
 		self.seq += 1
 
 	def decode(self, msgbuf):
+		'''decode a buffer as a MAVLink message'''
+                # decode the header
 		magic, mlen, seq, srcSystem, srcComponent, msgId = struct.unpack('cBBBBB', msgbuf[:6])
                 if magic != 'U':
                     raise MAVError('invalid MAVLink prefix')
                 if mlen != len(msgbuf)-8:
                     raise MAVError('invalid MAVLink message length')
+
+                # decode the checksum
                 crc, = struct.unpack('<H', msgbuf[-2:])
                 crc2 = x25crc(msgbuf[1:-2])
                 if crc != crc2:
                     raise MAVError('invalid MAVLink CRC 0x%04x should be 0x%04x' % (crc, crc2))
-                
+                if not msgId in mavlink_map:
+                    raise MAVError('unknown MAVLink message ID %u' % msgId)
+
+                # decode the payload
+                (fmt, type) = mavlink_map[msgId]
+                t = struct.unpack(fmt, msgbuf[6:-2])
+
+                # construct the message object
+                return type(*t)
 """)
-    for m in msgs:
-	outf.write("\t\tif msgId == MAVLINK_MSG_ID_%s:\n" % m.name.upper())
-        outf.write("\t\t\t%s = struct.unpack('%s', msgbuf[6:-2])\n" % (", ".join(m.fieldnames), m.fmtstr))
-        outf.write("\t\t\treturn MAVLink_%s_message(%s)\n" % (m.name.lower(), ", ".join(m.fieldnames)))
-    outf.write("\t\traise MAVError('Uknown MAVLink message ID %u' % msgId)\n\n")
 
 def generate_methods(outf, msgs):
     print("Generating methods")
@@ -288,6 +304,15 @@ msgs = []
 
 for fname in args:
     msgs.extend(parse_mavlink_xml(fname))
+
+# check for duplicates
+msgmap = {}
+for m in msgs:
+	if m.id in msgmap:
+        	print("ERROR: Duplicate message id %u for %s also used by %s" % (
+                	m.id, m.name, msgmap[m.id]))
+        	sys.exit(1)
+        msgmap[m.id] = m.name
 
 print("Found %u MAVLink message types" % len(msgs))
 print("Generating %s" % opts.output)

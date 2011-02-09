@@ -1035,11 +1035,69 @@ class MAVLink_debug_message(MAVLink_message):
 	def pack(self, mav):
 		return MAVLink_message.pack(self, mav, struct.pack('>Bf', self.ind, self.value))
 
+
+mavlink_map = {
+	MAVLINK_MSG_ID_HEARTBEAT : ( '>BBB', MAVLink_heartbeat_message ),
+	MAVLINK_MSG_ID_BOOT : ( '>I', MAVLink_boot_message ),
+	MAVLINK_MSG_ID_SYSTEM_TIME : ( '>Q', MAVLink_system_time_message ),
+	MAVLINK_MSG_ID_PING : ( '>IBBQ', MAVLink_ping_message ),
+	MAVLINK_MSG_ID_ACTION : ( '>BBB', MAVLink_action_message ),
+	MAVLINK_MSG_ID_ACTION_ACK : ( '>BB', MAVLink_action_ack_message ),
+	MAVLINK_MSG_ID_SET_MODE : ( '>BB', MAVLink_set_mode_message ),
+	MAVLINK_MSG_ID_SET_NAV_MODE : ( '>BB', MAVLink_set_nav_mode_message ),
+	MAVLINK_MSG_ID_PARAM_REQUEST_READ : ( '>BB15sH', MAVLink_param_request_read_message ),
+	MAVLINK_MSG_ID_PARAM_REQUEST_LIST : ( '>BB', MAVLink_param_request_list_message ),
+	MAVLINK_MSG_ID_PARAM_VALUE : ( '>15sfHH', MAVLink_param_value_message ),
+	MAVLINK_MSG_ID_PARAM_SET : ( '>BB15sf', MAVLink_param_set_message ),
+	MAVLINK_MSG_ID_RAW_IMU : ( '>Qhhhhhhhhh', MAVLink_raw_imu_message ),
+	MAVLINK_MSG_ID_RAW_PRESSURE : ( '>QHhhh', MAVLink_raw_pressure_message ),
+	MAVLINK_MSG_ID_ATTITUDE : ( '>Qffffff', MAVLink_attitude_message ),
+	MAVLINK_MSG_ID_LOCAL_POSITION : ( '>Qffffff', MAVLink_local_position_message ),
+	MAVLINK_MSG_ID_GPS_RAW : ( '>QBfffffff', MAVLink_gps_raw_message ),
+	MAVLINK_MSG_ID_GPS_STATUS : ( '>B20s20s20s20s20s', MAVLink_gps_status_message ),
+	MAVLINK_MSG_ID_GLOBAL_POSITION : ( '>Qffffff', MAVLink_global_position_message ),
+	MAVLINK_MSG_ID_SYS_STATUS : ( '>BBBHHBH', MAVLink_sys_status_message ),
+	MAVLINK_MSG_ID_RC_CHANNELS_RAW : ( '>HHHHHHHHB', MAVLink_rc_channels_raw_message ),
+	MAVLINK_MSG_ID_RC_CHANNELS_SCALED : ( '>hhhhhhhhB', MAVLink_rc_channels_scaled_message ),
+	MAVLINK_MSG_ID_WAYPOINT : ( '>BBHBBfBffBffffB', MAVLink_waypoint_message ),
+	MAVLINK_MSG_ID_WAYPOINT_REQUEST : ( '>BBH', MAVLink_waypoint_request_message ),
+	MAVLINK_MSG_ID_WAYPOINT_SET_CURRENT : ( '>BBH', MAVLink_waypoint_set_current_message ),
+	MAVLINK_MSG_ID_WAYPOINT_CURRENT : ( '>H', MAVLink_waypoint_current_message ),
+	MAVLINK_MSG_ID_WAYPOINT_REQUEST_LIST : ( '>BB', MAVLink_waypoint_request_list_message ),
+	MAVLINK_MSG_ID_WAYPOINT_COUNT : ( '>BBH', MAVLink_waypoint_count_message ),
+	MAVLINK_MSG_ID_WAYPOINT_CLEAR_ALL : ( '>BB', MAVLink_waypoint_clear_all_message ),
+	MAVLINK_MSG_ID_WAYPOINT_REACHED : ( '>H', MAVLink_waypoint_reached_message ),
+	MAVLINK_MSG_ID_WAYPOINT_ACK : ( '>BBB', MAVLink_waypoint_ack_message ),
+	MAVLINK_MSG_ID_WAYPOINT_SET_GLOBAL_REFERENCE : ( '>BBffffffff', MAVLink_waypoint_set_global_reference_message ),
+	MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_SET : ( '>BBffff', MAVLink_local_position_setpoint_set_message ),
+	MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT : ( '>ffff', MAVLink_local_position_setpoint_message ),
+	MAVLINK_MSG_ID_ATTITUDE_CONTROLLER_OUTPUT : ( '>Bbbbb', MAVLink_attitude_controller_output_message ),
+	MAVLINK_MSG_ID_POSITION_CONTROLLER_OUTPUT : ( '>Bbbbb', MAVLink_position_controller_output_message ),
+	MAVLINK_MSG_ID_POSITION_TARGET : ( '>ffff', MAVLink_position_target_message ),
+	MAVLINK_MSG_ID_STATE_CORRECTION : ( '>fffffffff', MAVLink_state_correction_message ),
+	MAVLINK_MSG_ID_SET_ALTITUDE : ( '>BI', MAVLink_set_altitude_message ),
+	MAVLINK_MSG_ID_REQUEST_DATA_STREAM : ( '>BBBHB', MAVLink_request_data_stream_message ),
+	MAVLINK_MSG_ID_REQUEST_DYNAMIC_GYRO_CALIBRATION : ( '>BBfBH', MAVLink_request_dynamic_gyro_calibration_message ),
+	MAVLINK_MSG_ID_REQUEST_STATIC_CALIBRATION : ( '>BBH', MAVLink_request_static_calibration_message ),
+	MAVLINK_MSG_ID_MANUAL_CONTROL : ( '>BffffBBBB', MAVLink_manual_control_message ),
+	MAVLINK_MSG_ID_DEBUG_VECT : ( '>10sQfff', MAVLink_debug_vect_message ),
+	MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET : ( '>iii', MAVLink_gps_local_origin_set_message ),
+	MAVLINK_MSG_ID_AIRSPEED : ( '>f', MAVLink_airspeed_message ),
+	MAVLINK_MSG_ID_GLOBAL_POSITION_INT : ( '>iiihhh', MAVLink_global_position_int_message ),
+	MAVLINK_MSG_ID_NAMED_VALUE_FLOAT : ( '>10sf', MAVLink_named_value_float_message ),
+	MAVLINK_MSG_ID_NAMED_VALUE_INT : ( '>10si', MAVLink_named_value_int_message ),
+	MAVLINK_MSG_ID_STATUSTEXT : ( '>B50s', MAVLink_statustext_message ),
+	MAVLINK_MSG_ID_DEBUG : ( '>Bf', MAVLink_debug_message ),
+}
+
+
 class MAVError(Exception):
+	'''MAVLink error class'''
 	def __init__(self, msg):
             Exception.__init__(self, msg)
             
 class MAVLink(object):
+	'''MAVLink protocol handling class'''
 	def __init__(self, file, srcSystem=0, srcComponent=0):
 		self.seq = 0
 		self.file = file
@@ -1047,176 +1105,34 @@ class MAVLink(object):
 		self.srcComponent = srcComponent
 
 	def send(self, mavmsg):
+		'''send a MAVLink message'''
 		buf = mavmsg.pack(self)
 		self.file.write(buf)
 		self.seq += 1
 
 	def decode(self, msgbuf):
+		'''decode a buffer as a MAVLink message'''
+                # decode the header
 		magic, mlen, seq, srcSystem, srcComponent, msgId = struct.unpack('cBBBBB', msgbuf[:6])
                 if magic != 'U':
                     raise MAVError('invalid MAVLink prefix')
                 if mlen != len(msgbuf)-8:
                     raise MAVError('invalid MAVLink message length')
+
+                # decode the checksum
                 crc, = struct.unpack('<H', msgbuf[-2:])
                 crc2 = x25crc(msgbuf[1:-2])
                 if crc != crc2:
                     raise MAVError('invalid MAVLink CRC 0x%04x should be 0x%04x' % (crc, crc2))
-                
-		if msgId == MAVLINK_MSG_ID_HEARTBEAT:
-			type, autopilot, mavlink_version = struct.unpack('>BBB', msgbuf[6:-2])
-			return MAVLink_heartbeat_message(type, autopilot, mavlink_version)
-		if msgId == MAVLINK_MSG_ID_BOOT:
-			version = struct.unpack('>I', msgbuf[6:-2])
-			return MAVLink_boot_message(version)
-		if msgId == MAVLINK_MSG_ID_SYSTEM_TIME:
-			time_usec = struct.unpack('>Q', msgbuf[6:-2])
-			return MAVLink_system_time_message(time_usec)
-		if msgId == MAVLINK_MSG_ID_PING:
-			seq, target_system, target_component, time = struct.unpack('>IBBQ', msgbuf[6:-2])
-			return MAVLink_ping_message(seq, target_system, target_component, time)
-		if msgId == MAVLINK_MSG_ID_ACTION:
-			target, target_component, action = struct.unpack('>BBB', msgbuf[6:-2])
-			return MAVLink_action_message(target, target_component, action)
-		if msgId == MAVLINK_MSG_ID_ACTION_ACK:
-			action, result = struct.unpack('>BB', msgbuf[6:-2])
-			return MAVLink_action_ack_message(action, result)
-		if msgId == MAVLINK_MSG_ID_SET_MODE:
-			target, mode = struct.unpack('>BB', msgbuf[6:-2])
-			return MAVLink_set_mode_message(target, mode)
-		if msgId == MAVLINK_MSG_ID_SET_NAV_MODE:
-			target, nav_mode = struct.unpack('>BB', msgbuf[6:-2])
-			return MAVLink_set_nav_mode_message(target, nav_mode)
-		if msgId == MAVLINK_MSG_ID_PARAM_REQUEST_READ:
-			target_system, target_component, param_id, param_index = struct.unpack('>BB15sH', msgbuf[6:-2])
-			return MAVLink_param_request_read_message(target_system, target_component, param_id, param_index)
-		if msgId == MAVLINK_MSG_ID_PARAM_REQUEST_LIST:
-			target_system, target_component = struct.unpack('>BB', msgbuf[6:-2])
-			return MAVLink_param_request_list_message(target_system, target_component)
-		if msgId == MAVLINK_MSG_ID_PARAM_VALUE:
-			param_id, param_value, param_count, param_index = struct.unpack('>15sfHH', msgbuf[6:-2])
-			return MAVLink_param_value_message(param_id, param_value, param_count, param_index)
-		if msgId == MAVLINK_MSG_ID_PARAM_SET:
-			target_system, target_component, param_id, param_value = struct.unpack('>BB15sf', msgbuf[6:-2])
-			return MAVLink_param_set_message(target_system, target_component, param_id, param_value)
-		if msgId == MAVLINK_MSG_ID_RAW_IMU:
-			usec, xacc, yacc, zacc, xgyro, ygyro, zgyro, xmag, ymag, zmag = struct.unpack('>Qhhhhhhhhh', msgbuf[6:-2])
-			return MAVLink_raw_imu_message(usec, xacc, yacc, zacc, xgyro, ygyro, zgyro, xmag, ymag, zmag)
-		if msgId == MAVLINK_MSG_ID_RAW_PRESSURE:
-			usec, press_abs, press_diff1, press_diff2, temperature = struct.unpack('>QHhhh', msgbuf[6:-2])
-			return MAVLink_raw_pressure_message(usec, press_abs, press_diff1, press_diff2, temperature)
-		if msgId == MAVLINK_MSG_ID_ATTITUDE:
-			usec, roll, pitch, yaw, rollspeed, pitchspeed, yawspeed = struct.unpack('>Qffffff', msgbuf[6:-2])
-			return MAVLink_attitude_message(usec, roll, pitch, yaw, rollspeed, pitchspeed, yawspeed)
-		if msgId == MAVLINK_MSG_ID_LOCAL_POSITION:
-			usec, x, y, z, vx, vy, vz = struct.unpack('>Qffffff', msgbuf[6:-2])
-			return MAVLink_local_position_message(usec, x, y, z, vx, vy, vz)
-		if msgId == MAVLINK_MSG_ID_GPS_RAW:
-			usec, fix_type, lat, lon, alt, eph, epv, v, hdg = struct.unpack('>QBfffffff', msgbuf[6:-2])
-			return MAVLink_gps_raw_message(usec, fix_type, lat, lon, alt, eph, epv, v, hdg)
-		if msgId == MAVLINK_MSG_ID_GPS_STATUS:
-			satellites_visible, satellite_prn, satellite_used, satellite_elevation, satellite_azimuth, satellite_snr = struct.unpack('>B20s20s20s20s20s', msgbuf[6:-2])
-			return MAVLink_gps_status_message(satellites_visible, satellite_prn, satellite_used, satellite_elevation, satellite_azimuth, satellite_snr)
-		if msgId == MAVLINK_MSG_ID_GLOBAL_POSITION:
-			usec, lat, lon, alt, vx, vy, vz = struct.unpack('>Qffffff', msgbuf[6:-2])
-			return MAVLink_global_position_message(usec, lat, lon, alt, vx, vy, vz)
-		if msgId == MAVLINK_MSG_ID_SYS_STATUS:
-			mode, nav_mode, status, load, vbat, motor_block, packet_drop = struct.unpack('>BBBHHBH', msgbuf[6:-2])
-			return MAVLink_sys_status_message(mode, nav_mode, status, load, vbat, motor_block, packet_drop)
-		if msgId == MAVLINK_MSG_ID_RC_CHANNELS_RAW:
-			chan1_raw, chan2_raw, chan3_raw, chan4_raw, chan5_raw, chan6_raw, chan7_raw, chan8_raw, rssi = struct.unpack('>HHHHHHHHB', msgbuf[6:-2])
-			return MAVLink_rc_channels_raw_message(chan1_raw, chan2_raw, chan3_raw, chan4_raw, chan5_raw, chan6_raw, chan7_raw, chan8_raw, rssi)
-		if msgId == MAVLINK_MSG_ID_RC_CHANNELS_SCALED:
-			chan1_scaled, chan2_scaled, chan3_scaled, chan4_scaled, chan5_scaled, chan6_scaled, chan7_scaled, chan8_scaled, rssi = struct.unpack('>hhhhhhhhB', msgbuf[6:-2])
-			return MAVLink_rc_channels_scaled_message(chan1_scaled, chan2_scaled, chan3_scaled, chan4_scaled, chan5_scaled, chan6_scaled, chan7_scaled, chan8_scaled, rssi)
-		if msgId == MAVLINK_MSG_ID_WAYPOINT:
-			target_system, target_component, seq, frame, action, orbit, orbit_direction, param1, param2, current, x, y, z, yaw, autocontinue = struct.unpack('>BBHBBfBffBffffB', msgbuf[6:-2])
-			return MAVLink_waypoint_message(target_system, target_component, seq, frame, action, orbit, orbit_direction, param1, param2, current, x, y, z, yaw, autocontinue)
-		if msgId == MAVLINK_MSG_ID_WAYPOINT_REQUEST:
-			target_system, target_component, seq = struct.unpack('>BBH', msgbuf[6:-2])
-			return MAVLink_waypoint_request_message(target_system, target_component, seq)
-		if msgId == MAVLINK_MSG_ID_WAYPOINT_SET_CURRENT:
-			target_system, target_component, seq = struct.unpack('>BBH', msgbuf[6:-2])
-			return MAVLink_waypoint_set_current_message(target_system, target_component, seq)
-		if msgId == MAVLINK_MSG_ID_WAYPOINT_CURRENT:
-			seq = struct.unpack('>H', msgbuf[6:-2])
-			return MAVLink_waypoint_current_message(seq)
-		if msgId == MAVLINK_MSG_ID_WAYPOINT_REQUEST_LIST:
-			target_system, target_component = struct.unpack('>BB', msgbuf[6:-2])
-			return MAVLink_waypoint_request_list_message(target_system, target_component)
-		if msgId == MAVLINK_MSG_ID_WAYPOINT_COUNT:
-			target_system, target_component, count = struct.unpack('>BBH', msgbuf[6:-2])
-			return MAVLink_waypoint_count_message(target_system, target_component, count)
-		if msgId == MAVLINK_MSG_ID_WAYPOINT_CLEAR_ALL:
-			target_system, target_component = struct.unpack('>BB', msgbuf[6:-2])
-			return MAVLink_waypoint_clear_all_message(target_system, target_component)
-		if msgId == MAVLINK_MSG_ID_WAYPOINT_REACHED:
-			seq = struct.unpack('>H', msgbuf[6:-2])
-			return MAVLink_waypoint_reached_message(seq)
-		if msgId == MAVLINK_MSG_ID_WAYPOINT_ACK:
-			target_system, target_component, type = struct.unpack('>BBB', msgbuf[6:-2])
-			return MAVLink_waypoint_ack_message(target_system, target_component, type)
-		if msgId == MAVLINK_MSG_ID_WAYPOINT_SET_GLOBAL_REFERENCE:
-			target_system, target_component, global_x, global_y, global_z, global_yaw, local_x, local_y, local_z, local_yaw = struct.unpack('>BBffffffff', msgbuf[6:-2])
-			return MAVLink_waypoint_set_global_reference_message(target_system, target_component, global_x, global_y, global_z, global_yaw, local_x, local_y, local_z, local_yaw)
-		if msgId == MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_SET:
-			target_system, target_component, x, y, z, yaw = struct.unpack('>BBffff', msgbuf[6:-2])
-			return MAVLink_local_position_setpoint_set_message(target_system, target_component, x, y, z, yaw)
-		if msgId == MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT:
-			x, y, z, yaw = struct.unpack('>ffff', msgbuf[6:-2])
-			return MAVLink_local_position_setpoint_message(x, y, z, yaw)
-		if msgId == MAVLINK_MSG_ID_ATTITUDE_CONTROLLER_OUTPUT:
-			enabled, roll, pitch, yaw, thrust = struct.unpack('>Bbbbb', msgbuf[6:-2])
-			return MAVLink_attitude_controller_output_message(enabled, roll, pitch, yaw, thrust)
-		if msgId == MAVLINK_MSG_ID_POSITION_CONTROLLER_OUTPUT:
-			enabled, x, y, z, yaw = struct.unpack('>Bbbbb', msgbuf[6:-2])
-			return MAVLink_position_controller_output_message(enabled, x, y, z, yaw)
-		if msgId == MAVLINK_MSG_ID_POSITION_TARGET:
-			x, y, z, yaw = struct.unpack('>ffff', msgbuf[6:-2])
-			return MAVLink_position_target_message(x, y, z, yaw)
-		if msgId == MAVLINK_MSG_ID_STATE_CORRECTION:
-			xErr, yErr, zErr, rollErr, pitchErr, yawErr, vxErr, vyErr, vzErr = struct.unpack('>fffffffff', msgbuf[6:-2])
-			return MAVLink_state_correction_message(xErr, yErr, zErr, rollErr, pitchErr, yawErr, vxErr, vyErr, vzErr)
-		if msgId == MAVLINK_MSG_ID_SET_ALTITUDE:
-			target, mode = struct.unpack('>BI', msgbuf[6:-2])
-			return MAVLink_set_altitude_message(target, mode)
-		if msgId == MAVLINK_MSG_ID_REQUEST_DATA_STREAM:
-			target_system, target_component, req_stream_id, req_message_rate, start_stop = struct.unpack('>BBBHB', msgbuf[6:-2])
-			return MAVLink_request_data_stream_message(target_system, target_component, req_stream_id, req_message_rate, start_stop)
-		if msgId == MAVLINK_MSG_ID_REQUEST_DYNAMIC_GYRO_CALIBRATION:
-			target_system, target_component, mode, axis, time = struct.unpack('>BBfBH', msgbuf[6:-2])
-			return MAVLink_request_dynamic_gyro_calibration_message(target_system, target_component, mode, axis, time)
-		if msgId == MAVLINK_MSG_ID_REQUEST_STATIC_CALIBRATION:
-			target_system, target_component, time = struct.unpack('>BBH', msgbuf[6:-2])
-			return MAVLink_request_static_calibration_message(target_system, target_component, time)
-		if msgId == MAVLINK_MSG_ID_MANUAL_CONTROL:
-			target, roll, pitch, yaw, thrust, roll_manual, pitch_manual, yaw_manual, thrust_manual = struct.unpack('>BffffBBBB', msgbuf[6:-2])
-			return MAVLink_manual_control_message(target, roll, pitch, yaw, thrust, roll_manual, pitch_manual, yaw_manual, thrust_manual)
-		if msgId == MAVLINK_MSG_ID_DEBUG_VECT:
-			name, usec, x, y, z = struct.unpack('>10sQfff', msgbuf[6:-2])
-			return MAVLink_debug_vect_message(name, usec, x, y, z)
-		if msgId == MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET:
-			latitude, longitude, altitude = struct.unpack('>iii', msgbuf[6:-2])
-			return MAVLink_gps_local_origin_set_message(latitude, longitude, altitude)
-		if msgId == MAVLINK_MSG_ID_AIRSPEED:
-			airspeed = struct.unpack('>f', msgbuf[6:-2])
-			return MAVLink_airspeed_message(airspeed)
-		if msgId == MAVLINK_MSG_ID_GLOBAL_POSITION_INT:
-			lat, lon, alt, vx, vy, vz = struct.unpack('>iiihhh', msgbuf[6:-2])
-			return MAVLink_global_position_int_message(lat, lon, alt, vx, vy, vz)
-		if msgId == MAVLINK_MSG_ID_NAMED_VALUE_FLOAT:
-			name, value = struct.unpack('>10sf', msgbuf[6:-2])
-			return MAVLink_named_value_float_message(name, value)
-		if msgId == MAVLINK_MSG_ID_NAMED_VALUE_INT:
-			name, value = struct.unpack('>10si', msgbuf[6:-2])
-			return MAVLink_named_value_int_message(name, value)
-		if msgId == MAVLINK_MSG_ID_STATUSTEXT:
-			severity, text = struct.unpack('>B50s', msgbuf[6:-2])
-			return MAVLink_statustext_message(severity, text)
-		if msgId == MAVLINK_MSG_ID_DEBUG:
-			ind, value = struct.unpack('>Bf', msgbuf[6:-2])
-			return MAVLink_debug_message(ind, value)
-		raise MAVError('Uknown MAVLink message ID %u' % msgId)
+                if not msgId in mavlink_map:
+                    raise MAVError('unknown MAVLink message ID %u' % msgId)
 
+                # decode the payload
+                (fmt, type) = mavlink_map[msgId]
+                t = struct.unpack(fmt, msgbuf[6:-2])
+
+                # construct the message object
+                return type(*t)
 
 	def heartbeat_encode(self, type, autopilot, mavlink_version):
 		'''
