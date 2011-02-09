@@ -233,7 +233,7 @@ class MAVLink(object):
 	outf.write("\t\tif msgId == MAVLINK_MSG_ID_%s:\n" % m.name.upper())
         outf.write("\t\t\t%s = struct.unpack('%s', msgbuf[6:-2])\n" % (", ".join(m.fieldnames), m.fmtstr))
         outf.write("\t\t\treturn MAVLink_%s_message(%s)\n" % (m.name.lower(), ", ".join(m.fieldnames)))
-
+    outf.write("\t\traise MAVError('Uknown MAVLink message ID %u' % msgId)\n\n")
 
 def generate_methods(outf, msgs):
     print("Generating methods")
