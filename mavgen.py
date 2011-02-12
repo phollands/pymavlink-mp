@@ -274,8 +274,26 @@ class MAVLink(object):
                 (fmt, type) = mavlink_map[msgId]
                 t = struct.unpack(fmt, msgbuf[6:-2])
 
+                def null_terminate(s):
+                    ret = ""
+                    for c in s:
+                        if ord(c) == 0:
+                            return ret
+                        ret += c
+                    return ret
+                
+                # terminate any strings
+                tlist = list(t)
+                for i in range(0, len(tlist)):
+                    if isinstance(tlist[i], str):
+                        tlist[i] = null_terminate(tlist[i])
+                t = tuple(tlist)
                 # construct the message object
-                return type(*t)
+                m = type(*t)
+                m._msgbuf = msgbuf
+                m._payload = msgbuf[6:-2]
+                m._crc = crc
+                return m
 """)
 
 def generate_methods(outf, msgs):
