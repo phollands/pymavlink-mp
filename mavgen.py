@@ -121,33 +121,37 @@ class MAVLink_header(object):
 
 class MAVLink_message(object):
     '''base MAVLink message class'''
-    def __init__(self, msgId):
+    def __init__(self, msgId, name):
         self._header     = MAVLink_header(msgId)
         self._payload    = None
         self._msgbuf     = None
         self._crc        = None
         self._fieldnames = []
+        self._type       = name
 
-    def msgbuf(self):
+    def get_msgbuf(self):
         return self._msgbuf
 
-    def header(self):
+    def get_header(self):
         return self._header
 
-    def payload(self):
+    def get_payload(self):
         return self._payload
 
-    def crc(self):
+    def get_crc(self):
         return self._crc
 
-    def fieldnames(self):
+    def get_fieldnames(self):
         return self._fieldnames
 
-    def msgId(self):
+    def get_type(self):
+        return self._type
+
+    def get_msgId(self):
         return self._header.msgId
 
     def __str__(self):
-        ret = '{'
+        ret = '%%s {' %% self._type
         for a in self._fieldnames:
             v = getattr(self, a)
             ret += '%%s : %%s, ' %% (a, v)
@@ -184,7 +188,7 @@ class MAVLink_%s_message(MAVLink_message):
         if len(m.fields) != 0:
         	outf.write(", " + ", ".join(m.fieldnames))
         outf.write("):\n")
-        outf.write("\t\tMAVLink_message.__init__(self, MAVLINK_MSG_ID_%s)\n" % m.name.upper())
+        outf.write("\t\tMAVLink_message.__init__(self, MAVLINK_MSG_ID_%s, '%s')\n" % (m.name.upper(), m.name.upper()))
         if len(m.fieldnames) != 0:
         	outf.write("\t\tself._fieldnames = ['%s']\n" % "', '".join(m.fieldnames))
         for f in m.fields:
@@ -219,12 +223,35 @@ class MAVLink(object):
 		self.file = file
 		self.srcSystem = srcSystem
 		self.srcComponent = srcComponent
+                self.callback = None
+                self.callback_args = None
+                self.callback_kwargs = None
+                self.buf = ""
+                self.expected_length = 0
 
+        def set_callback(self, callback, *args, **kwargs):
+            self.callback = callback
+            self.callback_args = args
+            self.callback_kwargs = kwargs
+            
 	def send(self, mavmsg):
 		'''send a MAVLink message'''
 		buf = mavmsg.pack(self)
 		self.file.write(buf)
-		self.seq += 1
+		self.seq = (self.seq + 1) % 255
+
+        def parse_char(self, c):
+            self.buf += c
+            if len(self.buf) == 2:
+                (magic, self.expected_length) = struct.unpack('cB', self.buf)
+                self.expected_length += 8
+            elif len(self.buf) == self.expected_length:
+                m = self.decode(self.buf)
+                self.buf = ""
+                self.expected_length = 0
+                if self.callback is None:
+                    raise MAVError('no callback set for MAVLink input')
+                self.callback(m, *self.callback_args, **self.callback_kwargs)
 
 	def decode(self, msgbuf):
 		'''decode a buffer as a MAVLink message'''
@@ -233,7 +260,7 @@ class MAVLink(object):
                 if magic != 'U':
                     raise MAVError('invalid MAVLink prefix')
                 if mlen != len(msgbuf)-8:
-                    raise MAVError('invalid MAVLink message length')
+                    raise MAVError('invalid MAVLink message length. Got %u expected %u, msgId=%u' % (len(msgbuf)-8, mlen, msgId))
 
                 # decode the checksum
                 crc, = struct.unpack('<H', msgbuf[-2:])
@@ -298,7 +325,8 @@ if __name__ == "__main__":
     (opts, args) = parser.parse_args()
 
 if len(args) < 1:
-    parser.print_help()
+    parser.error("You must supply at least one MAVLink XML protocol definition")
+    
 
 msgs = []
 

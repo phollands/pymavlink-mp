@@ -25,13 +25,13 @@ mav.param_set_send(7, 1, "WP_RADIUS", 101)
 m = mav.param_set_encode(7, 1, "WP_RADIUS", 101)
 
 # get the encoded message as a buffer
-b = m.msgbuf()
+b = m.get_msgbuf()
 
 # decode an incoming message
 m2 = mav.decode(b)
 
 # show what fields it has
-print("Got a message with id %u and fields %s" % (m2.msgId(), m2.fieldnames()))
+print("Got a message with id %u and fields %s" % (m2.get_msgId(), m2.get_fieldnames()))
 
 # print out the fields
 print(m2)
