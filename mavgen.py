@@ -46,6 +46,8 @@ def mavfmt(type):
         
     if type.startswith("array[") and type[-1] == "]":
         return "%us" % int(type[6:-1])
+    if type.startswith("char[") and type[-1] == "]":
+        return "%us" % int(type[5:-1])
     if type.startswith("int8_t[") and type[-1] == "]":
         return "%us" % int(type[7:-1])
     if type.startswith("uint8_t[") and type[-1] == "]":
@@ -256,14 +258,20 @@ class MAVLink(object):
 	def decode(self, msgbuf):
 		'''decode a buffer as a MAVLink message'''
                 # decode the header
-		magic, mlen, seq, srcSystem, srcComponent, msgId = struct.unpack('cBBBBB', msgbuf[:6])
+                try:
+                    magic, mlen, seq, srcSystem, srcComponent, msgId = struct.unpack('cBBBBB', msgbuf[:6])
+                except struct.error, emsg:
+                    raise MAVError('Unable to unpack MAVLink header: %s' % emsg)
                 if magic != 'U':
                     raise MAVError('invalid MAVLink prefix')
                 if mlen != len(msgbuf)-8:
                     raise MAVError('invalid MAVLink message length. Got %u expected %u, msgId=%u' % (len(msgbuf)-8, mlen, msgId))
 
                 # decode the checksum
-                crc, = struct.unpack('<H', msgbuf[-2:])
+                try:
+                    crc, = struct.unpack('<H', msgbuf[-2:])
+                except struct.error, emsg:
+                    raise MAVError('Unable to unpack MAVLink CRC: %s' % emsg)
                 crc2 = x25crc(msgbuf[1:-2])
                 if crc != crc2:
                     raise MAVError('invalid MAVLink CRC 0x%04x should be 0x%04x' % (crc, crc2))
@@ -272,7 +280,11 @@ class MAVLink(object):
 
                 # decode the payload
                 (fmt, type) = mavlink_map[msgId]
-                t = struct.unpack(fmt, msgbuf[6:-2])
+                try:
+                    t = struct.unpack(fmt, msgbuf[6:-2])
+                except struct.error, emsg:
+                    raise MAVError('Unable to unpack MAVLink payload type=%s fmt=%s payloadLength=%u: %s' % (
+                        type, fmt, len(msgbuf[6:-2]), emsg))
 
                 def null_terminate(s):
                     ret = ""
