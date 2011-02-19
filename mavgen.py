@@ -59,12 +59,15 @@ def parse_mavlink_xml(fname):
     '''parse a mavlink XML file'''
     lastname = None
     msgs = []
+    enums = []
     def start_element(name, attrs):
         lastname = name
         if name == 'message':
             msgs.append(MAVType(attrs['name'], attrs['id']))
         elif name == 'field':
             msgs[-1].fields.append(MAVField(attrs['name'], attrs['type']))
+        elif name == 'entry':
+            enums.append((attrs['name'], long(attrs['value'])))
     def char_data(data):
         if len(msgs) == 0:
             return
@@ -82,7 +85,7 @@ def parse_mavlink_xml(fname):
         for f in m.fields:
             m.fieldnames.append(f.name)
             m.fmtstr += mavfmt(f.type)
-    return msgs
+    return (msgs, enums)
 
 
 def generate_preamble(outf, msgs, args):
@@ -172,8 +175,15 @@ class MAVLink_message(object):
 """ % ",".join(args))
 
 
+def generate_enums(outf, enums):
+    print("Generating enums")
+    outf.write("\n# enums\n")
+    for (e,v) in enums:
+	outf.write("%s = %u\n" % (e, v))
+
 def generate_message_ids(outf, msgs):
     print("Generating message IDs")
+    outf.write("\n# message IDs\n")
     for m in msgs:
 	outf.write("MAVLINK_MSG_ID_%s = %u\n" % (m.name.upper(), m.id))
 
@@ -359,9 +369,12 @@ if len(args) < 1:
     
 
 msgs = []
+enums = []
 
 for fname in args:
-    msgs.extend(parse_mavlink_xml(fname))
+	(m, e) = parse_mavlink_xml(fname)
+        msgs.extend(m)
+        enums.extend(e)
 
 # check for duplicates
 msgmap = {}
@@ -378,6 +391,7 @@ print("Generating %s" % opts.output)
 outf = open(opts.output, "w")
 
 generate_preamble(outf, msgs, args)
+generate_enums(outf, enums)
 generate_message_ids(outf, msgs)
 generate_classes(outf, msgs)
 generate_mavlink_class(outf, msgs)

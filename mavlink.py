@@ -80,11 +80,47 @@ class MAVLink_message(object):
         self._msgbuf += struct.pack('<H', self._crc)
         return self._msgbuf
 
+
+# enums
+MAV_CMD_NAV_WAYPOINT = 16
+MAV_CMD_NAV_LOITER_UNLIM = 17
+MAV_CMD_NAV_LOITER_TURNS = 18
+MAV_CMD_NAV_LOITER_TIME = 19
+MAV_CMD_NAV_RETURN_TO_LAUNCH = 20
+MAV_CMD_NAV_LAND = 21
+MAV_CMD_NAV_TAKEOFF = 22
+MAV_CMD_NAV_LAST = 95
+MAV_CMD_CONDITION_DELAY = 112
+MAV_CMD_CONDITION_CHANGE_ALT = 113
+MAV_CMD_CONDITION_DISTANCE = 114
+MAV_CMD_CONDITION_LAST = 159
+MAV_CMD_DO_SET_MODE = 176
+MAV_CMD_DO_JUMP = 177
+MAV_CMD_DO_CHANGE_SPEED = 178
+MAV_CMD_DO_SET_HOME = 179
+MAV_CMD_DO_SET_PARAMETER = 180
+MAV_CMD_DO_SET_RELAY = 181
+MAV_CMD_DO_REPEAT_RELAY = 182
+MAV_CMD_DO_SET_SERVO = 183
+MAV_CMD_DO_REPEAT_SERVO = 184
+MAV_DATA_STREAM_ALL = 0
+MAV_DATA_STREAM_RAW_SENSORS = 1
+MAV_DATA_STREAM_EXTENDED_STATUS = 2
+MAV_DATA_STREAM_RC_CHANNELS = 3
+MAV_DATA_STREAM_RAW_CONTROLLER = 4
+MAV_DATA_STREAM_POSITION = 6
+MAV_DATA_STREAM_EXTRA1 = 10
+MAV_DATA_STREAM_EXTRA2 = 11
+MAV_DATA_STREAM_EXTRA3 = 12
+
+# message IDs
 MAVLINK_MSG_ID_HEARTBEAT = 0
 MAVLINK_MSG_ID_BOOT = 1
 MAVLINK_MSG_ID_SYSTEM_TIME = 2
 MAVLINK_MSG_ID_PING = 3
 MAVLINK_MSG_ID_SYSTEM_TIME_UTC = 4
+MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL = 5
+MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK = 6
 MAVLINK_MSG_ID_ACTION_ACK = 9
 MAVLINK_MSG_ID_ACTION = 10
 MAVLINK_MSG_ID_SET_MODE = 11
@@ -211,6 +247,35 @@ class MAVLink_system_time_utc_message(MAVLink_message):
 
 	def pack(self, mav):
 		return MAVLink_message.pack(self, mav, struct.pack('>II', self.utc_date, self.utc_time))
+
+class MAVLink_change_operator_control_message(MAVLink_message):
+	'''
+	Request to control this MAV
+	'''
+	def __init__(self, target_system, control_request, version, passkey):
+		MAVLink_message.__init__(self, MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL, 'CHANGE_OPERATOR_CONTROL')
+		self._fieldnames = ['target_system', 'control_request', 'version', 'passkey']
+		self.target_system = target_system
+		self.control_request = control_request
+		self.version = version
+		self.passkey = passkey
+
+	def pack(self, mav):
+		return MAVLink_message.pack(self, mav, struct.pack('>BBB25s', self.target_system, self.control_request, self.version, self.passkey))
+
+class MAVLink_change_operator_control_ack_message(MAVLink_message):
+	'''
+	Accept / deny control of this MAV
+	'''
+	def __init__(self, gcs_system_id, control_request, ack):
+		MAVLink_message.__init__(self, MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK, 'CHANGE_OPERATOR_CONTROL_ACK')
+		self._fieldnames = ['gcs_system_id', 'control_request', 'ack']
+		self.gcs_system_id = gcs_system_id
+		self.control_request = control_request
+		self.ack = ack
+
+	def pack(self, mav):
+		return MAVLink_message.pack(self, mav, struct.pack('>BBB', self.gcs_system_id, self.control_request, self.ack))
 
 class MAVLink_action_ack_message(MAVLink_message):
 	'''
@@ -1187,6 +1252,8 @@ mavlink_map = {
 	MAVLINK_MSG_ID_SYSTEM_TIME : ( '>Q', MAVLink_system_time_message ),
 	MAVLINK_MSG_ID_PING : ( '>IBBQ', MAVLink_ping_message ),
 	MAVLINK_MSG_ID_SYSTEM_TIME_UTC : ( '>II', MAVLink_system_time_utc_message ),
+	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL : ( '>BBB25s', MAVLink_change_operator_control_message ),
+	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK : ( '>BBB', MAVLink_change_operator_control_ack_message ),
 	MAVLINK_MSG_ID_ACTION_ACK : ( '>BB', MAVLink_action_ack_message ),
 	MAVLINK_MSG_ID_ACTION : ( '>BBB', MAVLink_action_message ),
 	MAVLINK_MSG_ID_SET_MODE : ( '>BB', MAVLink_set_mode_message ),
@@ -1464,6 +1531,56 @@ class MAVLink(object):
 		'''
 		return self.send(self.system_time_utc_encode(utc_date, utc_time))
 
+	def change_operator_control_encode(self, target_system, control_request, version, passkey):
+		'''
+		Request to control this MAV
+
+		target_system     	: System the GCS requests control for (uint8_t)
+		control_request   	: 0: request control of this MAV, 1: Release control of this MAV (uint8_t)
+		version           	: 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch. (uint8_t)
+		passkey           	: Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-" (char[25])
+
+		'''
+		msg = MAVLink_change_operator_control_message(target_system, control_request, version, passkey)
+		msg.pack(self)
+                return msg
+
+	def change_operator_control_send(self, target_system, control_request, version, passkey):
+		'''
+		Request to control this MAV
+
+		target_system     	: System the GCS requests control for (uint8_t)
+		control_request   	: 0: request control of this MAV, 1: Release control of this MAV (uint8_t)
+		version           	: 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch. (uint8_t)
+		passkey           	: Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-" (char[25])
+
+		'''
+		return self.send(self.change_operator_control_encode(target_system, control_request, version, passkey))
+
+	def change_operator_control_ack_encode(self, gcs_system_id, control_request, ack):
+		'''
+		Accept / deny control of this MAV
+
+		gcs_system_id     	: ID of the GCS this message (uint8_t)
+		control_request   	: 0: request control of this MAV, 1: Release control of this MAV (uint8_t)
+		ack               	: 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK: Already under control (uint8_t)
+
+		'''
+		msg = MAVLink_change_operator_control_ack_message(gcs_system_id, control_request, ack)
+		msg.pack(self)
+                return msg
+
+	def change_operator_control_ack_send(self, gcs_system_id, control_request, ack):
+		'''
+		Accept / deny control of this MAV
+
+		gcs_system_id     	: ID of the GCS this message (uint8_t)
+		control_request   	: 0: request control of this MAV, 1: Release control of this MAV (uint8_t)
+		ack               	: 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK: Already under control (uint8_t)
+
+		'''
+		return self.send(self.change_operator_control_ack_encode(gcs_system_id, control_request, ack))
+
 	def action_ack_encode(self, action, result):
 		'''
 		This message acknowledges an action. IMPORTANT: The acknowledgement
@@ -1723,7 +1840,7 @@ class MAVLink(object):
 		up (GPS frame)
 
 		usec              	: Timestamp (microseconds since UNIX epoch or microseconds since system boot) (uint64_t)
-		fix_type          	: 0-1: no fix, 2: 2D fix, 3: 3D fix (uint8_t)
+		fix_type          	: 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix. (uint8_t)
 		lat               	: Latitude in 1E7 degrees (int32_t)
 		lon               	: Longitude in 1E7 degrees (int32_t)
 		alt               	: Altitude in 1E3 meters (millimeters) (int32_t)
@@ -1746,7 +1863,7 @@ class MAVLink(object):
 		up (GPS frame)
 
 		usec              	: Timestamp (microseconds since UNIX epoch or microseconds since system boot) (uint64_t)
-		fix_type          	: 0-1: no fix, 2: 2D fix, 3: 3D fix (uint8_t)
+		fix_type          	: 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix. (uint8_t)
 		lat               	: Latitude in 1E7 degrees (int32_t)
 		lon               	: Longitude in 1E7 degrees (int32_t)
 		alt               	: Altitude in 1E3 meters (millimeters) (int32_t)
@@ -2023,7 +2140,7 @@ class MAVLink(object):
 		up (GPS frame)
 
 		usec              	: Timestamp (microseconds since UNIX epoch or microseconds since system boot) (uint64_t)
-		fix_type          	: 0-1: no fix, 2: 2D fix, 3: 3D fix (uint8_t)
+		fix_type          	: 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix. (uint8_t)
 		lat               	: Latitude in degrees (float)
 		lon               	: Longitude in degrees (float)
 		alt               	: Altitude in meters (float)
@@ -2046,7 +2163,7 @@ class MAVLink(object):
 		up (GPS frame)
 
 		usec              	: Timestamp (microseconds since UNIX epoch or microseconds since system boot) (uint64_t)
-		fix_type          	: 0-1: no fix, 2: 2D fix, 3: 3D fix (uint8_t)
+		fix_type          	: 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix. (uint8_t)
 		lat               	: Latitude in degrees (float)
 		lon               	: Longitude in degrees (float)
 		alt               	: Altitude in meters (float)
