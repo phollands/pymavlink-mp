@@ -89,10 +89,12 @@ MAV_CMD_NAV_LOITER_TIME = 19
 MAV_CMD_NAV_RETURN_TO_LAUNCH = 20
 MAV_CMD_NAV_LAND = 21
 MAV_CMD_NAV_TAKEOFF = 22
+MAV_CMD_NAV_TARGET = 80
 MAV_CMD_NAV_LAST = 95
 MAV_CMD_CONDITION_DELAY = 112
 MAV_CMD_CONDITION_CHANGE_ALT = 113
 MAV_CMD_CONDITION_DISTANCE = 114
+MAV_CMD_CONDITION_YAW = 115
 MAV_CMD_CONDITION_LAST = 159
 MAV_CMD_DO_SET_MODE = 176
 MAV_CMD_DO_JUMP = 177
@@ -858,20 +860,17 @@ class MAVLink_gps_set_global_origin_message(MAVLink_message):
 	coordinate frame. This can be necessary when e.g. in- and outdoor
 	settings are connected and the MAV should move from in- to outdoor.
 	'''
-	def __init__(self, target_system, target_component, global_x, global_y, global_z, local_x, local_y, local_z):
+	def __init__(self, target_system, target_component, latitude, longitude, altitude):
 		MAVLink_message.__init__(self, MAVLINK_MSG_ID_GPS_SET_GLOBAL_ORIGIN, 'GPS_SET_GLOBAL_ORIGIN')
-		self._fieldnames = ['target_system', 'target_component', 'global_x', 'global_y', 'global_z', 'local_x', 'local_y', 'local_z']
+		self._fieldnames = ['target_system', 'target_component', 'latitude', 'longitude', 'altitude']
 		self.target_system = target_system
 		self.target_component = target_component
-		self.global_x = global_x
-		self.global_y = global_y
-		self.global_z = global_z
-		self.local_x = local_x
-		self.local_y = local_y
-		self.local_z = local_z
+		self.latitude = latitude
+		self.longitude = longitude
+		self.altitude = altitude
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>BBIIIfff', self.target_system, self.target_component, self.global_x, self.global_y, self.global_z, self.local_x, self.local_y, self.local_z))
+		return MAVLink_message.pack(self, mav, struct.pack('>BBIII', self.target_system, self.target_component, self.latitude, self.longitude, self.altitude))
 
 class MAVLink_gps_local_origin_set_message(MAVLink_message):
 	'''
@@ -1284,7 +1283,7 @@ mavlink_map = {
 	MAVLINK_MSG_ID_WAYPOINT_CLEAR_ALL : ( '>BB', MAVLink_waypoint_clear_all_message ),
 	MAVLINK_MSG_ID_WAYPOINT_REACHED : ( '>H', MAVLink_waypoint_reached_message ),
 	MAVLINK_MSG_ID_WAYPOINT_ACK : ( '>BBB', MAVLink_waypoint_ack_message ),
-	MAVLINK_MSG_ID_GPS_SET_GLOBAL_ORIGIN : ( '>BBIIIfff', MAVLink_gps_set_global_origin_message ),
+	MAVLINK_MSG_ID_GPS_SET_GLOBAL_ORIGIN : ( '>BBIII', MAVLink_gps_set_global_origin_message ),
 	MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET : ( '>iii', MAVLink_gps_local_origin_set_message ),
 	MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_SET : ( '>BBffff', MAVLink_local_position_setpoint_set_message ),
 	MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT : ( '>ffff', MAVLink_local_position_setpoint_message ),
@@ -1347,9 +1346,10 @@ class MAVLink(object):
                 m = self.decode(self.buf)
                 self.buf = ""
                 self.expected_length = 0
-                if self.callback is None:
-                    raise MAVError('no callback set for MAVLink input')
-                self.callback(m, *self.callback_args, **self.callback_kwargs)
+                if self.callback:
+                    self.callback(m, *self.callback_args, **self.callback_kwargs)
+                return m
+            return None
 
 	def decode(self, msgbuf):
 		'''decode a buffer as a MAVLink message'''
@@ -2613,7 +2613,7 @@ class MAVLink(object):
 		'''
 		return self.send(self.waypoint_ack_encode(target_system, target_component, type))
 
-	def gps_set_global_origin_encode(self, target_system, target_component, global_x, global_y, global_z, local_x, local_y, local_z):
+	def gps_set_global_origin_encode(self, target_system, target_component, latitude, longitude, altitude):
 		'''
 		As local waypoints exist, the global waypoint reference allows to
 		transform between the local coordinate frame and the global (GPS)
@@ -2622,19 +2622,16 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		global_x          	: global x position * 1E7 (uint32_t)
-		global_y          	: global y position * 1E7 (uint32_t)
-		global_z          	: global z position * 1000 (uint32_t)
-		local_x           	: local x position that matches the global x position (float)
-		local_y           	: local y position that matches the global y position (float)
-		local_z           	: local z position that matches the global z position (float)
+		latitude          	: global x position * 1E7 (uint32_t)
+		longitude         	: global y position * 1E7 (uint32_t)
+		altitude          	: global z position * 1000 (uint32_t)
 
 		'''
-		msg = MAVLink_gps_set_global_origin_message(target_system, target_component, global_x, global_y, global_z, local_x, local_y, local_z)
+		msg = MAVLink_gps_set_global_origin_message(target_system, target_component, latitude, longitude, altitude)
 		msg.pack(self)
                 return msg
 
-	def gps_set_global_origin_send(self, target_system, target_component, global_x, global_y, global_z, local_x, local_y, local_z):
+	def gps_set_global_origin_send(self, target_system, target_component, latitude, longitude, altitude):
 		'''
 		As local waypoints exist, the global waypoint reference allows to
 		transform between the local coordinate frame and the global (GPS)
@@ -2643,15 +2640,12 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		global_x          	: global x position * 1E7 (uint32_t)
-		global_y          	: global y position * 1E7 (uint32_t)
-		global_z          	: global z position * 1000 (uint32_t)
-		local_x           	: local x position that matches the global x position (float)
-		local_y           	: local y position that matches the global y position (float)
-		local_z           	: local z position that matches the global z position (float)
+		latitude          	: global x position * 1E7 (uint32_t)
+		longitude         	: global y position * 1E7 (uint32_t)
+		altitude          	: global z position * 1000 (uint32_t)
 
 		'''
-		return self.send(self.gps_set_global_origin_encode(target_system, target_component, global_x, global_y, global_z, local_x, local_y, local_z))
+		return self.send(self.gps_set_global_origin_encode(target_system, target_component, latitude, longitude, altitude))
 
 	def gps_local_origin_set_encode(self, latitude, longitude, altitude):
 		'''

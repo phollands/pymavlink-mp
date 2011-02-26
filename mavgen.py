@@ -261,9 +261,10 @@ class MAVLink(object):
                 m = self.decode(self.buf)
                 self.buf = ""
                 self.expected_length = 0
-                if self.callback is None:
-                    raise MAVError('no callback set for MAVLink input')
-                self.callback(m, *self.callback_args, **self.callback_kwargs)
+                if self.callback:
+                    self.callback(m, *self.callback_args, **self.callback_kwargs)
+                return m
+            return None
 
 	def decode(self, msgbuf):
 		'''decode a buffer as a MAVLink message'''
