@@ -7,7 +7,12 @@ of a series of MAVLink packets, each with a 64 bit timestamp
 header. The timestamp is in microseconds since 1970 (unix epoch)
 '''
 
-import sys, mavlink, struct, time
+import sys, struct, time, os
+
+# allow import from the parent directory, where mavlink.py is
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
+import mavlink
 
 if len(sys.argv) < 2:
     print("Usage: mavlogdump.py <LOGFILE>")

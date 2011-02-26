@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
-import sys
+import sys, os
+
+# import from the parent directory, where mavlink.py is
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 import mavlink
 
 class fifo(object):
