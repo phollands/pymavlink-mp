@@ -270,7 +270,7 @@ class MAVLink_change_operator_control_message(MAVLink_message):
 		self.passkey = passkey
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>BBB25c', self.target_system, self.control_request, self.version, self.passkey))
+		return MAVLink_message.pack(self, mav, struct.pack('>BBB25s', self.target_system, self.control_request, self.version, self.passkey))
 
 class MAVLink_change_operator_control_ack_message(MAVLink_message):
 	'''
@@ -369,7 +369,7 @@ class MAVLink_param_request_read_message(MAVLink_message):
 		self.param_index = param_index
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>BB15ch', self.target_system, self.target_component, self.param_id, self.param_index))
+		return MAVLink_message.pack(self, mav, struct.pack('>BB15sh', self.target_system, self.target_component, self.param_id, self.param_index))
 
 class MAVLink_param_request_list_message(MAVLink_message):
 	'''
@@ -401,7 +401,7 @@ class MAVLink_param_value_message(MAVLink_message):
 		self.param_index = param_index
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>15cfHH', self.param_id, self.param_value, self.param_count, self.param_index))
+		return MAVLink_message.pack(self, mav, struct.pack('>15sfHH', self.param_id, self.param_value, self.param_count, self.param_index))
 
 class MAVLink_param_set_message(MAVLink_message):
 	'''
@@ -423,7 +423,7 @@ class MAVLink_param_set_message(MAVLink_message):
 		self.param_value = param_value
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>BB15cf', self.target_system, self.target_component, self.param_id, self.param_value))
+		return MAVLink_message.pack(self, mav, struct.pack('>BB15sf', self.target_system, self.target_component, self.param_id, self.param_value))
 
 class MAVLink_gps_raw_int_message(MAVLink_message):
 	'''
@@ -490,7 +490,7 @@ class MAVLink_gps_status_message(MAVLink_message):
 		self.satellite_snr = satellite_snr
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>B20B20B20B20B20B', self.satellites_visible, self.satellite_prn, self.satellite_used, self.satellite_elevation, self.satellite_azimuth, self.satellite_snr))
+		return MAVLink_message.pack(self, mav, struct.pack('>B20s20s20s20s20s', self.satellites_visible, self.satellite_prn, self.satellite_used, self.satellite_elevation, self.satellite_azimuth, self.satellite_snr))
 
 class MAVLink_raw_imu_message(MAVLink_message):
 	'''
@@ -1221,7 +1221,7 @@ class MAVLink_debug_vect_message(MAVLink_message):
 		self.z = z
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>10cQfff', self.name, self.usec, self.x, self.y, self.z))
+		return MAVLink_message.pack(self, mav, struct.pack('>10sQfff', self.name, self.usec, self.x, self.y, self.z))
 
 class MAVLink_named_value_float_message(MAVLink_message):
 	'''
@@ -1236,7 +1236,7 @@ class MAVLink_named_value_float_message(MAVLink_message):
 		self.value = value
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>10cf', self.name, self.value))
+		return MAVLink_message.pack(self, mav, struct.pack('>10sf', self.name, self.value))
 
 class MAVLink_named_value_int_message(MAVLink_message):
 	'''
@@ -1251,7 +1251,7 @@ class MAVLink_named_value_int_message(MAVLink_message):
 		self.value = value
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>10ci', self.name, self.value))
+		return MAVLink_message.pack(self, mav, struct.pack('>10si', self.name, self.value))
 
 class MAVLink_statustext_message(MAVLink_message):
 	'''
@@ -1268,7 +1268,7 @@ class MAVLink_statustext_message(MAVLink_message):
 		self.text = text
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>B50c', self.severity, self.text))
+		return MAVLink_message.pack(self, mav, struct.pack('>B50s', self.severity, self.text))
 
 class MAVLink_debug_message(MAVLink_message):
 	'''
@@ -1291,19 +1291,19 @@ mavlink_map = {
 	MAVLINK_MSG_ID_SYSTEM_TIME : ( '>Q', MAVLink_system_time_message ),
 	MAVLINK_MSG_ID_PING : ( '>IBBQ', MAVLink_ping_message ),
 	MAVLINK_MSG_ID_SYSTEM_TIME_UTC : ( '>II', MAVLink_system_time_utc_message ),
-	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL : ( '>BBB25c', MAVLink_change_operator_control_message ),
+	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL : ( '>BBB25s', MAVLink_change_operator_control_message ),
 	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK : ( '>BBB', MAVLink_change_operator_control_ack_message ),
 	MAVLINK_MSG_ID_ACTION_ACK : ( '>BB', MAVLink_action_ack_message ),
 	MAVLINK_MSG_ID_ACTION : ( '>BBB', MAVLink_action_message ),
 	MAVLINK_MSG_ID_SET_MODE : ( '>BB', MAVLink_set_mode_message ),
 	MAVLINK_MSG_ID_SET_NAV_MODE : ( '>BB', MAVLink_set_nav_mode_message ),
-	MAVLINK_MSG_ID_PARAM_REQUEST_READ : ( '>BB15ch', MAVLink_param_request_read_message ),
+	MAVLINK_MSG_ID_PARAM_REQUEST_READ : ( '>BB15sh', MAVLink_param_request_read_message ),
 	MAVLINK_MSG_ID_PARAM_REQUEST_LIST : ( '>BB', MAVLink_param_request_list_message ),
-	MAVLINK_MSG_ID_PARAM_VALUE : ( '>15cfHH', MAVLink_param_value_message ),
-	MAVLINK_MSG_ID_PARAM_SET : ( '>BB15cf', MAVLink_param_set_message ),
+	MAVLINK_MSG_ID_PARAM_VALUE : ( '>15sfHH', MAVLink_param_value_message ),
+	MAVLINK_MSG_ID_PARAM_SET : ( '>BB15sf', MAVLink_param_set_message ),
 	MAVLINK_MSG_ID_GPS_RAW_INT : ( '>QBiiiffff', MAVLink_gps_raw_int_message ),
 	MAVLINK_MSG_ID_SCALED_IMU : ( '>Qhhhhhhhhh', MAVLink_scaled_imu_message ),
-	MAVLINK_MSG_ID_GPS_STATUS : ( '>B20B20B20B20B20B', MAVLink_gps_status_message ),
+	MAVLINK_MSG_ID_GPS_STATUS : ( '>B20s20s20s20s20s', MAVLink_gps_status_message ),
 	MAVLINK_MSG_ID_RAW_IMU : ( '>Qhhhhhhhhh', MAVLink_raw_imu_message ),
 	MAVLINK_MSG_ID_RAW_PRESSURE : ( '>Qfffh', MAVLink_raw_pressure_message ),
 	MAVLINK_MSG_ID_ATTITUDE : ( '>Qffffff', MAVLink_attitude_message ),
@@ -1342,10 +1342,10 @@ mavlink_map = {
 	MAVLINK_MSG_ID_VFR_HUD : ( '>ffhHff', MAVLink_vfr_hud_message ),
 	MAVLINK_MSG_ID_COMMAND : ( '>BBBBffff', MAVLink_command_message ),
 	MAVLINK_MSG_ID_COMMAND_ACK : ( '>ff', MAVLink_command_ack_message ),
-	MAVLINK_MSG_ID_DEBUG_VECT : ( '>10cQfff', MAVLink_debug_vect_message ),
-	MAVLINK_MSG_ID_NAMED_VALUE_FLOAT : ( '>10cf', MAVLink_named_value_float_message ),
-	MAVLINK_MSG_ID_NAMED_VALUE_INT : ( '>10ci', MAVLink_named_value_int_message ),
-	MAVLINK_MSG_ID_STATUSTEXT : ( '>B50c', MAVLink_statustext_message ),
+	MAVLINK_MSG_ID_DEBUG_VECT : ( '>10sQfff', MAVLink_debug_vect_message ),
+	MAVLINK_MSG_ID_NAMED_VALUE_FLOAT : ( '>10sf', MAVLink_named_value_float_message ),
+	MAVLINK_MSG_ID_NAMED_VALUE_INT : ( '>10si', MAVLink_named_value_int_message ),
+	MAVLINK_MSG_ID_STATUSTEXT : ( '>B50s', MAVLink_statustext_message ),
 	MAVLINK_MSG_ID_DEBUG : ( '>Bf', MAVLink_debug_message ),
 }
 
@@ -1441,7 +1441,11 @@ class MAVLink(object):
                         tlist[i] = MAVString(tlist[i])
                 t = tuple(tlist)
                 # construct the message object
-                m = type(*t)
+                try:
+                    m = type(*t)
+                except Exception, emsg:
+                    print tlist
+                    raise MAVError('Unable to instantiate MAVLink message of type %s : %s' % (type, emsg))
                 m._msgbuf = msgbuf
                 m._payload = msgbuf[6:-2]
                 m._crc = crc

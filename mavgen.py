@@ -56,6 +56,9 @@ def mavfmt(type):
     basefmt = mavfmt(basetype)
     count = int(type[aidx+1:-1])
 
+    if basefmt in ['c', 'b', 'B']:
+        basefmt = 's'
+
     return str(count) + basefmt
 
 
@@ -321,7 +324,11 @@ class MAVLink(object):
                         tlist[i] = MAVString(tlist[i])
                 t = tuple(tlist)
                 # construct the message object
-                m = type(*t)
+                try:
+                    m = type(*t)
+                except Exception, emsg:
+                    print tlist
+                    raise MAVError('Unable to instantiate MAVLink message of type %s : %s' % (type, emsg))
                 m._msgbuf = msgbuf
                 m._payload = msgbuf[6:-2]
                 m._crc = crc
