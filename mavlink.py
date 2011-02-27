@@ -1312,6 +1312,16 @@ class MAVError(Exception):
 	'''MAVLink error class'''
 	def __init__(self, msg):
             Exception.__init__(self, msg)
+
+class MAVString(str):
+	'''NUL terminated string'''
+	def __init__(self, s):
+		str.__init__(self)
+	def __str__(self):
+            i = self.find(chr(0))
+            if i == -1:
+                return self[:]
+            return self[0:i]
             
 class MAVLink(object):
 	'''MAVLink protocol handling class'''
@@ -1382,19 +1392,11 @@ class MAVLink(object):
                     raise MAVError('Unable to unpack MAVLink payload type=%s fmt=%s payloadLength=%u: %s' % (
                         type, fmt, len(msgbuf[6:-2]), emsg))
 
-                def null_terminate(s):
-                    ret = ""
-                    for c in s:
-                        if ord(c) == 0:
-                            return ret
-                        ret += c
-                    return ret
-                
                 # terminate any strings
                 tlist = list(t)
                 for i in range(0, len(tlist)):
                     if isinstance(tlist[i], str):
-                        tlist[i] = null_terminate(tlist[i])
+                        tlist[i] = MAVString(tlist[i])
                 t = tuple(tlist)
                 # construct the message object
                 m = type(*t)

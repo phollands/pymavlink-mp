@@ -2,7 +2,7 @@
 
 import sys, os
 
-# import from the parent directory, where mavlink.py is
+# allow import from the parent directory, where mavlink.py is
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 import mavlink
