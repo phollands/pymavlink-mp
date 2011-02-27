@@ -717,10 +717,8 @@ class MAVLink_waypoint_message(MAVLink_message):
 	Message encoding a waypoint. This message is emitted to announce
 	the presence of a waypoint and to set a waypoint on the system. The
 	waypoint can be either in x, y, z meters (type: LOCAL) or x:lat,
-	y:lon. The global and body frame are related as: positive Z-down,
-	positive X(front looking north, positive Y(body:right) looking east.
-	Therefore y encodes in global mode the latitude, whereas x encodes
-	the longitude and z the GPS altitude (WGS84).
+	y:lon, z:altitude. Local frame is Z-down, right handed, global frame
+	is Z-up, right handed
 	'''
 	def __init__(self, target_system, target_component, seq, frame, command, current, autocontinue, param1, param2, param3, param4, x, y, z):
 		MAVLink_message.__init__(self, MAVLINK_MSG_ID_WAYPOINT, 'WAYPOINT')
@@ -2406,10 +2404,8 @@ class MAVLink(object):
 		Message encoding a waypoint. This message is emitted to announce
 		the presence of a waypoint and to set a waypoint on the system. The
 		waypoint can be either in x, y, z meters (type: LOCAL) or x:lat,
-		y:lon. The global and body frame are related as: positive Z-down,
-		positive X(front looking north, positive Y(body:right) looking east.
-		Therefore y encodes in global mode the latitude, whereas x encodes
-		the longitude and z the GPS altitude (WGS84).
+		y:lon, z:altitude. Local frame is Z-down, right handed, global frame
+		is Z-up, right handed
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
@@ -2422,8 +2418,8 @@ class MAVLink(object):
 		param2            	: PARAM2 / For NAV command waypoints: Time that the MAV should stay inside the PARAM1 radius before advancing, in milliseconds (float)
 		param3            	: PARAM3 / For LOITER command waypoints: Orbit to circle around the waypoint, in meters. If positive the orbit direction should be clockwise, if negative the orbit direction should be counter-clockwise. (float)
 		param4            	: PARAM4 / For NAV and LOITER command waypoints: Yaw orientation in degrees, [0..360] 0 = NORTH (float)
-		x                 	: PARAM5 / local: x position, global: longitude (float)
-		y                 	: PARAM6 / y position: global: latitude (float)
+		x                 	: PARAM5 / local: x position, global: latitude (float)
+		y                 	: PARAM6 / y position: global: longitude (float)
 		z                 	: PARAM7 / z position: global: altitude (float)
 
 		'''
@@ -2436,10 +2432,8 @@ class MAVLink(object):
 		Message encoding a waypoint. This message is emitted to announce
 		the presence of a waypoint and to set a waypoint on the system. The
 		waypoint can be either in x, y, z meters (type: LOCAL) or x:lat,
-		y:lon. The global and body frame are related as: positive Z-down,
-		positive X(front looking north, positive Y(body:right) looking east.
-		Therefore y encodes in global mode the latitude, whereas x encodes
-		the longitude and z the GPS altitude (WGS84).
+		y:lon, z:altitude. Local frame is Z-down, right handed, global frame
+		is Z-up, right handed
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
@@ -2452,8 +2446,8 @@ class MAVLink(object):
 		param2            	: PARAM2 / For NAV command waypoints: Time that the MAV should stay inside the PARAM1 radius before advancing, in milliseconds (float)
 		param3            	: PARAM3 / For LOITER command waypoints: Orbit to circle around the waypoint, in meters. If positive the orbit direction should be clockwise, if negative the orbit direction should be counter-clockwise. (float)
 		param4            	: PARAM4 / For NAV and LOITER command waypoints: Yaw orientation in degrees, [0..360] 0 = NORTH (float)
-		x                 	: PARAM5 / local: x position, global: longitude (float)
-		y                 	: PARAM6 / y position: global: latitude (float)
+		x                 	: PARAM5 / local: x position, global: latitude (float)
+		y                 	: PARAM6 / y position: global: longitude (float)
 		z                 	: PARAM7 / z position: global: altitude (float)
 
 		'''
@@ -2670,9 +2664,9 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		latitude          	: global x position * 1E7 (uint32_t)
-		longitude         	: global y position * 1E7 (uint32_t)
-		altitude          	: global z position * 1000 (uint32_t)
+		latitude          	: global position * 1E7 (uint32_t)
+		longitude         	: global position * 1E7 (uint32_t)
+		altitude          	: global position * 1000 (uint32_t)
 
 		'''
 		msg = MAVLink_gps_set_global_origin_message(target_system, target_component, latitude, longitude, altitude)
@@ -2688,9 +2682,9 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		latitude          	: global x position * 1E7 (uint32_t)
-		longitude         	: global y position * 1E7 (uint32_t)
-		altitude          	: global z position * 1000 (uint32_t)
+		latitude          	: global position * 1E7 (uint32_t)
+		longitude         	: global position * 1E7 (uint32_t)
+		altitude          	: global position * 1000 (uint32_t)
 
 		'''
 		return self.send(self.gps_set_global_origin_encode(target_system, target_component, latitude, longitude, altitude))
@@ -3164,8 +3158,8 @@ class MAVLink(object):
 		The filtered global position (e.g. fused GPS and accelerometers). The
 		position is in GPS-frame (right-handed, Z-up)
 
-		lat               	: Latitude / X Position, expressed as * 1E7 (int32_t)
-		lon               	: Longitude / Y Position, expressed as * 1E7 (int32_t)
+		lat               	: Latitude, expressed as * 1E7 (int32_t)
+		lon               	: Longitude, expressed as * 1E7 (int32_t)
 		alt               	: Altitude in meters, expressed as * 1000 (millimeters) (int32_t)
 		vx                	: Ground X Speed (Latitude), expressed as m/s * 100 (int16_t)
 		vy                	: Ground Y Speed (Longitude), expressed as m/s * 100 (int16_t)
@@ -3181,8 +3175,8 @@ class MAVLink(object):
 		The filtered global position (e.g. fused GPS and accelerometers). The
 		position is in GPS-frame (right-handed, Z-up)
 
-		lat               	: Latitude / X Position, expressed as * 1E7 (int32_t)
-		lon               	: Longitude / Y Position, expressed as * 1E7 (int32_t)
+		lat               	: Latitude, expressed as * 1E7 (int32_t)
+		lon               	: Longitude, expressed as * 1E7 (int32_t)
 		alt               	: Altitude in meters, expressed as * 1000 (millimeters) (int32_t)
 		vx                	: Ground X Speed (Latitude), expressed as m/s * 100 (int16_t)
 		vy                	: Ground Y Speed (Longitude), expressed as m/s * 100 (int16_t)
