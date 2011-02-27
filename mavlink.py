@@ -89,7 +89,8 @@ MAV_CMD_NAV_LOITER_TIME = 19
 MAV_CMD_NAV_RETURN_TO_LAUNCH = 20
 MAV_CMD_NAV_LAND = 21
 MAV_CMD_NAV_TAKEOFF = 22
-MAV_CMD_NAV_TARGET = 80
+MAV_CMD_NAV_ORIENTATION_TARGET = 80
+MAV_CMD_NAV_PATHPLANNING = 81
 MAV_CMD_NAV_LAST = 95
 MAV_CMD_CONDITION_DELAY = 112
 MAV_CMD_CONDITION_CHANGE_ALT = 113
@@ -105,6 +106,10 @@ MAV_CMD_DO_SET_RELAY = 181
 MAV_CMD_DO_REPEAT_RELAY = 182
 MAV_CMD_DO_SET_SERVO = 183
 MAV_CMD_DO_REPEAT_SERVO = 184
+MAV_CMD_DO_CONTROL_VIDEO = 200
+MAV_CMD_DO_LAST = 240
+MAV_CMD_PREFLIGHT_CALIBRATION = 241
+MAV_CMD_PREFLIGHT_STORAGE = 245
 MAV_DATA_STREAM_ALL = 0
 MAV_DATA_STREAM_RAW_SENSORS = 1
 MAV_DATA_STREAM_EXTENDED_STATUS = 2
@@ -170,6 +175,8 @@ MAVLINK_MSG_ID_REQUEST_DATA_STREAM = 66
 MAVLINK_MSG_ID_MANUAL_CONTROL = 69
 MAVLINK_MSG_ID_GLOBAL_POSITION_INT = 73
 MAVLINK_MSG_ID_VFR_HUD = 74
+MAVLINK_MSG_ID_COMMAND = 75
+MAVLINK_MSG_ID_COMMAND_ACK = 76
 MAVLINK_MSG_ID_DEBUG_VECT = 251
 MAVLINK_MSG_ID_NAMED_VALUE_FLOAT = 252
 MAVLINK_MSG_ID_NAMED_VALUE_INT = 253
@@ -263,7 +270,7 @@ class MAVLink_change_operator_control_message(MAVLink_message):
 		self.passkey = passkey
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>BBB25s', self.target_system, self.control_request, self.version, self.passkey))
+		return MAVLink_message.pack(self, mav, struct.pack('>BBB25c', self.target_system, self.control_request, self.version, self.passkey))
 
 class MAVLink_change_operator_control_ack_message(MAVLink_message):
 	'''
@@ -362,7 +369,7 @@ class MAVLink_param_request_read_message(MAVLink_message):
 		self.param_index = param_index
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>BB15sh', self.target_system, self.target_component, self.param_id, self.param_index))
+		return MAVLink_message.pack(self, mav, struct.pack('>BB15ch', self.target_system, self.target_component, self.param_id, self.param_index))
 
 class MAVLink_param_request_list_message(MAVLink_message):
 	'''
@@ -394,7 +401,7 @@ class MAVLink_param_value_message(MAVLink_message):
 		self.param_index = param_index
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>15sfHH', self.param_id, self.param_value, self.param_count, self.param_index))
+		return MAVLink_message.pack(self, mav, struct.pack('>15cfHH', self.param_id, self.param_value, self.param_count, self.param_index))
 
 class MAVLink_param_set_message(MAVLink_message):
 	'''
@@ -416,7 +423,7 @@ class MAVLink_param_set_message(MAVLink_message):
 		self.param_value = param_value
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>BB15sf', self.target_system, self.target_component, self.param_id, self.param_value))
+		return MAVLink_message.pack(self, mav, struct.pack('>BB15cf', self.target_system, self.target_component, self.param_id, self.param_value))
 
 class MAVLink_gps_raw_int_message(MAVLink_message):
 	'''
@@ -483,7 +490,7 @@ class MAVLink_gps_status_message(MAVLink_message):
 		self.satellite_snr = satellite_snr
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>B20s20s20s20s20s', self.satellites_visible, self.satellite_prn, self.satellite_used, self.satellite_elevation, self.satellite_azimuth, self.satellite_snr))
+		return MAVLink_message.pack(self, mav, struct.pack('>B20B20B20B20B20B', self.satellites_visible, self.satellite_prn, self.satellite_used, self.satellite_elevation, self.satellite_azimuth, self.satellite_snr))
 
 class MAVLink_raw_imu_message(MAVLink_message):
 	'''
@@ -1167,6 +1174,39 @@ class MAVLink_vfr_hud_message(MAVLink_message):
 	def pack(self, mav):
 		return MAVLink_message.pack(self, mav, struct.pack('>ffhHff', self.airspeed, self.groundspeed, self.heading, self.throttle, self.alt, self.climb))
 
+class MAVLink_command_message(MAVLink_message):
+	'''
+	Send a command with up to four parameters to the MAV
+	'''
+	def __init__(self, target_system, target_component, command, confirmation, param1, param2, param3, param4):
+		MAVLink_message.__init__(self, MAVLINK_MSG_ID_COMMAND, 'COMMAND')
+		self._fieldnames = ['target_system', 'target_component', 'command', 'confirmation', 'param1', 'param2', 'param3', 'param4']
+		self.target_system = target_system
+		self.target_component = target_component
+		self.command = command
+		self.confirmation = confirmation
+		self.param1 = param1
+		self.param2 = param2
+		self.param3 = param3
+		self.param4 = param4
+
+	def pack(self, mav):
+		return MAVLink_message.pack(self, mav, struct.pack('>BBBBffff', self.target_system, self.target_component, self.command, self.confirmation, self.param1, self.param2, self.param3, self.param4))
+
+class MAVLink_command_ack_message(MAVLink_message):
+	'''
+	Report status of a command. Includes feedback wether the command was
+	executed
+	'''
+	def __init__(self, command, result):
+		MAVLink_message.__init__(self, MAVLINK_MSG_ID_COMMAND_ACK, 'COMMAND_ACK')
+		self._fieldnames = ['command', 'result']
+		self.command = command
+		self.result = result
+
+	def pack(self, mav):
+		return MAVLink_message.pack(self, mav, struct.pack('>ff', self.command, self.result))
+
 class MAVLink_debug_vect_message(MAVLink_message):
 	'''
 
@@ -1181,7 +1221,7 @@ class MAVLink_debug_vect_message(MAVLink_message):
 		self.z = z
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>10sQfff', self.name, self.usec, self.x, self.y, self.z))
+		return MAVLink_message.pack(self, mav, struct.pack('>10cQfff', self.name, self.usec, self.x, self.y, self.z))
 
 class MAVLink_named_value_float_message(MAVLink_message):
 	'''
@@ -1196,7 +1236,7 @@ class MAVLink_named_value_float_message(MAVLink_message):
 		self.value = value
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>10sf', self.name, self.value))
+		return MAVLink_message.pack(self, mav, struct.pack('>10cf', self.name, self.value))
 
 class MAVLink_named_value_int_message(MAVLink_message):
 	'''
@@ -1211,7 +1251,7 @@ class MAVLink_named_value_int_message(MAVLink_message):
 		self.value = value
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>10si', self.name, self.value))
+		return MAVLink_message.pack(self, mav, struct.pack('>10ci', self.name, self.value))
 
 class MAVLink_statustext_message(MAVLink_message):
 	'''
@@ -1228,7 +1268,7 @@ class MAVLink_statustext_message(MAVLink_message):
 		self.text = text
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>B50s', self.severity, self.text))
+		return MAVLink_message.pack(self, mav, struct.pack('>B50c', self.severity, self.text))
 
 class MAVLink_debug_message(MAVLink_message):
 	'''
@@ -1251,19 +1291,19 @@ mavlink_map = {
 	MAVLINK_MSG_ID_SYSTEM_TIME : ( '>Q', MAVLink_system_time_message ),
 	MAVLINK_MSG_ID_PING : ( '>IBBQ', MAVLink_ping_message ),
 	MAVLINK_MSG_ID_SYSTEM_TIME_UTC : ( '>II', MAVLink_system_time_utc_message ),
-	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL : ( '>BBB25s', MAVLink_change_operator_control_message ),
+	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL : ( '>BBB25c', MAVLink_change_operator_control_message ),
 	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK : ( '>BBB', MAVLink_change_operator_control_ack_message ),
 	MAVLINK_MSG_ID_ACTION_ACK : ( '>BB', MAVLink_action_ack_message ),
 	MAVLINK_MSG_ID_ACTION : ( '>BBB', MAVLink_action_message ),
 	MAVLINK_MSG_ID_SET_MODE : ( '>BB', MAVLink_set_mode_message ),
 	MAVLINK_MSG_ID_SET_NAV_MODE : ( '>BB', MAVLink_set_nav_mode_message ),
-	MAVLINK_MSG_ID_PARAM_REQUEST_READ : ( '>BB15sh', MAVLink_param_request_read_message ),
+	MAVLINK_MSG_ID_PARAM_REQUEST_READ : ( '>BB15ch', MAVLink_param_request_read_message ),
 	MAVLINK_MSG_ID_PARAM_REQUEST_LIST : ( '>BB', MAVLink_param_request_list_message ),
-	MAVLINK_MSG_ID_PARAM_VALUE : ( '>15sfHH', MAVLink_param_value_message ),
-	MAVLINK_MSG_ID_PARAM_SET : ( '>BB15sf', MAVLink_param_set_message ),
+	MAVLINK_MSG_ID_PARAM_VALUE : ( '>15cfHH', MAVLink_param_value_message ),
+	MAVLINK_MSG_ID_PARAM_SET : ( '>BB15cf', MAVLink_param_set_message ),
 	MAVLINK_MSG_ID_GPS_RAW_INT : ( '>QBiiiffff', MAVLink_gps_raw_int_message ),
 	MAVLINK_MSG_ID_SCALED_IMU : ( '>Qhhhhhhhhh', MAVLink_scaled_imu_message ),
-	MAVLINK_MSG_ID_GPS_STATUS : ( '>B20s20s20s20s20s', MAVLink_gps_status_message ),
+	MAVLINK_MSG_ID_GPS_STATUS : ( '>B20B20B20B20B20B', MAVLink_gps_status_message ),
 	MAVLINK_MSG_ID_RAW_IMU : ( '>Qhhhhhhhhh', MAVLink_raw_imu_message ),
 	MAVLINK_MSG_ID_RAW_PRESSURE : ( '>Qfffh', MAVLink_raw_pressure_message ),
 	MAVLINK_MSG_ID_ATTITUDE : ( '>Qffffff', MAVLink_attitude_message ),
@@ -1300,10 +1340,12 @@ mavlink_map = {
 	MAVLINK_MSG_ID_MANUAL_CONTROL : ( '>BffffBBBB', MAVLink_manual_control_message ),
 	MAVLINK_MSG_ID_GLOBAL_POSITION_INT : ( '>iiihhh', MAVLink_global_position_int_message ),
 	MAVLINK_MSG_ID_VFR_HUD : ( '>ffhHff', MAVLink_vfr_hud_message ),
-	MAVLINK_MSG_ID_DEBUG_VECT : ( '>10sQfff', MAVLink_debug_vect_message ),
-	MAVLINK_MSG_ID_NAMED_VALUE_FLOAT : ( '>10sf', MAVLink_named_value_float_message ),
-	MAVLINK_MSG_ID_NAMED_VALUE_INT : ( '>10si', MAVLink_named_value_int_message ),
-	MAVLINK_MSG_ID_STATUSTEXT : ( '>B50s', MAVLink_statustext_message ),
+	MAVLINK_MSG_ID_COMMAND : ( '>BBBBffff', MAVLink_command_message ),
+	MAVLINK_MSG_ID_COMMAND_ACK : ( '>ff', MAVLink_command_ack_message ),
+	MAVLINK_MSG_ID_DEBUG_VECT : ( '>10cQfff', MAVLink_debug_vect_message ),
+	MAVLINK_MSG_ID_NAMED_VALUE_FLOAT : ( '>10cf', MAVLink_named_value_float_message ),
+	MAVLINK_MSG_ID_NAMED_VALUE_INT : ( '>10ci', MAVLink_named_value_int_message ),
+	MAVLINK_MSG_ID_STATUSTEXT : ( '>B50c', MAVLink_statustext_message ),
 	MAVLINK_MSG_ID_DEBUG : ( '>Bf', MAVLink_debug_message ),
 }
 
@@ -1414,7 +1456,7 @@ class MAVLink(object):
 
 		type              	: Type of the MAV (quadrotor, helicopter, etc., up to 15 types, defined in MAV_TYPE ENUM) (uint8_t)
 		autopilot         	: Type of the Autopilot: 0: Generic, 1: PIXHAWK, 2: SLUGS, 3: Ardupilot (up to 15 types), defined in MAV_AUTOPILOT_TYPE ENUM (uint8_t)
-		mavlink_version   	: MAVLink version (uint8_t_mavlink_version)
+		mavlink_version   	: MAVLink version (uint8_t)
 
 		'''
 		msg = MAVLink_heartbeat_message(type, autopilot, mavlink_version)
@@ -1430,7 +1472,7 @@ class MAVLink(object):
 
 		type              	: Type of the MAV (quadrotor, helicopter, etc., up to 15 types, defined in MAV_TYPE ENUM) (uint8_t)
 		autopilot         	: Type of the Autopilot: 0: Generic, 1: PIXHAWK, 2: SLUGS, 3: Ardupilot (up to 15 types), defined in MAV_AUTOPILOT_TYPE ENUM (uint8_t)
-		mavlink_version   	: MAVLink version (uint8_t_mavlink_version)
+		mavlink_version   	: MAVLink version (uint8_t)
 
 		'''
 		return self.send(self.heartbeat_encode(type, autopilot, mavlink_version))
@@ -1708,7 +1750,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (array[15])
+		param_id          	: Onboard parameter id (char[15])
 		param_index       	: Parameter index. Send -1 to use the param ID field as identifier (int16_t)
 
 		'''
@@ -1729,7 +1771,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (array[15])
+		param_id          	: Onboard parameter id (char[15])
 		param_index       	: Parameter index. Send -1 to use the param ID field as identifier (int16_t)
 
 		'''
@@ -1766,7 +1808,7 @@ class MAVLink(object):
 		received parameters and allows him to re-request missing parameters
 		after a loss or timeout.
 
-		param_id          	: Onboard parameter id (array[15])
+		param_id          	: Onboard parameter id (char[15])
 		param_value       	: Onboard parameter value (float)
 		param_count       	: Total number of onboard parameters (uint16_t)
 		param_index       	: Index of this onboard parameter (uint16_t)
@@ -1783,7 +1825,7 @@ class MAVLink(object):
 		received parameters and allows him to re-request missing parameters
 		after a loss or timeout.
 
-		param_id          	: Onboard parameter id (array[15])
+		param_id          	: Onboard parameter id (char[15])
 		param_value       	: Onboard parameter value (float)
 		param_count       	: Total number of onboard parameters (uint16_t)
 		param_index       	: Index of this onboard parameter (uint16_t)
@@ -1805,7 +1847,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (array[15])
+		param_id          	: Onboard parameter id (char[15])
 		param_value       	: Onboard parameter value (float)
 
 		'''
@@ -1827,7 +1869,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (array[15])
+		param_id          	: Onboard parameter id (char[15])
 		param_value       	: Onboard parameter value (float)
 
 		'''
@@ -1926,11 +1968,11 @@ class MAVLink(object):
 		satellites.
 
 		satellites_visible	: Number of satellites visible (uint8_t)
-		satellite_prn     	: Global satellite ID (array[20])
-		satellite_used    	: 0: Satellite not used, 1: used for localization (array[20])
-		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (array[20])
-		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (array[20])
-		satellite_snr     	: Signal to noise ratio of satellite (array[20])
+		satellite_prn     	: Global satellite ID (uint8_t[20])
+		satellite_used    	: 0: Satellite not used, 1: used for localization (uint8_t[20])
+		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (uint8_t[20])
+		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (uint8_t[20])
+		satellite_snr     	: Signal to noise ratio of satellite (uint8_t[20])
 
 		'''
 		msg = MAVLink_gps_status_message(satellites_visible, satellite_prn, satellite_used, satellite_elevation, satellite_azimuth, satellite_snr)
@@ -1946,11 +1988,11 @@ class MAVLink(object):
 		satellites.
 
 		satellites_visible	: Number of satellites visible (uint8_t)
-		satellite_prn     	: Global satellite ID (array[20])
-		satellite_used    	: 0: Satellite not used, 1: used for localization (array[20])
-		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (array[20])
-		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (array[20])
-		satellite_snr     	: Signal to noise ratio of satellite (array[20])
+		satellite_prn     	: Global satellite ID (uint8_t[20])
+		satellite_used    	: 0: Satellite not used, 1: used for localization (uint8_t[20])
+		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (uint8_t[20])
+		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (uint8_t[20])
+		satellite_snr     	: Signal to noise ratio of satellite (uint8_t[20])
 
 		'''
 		return self.send(self.gps_status_encode(satellites_visible, satellite_prn, satellite_used, satellite_elevation, satellite_azimuth, satellite_snr))
@@ -3175,6 +3217,64 @@ class MAVLink(object):
 		'''
 		return self.send(self.vfr_hud_encode(airspeed, groundspeed, heading, throttle, alt, climb))
 
+	def command_encode(self, target_system, target_component, command, confirmation, param1, param2, param3, param4):
+		'''
+		Send a command with up to four parameters to the MAV
+
+		target_system     	: System which should execute the command (uint8_t)
+		target_component  	: Component which should execute the command, 0 for all components (uint8_t)
+		command           	: Command ID, as defined by MAV_CMD enum. (uint8_t)
+		confirmation      	: 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command) (uint8_t)
+		param1            	: Parameter 1, as defined by MAV_CMD enum. (float)
+		param2            	: Parameter 2, as defined by MAV_CMD enum. (float)
+		param3            	: Parameter 3, as defined by MAV_CMD enum. (float)
+		param4            	: Parameter 4, as defined by MAV_CMD enum. (float)
+
+		'''
+		msg = MAVLink_command_message(target_system, target_component, command, confirmation, param1, param2, param3, param4)
+		msg.pack(self)
+                return msg
+
+	def command_send(self, target_system, target_component, command, confirmation, param1, param2, param3, param4):
+		'''
+		Send a command with up to four parameters to the MAV
+
+		target_system     	: System which should execute the command (uint8_t)
+		target_component  	: Component which should execute the command, 0 for all components (uint8_t)
+		command           	: Command ID, as defined by MAV_CMD enum. (uint8_t)
+		confirmation      	: 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command) (uint8_t)
+		param1            	: Parameter 1, as defined by MAV_CMD enum. (float)
+		param2            	: Parameter 2, as defined by MAV_CMD enum. (float)
+		param3            	: Parameter 3, as defined by MAV_CMD enum. (float)
+		param4            	: Parameter 4, as defined by MAV_CMD enum. (float)
+
+		'''
+		return self.send(self.command_encode(target_system, target_component, command, confirmation, param1, param2, param3, param4))
+
+	def command_ack_encode(self, command, result):
+		'''
+		Report status of a command. Includes feedback wether the command was
+		executed
+
+		command           	: Current airspeed in m/s (float)
+		result            	: 1: Action ACCEPTED and EXECUTED, 1: Action TEMPORARY REJECTED/DENIED, 2: Action PERMANENTLY DENIED, 3: Action UNKNOWN/UNSUPPORTED, 4: Requesting CONFIRMATION (float)
+
+		'''
+		msg = MAVLink_command_ack_message(command, result)
+		msg.pack(self)
+                return msg
+
+	def command_ack_send(self, command, result):
+		'''
+		Report status of a command. Includes feedback wether the command was
+		executed
+
+		command           	: Current airspeed in m/s (float)
+		result            	: 1: Action ACCEPTED and EXECUTED, 1: Action TEMPORARY REJECTED/DENIED, 2: Action PERMANENTLY DENIED, 3: Action UNKNOWN/UNSUPPORTED, 4: Requesting CONFIRMATION (float)
+
+		'''
+		return self.send(self.command_ack_encode(command, result))
+
 	def debug_vect_encode(self, name, usec, x, y, z):
 		'''
 		
@@ -3264,7 +3364,7 @@ class MAVLink(object):
 		only at a limited rate (e.g. 10 Hz).
 
 		severity          	: Severity of status, 0 = info message, 255 = critical fault (uint8_t)
-		text              	: Status text message, without null termination character (int8_t[50])
+		text              	: Status text message, without null termination character (char[50])
 
 		'''
 		msg = MAVLink_statustext_message(severity, text)
@@ -3280,7 +3380,7 @@ class MAVLink(object):
 		only at a limited rate (e.g. 10 Hz).
 
 		severity          	: Severity of status, 0 = info message, 255 = critical fault (uint8_t)
-		text              	: Status text message, without null termination character (int8_t[50])
+		text              	: Status text message, without null termination character (char[50])
 
 		'''
 		return self.send(self.statustext_encode(severity, text))

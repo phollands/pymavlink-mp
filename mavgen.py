@@ -29,6 +29,7 @@ def mavfmt(type):
     '''work out the struct format for a type'''
     map = {
         'float'    : 'f',
+        'char'     : 'c',
         'int8_t'   : 'b',
         'uint8_t'  : 'B',
         'uint8_t_mavlink_version'  : 'B',
@@ -39,20 +40,23 @@ def mavfmt(type):
         'int64_t'  : 'q',
         'uint64_t' : 'Q',
         }
+
     if type in map:
         return map[type]
     if (type+"_t") in map:
         return map[type+"_t"]
-        
-    if type.startswith("array[") and type[-1] == "]":
-        return "%us" % int(type[6:-1])
-    if type.startswith("char[") and type[-1] == "]":
-        return "%us" % int(type[5:-1])
-    if type.startswith("int8_t[") and type[-1] == "]":
-        return "%us" % int(type[7:-1])
-    if type.startswith("uint8_t[") and type[-1] == "]":
-        return "%us" % int(type[8:-1])
-    raise RuntimeError("Unknown MAVLink type %s" % type)
+
+    aidx = type.find("[")
+    if aidx == -1 or type[-1:] != ']':
+        raise RuntimeError("Unknown MAVLink type %s" % type)
+
+    basetype = type[0:aidx]
+    if basetype == "array":
+        basetype = "uint8_t"
+    basefmt = mavfmt(basetype)
+    count = int(type[aidx+1:-1])
+
+    return str(count) + basefmt
 
 
 def parse_mavlink_xml(fname):
@@ -67,7 +71,10 @@ def parse_mavlink_xml(fname):
         elif name == 'field':
             msgs[-1].fields.append(MAVField(attrs['name'], attrs['type']))
         elif name == 'entry':
-            enums.append((attrs['name'], long(attrs['value'])))
+            if not 'value' in attrs:
+                print("No 'value' for entry '%s'" % attrs['name'])
+            else:
+                enums.append((attrs['name'], long(attrs['value'])))
     def char_data(data):
         if len(msgs) == 0:
             return
