@@ -1375,6 +1375,7 @@ class MAVLink(object):
                 self.callback_kwargs = None
                 self.buf = ""
                 self.expected_length = 0
+                self.have_prefix_error = False
 
         def set_callback(self, callback, *args, **kwargs):
             self.callback = callback
@@ -1389,13 +1390,22 @@ class MAVLink(object):
 
         def parse_char(self, c):
             self.buf += c
+            if len(self.buf) == 1 and self.buf != 'U':
+                magic = self.buf
+                self.buf = ""
+                if self.have_prefix_error:
+                    return
+                self.have_prefix_error = True
+                raise MAVError("invalid MAVLink prefix '%s'" % magic) 
+            self.have_prefix_error = False
             if len(self.buf) == 2:
                 (magic, self.expected_length) = struct.unpack('cB', self.buf)
                 self.expected_length += 8
             elif len(self.buf) == self.expected_length:
-                m = self.decode(self.buf)
+                mbuf = self.buf
                 self.buf = ""
                 self.expected_length = 0
+                m = self.decode(mbuf)
                 if self.callback:
                     self.callback(m, *self.callback_args, **self.callback_kwargs)
                 return m
@@ -1409,7 +1419,7 @@ class MAVLink(object):
                 except struct.error, emsg:
                     raise MAVError('Unable to unpack MAVLink header: %s' % emsg)
                 if magic != 'U':
-                    raise MAVError('invalid MAVLink prefix')
+                    raise MAVError("invalid MAVLink prefix '%s'" % magic)
                 if mlen != len(msgbuf)-8:
                     raise MAVError('invalid MAVLink message length. Got %u expected %u, msgId=%u' % (len(msgbuf)-8, mlen, msgId))
 
@@ -1420,7 +1430,7 @@ class MAVLink(object):
                     raise MAVError('Unable to unpack MAVLink CRC: %s' % emsg)
                 crc2 = x25crc(msgbuf[1:-2])
                 if crc != crc2:
-                    raise MAVError('invalid MAVLink CRC 0x%04x should be 0x%04x' % (crc, crc2))
+                    raise MAVError('invalid MAVLink CRC in msgID %u 0x%04x should be 0x%04x' % (msgId, crc, crc2))
                 if not msgId in mavlink_map:
                     raise MAVError('unknown MAVLink message ID %u' % msgId)
 
@@ -1458,7 +1468,7 @@ class MAVLink(object):
 
 		type              	: Type of the MAV (quadrotor, helicopter, etc., up to 15 types, defined in MAV_TYPE ENUM) (uint8_t)
 		autopilot         	: Type of the Autopilot: 0: Generic, 1: PIXHAWK, 2: SLUGS, 3: Ardupilot (up to 15 types), defined in MAV_AUTOPILOT_TYPE ENUM (uint8_t)
-		mavlink_version   	: MAVLink version (uint8_t)
+		mavlink_version   	: MAVLink version (uint8_t_mavlink_version)
 
 		'''
 		msg = MAVLink_heartbeat_message(type, autopilot, mavlink_version)
@@ -1474,7 +1484,7 @@ class MAVLink(object):
 
 		type              	: Type of the MAV (quadrotor, helicopter, etc., up to 15 types, defined in MAV_TYPE ENUM) (uint8_t)
 		autopilot         	: Type of the Autopilot: 0: Generic, 1: PIXHAWK, 2: SLUGS, 3: Ardupilot (up to 15 types), defined in MAV_AUTOPILOT_TYPE ENUM (uint8_t)
-		mavlink_version   	: MAVLink version (uint8_t)
+		mavlink_version   	: MAVLink version (uint8_t_mavlink_version)
 
 		'''
 		return self.send(self.heartbeat_encode(type, autopilot, mavlink_version))
@@ -1752,7 +1762,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (char[15])
+		param_id          	: Onboard parameter id (array[15])
 		param_index       	: Parameter index. Send -1 to use the param ID field as identifier (int16_t)
 
 		'''
@@ -1773,7 +1783,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (char[15])
+		param_id          	: Onboard parameter id (array[15])
 		param_index       	: Parameter index. Send -1 to use the param ID field as identifier (int16_t)
 
 		'''
@@ -1810,7 +1820,7 @@ class MAVLink(object):
 		received parameters and allows him to re-request missing parameters
 		after a loss or timeout.
 
-		param_id          	: Onboard parameter id (char[15])
+		param_id          	: Onboard parameter id (array[15])
 		param_value       	: Onboard parameter value (float)
 		param_count       	: Total number of onboard parameters (uint16_t)
 		param_index       	: Index of this onboard parameter (uint16_t)
@@ -1827,7 +1837,7 @@ class MAVLink(object):
 		received parameters and allows him to re-request missing parameters
 		after a loss or timeout.
 
-		param_id          	: Onboard parameter id (char[15])
+		param_id          	: Onboard parameter id (array[15])
 		param_value       	: Onboard parameter value (float)
 		param_count       	: Total number of onboard parameters (uint16_t)
 		param_index       	: Index of this onboard parameter (uint16_t)
@@ -1849,7 +1859,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (char[15])
+		param_id          	: Onboard parameter id (array[15])
 		param_value       	: Onboard parameter value (float)
 
 		'''
@@ -1871,7 +1881,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (char[15])
+		param_id          	: Onboard parameter id (array[15])
 		param_value       	: Onboard parameter value (float)
 
 		'''
@@ -1970,11 +1980,11 @@ class MAVLink(object):
 		satellites.
 
 		satellites_visible	: Number of satellites visible (uint8_t)
-		satellite_prn     	: Global satellite ID (uint8_t[20])
-		satellite_used    	: 0: Satellite not used, 1: used for localization (uint8_t[20])
-		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (uint8_t[20])
-		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (uint8_t[20])
-		satellite_snr     	: Signal to noise ratio of satellite (uint8_t[20])
+		satellite_prn     	: Global satellite ID (array[20])
+		satellite_used    	: 0: Satellite not used, 1: used for localization (array[20])
+		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (array[20])
+		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (array[20])
+		satellite_snr     	: Signal to noise ratio of satellite (array[20])
 
 		'''
 		msg = MAVLink_gps_status_message(satellites_visible, satellite_prn, satellite_used, satellite_elevation, satellite_azimuth, satellite_snr)
@@ -1990,11 +2000,11 @@ class MAVLink(object):
 		satellites.
 
 		satellites_visible	: Number of satellites visible (uint8_t)
-		satellite_prn     	: Global satellite ID (uint8_t[20])
-		satellite_used    	: 0: Satellite not used, 1: used for localization (uint8_t[20])
-		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (uint8_t[20])
-		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (uint8_t[20])
-		satellite_snr     	: Signal to noise ratio of satellite (uint8_t[20])
+		satellite_prn     	: Global satellite ID (array[20])
+		satellite_used    	: 0: Satellite not used, 1: used for localization (array[20])
+		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (array[20])
+		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (array[20])
+		satellite_snr     	: Signal to noise ratio of satellite (array[20])
 
 		'''
 		return self.send(self.gps_status_encode(satellites_visible, satellite_prn, satellite_used, satellite_elevation, satellite_azimuth, satellite_snr))
@@ -3362,7 +3372,7 @@ class MAVLink(object):
 		only at a limited rate (e.g. 10 Hz).
 
 		severity          	: Severity of status, 0 = info message, 255 = critical fault (uint8_t)
-		text              	: Status text message, without null termination character (char[50])
+		text              	: Status text message, without null termination character (int8_t[50])
 
 		'''
 		msg = MAVLink_statustext_message(severity, text)
@@ -3378,7 +3388,7 @@ class MAVLink(object):
 		only at a limited rate (e.g. 10 Hz).
 
 		severity          	: Severity of status, 0 = info message, 255 = critical fault (uint8_t)
-		text              	: Status text message, without null termination character (char[50])
+		text              	: Status text message, without null termination character (int8_t[50])
 
 		'''
 		return self.send(self.statustext_encode(severity, text))

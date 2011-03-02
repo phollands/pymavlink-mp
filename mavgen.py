@@ -260,6 +260,7 @@ class MAVLink(object):
                 self.callback_kwargs = None
                 self.buf = ""
                 self.expected_length = 0
+                self.have_prefix_error = False
 
         def set_callback(self, callback, *args, **kwargs):
             self.callback = callback
@@ -274,13 +275,22 @@ class MAVLink(object):
 
         def parse_char(self, c):
             self.buf += c
+            if len(self.buf) == 1 and self.buf != 'U':
+                magic = self.buf
+                self.buf = ""
+                if self.have_prefix_error:
+                    return
+                self.have_prefix_error = True
+                raise MAVError("invalid MAVLink prefix '%s'" % magic) 
+            self.have_prefix_error = False
             if len(self.buf) == 2:
                 (magic, self.expected_length) = struct.unpack('cB', self.buf)
                 self.expected_length += 8
             elif len(self.buf) == self.expected_length:
-                m = self.decode(self.buf)
+                mbuf = self.buf
                 self.buf = ""
                 self.expected_length = 0
+                m = self.decode(mbuf)
                 if self.callback:
                     self.callback(m, *self.callback_args, **self.callback_kwargs)
                 return m
@@ -294,7 +304,7 @@ class MAVLink(object):
                 except struct.error, emsg:
                     raise MAVError('Unable to unpack MAVLink header: %s' % emsg)
                 if magic != 'U':
-                    raise MAVError('invalid MAVLink prefix')
+                    raise MAVError("invalid MAVLink prefix '%s'" % magic)
                 if mlen != len(msgbuf)-8:
                     raise MAVError('invalid MAVLink message length. Got %u expected %u, msgId=%u' % (len(msgbuf)-8, mlen, msgId))
 
@@ -305,7 +315,7 @@ class MAVLink(object):
                     raise MAVError('Unable to unpack MAVLink CRC: %s' % emsg)
                 crc2 = x25crc(msgbuf[1:-2])
                 if crc != crc2:
-                    raise MAVError('invalid MAVLink CRC 0x%04x should be 0x%04x' % (crc, crc2))
+                    raise MAVError('invalid MAVLink CRC in msgID %u 0x%04x should be 0x%04x' % (msgId, crc, crc2))
                 if not msgId in mavlink_map:
                     raise MAVError('unknown MAVLink message ID %u' % msgId)
 
