@@ -30,13 +30,16 @@ while True:
     tbuf = f.read(8)
     if len(tbuf) != 8:
         break
-    (t,) = struct.unpack('>Q', tbuf)
+    (tusec,) = struct.unpack('>Q', tbuf)
+    t = time.localtime(tusec/1.0e6)
 
     # read the packet
     while True:
         c = f.read(1)
         m = mav.parse_char(c)
         if m:
-            print("%s: %s" % (time.ctime(t/1.0e6), m))
+            print("%s.%02u: %s" % (
+                time.strftime("%F %T", t), (tusec/1e4)%100, m)
+                  )
             break
     
