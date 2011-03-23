@@ -128,6 +128,7 @@ MAVLINK_MSG_ID_PING = 3
 MAVLINK_MSG_ID_SYSTEM_TIME_UTC = 4
 MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL = 5
 MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK = 6
+MAVLINK_MSG_ID_AUTH_KEY = 7
 MAVLINK_MSG_ID_ACTION_ACK = 9
 MAVLINK_MSG_ID_ACTION = 10
 MAVLINK_MSG_ID_SET_MODE = 11
@@ -141,6 +142,7 @@ MAVLINK_MSG_ID_SCALED_IMU = 26
 MAVLINK_MSG_ID_GPS_STATUS = 27
 MAVLINK_MSG_ID_RAW_IMU = 28
 MAVLINK_MSG_ID_RAW_PRESSURE = 29
+MAVLINK_MSG_ID_SCALED_PRESSURE = 38
 MAVLINK_MSG_ID_ATTITUDE = 30
 MAVLINK_MSG_ID_LOCAL_POSITION = 31
 MAVLINK_MSG_ID_GLOBAL_POSITION = 33
@@ -285,6 +287,20 @@ class MAVLink_change_operator_control_ack_message(MAVLink_message):
 
 	def pack(self, mav):
 		return MAVLink_message.pack(self, mav, struct.pack('>BBB', self.gcs_system_id, self.control_request, self.ack))
+
+class MAVLink_auth_key_message(MAVLink_message):
+	'''
+	Emit an encrypted signature / key identifying this system. PLEASE
+	NOTE: This protocol has been kept simple, so transmitting the key
+	requires an encrypted channel for true safety.
+	'''
+	def __init__(self, key):
+		MAVLink_message.__init__(self, MAVLINK_MSG_ID_AUTH_KEY, 'AUTH_KEY')
+		self._fieldnames = ['key']
+		self.key = key
+
+	def pack(self, mav):
+		return MAVLink_message.pack(self, mav, struct.pack('>32s', self.key))
 
 class MAVLink_action_ack_message(MAVLink_message):
 	'''
@@ -519,7 +535,7 @@ class MAVLink_raw_pressure_message(MAVLink_message):
 	'''
 	The RAW pressure readings for the typical setup of one absolute
 	pressure and one differential pressure sensor. The sensor values
-	should be the raw, unscaled ADC values.
+	should be the raw, UNSCALED ADC values.
 	'''
 	def __init__(self, usec, press_abs, press_diff1, press_diff2, temperature):
 		MAVLink_message.__init__(self, MAVLINK_MSG_ID_RAW_PRESSURE, 'RAW_PRESSURE')
@@ -531,7 +547,24 @@ class MAVLink_raw_pressure_message(MAVLink_message):
 		self.temperature = temperature
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>Qfffh', self.usec, self.press_abs, self.press_diff1, self.press_diff2, self.temperature))
+		return MAVLink_message.pack(self, mav, struct.pack('>Qhhhh', self.usec, self.press_abs, self.press_diff1, self.press_diff2, self.temperature))
+
+class MAVLink_scaled_pressure_message(MAVLink_message):
+	'''
+	The pressure readings for the typical setup of one absolute and
+	differential pressure sensor. The units are as specified in each
+	field.
+	'''
+	def __init__(self, usec, press_abs, press_diff, temperature):
+		MAVLink_message.__init__(self, MAVLINK_MSG_ID_SCALED_PRESSURE, 'SCALED_PRESSURE')
+		self._fieldnames = ['usec', 'press_abs', 'press_diff', 'temperature']
+		self.usec = usec
+		self.press_abs = press_abs
+		self.press_diff = press_diff
+		self.temperature = temperature
+
+	def pack(self, mav):
+		return MAVLink_message.pack(self, mav, struct.pack('>Qffh', self.usec, self.press_abs, self.press_diff, self.temperature))
 
 class MAVLink_attitude_message(MAVLink_message):
 	'''
@@ -875,7 +908,7 @@ class MAVLink_gps_set_global_origin_message(MAVLink_message):
 		self.altitude = altitude
 
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('>BBIII', self.target_system, self.target_component, self.latitude, self.longitude, self.altitude))
+		return MAVLink_message.pack(self, mav, struct.pack('>BBiii', self.target_system, self.target_component, self.latitude, self.longitude, self.altitude))
 
 class MAVLink_gps_local_origin_set_message(MAVLink_message):
 	'''
@@ -1291,6 +1324,7 @@ mavlink_map = {
 	MAVLINK_MSG_ID_SYSTEM_TIME_UTC : ( '>II', MAVLink_system_time_utc_message ),
 	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL : ( '>BBB25s', MAVLink_change_operator_control_message ),
 	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK : ( '>BBB', MAVLink_change_operator_control_ack_message ),
+	MAVLINK_MSG_ID_AUTH_KEY : ( '>32s', MAVLink_auth_key_message ),
 	MAVLINK_MSG_ID_ACTION_ACK : ( '>BB', MAVLink_action_ack_message ),
 	MAVLINK_MSG_ID_ACTION : ( '>BBB', MAVLink_action_message ),
 	MAVLINK_MSG_ID_SET_MODE : ( '>BB', MAVLink_set_mode_message ),
@@ -1303,7 +1337,8 @@ mavlink_map = {
 	MAVLINK_MSG_ID_SCALED_IMU : ( '>Qhhhhhhhhh', MAVLink_scaled_imu_message ),
 	MAVLINK_MSG_ID_GPS_STATUS : ( '>B20s20s20s20s20s', MAVLink_gps_status_message ),
 	MAVLINK_MSG_ID_RAW_IMU : ( '>Qhhhhhhhhh', MAVLink_raw_imu_message ),
-	MAVLINK_MSG_ID_RAW_PRESSURE : ( '>Qfffh', MAVLink_raw_pressure_message ),
+	MAVLINK_MSG_ID_RAW_PRESSURE : ( '>Qhhhh', MAVLink_raw_pressure_message ),
+	MAVLINK_MSG_ID_SCALED_PRESSURE : ( '>Qffh', MAVLink_scaled_pressure_message ),
 	MAVLINK_MSG_ID_ATTITUDE : ( '>Qffffff', MAVLink_attitude_message ),
 	MAVLINK_MSG_ID_LOCAL_POSITION : ( '>Qffffff', MAVLink_local_position_message ),
 	MAVLINK_MSG_ID_GLOBAL_POSITION : ( '>Qffffff', MAVLink_global_position_message ),
@@ -1321,7 +1356,7 @@ mavlink_map = {
 	MAVLINK_MSG_ID_WAYPOINT_CLEAR_ALL : ( '>BB', MAVLink_waypoint_clear_all_message ),
 	MAVLINK_MSG_ID_WAYPOINT_REACHED : ( '>H', MAVLink_waypoint_reached_message ),
 	MAVLINK_MSG_ID_WAYPOINT_ACK : ( '>BBB', MAVLink_waypoint_ack_message ),
-	MAVLINK_MSG_ID_GPS_SET_GLOBAL_ORIGIN : ( '>BBIII', MAVLink_gps_set_global_origin_message ),
+	MAVLINK_MSG_ID_GPS_SET_GLOBAL_ORIGIN : ( '>BBiii', MAVLink_gps_set_global_origin_message ),
 	MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET : ( '>iii', MAVLink_gps_local_origin_set_message ),
 	MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_SET : ( '>BBffff', MAVLink_local_position_setpoint_set_message ),
 	MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT : ( '>ffff', MAVLink_local_position_setpoint_message ),
@@ -1636,6 +1671,30 @@ class MAVLink(object):
 
 		'''
 		return self.send(self.change_operator_control_ack_encode(gcs_system_id, control_request, ack))
+
+	def auth_key_encode(self, key):
+		'''
+		Emit an encrypted signature / key identifying this system. PLEASE
+		NOTE: This protocol has been kept simple, so transmitting the key
+		requires an encrypted channel for true safety.
+
+		key               	: key (char[32])
+
+		'''
+		msg = MAVLink_auth_key_message(key)
+		msg.pack(self)
+                return msg
+
+	def auth_key_send(self, key):
+		'''
+		Emit an encrypted signature / key identifying this system. PLEASE
+		NOTE: This protocol has been kept simple, so transmitting the key
+		requires an encrypted channel for true safety.
+
+		key               	: key (char[32])
+
+		'''
+		return self.send(self.auth_key_encode(key))
 
 	def action_ack_encode(self, action, result):
 		'''
@@ -2055,13 +2114,13 @@ class MAVLink(object):
 		'''
 		The RAW pressure readings for the typical setup of one absolute
 		pressure and one differential pressure sensor. The sensor values
-		should be the raw, unscaled ADC values.
+		should be the raw, UNSCALED ADC values.
 
 		usec              	: Timestamp (microseconds since UNIX epoch or microseconds since system boot) (uint64_t)
-		press_abs         	: Absolute pressure (hectopascal) (float)
-		press_diff1       	: Differential pressure 1 (hectopascal) (float)
-		press_diff2       	: Differential pressure 2 (hectopascal) (float)
-		temperature       	: Raw Temperature measurement (0.01 degrees celsius per tick is default unit) (int16_t)
+		press_abs         	: Absolute pressure (raw) (int16_t)
+		press_diff1       	: Differential pressure 1 (raw) (int16_t)
+		press_diff2       	: Differential pressure 2 (raw) (int16_t)
+		temperature       	: Raw Temperature measurement (raw) (int16_t)
 
 		'''
 		msg = MAVLink_raw_pressure_message(usec, press_abs, press_diff1, press_diff2, temperature)
@@ -2072,16 +2131,46 @@ class MAVLink(object):
 		'''
 		The RAW pressure readings for the typical setup of one absolute
 		pressure and one differential pressure sensor. The sensor values
-		should be the raw, unscaled ADC values.
+		should be the raw, UNSCALED ADC values.
 
 		usec              	: Timestamp (microseconds since UNIX epoch or microseconds since system boot) (uint64_t)
-		press_abs         	: Absolute pressure (hectopascal) (float)
-		press_diff1       	: Differential pressure 1 (hectopascal) (float)
-		press_diff2       	: Differential pressure 2 (hectopascal) (float)
-		temperature       	: Raw Temperature measurement (0.01 degrees celsius per tick is default unit) (int16_t)
+		press_abs         	: Absolute pressure (raw) (int16_t)
+		press_diff1       	: Differential pressure 1 (raw) (int16_t)
+		press_diff2       	: Differential pressure 2 (raw) (int16_t)
+		temperature       	: Raw Temperature measurement (raw) (int16_t)
 
 		'''
 		return self.send(self.raw_pressure_encode(usec, press_abs, press_diff1, press_diff2, temperature))
+
+	def scaled_pressure_encode(self, usec, press_abs, press_diff, temperature):
+		'''
+		The pressure readings for the typical setup of one absolute and
+		differential pressure sensor. The units are as specified in each
+		field.
+
+		usec              	: Timestamp (microseconds since UNIX epoch or microseconds since system boot) (uint64_t)
+		press_abs         	: Absolute pressure (hectopascal) (float)
+		press_diff        	: Differential pressure 1 (hectopascal) (float)
+		temperature       	: Temperature measurement (0.01 degrees celsius) (int16_t)
+
+		'''
+		msg = MAVLink_scaled_pressure_message(usec, press_abs, press_diff, temperature)
+		msg.pack(self)
+                return msg
+
+	def scaled_pressure_send(self, usec, press_abs, press_diff, temperature):
+		'''
+		The pressure readings for the typical setup of one absolute and
+		differential pressure sensor. The units are as specified in each
+		field.
+
+		usec              	: Timestamp (microseconds since UNIX epoch or microseconds since system boot) (uint64_t)
+		press_abs         	: Absolute pressure (hectopascal) (float)
+		press_diff        	: Differential pressure 1 (hectopascal) (float)
+		temperature       	: Temperature measurement (0.01 degrees celsius) (int16_t)
+
+		'''
+		return self.send(self.scaled_pressure_encode(usec, press_abs, press_diff, temperature))
 
 	def attitude_encode(self, usec, roll, pitch, yaw, rollspeed, pitchspeed, yawspeed):
 		'''
@@ -2674,9 +2763,9 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		latitude          	: global position * 1E7 (uint32_t)
-		longitude         	: global position * 1E7 (uint32_t)
-		altitude          	: global position * 1000 (uint32_t)
+		latitude          	: global position * 1E7 (int32_t)
+		longitude         	: global position * 1E7 (int32_t)
+		altitude          	: global position * 1000 (int32_t)
 
 		'''
 		msg = MAVLink_gps_set_global_origin_message(target_system, target_component, latitude, longitude, altitude)
@@ -2692,9 +2781,9 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		latitude          	: global position * 1E7 (uint32_t)
-		longitude         	: global position * 1E7 (uint32_t)
-		altitude          	: global position * 1000 (uint32_t)
+		latitude          	: global position * 1E7 (int32_t)
+		longitude         	: global position * 1E7 (int32_t)
+		altitude          	: global position * 1000 (int32_t)
 
 		'''
 		return self.send(self.gps_set_global_origin_encode(target_system, target_component, latitude, longitude, altitude))
