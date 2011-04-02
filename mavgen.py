@@ -165,6 +165,15 @@ class MAVLink_message(object):
     def get_msgId(self):
         return self._header.msgId
 
+    def get_srcSystem(self):
+        return self._header.srcSystem
+
+    def get_srcComponent(self):
+        return self._header.srcComponent
+
+    def get_seq(self):
+        return self._header.seq
+
     def __str__(self):
         ret = '%%s {' %% self._type
         for a in self._fieldnames:
@@ -342,6 +351,7 @@ class MAVLink(object):
                 m._msgbuf = msgbuf
                 m._payload = msgbuf[6:-2]
                 m._crc = crc
+                m._header = MAVLink_header(msgId, mlen, seq, srcSystem, srcComponent)
                 return m
 """)
 
