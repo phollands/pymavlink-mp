@@ -14,32 +14,45 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 import mavlink
 
-if len(sys.argv) < 2:
-    print("Usage: mavlogdump.py <LOGFILE>")
+from optparse import OptionParser
+parser = OptionParser("mavlogdump.py [options]")
+
+parser.add_option("--no-timestamps",dest="notimestamps", action='store_true', help="Log doesn't have timestamps")
+parser.add_option("--robust",dest="robust", action='store_true', help="Enable robust parsing")
+(opts, args) = parser.parse_args()
+
+if len(args) < 1:
+    print("Usage: mavlogdump.py [options] <LOGFILE>")
     sys.exit(1)
 
-filename = sys.argv[1]
+filename = args[0]
 
 f = open(filename, mode='r')
 
 # create a mavlink instance, which will do IO on file object 'f'
 mav = mavlink.MAVLink(None)
+mav.robust_parsing = opts.robust
 
 while True:
     # read the timestamp
-    tbuf = f.read(8)
-    if len(tbuf) != 8:
-        break
-    (tusec,) = struct.unpack('>Q', tbuf)
-    t = time.localtime(tusec/1.0e6)
+    if not opts.notimestamps:
+        tbuf = f.read(8)
+        if len(tbuf) != 8:
+            break
+        (tusec,) = struct.unpack('>Q', tbuf)
+        t = time.localtime(tusec/1.0e6)
 
     # read the packet
     while True:
         c = f.read(1)
+        if c == "":
+            sys.exit(0)
         m = mav.parse_char(c)
         if m:
-            print("%s.%02u: %s" % (
-                time.strftime("%F %T", t), (tusec/1e4)%100, m)
-                  )
+            if opts.notimestamps:
+                print("%s" % m)
+            else:
+                print("%s.%02u: %s" % (
+                    time.strftime("%F %T", t), (tusec/1e4)%100, m))
             break
     

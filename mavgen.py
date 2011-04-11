@@ -203,6 +203,7 @@ def generate_enums(outf, enums):
 def generate_message_ids(outf, msgs):
     print("Generating message IDs")
     outf.write("\n# message IDs\n")
+    outf.write("MAVLINK_MSG_ID_BAD_DATA = -1\n")
     for m in msgs:
 	outf.write("MAVLINK_MSG_ID_%s = %u\n" % (m.name.upper(), m.id))
 
@@ -256,6 +257,17 @@ class MAVString(str):
             if i == -1:
                 return self[:]
             return self[0:i]
+
+class MAVLink_bad_data(MAVLink_message):
+	'''
+        a piece of bad data in a mavlink stream
+	'''
+	def __init__(self, data, reason):
+		MAVLink_message.__init__(self, MAVLINK_MSG_ID_BAD_DATA, 'BAD_DATA')
+		self._fieldnames = ['data', 'reason']
+		self.data = data
+                self.reason = reason
+                self._msgbuf = data
             
 class MAVLink(object):
 	'''MAVLink protocol handling class'''
@@ -270,6 +282,7 @@ class MAVLink(object):
                 self.buf = ""
                 self.expected_length = 0
                 self.have_prefix_error = False
+                self.robust_parsing = False
 
         def set_callback(self, callback, *args, **kwargs):
             self.callback = callback
@@ -287,8 +300,13 @@ class MAVLink(object):
             if len(self.buf) == 1 and self.buf != 'U':
                 magic = self.buf
                 self.buf = ""
+                if self.robust_parsing:
+                    m = MAVLink_bad_data(magic, "Bad prefix")
+                    if self.callback:
+                        self.callback(m, *self.callback_args, **self.callback_kwargs)
+                    return m
                 if self.have_prefix_error:
-                    return
+                    return None
                 self.have_prefix_error = True
                 raise MAVError("invalid MAVLink prefix '%s'" % magic) 
             self.have_prefix_error = False
@@ -299,7 +317,13 @@ class MAVLink(object):
                 mbuf = self.buf
                 self.buf = ""
                 self.expected_length = 0
-                m = self.decode(mbuf)
+                if self.robust_parsing:
+                    try:
+                        m = self.decode(mbuf)
+                    except MAVError, reason:
+                        m = MAVLink_bad_data(mbuf, reason)
+                else:
+                    m = self.decode(mbuf)
                 if self.callback:
                     self.callback(m, *self.callback_args, **self.callback_kwargs)
                 return m
