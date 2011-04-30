@@ -59,6 +59,8 @@ def mav_to_gpx(infilename, outfilename):
 
     add_header()       
 
+    mav.robust_parsing = True
+
     while True:
         # read the timestamp
         tbuf = f.read(8)
@@ -70,6 +72,8 @@ def mav_to_gpx(infilename, outfilename):
         # read the packet
         while True:
             c = f.read(1)
+            if len(c) != 1:
+                break
             m = mav.parse_char(c)
             if m:
                 process_packet(m, t)
