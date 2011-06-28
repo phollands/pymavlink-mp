@@ -98,7 +98,6 @@ MAV_CMD_NAV_LOITER_TIME = 19
 MAV_CMD_NAV_RETURN_TO_LAUNCH = 20
 MAV_CMD_NAV_LAND = 21
 MAV_CMD_NAV_TAKEOFF = 22
-MAV_CMD_NAV_ROI = 80
 MAV_CMD_NAV_PATHPLANNING = 81
 MAV_CMD_NAV_LAST = 95
 MAV_CMD_CONDITION_DELAY = 112
@@ -116,6 +115,7 @@ MAV_CMD_DO_REPEAT_RELAY = 182
 MAV_CMD_DO_SET_SERVO = 183
 MAV_CMD_DO_REPEAT_SERVO = 184
 MAV_CMD_DO_CONTROL_VIDEO = 200
+MAV_CMD_DO_SET_ROI = 201
 MAV_CMD_DO_LAST = 240
 MAV_CMD_PREFLIGHT_CALIBRATION = 241
 MAV_CMD_PREFLIGHT_STORAGE = 245
@@ -128,10 +128,11 @@ MAV_DATA_STREAM_POSITION = 6
 MAV_DATA_STREAM_EXTRA1 = 10
 MAV_DATA_STREAM_EXTRA2 = 11
 MAV_DATA_STREAM_EXTRA3 = 12
-MAV_ROI_WPNEXT = 0
-MAV_ROI_WPINDEX = 1
-MAV_ROI_LOCATION = 2
-MAV_ROI_TARGET = 3
+MAV_ROI_NONE = 0
+MAV_ROI_WPNEXT = 1
+MAV_ROI_WPINDEX = 2
+MAV_ROI_LOCATION = 3
+MAV_ROI_TARGET = 4
 
 # message IDs
 MAVLINK_MSG_ID_BAD_DATA = -1
@@ -189,6 +190,7 @@ MAVLINK_MSG_ID_STATE_CORRECTION = 64
 MAVLINK_MSG_ID_SET_ALTITUDE = 65
 MAVLINK_MSG_ID_REQUEST_DATA_STREAM = 66
 MAVLINK_MSG_ID_MANUAL_CONTROL = 69
+MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE = 70
 MAVLINK_MSG_ID_GLOBAL_POSITION_INT = 73
 MAVLINK_MSG_ID_VFR_HUD = 74
 MAVLINK_MSG_ID_COMMAND = 75
@@ -1184,6 +1186,32 @@ class MAVLink_manual_control_message(MAVLink_message):
 	def pack(self, mav):
 		return MAVLink_message.pack(self, mav, struct.pack('>BffffBBBB', self.target, self.roll, self.pitch, self.yaw, self.thrust, self.roll_manual, self.pitch_manual, self.yaw_manual, self.thrust_manual))
 
+class MAVLink_rc_channels_override_message(MAVLink_message):
+	'''
+	The RAW values of the RC channels sent to the MAV to override info
+	received from the RC radio. A value of -1 means no change to that
+	channel. A value of 0 means control of that channel should be
+	released back to the RC radio. The standard PPM modulation is as
+	follows: 1000 microseconds: 0%, 2000 microseconds: 100%. Individual
+	receivers/transmitters might violate this specification.
+	'''
+	def __init__(self, target_system, target_component, chan1_raw, chan2_raw, chan3_raw, chan4_raw, chan5_raw, chan6_raw, chan7_raw, chan8_raw):
+		MAVLink_message.__init__(self, MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE, 'RC_CHANNELS_OVERRIDE')
+		self._fieldnames = ['target_system', 'target_component', 'chan1_raw', 'chan2_raw', 'chan3_raw', 'chan4_raw', 'chan5_raw', 'chan6_raw', 'chan7_raw', 'chan8_raw']
+		self.target_system = target_system
+		self.target_component = target_component
+		self.chan1_raw = chan1_raw
+		self.chan2_raw = chan2_raw
+		self.chan3_raw = chan3_raw
+		self.chan4_raw = chan4_raw
+		self.chan5_raw = chan5_raw
+		self.chan6_raw = chan6_raw
+		self.chan7_raw = chan7_raw
+		self.chan8_raw = chan8_raw
+
+	def pack(self, mav):
+		return MAVLink_message.pack(self, mav, struct.pack('>BBHHHHHHHH', self.target_system, self.target_component, self.chan1_raw, self.chan2_raw, self.chan3_raw, self.chan4_raw, self.chan5_raw, self.chan6_raw, self.chan7_raw, self.chan8_raw))
+
 class MAVLink_global_position_int_message(MAVLink_message):
 	'''
 	The filtered global position (e.g. fused GPS and accelerometers). The
@@ -1385,6 +1413,7 @@ mavlink_map = {
 	MAVLINK_MSG_ID_SET_ALTITUDE : ( '>BI', MAVLink_set_altitude_message ),
 	MAVLINK_MSG_ID_REQUEST_DATA_STREAM : ( '>BBBHB', MAVLink_request_data_stream_message ),
 	MAVLINK_MSG_ID_MANUAL_CONTROL : ( '>BffffBBBB', MAVLink_manual_control_message ),
+	MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE : ( '>BBHHHHHHHH', MAVLink_rc_channels_override_message ),
 	MAVLINK_MSG_ID_GLOBAL_POSITION_INT : ( '>iiihhh', MAVLink_global_position_int_message ),
 	MAVLINK_MSG_ID_VFR_HUD : ( '>ffhHff', MAVLink_vfr_hud_message ),
 	MAVLINK_MSG_ID_COMMAND : ( '>BBBBffff', MAVLink_command_message ),
@@ -3289,6 +3318,54 @@ class MAVLink(object):
 
 		'''
 		return self.send(self.manual_control_encode(target, roll, pitch, yaw, thrust, roll_manual, pitch_manual, yaw_manual, thrust_manual))
+
+	def rc_channels_override_encode(self, target_system, target_component, chan1_raw, chan2_raw, chan3_raw, chan4_raw, chan5_raw, chan6_raw, chan7_raw, chan8_raw):
+		'''
+		The RAW values of the RC channels sent to the MAV to override info
+		received from the RC radio. A value of -1 means no change to that
+		channel. A value of 0 means control of that channel should be
+		released back to the RC radio. The standard PPM modulation is as
+		follows: 1000 microseconds: 0%, 2000 microseconds: 100%. Individual
+		receivers/transmitters might violate this specification.
+
+		target_system     	: System ID (uint8_t)
+		target_component  	: Component ID (uint8_t)
+		chan1_raw         	: RC channel 1 value, in microseconds (uint16_t)
+		chan2_raw         	: RC channel 2 value, in microseconds (uint16_t)
+		chan3_raw         	: RC channel 3 value, in microseconds (uint16_t)
+		chan4_raw         	: RC channel 4 value, in microseconds (uint16_t)
+		chan5_raw         	: RC channel 5 value, in microseconds (uint16_t)
+		chan6_raw         	: RC channel 6 value, in microseconds (uint16_t)
+		chan7_raw         	: RC channel 7 value, in microseconds (uint16_t)
+		chan8_raw         	: RC channel 8 value, in microseconds (uint16_t)
+
+		'''
+		msg = MAVLink_rc_channels_override_message(target_system, target_component, chan1_raw, chan2_raw, chan3_raw, chan4_raw, chan5_raw, chan6_raw, chan7_raw, chan8_raw)
+		msg.pack(self)
+                return msg
+
+	def rc_channels_override_send(self, target_system, target_component, chan1_raw, chan2_raw, chan3_raw, chan4_raw, chan5_raw, chan6_raw, chan7_raw, chan8_raw):
+		'''
+		The RAW values of the RC channels sent to the MAV to override info
+		received from the RC radio. A value of -1 means no change to that
+		channel. A value of 0 means control of that channel should be
+		released back to the RC radio. The standard PPM modulation is as
+		follows: 1000 microseconds: 0%, 2000 microseconds: 100%. Individual
+		receivers/transmitters might violate this specification.
+
+		target_system     	: System ID (uint8_t)
+		target_component  	: Component ID (uint8_t)
+		chan1_raw         	: RC channel 1 value, in microseconds (uint16_t)
+		chan2_raw         	: RC channel 2 value, in microseconds (uint16_t)
+		chan3_raw         	: RC channel 3 value, in microseconds (uint16_t)
+		chan4_raw         	: RC channel 4 value, in microseconds (uint16_t)
+		chan5_raw         	: RC channel 5 value, in microseconds (uint16_t)
+		chan6_raw         	: RC channel 6 value, in microseconds (uint16_t)
+		chan7_raw         	: RC channel 7 value, in microseconds (uint16_t)
+		chan8_raw         	: RC channel 8 value, in microseconds (uint16_t)
+
+		'''
+		return self.send(self.rc_channels_override_encode(target_system, target_component, chan1_raw, chan2_raw, chan3_raw, chan4_raw, chan5_raw, chan6_raw, chan7_raw, chan8_raw))
 
 	def global_position_int_encode(self, lat, lon, alt, vx, vy, vz):
 		'''
