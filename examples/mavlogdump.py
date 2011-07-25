@@ -10,7 +10,7 @@ header. The timestamp is in microseconds since 1970 (unix epoch)
 import sys, struct, time, os
 
 # allow import from the parent directory, where mavlink.py is
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
 
 import mavlink
 

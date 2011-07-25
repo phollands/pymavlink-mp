@@ -8,7 +8,7 @@ import sys, struct, time, os
 from curses import ascii
 
 # allow import from the parent directory, where mavlink.py is
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
 
 import mavlink
 
