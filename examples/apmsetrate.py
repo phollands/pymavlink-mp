@@ -21,6 +21,8 @@ parser.add_option("--device", dest="device", default=None, help="serial device")
 parser.add_option("--rate", dest="rate", default=4, type='int', help="requested stream rate")
 parser.add_option("--source-system", dest='SOURCE_SYSTEM', type='int',
                   default=255, help='MAVLink source system for this GCS')
+parser.add_option("--showmessages", dest="showmessages", action='store_true',
+                  help="show incoming messages", default=False)
 (opts, args) = parser.parse_args()
 
 if opts.device is None:
@@ -124,4 +126,5 @@ print("Sending all stream request for rate %u" % opts.rate)
 for i in range(0, 3):
     master.mav.request_data_stream_send(target_system, target_component,
                                         mavlink.MAV_DATA_STREAM_ALL, opts.rate, 1)
-show_messages(master)
+if opts.showmessages:
+    show_messages(master)
