@@ -96,3 +96,15 @@ def parse_mavlink_xml(fname):
             m.fmtstr += mavfmt(f.type)
     return (msgs, enums)
 
+
+def check_duplicates(msgs):
+    '''check for duplicate message IDs'''
+    msgmap = {}
+    for m in msgs:
+	if m.id in msgmap:
+            print("ERROR: Duplicate message id %u for %s also used by %s" % (
+                m.id, m.name, msgmap[m.id]))
+            return True
+        msgmap[m.id] = m.name
+    return False
+

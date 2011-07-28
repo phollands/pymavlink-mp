@@ -350,14 +350,8 @@ for fname in args:
         msgs.extend(m)
         enums.extend(e)
 
-# check for duplicates
-msgmap = {}
-for m in msgs:
-	if m.id in msgmap:
-        	print("ERROR: Duplicate message id %u for %s also used by %s" % (
-                	m.id, m.name, msgmap[m.id]))
-        	sys.exit(1)
-        msgmap[m.id] = m.name
+if mavutil.check_duplicates(msgs):
+    sys.exit(1)
 
 print("Found %u MAVLink message types" % len(msgs))
 print("Generating %s" % opts.output)
