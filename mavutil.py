@@ -108,3 +108,11 @@ def check_duplicates(msgs):
         msgmap[m.id] = m.name
     return False
 
+def subwrite(file, text, subvars):
+    '''write to a file with variable substitution'''
+    for (name, value) in subvars.items():
+        assert isinstance(name, str), "%r is not a string" % name
+        text = text.replace("${%s}" % name, str(value))
+    assert text.find("${") == -1, "missing variable in substitution"
+    file.write(text)
+    
