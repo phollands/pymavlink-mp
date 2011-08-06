@@ -8,7 +8,7 @@ Released under GNU GPL version 3 or later
 
 import sys, textwrap, os
 from optparse import OptionParser
-import mavutil
+import mavparse
 import mavgen_python
 
 parser = OptionParser("mavgen.py [options] <XML files>")
@@ -26,12 +26,12 @@ enums = []
 filelist = []
 
 for fname in args:
-    (m, e) = mavutil.parse_mavlink_xml(fname)
+    (m, e) = mavparse.parse_mavlink_xml(fname)
     msgs.extend(m)
     enums.extend(e)
     filelist.append(os.path.basename(fname))
 
-if mavutil.check_duplicates(msgs):
+if mavparse.check_duplicates(msgs):
     sys.exit(1)
 
 print("Found %u MAVLink message types" % len(msgs))

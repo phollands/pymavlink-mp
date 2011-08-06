@@ -8,7 +8,7 @@ Released under GNU GPL version 3 or later
 
 import sys, textwrap
 from optparse import OptionParser
-import mavutil
+import mavparse
 
 def gen_value(f, i, language):
     '''generate a test value for the ith field of a message'''
@@ -116,12 +116,12 @@ msgs = []
 enums = []
 
 for fname in args:
-	(m, e) = mavutil.parse_mavlink_xml(fname)
+	(m, e) = mavparse.parse_mavlink_xml(fname)
         msgs.extend(m)
         enums.extend(e)
 
 
-if mavutil.check_duplicates(msgs):
+if mavparse.check_duplicates(msgs):
     sys.exit(1)
 
 print("Found %u MAVLink message types" % len(msgs))

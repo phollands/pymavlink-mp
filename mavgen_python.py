@@ -7,8 +7,8 @@ Released under GNU GPL version 3 or later
 '''
 
 import sys, textwrap
-import mavutil
-from mavutil import subwrite
+import mavparse
+from mavparse import subwrite
 
 def generate_preamble(outf, msgs, args):
     print("Generating preamble")
