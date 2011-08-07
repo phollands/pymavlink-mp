@@ -6,7 +6,7 @@ Andrew Tridgell August 2011
 
 import sys, struct, time, os, datetime
 import math
-import pylab, pytz
+import pylab, pytz, matplotlib
 
 # allow import from the parent directory, where mavlink.py is
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
@@ -14,24 +14,37 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), '..
 import mavutil
 
 def plotit(x, y, fields, colors=[], loc=None):
-    '''plot a set of graphs plotting function'''
+    '''plot a set of graphs using date for x axis'''
+    pylab.ion()
+    fig = pylab.figure(num=1, figsize=(12,6))
+    ax1 = fig.gca()
+    ax2 = None
+    formatter = matplotlib.dates.DateFormatter('%H:%M')
+    ax1.xaxis.set_major_locator(matplotlib.dates.AutoDateLocator())
+    ax1.xaxis.set_major_formatter(formatter)
     for i in range(0, len(fields)):
         if len(x[i]) == 0:
             print("Failed to find any values for field %s" % fields[i])
             continue
-        pylab.ion()
-        pylab.figure(num=1, figsize=(12,6))
         if i < len(colors):
             color = colors[i]
         else:
             color = 'red'
         (tz, tzdst) = time.tzname
-        pylab.plot_date(x[i], y[i], color=color, label=fields[i],
-                        linestyle='-', marker='None', tz=None)
+        if axes[i] == 2:
+            if ax2 == None:
+                ax2 = ax1.twinx()
+            ax = ax2
+            ax2.xaxis.set_major_locator(matplotlib.dates.AutoDateLocator())
+            ax2.xaxis.set_major_formatter(formatter)
+        else:
+            ax = ax1
+        ax.plot_date(x[i], y[i], color=color, label=fields[i],
+                     linestyle='-', marker='None', tz=None)
         pylab.draw()
-        if loc is not None:
-            pylab.legend(loc=loc)
-            pylab.draw()
+    if loc is not None:
+        pylab.legend(loc=loc)
+        pylab.draw()
 
 
 from optparse import OptionParser
@@ -55,11 +68,12 @@ for f in args:
 msg_types = []
 multiplier = []
 
-colors = [ 'red', 'green', 'blue', 'yellow', 'olive', 'black', 'grey' ]
+colors = [ 'red', 'green', 'blue', 'orange', 'olive', 'black', 'grey' ]
 
 # work out msg types we are interested in
 x = []
 y = []
+axes = []
 for f in fields:
     a = f.split('.')
     if len(a) != 2:
@@ -70,6 +84,7 @@ for f in fields:
         msg_types.append(a[0])
     y.append([])
     x.append([])
+    axes.append(1)
 
 def add_data(t, msg):
     '''add some data'''
@@ -85,11 +100,14 @@ def add_data(t, msg):
             m = a[1].split(':')
             fname = m[0]
             type = m[1]
-            if type == 'degrees':
-                multiplier = 360.0 / (math.pi * 2.0)
-            else:
-                print("Unknown type '%s' in field specifier %s" % (type, f))
-                sys.exit(1)
+            for typefield in type.split(','):
+                if typefield == 'degrees':
+                    multiplier = 360.0 / (math.pi * 2.0)
+                elif typefield == '2':
+                    axes[i] = 2
+                else:
+                    print("Unknown type '%s' in field specifier %s" % (typefield, f))
+                    sys.exit(1)
         if a[0] != mtype:
             continue
         v = float(getattr(msg, fname)) * multiplier
@@ -105,8 +123,8 @@ def process_file(filename):
     while True:
         msg = mlog.read()
         if msg is None: break
-        tdays = msg._timestamp / (24 * 60 * 60)
-        tdays += 719163
+        tdays = (msg._timestamp - time.timezone) / (24 * 60 * 60)
+        tdays += 719163 # pylab wants it since 0001-01-01
         add_data(tdays, msg)
 
 for fi in range(0, len(filenames)):
