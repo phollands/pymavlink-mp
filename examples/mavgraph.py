@@ -34,6 +34,7 @@ parser = OptionParser("mavgraph.py [options] <filename> <fields>")
 
 parser.add_option("--no-timestamps",dest="notimestamps", action='store_true', help="Log doesn't have timestamps")
 parser.add_option("--robust",dest="robust", action='store_true', help="Enable robust parsing")
+parser.add_option("--planner",dest="planner", action='store_true', help="use planner file format")
 (opts, args) = parser.parse_args()
 
 if len(args) < 2:
@@ -98,6 +99,7 @@ def add_data(t, msg):
 
 
 tbase = matplotlib.dates.date2num(datetime.datetime.strptime("1970-01-01 00:00", "%Y-%m-%d %H:%M"))
+tbase1601 = matplotlib.dates.date2num(datetime.datetime.strptime("1601-01-01 00:00", "%Y-%m-%d %H:%M"))
 
 
 def process_file(filename):
@@ -107,11 +109,25 @@ def process_file(filename):
 
     while True:
         # read the timestamp
-        tbuf = f.read(8)
-        if len(tbuf) != 8: break
-        (tusec,) = struct.unpack('>Q', tbuf)
-        t = tusec / (1.0e6 * (24*60*60))
-        t += tbase
+        if opts.planner:
+            tbuf = f.read(21)
+            if len(tbuf) != 21: break
+            if tbuf[0] != '-':
+                break
+            if tbuf[20] != ':':
+                break
+            nsec1601 = math.pow(2.0, 64) + float(tbuf[0:20])
+            t = nsec1601 / 1.0e7
+            t -= 369 * 365.25 * 24 * 60 * 60
+            t -= 30828 * 365.25 * 24 * 60 * 60
+            t /= (24.0*60*60)
+            t += tbase
+        else:
+            tbuf = f.read(8)
+            if len(tbuf) != 8: break
+            (tusec,) = struct.unpack('>Q', tbuf)
+            t = tusec / (1.0e6 * (24*60*60))
+            t += tbase
 
         # read the packet
         while True:
@@ -121,6 +137,8 @@ def process_file(filename):
             if m:
                 add_data(t, m)
                 break
+        if opts.planner:
+            f.read(1)
     f.close()
 
 for fi in range(0, len(filenames)):
