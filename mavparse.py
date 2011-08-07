@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-mavlink python utility functions
+mavlink python parse functions
 
 Copyright Andrew Tridgell 2011
 Released under GNU GPL version 3 or later
