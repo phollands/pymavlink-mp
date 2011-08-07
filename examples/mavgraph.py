@@ -28,7 +28,6 @@ def plotit(x, y, fields, colors=[], loc=None, plot_steps=None):
         if loc is not None:
             pylab.legend(loc=loc)
             pylab.draw()
-    pylab.show()
 
 from optparse import OptionParser
 parser = OptionParser("mavgraph.py [options] <filename> <fields>")
@@ -38,15 +37,20 @@ parser.add_option("--robust",dest="robust", action='store_true', help="Enable ro
 (opts, args) = parser.parse_args()
 
 if len(args) < 2:
-    print("Usage: mavlogdump.py [options] <LOGFILE> <fields>")
+    print("Usage: mavlogdump.py [options] <LOGFILES...> <fields...>")
     sys.exit(1)
 
-filename = args[0]
-fields = args[1:]
+filenames = []
+fields = []
+for f in args:
+    if os.path.exists(f):
+        filenames.append(f)
+    else:
+        fields.append(f)
 msg_types = []
 multiplier = []
 
-colors = [ 'red', 'green', 'blue' ]
+colors = [ 'red', 'green', 'blue', 'yellow', 'olive', 'black', 'grey' ]
 
 # work out msg types we are interested in
 x = []
@@ -61,8 +65,6 @@ for f in fields:
         msg_types.append(a[0])
     y.append([])
     x.append([])
-
-f = open(filename, mode='rb')
 
 # create a mavlink instance, which will do IO on file object 'f'
 mav = mavlink.MAVLink(None)
@@ -97,24 +99,35 @@ def add_data(t, msg):
 
 tbase = matplotlib.dates.date2num(datetime.datetime.strptime("1970-01-01 00:00", "%Y-%m-%d %H:%M"))
 
-while True:
-    # read the timestamp
-    if not opts.notimestamps:
+
+def process_file(filename):
+    '''process one file'''
+    print("Processing %s" % filename)
+    f = open(filename, mode='rb')
+
+    while True:
+        # read the timestamp
         tbuf = f.read(8)
-        if len(tbuf) != 8:
-            break
+        if len(tbuf) != 8: break
         (tusec,) = struct.unpack('>Q', tbuf)
         t = tusec / (1.0e6 * (24*60*60))
         t += tbase
 
-    # read the packet
-    while True:
-        c = f.read(1)
-        if c == "":
-            sys.exit(0)
-        m = mav.parse_char(c)
-        if m:
-            add_data(t, m)
-            break
-        
-plotit(x, y, fields, colors=colors, loc='upper right')
+        # read the packet
+        while True:
+            c = f.read(1)
+            if c == "": break
+            m = mav.parse_char(c)
+            if m:
+                add_data(t, m)
+                break
+    f.close()
+
+for fi in range(0, len(filenames)):
+    f = filenames[fi]
+    process_file(f)
+    plotit(x, y, fields, colors=colors[fi*len(fields):], loc='upper right')
+    for i in range(0, len(x)):
+        x[i] = []
+        y[i] = []
+pylab.show()
