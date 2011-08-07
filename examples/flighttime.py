@@ -29,7 +29,7 @@ mav.robust_parsing = opts.robust
 def flight_time(logfile):
     '''work out flight time for a log file'''
     print("Processing log %s" % filename)
-    f = open(logfile, mode='r')
+    f = open(logfile, mode='rb')
 
     in_air = False
     start_time = 0.0

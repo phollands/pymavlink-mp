@@ -27,7 +27,7 @@ if len(args) < 1:
 
 filename = args[0]
 
-f = open(filename, mode='r')
+f = open(filename, mode='rb')
 
 # create a mavlink instance, which will do IO on file object 'f'
 mav = mavlink.MAVLink(None)
@@ -53,6 +53,6 @@ while True:
                 print("%s" % m)
             else:
                 print("%s.%02u: %s" % (
-                    time.strftime("%F %T", t), (tusec/1e4)%100, m))
+                    time.strftime("%Y-%m-%d %H:%M:%S", t), (tusec/1e4)%100, m))
             break
     

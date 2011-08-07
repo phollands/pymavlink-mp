@@ -19,7 +19,7 @@ if len(sys.argv) < 2:
 def mav_to_gpx(infilename, outfilename):
     '''convert a mavlink log file to a GPX file'''
 
-    f = open(infilename, mode='r')
+    f = open(infilename, mode='rb')
     outf = open(outfilename, mode='w')
 
     # create a mavlink instance, which will do IO on file object 'f'
@@ -36,7 +36,7 @@ def mav_to_gpx(infilename, outfilename):
   <fix>3d</fix>
 </trkpt>
 ''' % (m.lat, m.lon, m.alt,
-       time.strftime("%FT%TZ", t),
+       time.strftime("%Y-%m-%d%H:%M:%SZ", t),
        m.hdg, m.v))
 
     def add_header():
