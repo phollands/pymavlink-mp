@@ -10,7 +10,7 @@ import sys, struct, time, os
 # allow import from the parent directory, where mavlink.py is
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
 
-import mavlink
+import mavutil
 
 if len(sys.argv) < 2:
     print("Usage: mavtogpx.py <LOGFILE>")
@@ -19,13 +19,11 @@ if len(sys.argv) < 2:
 def mav_to_gpx(infilename, outfilename):
     '''convert a mavlink log file to a GPX file'''
 
-    f = open(infilename, mode='rb')
+    mlog = mavutil.mavlogfile(infilename)
     outf = open(outfilename, mode='w')
 
-    # create a mavlink instance, which will do IO on file object 'f'
-    mav = mavlink.MAVLink(None)
-
-    def process_packet(m, t):
+    def process_packet(m):
+        t = time.localtime(m._timestamp)
         if m.get_type() != 'GPS_RAW' or m.fix_type != 2:
             return
         outf.write('''<trkpt lat="%s" lon="%s">
@@ -59,25 +57,10 @@ def mav_to_gpx(infilename, outfilename):
 
     add_header()       
 
-    mav.robust_parsing = True
-
     while True:
-        # read the timestamp
-        tbuf = f.read(8)
-        if len(tbuf) != 8:
-            break
-        (tusec,) = struct.unpack('>Q', tbuf)
-        t = time.localtime(tusec/1.0e6)
-
-        # read the packet
-        while True:
-            c = f.read(1)
-            if len(c) != 1:
-                break
-            m = mav.parse_char(c)
-            if m:
-                process_packet(m, t)
-                break
+        m = mlog.read()
+        if m is None: break
+        process_packet(m)
     add_footer()
     
 

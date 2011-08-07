@@ -1,39 +1,43 @@
 #!/usr/bin/env python
-
 '''
 graph a MAVLink log file
+Andrew Tridgell August 2011
 '''
 
 import sys, struct, time, os, datetime
 import math
-import numpy, pylab, matplotlib
+import pylab, pytz
 
 # allow import from the parent directory, where mavlink.py is
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
 
-import mavlink
+import mavutil
 
-def plotit(x, y, fields, colors=[], loc=None, plot_steps=None):
-    '''convenience plotting function'''
+def plotit(x, y, fields, colors=[], loc=None):
+    '''plot a set of graphs plotting function'''
     for i in range(0, len(fields)):
+        if len(x[i]) == 0:
+            print("Failed to find any values for field %s" % fields[i])
+            continue
         pylab.ion()
         pylab.figure(num=1, figsize=(12,6))
         if i < len(colors):
             color = colors[i]
         else:
             color = 'red'
+        (tz, tzdst) = time.tzname
         pylab.plot_date(x[i], y[i], color=color, label=fields[i],
-                        linestyle='-', marker='None')
+                        linestyle='-', marker='None', tz=None)
         pylab.draw()
         if loc is not None:
             pylab.legend(loc=loc)
             pylab.draw()
 
+
 from optparse import OptionParser
 parser = OptionParser("mavgraph.py [options] <filename> <fields>")
 
 parser.add_option("--no-timestamps",dest="notimestamps", action='store_true', help="Log doesn't have timestamps")
-parser.add_option("--robust",dest="robust", action='store_true', help="Enable robust parsing")
 parser.add_option("--planner",dest="planner", action='store_true', help="use planner file format")
 (opts, args) = parser.parse_args()
 
@@ -67,11 +71,6 @@ for f in fields:
     y.append([])
     x.append([])
 
-# create a mavlink instance, which will do IO on file object 'f'
-mav = mavlink.MAVLink(None)
-mav.robust_parsing = opts.robust
-
-
 def add_data(t, msg):
     '''add some data'''
     mtype = msg.get_type()
@@ -98,48 +97,17 @@ def add_data(t, msg):
         x[i].append(t)
 
 
-tbase = matplotlib.dates.date2num(datetime.datetime.strptime("1970-01-01 00:00", "%Y-%m-%d %H:%M"))
-tbase1601 = matplotlib.dates.date2num(datetime.datetime.strptime("1601-01-01 00:00", "%Y-%m-%d %H:%M"))
-
-
 def process_file(filename):
     '''process one file'''
     print("Processing %s" % filename)
-    f = open(filename, mode='rb')
+    mlog = mavutil.mavlogfile(filename, notimestamps=opts.notimestamps)
 
     while True:
-        # read the timestamp
-        if opts.planner:
-            tbuf = f.read(21)
-            if len(tbuf) != 21: break
-            if tbuf[0] != '-':
-                break
-            if tbuf[20] != ':':
-                break
-            nsec1601 = math.pow(2.0, 64) + float(tbuf[0:20])
-            t = nsec1601 / 1.0e7
-            t -= 369 * 365.25 * 24 * 60 * 60
-            t -= 30828 * 365.25 * 24 * 60 * 60
-            t /= (24.0*60*60)
-            t += tbase
-        else:
-            tbuf = f.read(8)
-            if len(tbuf) != 8: break
-            (tusec,) = struct.unpack('>Q', tbuf)
-            t = tusec / (1.0e6 * (24*60*60))
-            t += tbase
-
-        # read the packet
-        while True:
-            c = f.read(1)
-            if c == "": break
-            m = mav.parse_char(c)
-            if m:
-                add_data(t, m)
-                break
-        if opts.planner:
-            f.read(1)
-    f.close()
+        msg = mlog.read()
+        if msg is None: break
+        tdays = msg._timestamp / (24 * 60 * 60)
+        tdays += 719163
+        add_data(tdays, msg)
 
 for fi in range(0, len(filenames)):
     f = filenames[fi]
