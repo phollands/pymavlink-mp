@@ -5,8 +5,9 @@ Andrew Tridgell August 2011
 '''
 
 import sys, struct, time, os, datetime
-import math
+import math, re
 import pylab, pytz, matplotlib
+from math import *
 
 # allow import from the parent directory, where mavlink.py is
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
@@ -68,8 +69,9 @@ for f in args:
         filenames.append(f)
     else:
         fields.append(f)
-msg_types = []
+msg_types = set()
 multiplier = []
+field_types = []
 
 colors = [ 'red', 'green', 'blue', 'orange', 'olive', 'black', 'grey' ]
 
@@ -77,17 +79,22 @@ colors = [ 'red', 'green', 'blue', 'orange', 'olive', 'black', 'grey' ]
 x = []
 y = []
 axes = []
+re_caps = re.compile('[A-Z_]+')
 for f in fields:
-    a = f.split('.')
-    if len(a) != 2:
-        print("Invalid field specifier %s" % f)
-        print("You need to specify fields as MSGNAME.fieldname, for example ATTITUDE.pitch")
-        sys.exit(1)
-    if a[0] not in msg_types:
-        msg_types.append(a[0])
+    caps = set(re.findall(re_caps, f))
+    msg_types = msg_types.union(caps)
+    field_types.append(caps)
     y.append([])
     x.append([])
     axes.append(1)
+
+def interpret_field(msg, f):
+    '''interpret a field specifier'''
+    mtype = msg.get_type()
+    for attr in msg._fieldnames:
+        f = f.replace("%s.%s" % (mtype, attr), str(getattr(msg, attr)))
+    v = eval(f)
+    return v
 
 def add_data(t, msg):
     '''add some data'''
@@ -95,25 +102,16 @@ def add_data(t, msg):
     if mtype not in msg_types:
         return
     for i in range(0, len(fields)):
-        f = fields[i]
-        a = f.split('.')
-        fname = a[1]
-        multiplier = 1.0
-        if a[1].find(':') != -1:
-            m = a[1].split(':')
-            fname = m[0]
-            type = m[1]
-            for typefield in type.split(','):
-                if typefield == 'degrees':
-                    multiplier = 360.0 / (math.pi * 2.0)
-                elif typefield == '2':
-                    axes[i] = 2
-                else:
-                    print("Unknown type '%s' in field specifier %s" % (typefield, f))
-                    sys.exit(1)
-        if a[0] != mtype:
+        if mtype not in field_types[i]:
             continue
-        v = float(getattr(msg, fname)) * multiplier
+        f = fields[i]
+        if f.endswith(":2"):
+            axes[i] = 2
+            f = f[:-2]
+        try:
+            v = interpret_field(msg, f)
+        except Exception:
+            continue
         y[i].append(v)
         x[i].append(t)
 
