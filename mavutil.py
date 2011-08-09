@@ -112,6 +112,7 @@ class mavlogfile(object):
         self.planner_format = planner_format
         self.notimestamps = notimestamps
         self._two64 = math.pow(2.0, 63)
+        self.mav_mode = (None, None)
         if planner_format is None and self.filename.endswith(".tlog"):
             self.planner_format = True
         mode = 'rb'
@@ -155,8 +156,28 @@ class mavlogfile(object):
                 if self.robust_parsing:
                     continue
                 raise
-            if m:
-                m._timestamp = t
-                if self.planner_format:
-                    self.f.read(1)
-                return m
+            if not m:
+                continue
+            if self.planner_format:
+                self.f.read(1)
+            if m.get_type() == 'SYS_STATUS':
+                self.mav_mode = (m.mode, m.nav_mode)
+            m._timestamp = t
+            return m
+
+    def read_match(self, mav_mode=None):
+        '''read the next MAVLink message that matches the given parameters'''
+        while True:
+            m = self.read()
+            if m is None:
+                return None
+            if mav_mode is not None and self.mav_mode != mav_mode:
+                continue
+            return m
+
+def mav_mode(mode):
+    '''convert a mode specifier to a mode pair'''
+    if mode is None:
+        return None
+    a = mode.split(',')
+    return (int(a[0]), int(a[1]))

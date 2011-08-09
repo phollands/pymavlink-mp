@@ -12,7 +12,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), '..
 
 import mavutil
 
-if len(sys.argv) < 2:
+from optparse import OptionParser
+parser = OptionParser("mavtogpx.py [options]")
+parser.add_option("--mode",dest="mode", default=None, help="select packets by mode,nav_mode")
+(opts, args) = parser.parse_args()
+
+if len(args) < 1:
     print("Usage: mavtogpx.py <LOGFILE>")
     sys.exit(1)
 
@@ -21,6 +26,7 @@ def mav_to_gpx(infilename, outfilename):
 
     mlog = mavutil.mavlogfile(infilename)
     outf = open(outfilename, mode='w')
+    mav_mode = mavutil.mav_mode(opts.mode)
 
     def process_packet(m):
         t = time.localtime(m._timestamp)
@@ -34,7 +40,7 @@ def mav_to_gpx(infilename, outfilename):
   <fix>3d</fix>
 </trkpt>
 ''' % (m.lat, m.lon, m.alt,
-       time.strftime("%Y-%m-%d%H:%M:%SZ", t),
+       time.strftime("%Y-%m-%dT%H:%M:%SZ", t),
        m.hdg, m.v))
 
     def add_header():
@@ -58,16 +64,12 @@ def mav_to_gpx(infilename, outfilename):
     add_header()       
 
     while True:
-        m = mlog.read()
+        m = mlog.read_match(mav_mode=mav_mode)
         if m is None: break
         process_packet(m)
     add_footer()
     
 
-infilename = sys.argv[1]
-if len(sys.argv) > 2:
-    outfilename = sys.argv[2]
-else:
+for infilename in args:
     outfilename = infilename + '.gpx'
-    
-mav_to_gpx(infilename, outfilename)
+    mav_to_gpx(infilename, outfilename)

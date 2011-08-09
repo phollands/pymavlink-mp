@@ -52,11 +52,14 @@ parser = OptionParser("mavgraph.py [options] <filename> <fields>")
 
 parser.add_option("--no-timestamps",dest="notimestamps", action='store_true', help="Log doesn't have timestamps")
 parser.add_option("--planner",dest="planner", action='store_true', help="use planner file format")
+parser.add_option("--mode",dest="mode", default=None, help="select packets by mode,nav_mode")
 (opts, args) = parser.parse_args()
 
 if len(args) < 2:
     print("Usage: mavlogdump.py [options] <LOGFILES...> <fields...>")
     sys.exit(1)
+
+mav_mode = mavutil.mav_mode(opts.mode)
 
 filenames = []
 fields = []
@@ -121,7 +124,7 @@ def process_file(filename):
     mlog = mavutil.mavlogfile(filename, notimestamps=opts.notimestamps)
 
     while True:
-        msg = mlog.read()
+        msg = mlog.read_match(mav_mode=mav_mode)
         if msg is None: break
         tdays = (msg._timestamp - time.timezone) / (24 * 60 * 60)
         tdays += 719163 # pylab wants it since 0001-01-01
