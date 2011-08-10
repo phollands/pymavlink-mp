@@ -88,15 +88,7 @@ for f in fields:
     x.append([])
     axes.append(1)
 
-def interpret_field(msg, f):
-    '''interpret a field specifier'''
-    mtype = msg.get_type()
-    for attr in msg._fieldnames:
-        f = f.replace("%s.%s" % (mtype, attr), str(getattr(msg, attr)))
-    v = eval(f)
-    return v
-
-def add_data(t, msg):
+def add_data(t, msg, vars):
     '''add some data'''
     mtype = msg.get_type()
     if mtype not in msg_types:
@@ -109,8 +101,8 @@ def add_data(t, msg):
             axes[i] = 2
             f = f[:-2]
         try:
-            v = interpret_field(msg, f)
-        except Exception:
+            v = eval(f, globals(), vars)
+        except NameError:
             continue
         y[i].append(v)
         x[i].append(t)
@@ -120,13 +112,15 @@ def process_file(filename):
     '''process one file'''
     print("Processing %s" % filename)
     mlog = mavutil.mavlogfile(filename, notimestamps=opts.notimestamps)
-
+    vars = {}
+    
     while True:
         msg = mlog.read_match(mav_mode=mav_mode)
         if msg is None: break
+        vars[msg.get_type()] = msg
         tdays = (msg._timestamp - time.timezone) / (24 * 60 * 60)
         tdays += 719163 # pylab wants it since 0001-01-01
-        add_data(tdays, msg)
+        add_data(tdays, msg, vars)
 
 for fi in range(0, len(filenames)):
     f = filenames[fi]
