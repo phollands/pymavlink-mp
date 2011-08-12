@@ -7,12 +7,66 @@ Released under GNU GPL version 3 or later
 '''
 
 import mavlink, socket, math, struct, time
+from math import *
+from mavextra import *
+
+def evaluate_expression(expression, vars):
+    '''evaluation an expression'''
+    try:
+        v = eval(expression, globals(), vars)
+    except NameError:
+        return None
+    return v
+
+def evaluate_condition(condition, vars):
+    '''evaluation a conditional (boolean) statement'''
+    if condition is None:
+        return True
+    v = evaluate_expression(condition, vars)
+    if v is None:
+        return False
+    return v
+
 
 class mavfd(object):
     '''a generic mavlink port'''
     def __init__(self, fd, address):
         self.fd = fd
         self.address = address
+        self.messages = {}
+        self.mav = None
+
+    def recv(self):
+        '''default recv method'''
+        raise RuntimeError('no recv() method supplied')
+
+    def recv_msg(self):
+        '''message receive routine'''
+        while True:
+            s = self.recv()
+            if len(s) == 0:
+                return None
+            for c in s:
+                msg = self.mav.parse_char(c)
+                if msg:
+                    self.messages[msg.get_type()] = msg
+                    return msg
+                
+    def recv_match(self, condition=None, type=None, blocking=False):
+        '''recv the next MAVLink message that matches the given condition'''
+        while True:
+            m = self.recv_msg()
+            if m is None:
+                if blocking:
+                    time.sleep(0.01)
+                    continue
+                return None
+            if not evaluate_condition(condition, self.messages):
+                continue
+            if type is not None and type != m.get_type():
+                continue
+            return m
+        
 
 class mavserial(mavfd):
     '''a serial mavlink port'''
@@ -88,7 +142,12 @@ class mavudp(mavfd):
         self.mav = mavlink.MAVLink(self, srcSystem=source_system)
 
     def recv(self):
-        data, self.last_address = self.port.recvfrom(300)
+        try:
+            data, self.last_address = self.port.recvfrom(300)
+        except socket.error, (enum, emsg):
+            if enum == 11:
+                return ""
+            raise
         return data
 
     def write(self, buf):
@@ -99,6 +158,12 @@ class mavudp(mavfd):
                 self.port.sendto(buf, self.last_address)
         except socket.error:
             pass
+
+def mavlink_connection(device, baud=115200, source_system=255):
+    '''make a serial or UDP mavlink connection'''
+    if device.find(':') != -1:
+        return mavudp(device, source_system=source_system, input=True)
+    return mavserial(device, baud=baud, source_system=source_system)
 
 
 class mavlogfile(object):
@@ -124,6 +189,7 @@ class mavlogfile(object):
         self.f = open(filename, mode)
         self.mav = mavlink.MAVLink(None)
         self.mav.robust_parsing = robust_parsing
+        self.messages = {}
 
     def read(self):
         '''read a single MAVLink message'''
@@ -163,15 +229,17 @@ class mavlogfile(object):
             if m.get_type() == 'SYS_STATUS':
                 self.mav_mode = (m.mode, m.nav_mode)
             m._timestamp = t
+            # keep the last message of each type
+            self.messages[m.get_type()] = m
             return m
 
-    def read_match(self, mav_mode=None):
-        '''read the next MAVLink message that matches the given parameters'''
+    def read_match(self, condition):
+        '''read the next MAVLink message that matches the given condition'''
         while True:
             m = self.read()
             if m is None:
                 return None
-            if mav_mode is not None and self.mav_mode != mav_mode:
+            if not evaluate_condition(condition, self.messages):
                 continue
             return m
 
@@ -181,3 +249,16 @@ def mav_mode(mode):
         return None
     a = mode.split(',')
     return (int(a[0]), int(a[1]))
+
+class periodic_event(object):
+    '''a class for fixed frequency events'''
+    def __init__(self, frequency):
+        self.frequency = float(frequency)
+        self.last_time = time.time()
+    def trigger(self):
+        '''return True if we should trigger now'''
+        tnow = time.time()
+        if self.last_time + (1.0/self.frequency) <= tnow:
+            self.last_time = tnow
+            return True
+        return False

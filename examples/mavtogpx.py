@@ -14,7 +14,7 @@ import mavutil
 
 from optparse import OptionParser
 parser = OptionParser("mavtogpx.py [options]")
-parser.add_option("--mode",dest="mode", default=None, help="select packets by mode,nav_mode")
+parser.add_option("--condition",dest="condition", default=None, help="select packets by a condition")
 (opts, args) = parser.parse_args()
 
 if len(args) < 1:
@@ -26,7 +26,6 @@ def mav_to_gpx(infilename, outfilename):
 
     mlog = mavutil.mavlogfile(infilename)
     outf = open(outfilename, mode='w')
-    mav_mode = mavutil.mav_mode(opts.mode)
 
     def process_packet(m):
         t = time.localtime(m._timestamp)
@@ -64,7 +63,7 @@ def mav_to_gpx(infilename, outfilename):
     add_header()       
 
     while True:
-        m = mlog.read_match(mav_mode=mav_mode)
+        m = mlog.read_match(condition=opts.condition)
         if m is None: break
         process_packet(m)
     add_footer()
