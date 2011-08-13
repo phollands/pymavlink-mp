@@ -61,9 +61,9 @@ class mavfd(object):
                     time.sleep(0.01)
                     continue
                 return None
-            if not evaluate_condition(condition, self.messages):
-                continue
             if type is not None and type != m.get_type():
+                continue
+            if not evaluate_condition(condition, self.messages):
                 continue
             return m
         
