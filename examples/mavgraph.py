@@ -81,6 +81,7 @@ parser = OptionParser("mavgraph.py [options] <filename> <fields>")
 parser.add_option("--no-timestamps",dest="notimestamps", action='store_true', help="Log doesn't have timestamps")
 parser.add_option("--planner",dest="planner", action='store_true', help="use planner file format")
 parser.add_option("--condition",dest="condition", default=None, help="select packets by a condition")
+parser.add_option("--labels",dest="labels", default=None, help="comma separated field labels")
 (opts, args) = parser.parse_args()
 
 if len(args) < 2:
@@ -104,6 +105,7 @@ colors = [ 'red', 'green', 'blue', 'orange', 'olive', 'black', 'grey' ]
 x = []
 y = []
 axes = []
+first_only = []
 re_caps = re.compile('[A-Z_]+')
 for f in fields:
     caps = set(re.findall(re_caps, f))
@@ -112,6 +114,7 @@ for f in fields:
     y.append([])
     x.append([])
     axes.append(1)
+    first_only.append(False)
 
 def add_data(t, msg, vars):
     '''add some data'''
@@ -124,6 +127,9 @@ def add_data(t, msg, vars):
         f = fields[i]
         if f.endswith(":2"):
             axes[i] = 2
+            f = f[:-2]
+        if f.endswith(":1"):
+            first_only[i] = True
             f = f[:-2]
         v = mavutil.evaluate_expression(f, vars)
         if v is None:
@@ -144,10 +150,24 @@ def process_file(filename):
         tdays += 719163 # pylab wants it since 0001-01-01
         add_data(tdays, msg, mlog.messages)
 
+if opts.labels is not None:
+    labels = opts.labels.split(',')
+    if len(labels) != len(fields)*len(filenames):
+        print("Number of labels (%u) must match number of fields (%u)" % (
+            len(labels), len(fields)*len(filenames)))
+        sys.exit(1)
+else:
+    labels = fields[:]
+
 for fi in range(0, len(filenames)):
     f = filenames[fi]
     process_file(f)
-    plotit(x, y, fields, colors=colors[fi*len(fields):], loc='upper right')
+    for i in range(0, len(x)):
+        if first_only[i] and fi != 0:
+            x[i] = []
+            y[i] = []
+    lab = labels[fi*len(fields):(fi+1)*len(fields)]
+    plotit(x, y, lab, colors=colors[fi*len(fields):], loc='upper right')
     for i in range(0, len(x)):
         x[i] = []
         y[i] = []
