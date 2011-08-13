@@ -206,6 +206,7 @@ MAVLINK_MSG_ID_NAMED_VALUE_INT = 253
 MAVLINK_MSG_ID_STATUSTEXT = 254
 MAVLINK_MSG_ID_DEBUG = 255
 MAVLINK_MSG_ID_SENSOR_OFFSETS = 150
+MAVLINK_MSG_ID_SET_MAG_OFFSETS = 151
 
 class MAVLink_heartbeat_message(MAVLink_message):
 	'''
@@ -1462,6 +1463,22 @@ class MAVLink_sensor_offsets_message(MAVLink_message):
 	def pack(self, mav):
 		return MAVLink_message.pack(self, mav, struct.pack('>hhhfiiffffff', self.mag_ofs_x, self.mag_ofs_y, self.mag_ofs_z, self.mag_declination, self.raw_press, self.raw_temp, self.gyro_cal_x, self.gyro_cal_y, self.gyro_cal_z, self.accel_cal_x, self.accel_cal_y, self.accel_cal_z))
 
+class MAVLink_set_mag_offsets_message(MAVLink_message):
+	'''
+	set the magnetometer offsets
+	'''
+	def __init__(self, target_system, target_component, mag_ofs_x, mag_ofs_y, mag_ofs_z):
+		MAVLink_message.__init__(self, MAVLINK_MSG_ID_SET_MAG_OFFSETS, 'SET_MAG_OFFSETS')
+		self._fieldnames = ['target_system', 'target_component', 'mag_ofs_x', 'mag_ofs_y', 'mag_ofs_z']
+		self.target_system = target_system
+		self.target_component = target_component
+		self.mag_ofs_x = mag_ofs_x
+		self.mag_ofs_y = mag_ofs_y
+		self.mag_ofs_z = mag_ofs_z
+
+	def pack(self, mav):
+		return MAVLink_message.pack(self, mav, struct.pack('>BBhhh', self.target_system, self.target_component, self.mag_ofs_x, self.mag_ofs_y, self.mag_ofs_z))
+
 
 mavlink_map = {
 	MAVLINK_MSG_ID_HEARTBEAT : ( '>BBB', MAVLink_heartbeat_message ),
@@ -1533,6 +1550,7 @@ mavlink_map = {
 	MAVLINK_MSG_ID_STATUSTEXT : ( '>B50s', MAVLink_statustext_message ),
 	MAVLINK_MSG_ID_DEBUG : ( '>Bf', MAVLink_debug_message ),
 	MAVLINK_MSG_ID_SENSOR_OFFSETS : ( '>hhhfiiffffff', MAVLink_sensor_offsets_message ),
+	MAVLINK_MSG_ID_SET_MAG_OFFSETS : ( '>BBhhh', MAVLink_set_mag_offsets_message ),
 }
 
 
@@ -3908,3 +3926,31 @@ class MAVLink(object):
 
 		'''
 		return self.send(self.sensor_offsets_encode(mag_ofs_x, mag_ofs_y, mag_ofs_z, mag_declination, raw_press, raw_temp, gyro_cal_x, gyro_cal_y, gyro_cal_z, accel_cal_x, accel_cal_y, accel_cal_z))
+
+	def set_mag_offsets_encode(self, target_system, target_component, mag_ofs_x, mag_ofs_y, mag_ofs_z):
+		'''
+		set the magnetometer offsets
+
+		target_system     	: System ID (uint8_t)
+		target_component  	: Component ID (uint8_t)
+		mag_ofs_x         	: magnetometer X offset (int16_t)
+		mag_ofs_y         	: magnetometer Y offset (int16_t)
+		mag_ofs_z         	: magnetometer Z offset (int16_t)
+
+		'''
+		msg = MAVLink_set_mag_offsets_message(target_system, target_component, mag_ofs_x, mag_ofs_y, mag_ofs_z)
+		msg.pack(self)
+                return msg
+
+	def set_mag_offsets_send(self, target_system, target_component, mag_ofs_x, mag_ofs_y, mag_ofs_z):
+		'''
+		set the magnetometer offsets
+
+		target_system     	: System ID (uint8_t)
+		target_component  	: Component ID (uint8_t)
+		mag_ofs_x         	: magnetometer X offset (int16_t)
+		mag_ofs_y         	: magnetometer Y offset (int16_t)
+		mag_ofs_z         	: magnetometer Z offset (int16_t)
+
+		'''
+		return self.send(self.set_mag_offsets_encode(target_system, target_component, mag_ofs_x, mag_ofs_y, mag_ofs_z))
