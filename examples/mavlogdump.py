@@ -20,6 +20,7 @@ parser = OptionParser("mavlogdump.py [options]")
 parser.add_option("--no-timestamps",dest="notimestamps", action='store_true', help="Log doesn't have timestamps")
 parser.add_option("--planner",dest="planner", action='store_true', help="use planner file format")
 parser.add_option("--robust",dest="robust", action='store_true', help="Enable robust parsing (skip over bad data)")
+parser.add_option("-f", "--follow",dest="follow", action='store_true', help="keep waiting for more data at end of file")
 parser.add_option("--condition",dest="condition", default=None, help="select packets by condition")
 (opts, args) = parser.parse_args()
 
@@ -28,12 +29,12 @@ if len(args) < 1:
     sys.exit(1)
 
 filename = args[0]
-mlog = mavutil.mavlogfile(filename, planner_format=opts.planner,
-                          notimestamps=opts.notimestamps,
-                          robust_parsing=opts.robust)
+mlog = mavutil.mavlink_connection(filename, planner_format=opts.planner,
+                                  notimestamps=opts.notimestamps,
+                                  robust_parsing=opts.robust)
 
 while True:
-    m = mlog.read_match(condition=opts.condition)
+    m = mlog.recv_match(condition=opts.condition, blocking=opts.follow)
     if m is None:
         break
     if opts.notimestamps:

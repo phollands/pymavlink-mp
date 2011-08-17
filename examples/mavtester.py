@@ -10,7 +10,7 @@ from curses import ascii
 # allow import from the parent directory, where mavlink.py is
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
 
-import mavlink, mavtest
+import mavlink, mavtest, mavutil
 
 from optparse import OptionParser
 parser = OptionParser("mavtester.py [options]")
@@ -26,40 +26,6 @@ if opts.device is None:
     print("You must specify a serial device")
     sys.exit(1)
 
-class mavfd(object):
-    '''a generic mavlink port'''
-    def __init__(self, fd, address):
-        self.fd = fd
-        self.address = address
-
-class mavserial(mavfd):
-    '''a serial mavlink port'''
-    def __init__(self, device, baud=115200):
-        import serial
-        self.baud = baud
-        self.device = device
-        self.port = serial.Serial(self.device, self.baud, timeout=0)
-
-        mavfd.__init__(self, self.port.fileno(), device)
-
-        self.mav = mavlink.MAVLink(self, srcSystem=opts.SOURCE_SYSTEM)
-        self.mav.robust_parsing = True
-        self.logfile = None
-        self.logfile_raw = None
-
-    def read(self):
-        return self.port.read()
-
-    def recv(self):
-        return self.read()
-
-    def write(self, buf):
-        try:
-            return self.port.write(buf)
-        except OSError:
-            self.reset()
-            return -1
-
 def all_printable(buf):
     '''see if a string is all printable'''
     for c in buf:
@@ -69,34 +35,12 @@ def all_printable(buf):
 
 def wait_heartbeat(m):
     '''wait for a heartbeat so we know the target system IDs'''
-    global target_system, target_component
     print("Waiting for APM heartbeat")
-    while True:
-        s = m.recv()
-        if len(s) == 0:
-            time.sleep(0.5)
-            continue
-        for c in s:
-            msg = m.mav.parse_char(c)
-            if not msg:
-                continue
-            if msg.get_type() == "BAD_DATA":
-                if all_printable(msg.data):
-                    sys.stdout.write(msg.data)
-                    sys.stdout.flush()
-            else:
-                print(msg)                    
-            if msg and msg.get_type() == "HEARTBEAT":
-                target_system = msg.get_srcSystem()
-                target_component = msg.get_srcComponent()
-                print("Heartbeat from APM (system %u component %u)" % (target_system, target_system))
-                return
-
-target_system = 0
-target_component = 0
+    msg = m.recv_match(type='HEARTBEAT', blocking=True)
+    print("Heartbeat from APM (system %u component %u)" % (m.target_system, m.target_system))
 
 # create a mavlink serial instance
-master = mavserial(opts.device, baud=opts.baudrate)
+master = mavutil.mavlink_connection(opts.device, baud=opts.baudrate, source_system=opts.SOURCE_SYSTEM)
 
 # wait for the heartbeat msg to find the system ID
 wait_heartbeat(master)
