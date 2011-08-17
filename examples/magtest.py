@@ -27,12 +27,12 @@ if opts.device1 is None or opts.device2 is None:
     sys.exit(1)
 
 def set_attitude(rc3, rc4):
-    global mav1, mav2, target_system1, target_system2, target_component1, target_component2
+    global mav1, mav2
     values = [ 65535 ] * 8
     values[2] = rc3
     values[3] = rc4
-    mav1.mav.rc_channels_override_send(target_system1, target_component1, *values)
-    mav2.mav.rc_channels_override_send(target_system2, target_component2, *values)
+    mav1.mav.rc_channels_override_send(mav1.target_system, mav1.target_component, *values)
+    mav2.mav.rc_channels_override_send(mav2.target_system, mav2.target_component, *values)
 
 
 # create a mavlink instance
@@ -42,25 +42,19 @@ mav1 = mavutil.mavlink_connection(opts.device1, baud=opts.baudrate)
 mav2 = mavutil.mavlink_connection(opts.device2, baud=opts.baudrate)
 
 print("Waiting for HEARTBEAT")
-mav1.recv_match(type='HEARTBEAT', blocking=True)
-mav2.recv_match(type='HEARTBEAT', blocking=True)
-
-target_system1    = mav1.messages['HEARTBEAT'].get_srcSystem()
-target_component1 = mav1.messages['HEARTBEAT'].get_srcComponent()
-print("Heartbeat from APM (system %u component %u)" % (target_system1, target_system1))
-
-target_system2    = mav2.messages['HEARTBEAT'].get_srcSystem()
-target_component2 = mav2.messages['HEARTBEAT'].get_srcComponent()
-print("Heartbeat from APM (system %u component %u)" % (target_system2, target_system2))
+mav1.wait_heartbeat()
+mav2.wait_heartbeat()
+print("Heartbeat from APM (system %u component %u)" % (mav1.target_system, mav1.target_system))
+print("Heartbeat from APM (system %u component %u)" % (mav2.target_system, mav2.target_system))
 
 print("Waiting for MANUAL mode")
 mav1.recv_match(type='SYS_STATUS', condition='SYS_STATUS.mode==2 and SYS_STATUS.nav_mode==4', blocking=True)
 mav2.recv_match(type='SYS_STATUS', condition='SYS_STATUS.mode==2 and SYS_STATUS.nav_mode==4', blocking=True)
 
 print("Setting declination")
-mav1.mav.param_set_send(target_system1, target_component1,
+mav1.mav.param_set_send(mav1.target_system, mav1.target_component,
                        'COMPASS_DEC', radians(12.33))
-mav2.mav.param_set_send(target_system2, target_component2,
+mav2.mav.param_set_send(mav2.target_system, mav2.target_component,
                        'COMPASS_DEC', radians(12.33))
 
 
@@ -79,16 +73,16 @@ delta4 = 1
 use_pitch = 1
 
 MAV_ACTION_CALIBRATE_GYRO = 17
-mav1.mav.action_send(target_system1, target_component1, MAV_ACTION_CALIBRATE_GYRO)
-mav2.mav.action_send(target_system2, target_component2, MAV_ACTION_CALIBRATE_GYRO)
+mav1.mav.action_send(mav1.target_system, mav1.target_component, MAV_ACTION_CALIBRATE_GYRO)
+mav2.mav.action_send(mav2.target_system, mav2.target_component, MAV_ACTION_CALIBRATE_GYRO)
 
 print("Waiting for gyro calibration")
 mav1.recv_match(type='ACTION_ACK')
 mav2.recv_match(type='ACTION_ACK')
 
 print("Resetting mag offsets")
-mav1.mav.set_mag_offsets_send(target_system1, target_component1, 0, 0, 0)
-mav2.mav.set_mag_offsets_send(target_system2, target_component2, 0, 0, 0)
+mav1.mav.set_mag_offsets_send(mav1.target_system, mav1.target_component, 0, 0, 0)
+mav2.mav.set_mag_offsets_send(mav2.target_system, mav2.target_component, 0, 0, 0)
 
 def TrueHeading(SERVO_OUTPUT_RAW):
     p = float(SERVO_OUTPUT_RAW.servo3_raw - rc3_min) / (rc3_max - rc3_min)
