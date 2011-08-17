@@ -157,7 +157,7 @@ if opts.labels is not None:
             len(labels), len(fields)*len(filenames)))
         sys.exit(1)
 else:
-    labels = fields[:]
+    labels = None
 
 for fi in range(0, len(filenames)):
     f = filenames[fi]
@@ -166,7 +166,10 @@ for fi in range(0, len(filenames)):
         if first_only[i] and fi != 0:
             x[i] = []
             y[i] = []
-    lab = labels[fi*len(fields):(fi+1)*len(fields)]
+    if labels:
+        lab = labels[fi*len(fields):(fi+1)*len(fields)]
+    else:
+        lab = fields[:]
     plotit(x, y, lab, colors=colors[fi*len(fields):], loc='upper right')
     for i in range(0, len(x)):
         x[i] = []
