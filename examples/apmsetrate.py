@@ -39,7 +39,7 @@ def all_printable(buf):
 def wait_heartbeat(m):
     '''wait for a heartbeat so we know the target system IDs'''
     print("Waiting for APM heartbeat")
-    msg = m.recv_match(type='HEARTBEAT', blocking=True)
+    m.wait_heartbeat()
     print("Heartbeat from APM (system %u component %u)" % (m.target_system, m.target_system))
 
 def show_messages(m):

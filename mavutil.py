@@ -39,6 +39,8 @@ class mavfile(object):
         self.target_component = 0
         self.mav = mavlink.MAVLink(self, srcSystem=source_system)
         self.mav.robust_parsing = True
+        self.logfile = None
+        self.logfile_raw = None
 
     def recv(self):
         '''default recv method'''
@@ -55,7 +57,12 @@ class mavfile(object):
     def post_message(self, msg):
         '''default post message call'''
         msg._timestamp = time.time()
-        return
+        type = msg.get_type()
+        self.messages[type] = msg
+        if type == 'HEARTBEAT':
+            self.target_system = msg.get_srcSystem()
+            self.target_component = msg.get_srcComponent()
+
 
     def recv_msg(self):
         '''message receive routine'''
@@ -64,13 +71,10 @@ class mavfile(object):
             s = self.recv()
             if len(s) == 0 and len(self.mav.buf) == 0:
                 return None
+            if self.logfile_raw:
+                self.logfile_raw.write(s)
             msg = self.mav.parse_char(s)
             if msg:
-                type = msg.get_type()
-                self.messages[type] = msg
-                if type == 'HEARTBEAT':
-                    self.target_system = msg.get_srcSystem()
-                    self.target_component = msg.get_srcComponent()
                 self.post_message(msg)
                 return msg
                 
@@ -88,7 +92,18 @@ class mavfile(object):
             if not evaluate_condition(condition, self.messages):
                 continue
             return m
-        
+
+    def setup_logfile(self, logfile, mode='w'):
+        '''start logging to the given logfile, with timestamps'''
+        self.logfile = open(logfile, mode=mode)
+
+    def setup_logfile_raw(self, logfile, mode='w'):
+        '''start logging raw bytes to the given logfile, without timestamps'''
+        self.logfile_raw = open(logfile, mode=mode)
+
+    def wait_heartbeat(self, blocking=True):
+        '''wait for a heartbeat so we know the target system IDs'''
+        return self.recv_match(type='HEARTBEAT', blocking=blocking)
 
 class mavserial(mavfile):
     '''a serial mavlink port'''
@@ -105,19 +120,14 @@ class mavserial(mavfile):
         except Exception:
             raise
         mavfile.__init__(self, fd, device, source_system=source_system)
-        self.logfile = None
-        self.logfile_raw = None
 
-    def read(self):
+    def recv(self):
         n = self.mav.bytes_needed()
         if self.fd is None:
             waiting = self.port.inWaiting()
             if waiting < n:
                 n = waiting
         return self.port.read(n)
-
-    def recv(self):
-        return self.read()
 
     def write(self, buf):
         try:
@@ -146,7 +156,7 @@ class mavserial(mavfile):
 
 class mavudp(mavfile):
     '''a UDP mavlink socket'''
-    def __init__(self, device, input=False, source_system=255):
+    def __init__(self, device, input=True, source_system=255):
         a = device.split(':')
         if len(a) != 2:
             print("UDP ports must be specified as host:port")
@@ -179,6 +189,17 @@ class mavudp(mavfile):
                 self.port.sendto(buf, self.last_address)
         except socket.error:
             pass
+
+    def recv_msg(self):
+        '''message receive routine for UDP link'''
+        self.pre_message()
+        s = self.recv()
+        if len(s) == 0:
+            return None
+        msg = self.mav.decode(s)
+        if msg:
+            self.post_message(msg)
+        return msg
 
 
 class mavlogfile(mavfile):
@@ -229,6 +250,7 @@ class mavlogfile(mavfile):
     def post_message(self, msg):
         '''add timestamp to message'''
         # read the timestamp
+        super(mavlogfile, self).post_message(msg)
         if self.notimestamps:
             msg._timestamp = time.time()
         else:
@@ -238,10 +260,10 @@ class mavlogfile(mavfile):
 
 def mavlink_connection(device, baud=115200, source_system=255,
                        planner_format=None, write=False, append=False,
-                       robust_parsing=True, notimestamps=False):
+                       robust_parsing=True, notimestamps=False, input=True):
     '''make a serial or UDP mavlink connection'''
     if device.find(':') != -1:
-        return mavudp(device, source_system=source_system, input=True)
+        return mavudp(device, source_system=source_system, input=input)
     if os.path.isfile(device):
         return mavlogfile(device, planner_format=planner_format, write=write,
                           append=append, robust_parsing=robust_parsing, notimestamps=notimestamps,
