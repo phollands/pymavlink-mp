@@ -7,13 +7,14 @@ Generated from: ardupilotmega.xml,common.xml
 Note: this file has been auto-generated. DO NOT EDIT
 '''
 
-import struct
+import struct, array
 
 def x25crc(buf):
     '''x25 CRC - based on checksum.h from mavlink library'''
     accum = 0xffff
-    for b in buf:
-        tmp = ord(b) ^ (accum & 0xff)
+    bytes = array.array('B', buf)
+    for b in bytes:
+        tmp = b ^ (accum & 0xff)
         tmp = (tmp ^ (tmp<<4)) & 0xFF
         accum = (accum>>8) ^ (tmp<<8) ^ (tmp<<3) ^ (tmp>>4)
         accum = accum & 0xFFFF
