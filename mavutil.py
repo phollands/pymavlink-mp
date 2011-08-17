@@ -34,6 +34,7 @@ class mavfile(object):
         self.fd = fd
         self.address = address
         self.messages = {}
+        self.params = {}
         self.mav = None
         self.target_system = 0
         self.target_component = 0
@@ -41,6 +42,9 @@ class mavfile(object):
         self.mav.robust_parsing = True
         self.logfile = None
         self.logfile_raw = None
+        self.param_fetch_in_progress = False
+        self.param_fetch_complete = False
+        self.start_time = time.time()
 
     def recv(self):
         '''default recv method'''
@@ -62,6 +66,11 @@ class mavfile(object):
         if type == 'HEARTBEAT':
             self.target_system = msg.get_srcSystem()
             self.target_component = msg.get_srcComponent()
+        elif type == 'PARAM_VALUE':
+            self.params[str(msg.param_id)] = msg.param_value
+            if msg.param_index+1 == msg.param_count:
+                self.param_fetch_in_progress = False
+                self.param_fetch_complete = True
 
 
     def recv_msg(self):
@@ -104,6 +113,21 @@ class mavfile(object):
     def wait_heartbeat(self, blocking=True):
         '''wait for a heartbeat so we know the target system IDs'''
         return self.recv_match(type='HEARTBEAT', blocking=blocking)
+
+    def param_fetch_all(self):
+        '''initiate fetch of all parameters'''
+        if time.time() - getattr(self, 'param_fetch_start', 0) < 2.0:
+            # don't fetch too often
+            return
+        self.param_fetch_start = time.time()
+        self.param_fetch_in_progress = True
+        self.mav.param_request_list_send(self.target_system, self.target_component)
+
+    def time_since(self, mtype):
+        '''return the time since the last message of type mtype was received'''
+        if not mtype in self.messages:
+            return time.time() - self.start_time
+        return time.time() - self.messages[mtype]._timestamp
 
 class mavserial(mavfile):
     '''a serial mavlink port'''
@@ -162,12 +186,11 @@ class mavudp(mavfile):
             print("UDP ports must be specified as host:port")
             sys.exit(1)
         self.port = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.udp_server = input
         if input:
             self.port.bind((a[0], int(a[1])))
-            self.connected = False
         else:
-            self.port.connect((a[0], int(a[1])))
-            self.connected = True
+            self.destination_addr = (a[0], int(a[1]))
         self.port.setblocking(0)
         self.last_address = None
         mavfile.__init__(self, self.port.fileno(), device, source_system=source_system)
@@ -183,10 +206,11 @@ class mavudp(mavfile):
 
     def write(self, buf):
         try:
-            if self.connected:
-                self.port.send(buf)
+            if self.udp_server:
+                if self.last_address:
+                    self.port.sendto(buf, self.last_address)
             else:
-                self.port.sendto(buf, self.last_address)
+                self.port.sendto(buf, self.destination_addr)
         except socket.error:
             pass
 
