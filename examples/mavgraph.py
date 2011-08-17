@@ -140,11 +140,11 @@ def add_data(t, msg, vars):
 def process_file(filename):
     '''process one file'''
     print("Processing %s" % filename)
-    mlog = mavutil.mavlogfile(filename, notimestamps=opts.notimestamps)
+    mlog = mavutil.mavlink_connection(filename, notimestamps=opts.notimestamps)
     vars = {}
     
     while True:
-        msg = mlog.read_match(opts.condition)
+        msg = mlog.recv_match(opts.condition)
         if msg is None: break
         tdays = (msg._timestamp - time.timezone) / (24 * 60 * 60)
         tdays += 719163 # pylab wants it since 0001-01-01

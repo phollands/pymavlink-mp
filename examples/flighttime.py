@@ -23,27 +23,25 @@ if len(args) < 1:
 def flight_time(logfile):
     '''work out flight time for a log file'''
     print("Processing log %s" % filename)
-    mlog = mavutil.mavlogfile(filename)
+    mlog = mavutil.mavlink_connection(filename)
 
     in_air = False
     start_time = 0.0
     total_time = 0.0
 
     while True:
-        m = mlog.read()
+        m = mlog.recv_match(type='VFR_HUD')
         if m is None:
             return total_time
-        mtype = m.get_type()
-        if mtype == "VFR_HUD":
-            t = time.localtime(m._timestamp)
-            if m.groundspeed > 3.0 and not in_air:
-                print("In air at %s" % time.asctime(t))
-                in_air = True
-                start_time = time.mktime(t)
-            elif m.groundspeed < 3.0 and in_air:
-                print("On ground at %s" % time.asctime(t))
-                in_air = False
-                total_time += time.mktime(t) - start_time
+        t = time.localtime(m._timestamp)
+        if m.groundspeed > 3.0 and not in_air:
+            print("In air at %s" % time.asctime(t))
+            in_air = True
+            start_time = time.mktime(t)
+        elif m.groundspeed < 3.0 and in_air:
+            print("On ground at %s" % time.asctime(t))
+            in_air = False
+            total_time += time.mktime(t) - start_time
     return total_time
 
 total = 0.0

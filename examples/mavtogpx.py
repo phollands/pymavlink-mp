@@ -24,13 +24,11 @@ if len(args) < 1:
 def mav_to_gpx(infilename, outfilename):
     '''convert a mavlink log file to a GPX file'''
 
-    mlog = mavutil.mavlogfile(infilename)
+    mlog = mavutil.mavlink_connection(infilename)
     outf = open(outfilename, mode='w')
 
     def process_packet(m):
         t = time.localtime(m._timestamp)
-        if m.get_type() != 'GPS_RAW' or m.fix_type != 2:
-            return
         outf.write('''<trkpt lat="%s" lon="%s">
   <ele>%s</ele>
   <time>%s</time>
@@ -62,11 +60,15 @@ def mav_to_gpx(infilename, outfilename):
 
     add_header()       
 
+    count=0
     while True:
-        m = mlog.read_match(condition=opts.condition)
+        m = mlog.recv_match(type='GPS_RAW', condition=opts.condition)
         if m is None: break
+        if m.fix_type != 2: continue
         process_packet(m)
+        count += 1
     add_footer()
+    print("Created %s with %u points" % (outfilename, count))
     
 
 for infilename in args:
