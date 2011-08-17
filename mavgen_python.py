@@ -192,7 +192,7 @@ class MAVLink(object):
                 self.callback_args = None
                 self.callback_kwargs = None
                 self.buf = ""
-                self.expected_length = 0
+                self.expected_length = 6
                 self.have_prefix_error = False
                 self.robust_parsing = False
 
@@ -207,28 +207,37 @@ class MAVLink(object):
 		self.file.write(buf)
 		self.seq = (self.seq + 1) % 255
 
+        def bytes_needed(self):
+            '''return number of bytes needed for next parsing stage'''
+            ret = self.expected_length - len(self.buf)
+            if ret <= 0:
+                return 1
+            return ret
+
         def parse_char(self, c):
+            '''input some data bytes, possibly returning a new message'''
             self.buf += c
-            if len(self.buf) == 1 and self.buf != 'U':
-                magic = self.buf
-                self.buf = ""
+            if len(self.buf) >= 1 and self.buf[0] != 'U':
+                magic = self.buf[0]
+                self.buf = self.buf[1:]
                 if self.robust_parsing:
                     m = MAVLink_bad_data(magic, "Bad prefix")
                     if self.callback:
                         self.callback(m, *self.callback_args, **self.callback_kwargs)
+                    self.expected_length = 6
                     return m
                 if self.have_prefix_error:
                     return None
                 self.have_prefix_error = True
                 raise MAVError("invalid MAVLink prefix '%s'" % magic) 
             self.have_prefix_error = False
-            if len(self.buf) == 2:
-                (magic, self.expected_length) = struct.unpack('cB', self.buf)
+            if len(self.buf) >= 2:
+                (magic, self.expected_length) = struct.unpack('cB', self.buf[0:2])
                 self.expected_length += 8
-            elif len(self.buf) == self.expected_length:
-                mbuf = self.buf
-                self.buf = ""
-                self.expected_length = 0
+            if self.expected_length >= 8 and len(self.buf) >= self.expected_length:
+                mbuf = self.buf[0:self.expected_length]
+                self.buf = self.buf[self.expected_length:]
+                self.expected_length = 6
                 if self.robust_parsing:
                     try:
                         m = self.decode(mbuf)

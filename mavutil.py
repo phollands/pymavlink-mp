@@ -213,8 +213,8 @@ class mavlogfile(object):
 
         # read the packet
         while True:
-            c = self.f.read(1)
-            if c == "":
+            c = self.f.read(self.mav.bytes_needed())
+            if c == "" and self.mav.buf == "":
                 return None
             try:
                 m = self.mav.parse_char(c)
