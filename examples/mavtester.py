@@ -26,13 +26,6 @@ if opts.device is None:
     print("You must specify a serial device")
     sys.exit(1)
 
-def all_printable(buf):
-    '''see if a string is all printable'''
-    for c in buf:
-        if not ascii.isprint(c) and not c in ['\r', '\n', '\t']:
-            return False
-    return True
-
 def wait_heartbeat(m):
     '''wait for a heartbeat so we know the target system IDs'''
     print("Waiting for APM heartbeat")

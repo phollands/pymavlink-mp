@@ -306,3 +306,24 @@ class periodic_event(object):
             self.last_time = tnow
             return True
         return False
+
+
+try:
+    from curses import ascii
+    have_ascii = True
+except:
+    have_ascii = False
+
+def is_printable(c):
+    '''see if a character is printable'''
+    global have_ascii
+    if have_ascii:
+        return ascii.isprint(c)
+    return ord(c) <= 'z'
+
+def all_printable(buf):
+    '''see if a string is all printable'''
+    for c in buf:
+        if not is_printable(c) and not c in ['\r', '\n', '\t']:
+            return False
+    return True
