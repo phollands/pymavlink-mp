@@ -142,7 +142,7 @@ class mavserial(mavfile):
         try:
             fd = self.port.fileno()
         except Exception:
-            raise
+            fd = None
         mavfile.__init__(self, fd, device, source_system=source_system)
 
     def recv(self):
