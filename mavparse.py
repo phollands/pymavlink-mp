@@ -6,113 +6,221 @@ Copyright Andrew Tridgell 2011
 Released under GNU GPL version 3 or later
 '''
 
-import xml.parsers.expat
+import xml.parsers.expat, os, time
 
 class MAVField(object):
-    def __init__(self, name, type):
+    def __init__(self, name, type, description=''):
         self.name = name
-        self.type = type
-        self.description = ""
-
-
-class MAVType(object):
-    def __init__(self, name, id):
-        self.name = name
-        self.id = int(id)
-        self.description = ""
-        self.fields = []
-        self.fieldnames = []
-        self.fmtstr = ">"
-
-def mavfmt(type):
-    '''work out the struct format for a type'''
-    map = {
-        'float'    : 'f',
-        'char'     : 'c',
-        'int8_t'   : 'b',
-        'uint8_t'  : 'B',
-        'uint8_t_mavlink_version'  : 'B',
-        'int16_t'  : 'h',
-        'uint16_t' : 'H',
-        'int32_t'  : 'i',
-        'uint32_t' : 'I',
-        'int64_t'  : 'q',
-        'uint64_t' : 'Q',
+        self.description = description
+        self.array_length = None
+        lengths = {
+        'float'    : 4,
+        'char'     : 1,
+        'int8_t'   : 1,
+        'uint8_t'  : 1,
+        'uint8_t_mavlink_version'  : 1,
+        'int16_t'  : 2,
+        'uint16_t' : 2,
+        'int32_t'  : 4,
+        'uint32_t' : 4,
+        'int64_t'  : 8,
+        'uint64_t' : 8,
         }
 
-    if type in map:
-        return map[type]
-    if (type+"_t") in map:
-        return map[type+"_t"]
-
-    aidx = type.find("[")
-    if aidx == -1 or type[-1:] != ']':
-        raise RuntimeError("Unknown MAVLink type %s" % type)
-
-    basetype = type[0:aidx]
-    if basetype == "array":
-        basetype = "uint8_t"
-    basefmt = mavfmt(basetype)
-    count = int(type[aidx+1:-1])
-
-    if basefmt in ['c', 'b', 'B']:
-        basefmt = 's'
-
-    return str(count) + basefmt
-
-
-def parse_mavlink_xml(fname):
-    '''parse a mavlink XML file'''
-    lastname = None
-    msgs = []
-    enums = []
-    def start_element(name, attrs):
-        lastname = name
-        if name == 'message':
-            msgs.append(MAVType(attrs['name'], attrs['id']))
-        elif name == 'field':
-            msgs[-1].fields.append(MAVField(attrs['name'], attrs['type']))
-        elif name == 'entry':
-            if not 'value' in attrs:
-                print("No 'value' for entry '%s'" % attrs['name'])
-            else:
-                enums.append((attrs['name'], long(attrs['value'])))
-    def char_data(data):
-        if len(msgs) == 0:
-            return
-        if len(msgs[-1].fields) == 0:
-            msgs[-1].description += data
+        aidx = type.find("[")
+        if aidx != -1:
+            assert type[-1:] == ']'
+            self.array_length = int(type[aidx+1:-1])
+            type = type[0:aidx]
+            if type == 'array':
+                type = 'uint8_t'
+        if type in lengths:
+            self.type_length = lengths[type]
+            self.type = type
+        elif (type+"_t") in lengths:
+            self.type_length = lengths[type+"_t"]
+            self.type = type+'_t'
         else:
-            msgs[-1].fields[-1].description += data
-    f = open(fname)
-    p = xml.parsers.expat.ParserCreate()
-    p.StartElementHandler = start_element
-    p.CharacterDataHandler = char_data
-    p.ParseFile(f)
-    f.close()
-    for m in msgs:
-        for f in m.fields:
-            m.fieldnames.append(f.name)
-            m.fmtstr += mavfmt(f.type)
-    return (msgs, enums)
+            raise RuntimeError("unknown type '%s'" % type)
+        if self.array_length is not None:
+            self.wire_length = self.array_length * self.type_length
+        else:
+            self.wire_length = self.type_length
+
+class MAVType(object):
+    def __init__(self, name, id, description=''):
+        self.name = name
+        self.name_lower = name.lower()
+        self.id = int(id)
+        self.description = description
+        self.fields = []
+        self.fieldnames = []
+
+class MAVEnumParam(object):
+    def __init__(self, index, description=''):
+        self.index = index
+        self.description = description
+
+class MAVEnumEntry(object):
+    def __init__(self, name, value, description=''):
+        self.name = name
+        self.value = value
+        self.description = description
+        self.param = []
+
+class MAVEnum(object):
+    def __init__(self, name, description=''):
+        self.name = name
+        self.description = description
+        self.entry = []
+
+class MAVXML(object):
+    '''parse a mavlink XML file'''
+    def __init__(self, filename):
+        self.filename = filename
+        self.basename = os.path.basename(filename)
+        if self.basename.lower().endswith(".xml"):
+            self.basename = self.basename[:-4]
+        self.basename_upper = self.basename.upper()
+        self.message = []
+        self.enum = []
+        self.parse_time = time.asctime()
+        self.version = None
+
+        in_element_list = []
+
+        def start_element(name, attrs):
+            in_element_list.append(name)
+            in_element = '.'.join(in_element_list)
+            #print in_element
+            if in_element == "mavlink.messages.message":
+                self.message.append(MAVType(attrs['name'], attrs['id']))
+            elif in_element == "mavlink.messages.message.field":
+                self.message[-1].fields.append(MAVField(attrs['name'], attrs['type']))
+            elif in_element == "mavlink.enums.enum":
+                self.enum.append(MAVEnum(attrs['name']))
+            elif in_element == "mavlink.enums.enum.entry":
+                self.enum[-1].entry.append(MAVEnumEntry(attrs['name'], long(attrs['value'])))
+            elif in_element == "mavlink.enums.enum.entry.param":
+                self.enum[-1].entry[-1].param.append(MAVEnumParam(attrs['index']))
+
+        def end_element(name):
+            in_element_list.pop()
+            in_element = '.'.join(in_element_list)
+
+        def char_data(data):
+            in_element = '.'.join(in_element_list)
+            if in_element == "mavlink.messages.message.description":
+                self.message[-1].description += data
+            elif in_element == "mavlink.messages.message.field":
+                self.message[-1].fields[-1].description += data
+            elif in_element == "mavlink.enums.enum.description":
+                self.enum[-1].description += data
+            elif in_element == "mavlink.enums.enum.entry.description":
+                self.enum[-1].entry[-1].description += data
+            elif in_element == "mavlink.enums.enum.entry.param":
+                self.enum[-1].entry[-1].param[-1].description += data
+            elif in_element == "mavlink.version":
+                self.version = int(data)
+
+        f = open(filename)
+        p = xml.parsers.expat.ParserCreate()
+        p.StartElementHandler = start_element
+        p.EndElementHandler = end_element
+        p.CharacterDataHandler = char_data
+        p.ParseFile(f)
+        f.close()
+
+        for m in self.message:
+            m.wire_length = 0
+            m.fieldnames = []
+            for f in m.fields:
+                f.wire_offset = m.wire_length
+                m.wire_length += f.wire_length
+                m.fieldnames.append(f.name)
 
 
-def check_duplicates(msgs):
+    def __str__(self):
+        return "MAVXML for %s from %s (%u message, %u enums)" % (
+            self.basename, self.filename, len(self.message), len(self.enum))
+    
+
+
+
+def check_duplicates(xml):
     '''check for duplicate message IDs'''
     msgmap = {}
-    for m in msgs:
-	if m.id in msgmap:
-            print("ERROR: Duplicate message id %u for %s also used by %s" % (
-                m.id, m.name, msgmap[m.id]))
-            return True
-        msgmap[m.id] = m.name
+    for x in xml:
+        for m in x.message:
+            if m.id in msgmap:
+                print("ERROR: Duplicate message id %u for %s also used by %s" % (
+                    m.id, m.name, msgmap[m.id]))
+                return True
+            msgmap[m.id] = m.name
     return False
 
-def subwrite(file, text, subvars):
+def substring(text, subvars={}, trim_leading_lf=True, checkmissing=True):
+    '''substitute variables in a string'''
+    while True:
+        subidx = text.find('${{')
+        if subidx == -1:
+            break
+        endidx = text[subidx:].find('}}')
+        if endidx == -1:
+            break
+        a = text[subidx+3:subidx+endidx].split(':')
+        field_name = a[0]
+        rest = ':'.join(a[1:])
+        v = getattr(subvars, field_name)
+        if v is None:
+            raise RuntimeError('unable to find field %s' % field_name)
+        t1 = text[0:subidx]
+        for f in v:
+            t1 += substring(rest, f, trim_leading_lf=False, checkmissing=False)
+        if len(v) != 0 and t1[-1] in ["\n", ","]:
+            t1 = t1[:-1]
+        t1 += text[subidx+endidx+2:]
+        text = t1
+                
+    if trim_leading_lf:
+        if text[0] == '\n':
+            text = text[1:]
+    if isinstance(subvars, dict):
+        for (name, value) in subvars.items():
+            assert isinstance(name, str), "%r is not a string" % name
+            text = text.replace("${%s}" % name, str(value))
+    elif isinstance(subvars, object):
+        for name in dir(subvars):
+            value = getattr(subvars, name)
+            assert isinstance(name, str), "%r is not a string" % name
+            text = text.replace("${%s}" % name, str(value))
+    if checkmissing:
+        if text.find("${") != -1:
+            print(text)
+        assert text.find("${") == -1, "missing variable in substitution"
+    return text
+
+def subwrite(file, text, subvars={}, trim_leading_lf=True):
     '''write to a file with variable substitution'''
-    for (name, value) in subvars.items():
-        assert isinstance(name, str), "%r is not a string" % name
-        text = text.replace("${%s}" % name, str(value))
-    assert text.find("${") == -1, "missing variable in substitution"
-    file.write(text)
+    file.write(substring(text, subvars=subvars, trim_leading_lf=trim_leading_lf))
     
+
+def total_msgs(xml):
+    '''count total number of msgs'''
+    count = 0
+    for x in xml:
+        count += len(x.message)
+    return count
+
+def mkdir_p(dir):
+    '''like mkdir -p'''
+    if not dir:
+        return
+    if dir.endswith("/"):
+        mkdir_p(dir[:-1])
+        return
+    if os.path.isdir(dir):
+        return
+    mkdir_p(os.path.dirname(dir))
+    os.mkdir(dir)
+

@@ -10,6 +10,7 @@ import sys, textwrap, os
 from optparse import OptionParser
 import mavparse
 import mavgen_python
+import mavgen_c
 
 parser = OptionParser("mavgen.py [options] <XML files>")
 parser.add_option("-o", "--output", dest="output", default="mavlink", help="output base name")
@@ -20,26 +21,20 @@ if len(args) < 1:
     parser.error("You must supply at least one MAVLink XML protocol definition")
     
 
-msgs = []
-enums = []
-
-filelist = []
+xml = []
 
 for fname in args:
-    (m, e) = mavparse.parse_mavlink_xml(fname)
-    msgs.extend(m)
-    enums.extend(e)
-    filelist.append(os.path.basename(fname))
+    xml.append(mavparse.MAVXML(fname))
 
-if mavparse.check_duplicates(msgs):
+if mavparse.check_duplicates(xml):
     sys.exit(1)
 
-print("Found %u MAVLink message types" % len(msgs))
+print("Found %u MAVLink message types" % mavparse.total_msgs(xml))
 
 if opts.language == 'python':
-    mavgen_python.generate(opts.output, msgs, enums, filelist)
+    mavgen_python.generate(opts.output, xml)
 elif opts.language == 'C':
-    mavgen_c.generate(opts.output, msgs, enums, filelist)
+    mavgen_c.generate(opts.output, xml)
 else:
     print("Unsupported language %s" % opts.language)
     

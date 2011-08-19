@@ -6,7 +6,7 @@ Copyright Andrew Tridgell 2011
 Released under GNU GPL version 3 or later
 '''
 
-import sys, textwrap
+import sys, textwrap, os
 import mavparse
 from mavparse import subwrite
 
@@ -110,8 +110,11 @@ class MAVLink_message(object):
 def generate_enums(outf, enums):
     print("Generating enums")
     outf.write("\n# enums\n")
-    for (e,v) in enums:
-	outf.write("%s = %u\n" % (e, v))
+    wrapper = textwrap.TextWrapper(initial_indent="", subsequent_indent="\t\t\t# ")
+    for e in enums:
+        outf.write("\n# %s\n" % e.name)
+        for entry in e.entry:
+            outf.write("%s = %u # %s\n" % (entry.name, entry.value, wrapper.fill(entry.description)))
 
 def generate_message_ids(outf, msgs):
     print("Generating message IDs")
@@ -146,6 +149,28 @@ class MAVLink_%s_message(MAVLink_message):
         outf.write("))\n")
 
 
+def mavfmt(field):
+    '''work out the struct format for a type'''
+    map = {
+        'float'    : 'f',
+        'char'     : 'c',
+        'int8_t'   : 'b',
+        'uint8_t'  : 'B',
+        'uint8_t_mavlink_version'  : 'B',
+        'int16_t'  : 'h',
+        'uint16_t' : 'H',
+        'int32_t'  : 'i',
+        'uint32_t' : 'I',
+        'int64_t'  : 'q',
+        'uint64_t' : 'Q',
+        }
+
+    if field.array_length:
+        if field.type in ['char', 'int8_t', 'uint8_t']:
+            return str(field.array_length)+'s'
+        return str(field.array_length)+map[field.type]
+    return map[field.type]
+
 def generate_mavlink_class(outf, msgs):
     print("Generating MAVLink class")
 
@@ -155,7 +180,7 @@ def generate_mavlink_class(outf, msgs):
             m.name.upper(), m.fmtstr, m.name.lower()))
     outf.write("}\n\n")
     
-    outf.write("""
+    subwrite(outf, """
 class MAVError(Exception):
 	'''MAVLink error class'''
 	def __init__(self, msg):
@@ -328,6 +353,7 @@ def generate_methods(outf, msgs):
 		msg = MAVLink_${NAMELOWER}_message(${FIELDNAMES})
 		msg.pack(self)
                 return msg
+            
 """, sub)
 
 	subwrite(outf, """
@@ -336,12 +362,26 @@ def generate_methods(outf, msgs):
 		${COMMENT}
 		'''
 		return self.send(self.${NAMELOWER}_encode(${FIELDNAMES}))
+            
 """, sub)
 
 
-def generate(basename, msgs, enums, filelist):
+def generate(basename, xml):
     '''generate complete python implemenation'''
     filename = basename + '.py'
+
+    msgs = []
+    enums = []
+    filelist = []
+    for x in xml:
+        msgs.extend(x.message)
+        enums.extend(x.enum)
+        filelist.append(os.path.basename(x.filename))
+
+    for m in msgs:
+        m.fmtstr = '>'
+        for f in m.fields:
+            m.fmtstr += mavfmt(f)
 
     print("Generating %s" % filename)
     outf = open(filename, "w")
