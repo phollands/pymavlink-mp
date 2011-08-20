@@ -6,7 +6,7 @@ Copyright Andrew Tridgell 2011
 Released under GNU GPL version 3 or later
 '''
 
-import mavlink, socket, math, struct, time, os
+import mavlink, socket, math, struct, time, os, fnmatch
 from math import *
 from mavextra import *
 
@@ -327,3 +327,64 @@ def all_printable(buf):
         if not is_printable(c) and not c in ['\r', '\n', '\t']:
             return False
     return True
+
+class SerialPort(object):
+    '''auto-detected serial port'''
+    def __init__(self, device, description=None, hwid=None):
+        self.device = device
+        self.description = description
+        self.hwid = hwid
+
+    def __str__(self):
+        ret = self.device
+        if self.description is not None:
+            ret += " : " + self.description
+        if self.hwid is not None:
+            ret += " : " + self.hwid
+        return ret
+
+def auto_detect_serial_win32(preferred='*'):
+    '''try to auto-detect serial ports on win32'''
+    try:
+        import scanwin32
+        list = sorted(scanwin32.comports())
+    except:
+        return []
+    ret = []
+    for order, port, desc, hwid in list:
+        if fnmatch.fnmatch(desc, preferred) or fnmatch.fnmatch(hwid, preferred):
+            ret.append(SerialPort(port, description=desc, hwid=hwid))
+    if len(ret) > 0:
+        return ret
+    # now the rest
+    for order, port, desc, hwid in list:
+        ret.append(SerialPort(port, description=desc, hwid=hwid))
+    return ret
+        
+
+        
+
+def auto_detect_serial_unix(preferred='*'):
+    '''try to auto-detect serial ports on win32'''
+    import glob
+    list = glob.glob('/dev/ttyS*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob('/dev/serial/by-id/*')
+    ret = []
+    # try preferred ones first
+    for d in list:
+        if fnmatch.fnmatch(d, preferred):
+            ret.append(SerialPort(d))
+    if len(ret) > 0:
+        return ret
+    # now the rest
+    for d in list:
+        ret.append(SerialPort(d))
+    return ret
+
+
+
+def auto_detect_serial(preferred='*'):
+    '''try to auto-detect serial port'''
+    # see if 
+    if os.name == 'nt':
+        return auto_detect_serial_win32(preferred=preferred)
+    return auto_detect_serial_unix(preferred=preferred)
