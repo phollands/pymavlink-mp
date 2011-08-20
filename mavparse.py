@@ -159,13 +159,28 @@ def check_duplicates(xml):
             msgmap[m.id] = m.name
     return False
 
+def find_end(text, start_token, end_token):
+    '''cope with nested expressions'''
+    offset = 0
+    while True:
+        idx1 = text[offset:].find(start_token)
+        idx2 = text[offset:].find(end_token)
+        if idx1 == -1 and idx2 == -1:
+            return -1
+        if idx1 == -1:
+            return idx2 + offset
+        if idx1 > idx2:
+            return idx2 + offset
+        offset += idx2
+    
+
 def substring(text, subvars={}, trim_leading_lf=True, checkmissing=True):
     '''substitute variables in a string'''
     while True:
         subidx = text.find('${{')
         if subidx == -1:
             break
-        endidx = text[subidx:].find('}}')
+        endidx = find_end(text[subidx:], '${{', '}}')
         if endidx == -1:
             break
         a = text[subidx+3:subidx+endidx].split(':')
@@ -185,19 +200,23 @@ def substring(text, subvars={}, trim_leading_lf=True, checkmissing=True):
     if trim_leading_lf:
         if text[0] == '\n':
             text = text[1:]
-    if isinstance(subvars, dict):
-        for (name, value) in subvars.items():
-            assert isinstance(name, str), "%r is not a string" % name
-            text = text.replace("${%s}" % name, str(value))
-    elif isinstance(subvars, object):
-        for name in dir(subvars):
-            value = getattr(subvars, name)
-            assert isinstance(name, str), "%r is not a string" % name
-            text = text.replace("${%s}" % name, str(value))
-    if checkmissing:
-        if text.find("${") != -1:
-            print(text)
-        assert text.find("${") == -1, "missing variable in substitution"
+    while True:
+        idx = text.find('${')
+        if idx == -1:
+            return text
+        endidx = text[idx:].find('}')
+        if endidx == -1:
+            raise RuntimeError('missing end of variable: %s' % text[idx:idx+10])
+        varname = text[idx+2:idx+endidx]
+        if isinstance(subvars, dict):
+            if not varname in subvars:
+                raise RuntimeError("unknown variable in '${%s}'" % varname)
+            value = subvars[varname]
+        else:
+            value = getattr(subvars, varname, None)
+            if varname is None:
+                raise RuntimeError("unknown variable in '${%s}'" % varname)
+        text = text.replace("${%s}" % varname, str(value))
     return text
 
 def subwrite(file, text, subvars={}, trim_leading_lf=True):
