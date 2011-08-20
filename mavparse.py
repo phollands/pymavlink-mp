@@ -85,7 +85,7 @@ class MAVXML(object):
         self.message = []
         self.enum = []
         self.parse_time = time.asctime()
-        self.version = None
+        self.version = 2
 
         in_element_list = []
 
@@ -159,6 +159,7 @@ def check_duplicates(xml):
             msgmap[m.id] = m.name
     return False
 
+
 def find_end(text, start_token, end_token):
     '''cope with nested expressions'''
     offset = 0
@@ -171,7 +172,7 @@ def find_end(text, start_token, end_token):
             return idx2 + offset
         if idx1 > idx2:
             return idx2 + offset
-        offset += idx2
+        offset += idx2+1
     
 
 def substring(text, subvars={}, trim_leading_lf=True, checkmissing=True):
@@ -180,21 +181,24 @@ def substring(text, subvars={}, trim_leading_lf=True, checkmissing=True):
         subidx = text.find('${{')
         if subidx == -1:
             break
-        endidx = find_end(text[subidx:], '${{', '}}')
+        endidx = find_end(text[subidx+3:], '${{', '}}')
         if endidx == -1:
-            break
-        a = text[subidx+3:subidx+endidx].split(':')
+            raise RuntimeError("missing end macro in %s" % text[subidx:])
+        part1 = text[0:subidx]
+        part2 = text[subidx+3:subidx+3+endidx]
+        part3 = text[subidx+3+endidx+2:]
+        a = part2.split(':')
         field_name = a[0]
         rest = ':'.join(a[1:])
-        v = getattr(subvars, field_name)
+        v = getattr(subvars, field_name, None)
         if v is None:
             raise RuntimeError('unable to find field %s' % field_name)
-        t1 = text[0:subidx]
+        t1 = part1
         for f in v:
             t1 += substring(rest, f, trim_leading_lf=False, checkmissing=False)
         if len(v) != 0 and t1[-1] in ["\n", ","]:
             t1 = t1[:-1]
-        t1 += text[subidx+endidx+2:]
+        t1 += part3
         text = t1
                 
     if trim_leading_lf:
@@ -210,12 +214,18 @@ def substring(text, subvars={}, trim_leading_lf=True, checkmissing=True):
         varname = text[idx+2:idx+endidx]
         if isinstance(subvars, dict):
             if not varname in subvars:
-                raise RuntimeError("unknown variable in '${%s}'" % varname)
+                if checkmissing:
+                    raise RuntimeError("unknown variable in '${%s}'" % varname)
+                return text[0:idx+endidx] + substring(text[idx+endidx:], subvars,
+                                                      trim_leading_lf=False, checkmissing=False)
             value = subvars[varname]
         else:
             value = getattr(subvars, varname, None)
-            if varname is None:
-                raise RuntimeError("unknown variable in '${%s}'" % varname)
+            if value is None:
+                if checkmissing:
+                    raise RuntimeError("unknown variable in '${%s}'" % varname)
+                return text[0:idx+endidx] + substring(text[idx+endidx:], subvars,
+                                                      trim_leading_lf=False, checkmissing=False)
         text = text.replace("${%s}" % varname, str(value))
     return text
 

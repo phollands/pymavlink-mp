@@ -34,11 +34,11 @@ def generate_enum(f, enum):
 /** @brief ${description} */
 enum ${name}
 {
+${{entry:	${name}=${value}, /* ${description} |${{param:${description}| }} */
+}}
+};
+
 ''', enum)
-    for entry in enum.entry:
-        subwrite(f, '\t${name}=${value}, /* ${description} |${{param:${description}| }}', entry)
-        f.write('*/\n')
-    f.write('};\n\n')
     
 
 def generate_main_h(directory, xml):
@@ -84,9 +84,7 @@ extern "C" {
 // MESSAGE DEFINITIONS
 ${{message:#include "./mavlink_msg_${name_lower}.h
 }}
-''', xml)
 
-    subwrite(f, '''
 // MESSAGE LENGTHS
 
 #undef MAVLINK_MESSAGE_LENGTHS
