@@ -168,7 +168,6 @@ enum MAVLINK_DATA_STREAM_TYPE
 	
 };
 
-#define MAVLINK_STX 0x55 ///< Packet start sign
 #define MAVLINK_STX_LEN 1 ///< Length of start sign
 #define MAVLINK_MAX_PAYLOAD_LEN 255 ///< Maximum payload length
 
@@ -247,5 +246,8 @@ typedef struct __mavlink_status {
     uint16_t packet_rx_success_count;   ///< Received packets
     uint16_t packet_rx_drop_count;      ///< Number of packet drops
 } mavlink_status_t;
+
+#define MAVLINK_BIG_ENDIAN 0
+#define MAVLINK_LITTLE_ENDIAN 1
 
 #endif /* MAVLINK_TYPES_H_ */

@@ -6,6 +6,15 @@
 
 #include "mavlink_types.h"
 
+/* 
+   If you want MAVLink on a system that is native big-endian,
+   you need to define NATIVE_BIG_ENDIAN
+*/
+#ifdef NATIVE_BIG_ENDIAN
+# define MAVLINK_NEED_BYTE_SWAP (MAVLINK_ENDIAN == MAVLINK_LITTLE_ENDIAN)
+#else
+# define MAVLINK_NEED_BYTE_SWAP (MAVLINK_ENDIAN != MAVLINK_LITTLE_ENDIAN)
+#endif
 
 /**
  * @brief Initialize the communication stack
@@ -68,7 +77,7 @@ static inline uint16_t mavlink_finalize_message(mavlink_message_t* msg, uint8_t 
 	msg->compid = component_id;
 	// One sequence number per component
 	msg->seq = mavlink_get_channel_status(MAVLINK_COMM_0)->current_tx_seq;
-    mavlink_get_channel_status(MAVLINK_COMM_0)->current_tx_seq = mavlink_get_channel_status(MAVLINK_COMM_0)->current_tx_seq+1;
+	mavlink_get_channel_status(MAVLINK_COMM_0)->current_tx_seq = mavlink_get_channel_status(MAVLINK_COMM_0)->current_tx_seq+1;
 	checksum = crc_calculate((uint8_t*)((void*)msg), length + MAVLINK_CORE_HEADER_LEN);
 	msg->ck_a = (uint8_t)(checksum & 0xFF); ///< High byte
 	msg->ck_b = (uint8_t)(checksum >> 8); ///< Low byte
@@ -380,160 +389,8 @@ static inline uint8_t mavlink_parse_char(uint8_t chan, uint8_t c, mavlink_messag
  */
 
 #define MAVLINK_PACKET_START_CANDIDATES 50
-/*
-static inline uint8_t mavlink_parse_char_new(uint8_t chan, uint8_t c, mavlink_message_t* r_message, mavlink_status_t* r_mavlink_status)
-{
-	    static mavlink_status_t m_mavlink_status[MAVLINK_COMM_NUM_BUFFERS];
-	    static uint8_t m_msgbuf[MAVLINK_COMM_NUM_BUFFERS][MAVLINK_MAX_PACKET_LEN * 2];
-	    static uint8_t m_msgbuf_index[MAVLINK_COMM_NUM_BUFFERS];
-	    static mavlink_message_t m_mavlink_message[MAVLINK_COMM_NUM_BUFFERS];
-	    static uint8_t m_packet_start[MAVLINK_COMM_NUM_BUFFERS][MAVLINK_PACKET_START_CANDIDATES];
-	    static uint8_t m_packet_start_index_read[MAVLINK_COMM_NUM_BUFFERS];
-	    static uint8_t m_packet_start_index_write[MAVLINK_COMM_NUM_BUFFERS];
 
-	    // Set a packet start candidate index if sign is start sign
-	    if (c == MAVLINK_STX)
-	    {
-	    	m_packet_start[chan][++(m_packet_start_index_write[chan]) % MAVLINK_PACKET_START_CANDIDATES] = m_msgbuf_index[chan];
-	    }
-
-	    // Parse normally, if a CRC mismatch occurs retry with the next packet index
-}
-//    static mavlink_status_t m_mavlink_status[MAVLINK_COMM_NUM_BUFFERS];
-//    static mavlink_message_t m_mavlink_message[MAVLINK_COMM_NUM_BUFFERS];
-//// Initializes only once, values keep unchanged after first initialization
-//    mavlink_parse_state_initialize(&m_mavlink_status[chan]);
-//
-//mavlink_message_t* rxmsg = &m_mavlink_message[chan]; ///< The currently decoded message
-//mavlink_status_t* status = &m_mavlink_status[chan]; ///< The current decode status
-//int bufferIndex = 0;
-//
-//status->msg_received = 0;
-//
-//switch (status->parse_state)
-//{
-//case MAVLINK_PARSE_STATE_UNINIT:
-//case MAVLINK_PARSE_STATE_IDLE:
-//            if (c == MAVLINK_STX)
-//	{
-//		status->parse_state = MAVLINK_PARSE_STATE_GOT_STX;
-//		mavlink_start_checksum(rxmsg);
-//	}
-//	break;
-//
-//case MAVLINK_PARSE_STATE_GOT_STX:
-//	if (status->msg_received)
-//	{
-//		status->buffer_overrun++;
-//		status->parse_error++;
-//		status->msg_received = 0;
-//		status->parse_state = MAVLINK_PARSE_STATE_IDLE;
-//	}
-//	else
-//	{
-//		// NOT counting STX, LENGTH, SEQ, SYSID, COMPID, MSGID, CRC1 and CRC2
-//		rxmsg->len = c;
-//		status->packet_idx = 0;
-//		mavlink_update_checksum(rxmsg, c);
-//		status->parse_state = MAVLINK_PARSE_STATE_GOT_LENGTH;
-//	}
-//	break;
-//
-//case MAVLINK_PARSE_STATE_GOT_LENGTH:
-//	rxmsg->seq = c;
-//	mavlink_update_checksum(rxmsg, c);
-//	status->parse_state = MAVLINK_PARSE_STATE_GOT_SEQ;
-//	break;
-//
-//case MAVLINK_PARSE_STATE_GOT_SEQ:
-//	rxmsg->sysid = c;
-//	mavlink_update_checksum(rxmsg, c);
-//	status->parse_state = MAVLINK_PARSE_STATE_GOT_SYSID;
-//	break;
-//
-//case MAVLINK_PARSE_STATE_GOT_SYSID:
-//	rxmsg->compid = c;
-//	mavlink_update_checksum(rxmsg, c);
-//	status->parse_state = MAVLINK_PARSE_STATE_GOT_COMPID;
-//	break;
-//
-//case MAVLINK_PARSE_STATE_GOT_COMPID:
-//	rxmsg->msgid = c;
-//	mavlink_update_checksum(rxmsg, c);
-//	if (rxmsg->len == 0)
-//	{
-//		status->parse_state = MAVLINK_PARSE_STATE_GOT_PAYLOAD;
-//	}
-//	else
-//	{
-//		status->parse_state = MAVLINK_PARSE_STATE_GOT_MSGID;
-//	}
-//	break;
-//
-//case MAVLINK_PARSE_STATE_GOT_MSGID:
-//	rxmsg->payload[status->packet_idx++] = c;
-//	mavlink_update_checksum(rxmsg, c);
-//	if (status->packet_idx == rxmsg->len)
-//	{
-//		status->parse_state = MAVLINK_PARSE_STATE_GOT_PAYLOAD;
-//	}
-//	break;
-//
-//case MAVLINK_PARSE_STATE_GOT_PAYLOAD:
-//	if (c != rxmsg->ck_a)
-//	{
-//		// Check first checksum byte
-//		status->parse_error++;
-//		status->msg_received = 0;
-//		status->parse_state = MAVLINK_PARSE_STATE_IDLE;
-//	}
-//	else
-//	{
-//		status->parse_state = MAVLINK_PARSE_STATE_GOT_CRC1;
-//	}
-//	break;
-//
-//case MAVLINK_PARSE_STATE_GOT_CRC1:
-//	if (c != rxmsg->ck_b)
-//	{// Check second checksum byte
-//		status->parse_error++;
-//		status->msg_received = 0;
-//		status->parse_state = MAVLINK_PARSE_STATE_IDLE;
-//	}
-//	else
-//	{
-//		// Successfully got message
-//		status->msg_received = 1;
-//		status->parse_state = MAVLINK_PARSE_STATE_IDLE;
-//		memcpy(r_message, rxmsg, sizeof(mavlink_message_t));
-//	}
-//	break;
-//}
-
-bufferIndex++;
-// If a message has been sucessfully decoded, check index
-if (status->msg_received == 1)
-{
-    //while(status->current_seq != rxmsg->seq)
-	//{
-	//	status->packet_rx_drop_count++;
-    //               status->current_seq++;
-	//}
-	status->current_seq = rxmsg->seq;
-	// Initial condition: If no packet has been received so far, drop count is undefined
-	if (status->packet_rx_success_count == 0) status->packet_rx_drop_count = 0;
-	// Count this packet as received
-	status->packet_rx_success_count++;
-}
-
-r_mavlink_status->current_seq = status->current_seq+1;
-r_mavlink_status->packet_rx_success_count = status->packet_rx_success_count;
-r_mavlink_status->packet_rx_drop_count = status->parse_error;
-return status->msg_received;
-}
- */
-
-
+#if MAVLINK_NEED_BYTE_SWAP
 typedef union __generic_16bit
 {
 	uint8_t b[2];
@@ -554,6 +411,7 @@ typedef union __generic_64bit
 	int64_t ll; ///< Long long (64 bit)
 	double  d;  ///< IEEE-754 double precision floating point
 } generic_64bit;
+#endif // MAVLINK_NEED_BYTE_SWAP
 
 /**
  * @brief Place an unsigned byte into the buffer
@@ -593,8 +451,12 @@ static inline uint8_t put_int8_t_by_index(int8_t b, int8_t bindex, uint8_t* buff
  */
 static inline uint8_t put_uint16_t_by_index(uint16_t b, const uint8_t bindex, uint8_t* buffer)
 {
+#if MAVLINK_NEED_BYTE_SWAP
 	buffer[bindex]   = (b>>8)&0xff;
 	buffer[bindex+1] = (b & 0xff);
+#else
+	*(uint16_t *)(buffer+bindex) = b;
+#endif
 	return sizeof(b);
 }
 
@@ -621,10 +483,14 @@ static inline uint8_t put_int16_t_by_index(int16_t b, uint8_t bindex, uint8_t* b
  */
 static inline uint8_t put_uint32_t_by_index(uint32_t b, const uint8_t bindex, uint8_t* buffer)
 {
+#if MAVLINK_NEED_BYTE_SWAP
 	buffer[bindex]   = (b>>24)&0xff;
 	buffer[bindex+1] = (b>>16)&0xff;
 	buffer[bindex+2] = (b>>8)&0xff;
 	buffer[bindex+3] = (b & 0xff);
+#else
+	*(uint32_t *)(buffer+bindex) = b;
+#endif
 	return sizeof(b);
 }
 
@@ -638,10 +504,14 @@ static inline uint8_t put_uint32_t_by_index(uint32_t b, const uint8_t bindex, ui
  */
 static inline uint8_t put_int32_t_by_index(int32_t b, uint8_t bindex, uint8_t* buffer)
 {
+#if MAVLINK_NEED_BYTE_SWAP
 	buffer[bindex]   = (b>>24)&0xff;
 	buffer[bindex+1] = (b>>16)&0xff;
 	buffer[bindex+2] = (b>>8)&0xff;
 	buffer[bindex+3] = (b & 0xff);
+#else
+	*(int32_t *)(buffer+bindex) = b;
+#endif
 	return sizeof(b);
 }
 
@@ -655,6 +525,7 @@ static inline uint8_t put_int32_t_by_index(int32_t b, uint8_t bindex, uint8_t* b
  */
 static inline uint8_t put_uint64_t_by_index(uint64_t b, const uint8_t bindex, uint8_t* buffer)
 {
+#if MAVLINK_NEED_BYTE_SWAP
 	buffer[bindex]   = (b>>56)&0xff;
 	buffer[bindex+1] = (b>>48)&0xff;
 	buffer[bindex+2] = (b>>40)&0xff;
@@ -663,6 +534,9 @@ static inline uint8_t put_uint64_t_by_index(uint64_t b, const uint8_t bindex, ui
 	buffer[bindex+5] = (b>>16)&0xff;
 	buffer[bindex+6] = (b>>8)&0xff;
 	buffer[bindex+7] = (b & 0xff);
+#else
+	*(uint64_t *)(buffer+bindex) = b;
+#endif
 	return sizeof(b);
 }
 
@@ -689,26 +563,15 @@ static inline uint8_t put_int64_t_by_index(int64_t b, uint8_t bindex, uint8_t* b
  */
 static inline uint8_t put_float_by_index(float b, uint8_t bindex, uint8_t* buffer)
 {
+#if MAVLINK_NEED_BYTE_SWAP
 	generic_32bit g;
 	g.f = b;
 	return put_int32_t_by_index(g.i, bindex, buffer);
+#else
+	*(float *)(buffer+bindex) = b;
+	return sizeof(b);
+#endif
 }
-
-/**
- * @brief Place an array into the buffer
- *
- * @param b the array to add
- * @param length size of the array (for strings: length WITH '\0' char)
- * @param bindex the position in the packet
- * @param buffer packet buffer
- * @return new position of the last used byte in the buffer
- */
-static inline uint8_t put_array_by_index(const int8_t* b, uint8_t length, uint8_t bindex, uint8_t* buffer)
-{
-	memcpy(buffer+bindex, b, length);
-	return length;
-}
-
 
 /*
  * Place a char array into a buffer
@@ -748,14 +611,20 @@ static inline uint8_t put_bitfield_n_by_index(int32_t b, uint8_t bits, uint8_t p
 {
 	uint16_t bits_remain = bits;
 	// Transform number into network order
+	int32_t v;
+	uint8_t i_bit_index, i_byte_index, curr_bits_n;
+#if MAVLINK_NEED_BYTE_SWAP
 	generic_32bit bin;
 	generic_32bit bout;
-	uint8_t i_bit_index, i_byte_index, curr_bits_n;
 	bin.i = b;
 	bout.b[0] = bin.b[3];
 	bout.b[1] = bin.b[2];
 	bout.b[2] = bin.b[1];
 	bout.b[3] = bin.b[0];
+	v = bout.i;
+#else
+	v = b;
+#endif
 
 	// buffer in
 	// 01100000 01000000 00000000 11110001
@@ -806,7 +675,7 @@ static inline uint8_t put_bitfield_n_by_index(int32_t b, uint8_t bits, uint8_t p
 		// Mask out whatever was at that position with ones (xxx11111)
 		buffer[i_byte_index] &= (0xFF >> (8 - curr_bits_n));
 		// Put content to this position, by masking out the non-used part
-		buffer[i_byte_index] |= ((0x00 << curr_bits_n) & bout.i);
+		buffer[i_byte_index] |= ((0x00 << curr_bits_n) & v);
 		
 		// Increment the bit index
 		i_bit_index += curr_bits_n;
@@ -833,10 +702,14 @@ static inline uint8_t put_bitfield_n_by_index(int32_t b, uint8_t bits, uint8_t p
 #ifndef MAVLINK_MSG_RETURN_uint16_t
 static inline uint16_t MAVLINK_MSG_RETURN_uint16_t(const mavlink_message_t *msg, uint8_t wire_offset)
 {
+#if MAVLINK_NEED_BYTE_SWAP
 	generic_16bit r;
 	r.b[1] = msg->payload[wire_offset+0];
 	r.b[0] = msg->payload[wire_offset+1];
 	return (uint16_t)r.s;
+#else
+	return *(uint16_t *)(&msg->payload[wire_offset]);
+#endif
 }
 #endif
 
@@ -847,22 +720,27 @@ static inline uint16_t MAVLINK_MSG_RETURN_uint16_t(const mavlink_message_t *msg,
 #ifndef MAVLINK_MSG_RETURN_uint32_t
 static inline uint32_t MAVLINK_MSG_RETURN_uint32_t(const mavlink_message_t *msg, uint8_t wire_offset)
 {
+#if MAVLINK_NEED_BYTE_SWAP
 	generic_32bit r;
 	r.b[3] = msg->payload[wire_offset+0];
 	r.b[2] = msg->payload[wire_offset+1];
 	r.b[1] = msg->payload[wire_offset+2];
 	r.b[0] = msg->payload[wire_offset+3];
 	return (uint32_t)r.i;
+#else
+	return *(uint32_t *)(&msg->payload[wire_offset]);
+#endif
 }
 #endif
 
 #ifndef MAVLINK_MSG_RETURN_int32_t
-#define MAVLINK_MSG_RETURN_int32_t(msg, wire_offset) (int16_t)MAVLINK_MSG_RETURN_uint32_t(msg, wire_offset)
+#define MAVLINK_MSG_RETURN_int32_t(msg, wire_offset) (int32_t)MAVLINK_MSG_RETURN_uint32_t(msg, wire_offset)
 #endif
 
 #ifndef MAVLINK_MSG_RETURN_uint64_t
 static inline uint64_t MAVLINK_MSG_RETURN_uint64_t(const mavlink_message_t *msg, uint8_t wire_offset)
 {
+#if MAVLINK_NEED_BYTE_SWAP
 	generic_64bit r;
 	r.b[7] = msg->payload[wire_offset+0];
 	r.b[6] = msg->payload[wire_offset+1];
@@ -873,22 +751,29 @@ static inline uint64_t MAVLINK_MSG_RETURN_uint64_t(const mavlink_message_t *msg,
 	r.b[1] = msg->payload[wire_offset+6];
 	r.b[0] = msg->payload[wire_offset+7];
 	return (uint64_t)r.ll;
+#else
+	return *(uint64_t *)(&msg->payload[wire_offset]);
+#endif
 }
 #endif
 
 #ifndef MAVLINK_MSG_RETURN_int64_t
-#define MAVLINK_MSG_RETURN_int64_t(msg, wire_offset) (int16_t)MAVLINK_MSG_RETURN_uint64_t(msg, wire_offset)
+#define MAVLINK_MSG_RETURN_int64_t(msg, wire_offset) (int64_t)MAVLINK_MSG_RETURN_uint64_t(msg, wire_offset)
 #endif
 
 #ifndef MAVLINK_MSG_RETURN_float
-static inline uint32_t MAVLINK_MSG_RETURN_float(const mavlink_message_t *msg, uint8_t wire_offset)
+static inline float MAVLINK_MSG_RETURN_float(const mavlink_message_t *msg, uint8_t wire_offset)
 {
+#if MAVLINK_NEED_BYTE_SWAP
 	generic_32bit r;
 	r.b[3] = msg->payload[wire_offset+0];
 	r.b[2] = msg->payload[wire_offset+1];
 	r.b[1] = msg->payload[wire_offset+2];
 	r.b[0] = msg->payload[wire_offset+3];
 	return r.f;
+#else
+	return *(float *)(&msg->payload[wire_offset]);
+#endif
 }
 #endif
 
@@ -1012,25 +897,6 @@ static inline void mavlink_send_uart_uint64_t(mavlink_channel_t chan, uint64_t b
 	s = (b & 0xff);
 	comm_send_ch(chan, s);
 	crc_accumulate(s, checksum);
-}
-
-static inline void mavlink_send_uart_int64_t(mavlink_channel_t chan, int64_t b, uint16_t* checksum)
-{
-	mavlink_send_uart_uint64_t(chan, b, checksum);
-}
-
-static inline void mavlink_send_uart_float(mavlink_channel_t chan, float b, uint16_t* checksum)
-{
-	generic_32bit g;
-	g.f = b;
-	mavlink_send_uart_uint32_t(chan, g.i, checksum);
-}
-
-static inline void mavlink_send_uart_double(mavlink_channel_t chan, double b, uint16_t* checksum)
-{
-	generic_64bit g;
-	g.d = b;
-	mavlink_send_uart_uint32_t(chan, g.ll, checksum);
 }
 
 static inline void mavlink_send_uart(mavlink_channel_t chan, mavlink_message_t* msg)
