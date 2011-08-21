@@ -85,14 +85,14 @@ class MAVLink_message(object):
         ret = ret[0:-2] + '}'
         return ret            
 
-    def pack(self, mav, payload):
+    def pack(self, mav, crc_extra, payload):
         self._payload = payload
         self._header  = MAVLink_header(self._header.msgId, len(payload), mav.seq,
                                        mav.srcSystem, mav.srcComponent)
         self._msgbuf = self._header.pack() + payload
         crc = mavutil.x25crc(self._msgbuf[1:])
         if ${crc_extra}:
-            crc.accumulate(chr(self.message_crcs[_header.msgId]))
+            crc.accumulate(chr(crc_extra))
         self._crc = crc.crc
         self._msgbuf += struct.pack('<H', self._crc)
         return self._msgbuf
@@ -138,7 +138,7 @@ class MAVLink_%s_message(MAVLink_message):
         	outf.write("\t\tself.%s = %s\n" % (f.name, f.name))
         outf.write("""
 	def pack(self, mav):
-		return MAVLink_message.pack(self, mav, struct.pack('%s'""" % m.fmtstr)
+		return MAVLink_message.pack(self, mav, %u, struct.pack('%s'""" % (m.crc_extra, m.fmtstr))
         if len(m.fields) != 0:
         	outf.write(", self." + ", self.".join(m.ordered_fieldnames))
         outf.write("))\n")
@@ -310,8 +310,14 @@ class MAVLink(object):
                     raise MAVError('Unable to unpack MAVLink payload type=%s fmt=%s payloadLength=%u: %s' % (
                         type, fmt, len(msgbuf[6:-2]), emsg))
 
-                # terminate any strings
                 tlist = list(t)
+                # handle sorted fields
+                if ${sort_fields}:
+                    t = tlist[:]
+                    for i in range(0, len(tlist)):
+                        tlist[i] = t[order_map[i]]
+
+                # terminate any strings
                 for i in range(0, len(tlist)):
                     if isinstance(tlist[i], str):
                         tlist[i] = MAVString(tlist[i])
@@ -389,8 +395,8 @@ def generate(basename, xml):
         for f in m.ordered_fields:
             m.fmtstr += mavfmt(f)
         m.order_map = [ 0 ] * len(m.fieldnames)
-        for i in range(0, len(m.ordered_fieldnames)):
-            m.order_map[i] = m.fieldnames.index(m.ordered_fieldnames[i])
+        for i in range(0, len(m.fieldnames)):
+            m.order_map[i] = m.ordered_fieldnames.index(m.fieldnames[i])
 
     print("Generating %s" % filename)
     outf = open(filename, "w")
