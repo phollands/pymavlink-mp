@@ -218,8 +218,12 @@ static inline ${return_type} mavlink_msg_${name_lower}_get_${name}(const mavlink
  */
 static inline void mavlink_msg_${name_lower}_decode(const mavlink_message_t* msg, mavlink_${name_lower}_t* ${name_lower})
 {
+#if MAVLINK_NEED_BYTE_SWAP
 ${{ordered_fields:	${decode_left}mavlink_msg_${name_lower}_get_${name}(msg${decode_right});
 }}
+#else
+	memcpy(${name_lower}, msg->payload, ${wire_length});
+#endif
 }
 ''', m)
     f.close()

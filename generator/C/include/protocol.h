@@ -53,7 +53,7 @@ static inline uint16_t mavlink_finalize_message_chan(mavlink_message_t* msg, uin
 	mavlink_ck_a(msg) = (uint8_t)(checksum & 0xFF);
 	mavlink_ck_b(msg) = (uint8_t)(checksum >> 8);
 
-	return length + MAVLINK_NUM_NON_STX_PAYLOAD_BYTES;
+	return length + MAVLINK_NUM_NON_PAYLOAD_BYTES;
 }
 
 
