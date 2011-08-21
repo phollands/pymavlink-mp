@@ -91,7 +91,7 @@ class MAVLink_message(object):
                                        mav.srcSystem, mav.srcComponent)
         self._msgbuf = self._header.pack() + payload
         crc = mavutil.x25crc(self._msgbuf[1:])
-        if ${crc_extra}:
+        if ${crc_extra}: # using CRC extra
             crc.accumulate(chr(crc_extra))
         self._crc = crc.crc
         self._msgbuf += struct.pack('<H', self._crc)
@@ -299,7 +299,7 @@ class MAVLink(object):
                 except struct.error, emsg:
                     raise MAVError('Unable to unpack MAVLink CRC: %s' % emsg)
                 crc2 = mavutil.x25crc(msgbuf[1:-2])
-                if ${crc_extra}:
+                if ${crc_extra}: # using CRC extra 
                     crc2.accumulate(chr(crc_extra))
                 if crc != crc2.crc:
                     raise MAVError('invalid MAVLink CRC in msgID %u 0x%04x should be 0x%04x' % (msgId, crc, crc2.crc))
