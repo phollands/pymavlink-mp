@@ -17,10 +17,11 @@ class MAVParseError(Exception):
         return self.message
 
 class MAVField(object):
-    def __init__(self, name, type, description=''):
+    def __init__(self, name, type, xml, description=''):
         self.name = name
         self.description = description
         self.array_length = None
+        self.omit_arg = False
         lengths = {
         'float'    : 4,
         'char'     : 1,
@@ -35,13 +36,18 @@ class MAVField(object):
         'uint64_t' : 8,
         }
 
+        if type=='uint8_t_mavlink_version':
+            type = 'uint8_t'
+            self.omit_arg = True
+            self.const_value = xml.version
+
         aidx = type.find("[")
         if aidx != -1:
             assert type[-1:] == ']'
             self.array_length = int(type[aidx+1:-1])
             type = type[0:aidx]
             if type == 'array':
-                type = 'uint8_t'
+                type = 'int8_t'
         if type in lengths:
             self.type_length = lengths[type]
             self.type = type
@@ -115,7 +121,7 @@ class MAVXML(object):
                 self.message.append(MAVType(attrs['name'], attrs['id'], p.CurrentLineNumber))
             elif in_element == "mavlink.messages.message.field":
                 check_attrs(attrs, ['name', 'type'], 'field')
-                self.message[-1].fields.append(MAVField(attrs['name'], attrs['type']))
+                self.message[-1].fields.append(MAVField(attrs['name'], attrs['type'], self))
             elif in_element == "mavlink.enums.enum":
                 check_attrs(attrs, ['name'], 'enum')
                 self.enum.append(MAVEnum(attrs['name']))

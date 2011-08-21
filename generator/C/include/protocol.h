@@ -709,42 +709,29 @@ static inline uint8_t put_array_by_index(const int8_t* b, uint8_t length, uint8_
 	return length;
 }
 
-/**
- * @brief Place a string into the buffer
- *
- * @param b the string to add
- * @param maxlength size of the array (for strings: length WITHOUT '\0' char)
- * @param bindex the position in the packet
- * @param buffer packet buffer
- * @return new position of the last used byte in the buffer
+
+/*
+ * Place a char array into a buffer
  */
-static inline uint8_t put_string_by_index(const char* b, uint8_t maxlength, uint8_t bindex, uint8_t* buffer)
+static inline void put_char_array_by_index(const char *b, uint8_t wire_offset, uint8_t array_length, uint8_t *buffer)
 {
-	uint16_t length = 0;
-	// Copy string into buffer, ensuring not to exceed the buffer size
-	int i;
-	for (i = 1; i < maxlength; i++)
-	{
-		length++;
-		// String characters
-		if (i < (maxlength - 1))
-		{
-			buffer[bindex+i] = b[i];
-			// Stop at null character
-			if (b[i] == '\0')
-			{
-				break;
-			}
-		}
-		// Enforce null termination at end of buffer
-		else if (i == (maxlength - 1))
-		{
-			buffer[i] = '\0';
-		}
-	}
-	// Write length into first field
-	put_uint8_t_by_index(length, bindex, buffer);
-	return length;
+	memcpy(buffer+wire_offset, b, array_length);
+}
+
+/*
+ * Place a uint8_t array into a buffer
+ */
+static inline void put_uint8_t_array_by_index(const uint8_t *b, uint8_t wire_offset, uint8_t array_length, uint8_t *buffer)
+{
+	memcpy(buffer+wire_offset, b, array_length);
+}
+
+/*
+ * Place a int8_t array into a buffer
+ */
+static inline void put_int8_t_array_by_index(const int8_t *b, uint8_t wire_offset, uint8_t array_length, uint8_t *buffer)
+{
+	memcpy(buffer+wire_offset, b, array_length);
 }
 
 /**
@@ -805,7 +792,7 @@ static inline uint8_t put_bitfield_n_by_index(int32_t b, uint8_t bits, uint8_t p
 		// First pack everything we can into the current 'open' byte
 		//curr_bits_n = bits_remain << 3; // Equals  bits_remain mod 8
 		//FIXME
-		if (bits_remain <= (8 - i_bit_index))
+		if (bits_remain <= (uint8_t)(8 - i_bit_index))
 		{
 			// Enough space
 			curr_bits_n = bits_remain;
@@ -839,6 +826,93 @@ static inline uint8_t put_bitfield_n_by_index(int32_t b, uint8_t bits, uint8_t p
 	if (i_bit_index != 7) i_byte_index++;
 	return i_byte_index - packet_index;
 }
+
+#define MAVLINK_MSG_RETURN_int8_t(msg, wire_offset) (uint8_t)msg->payload[wire_offset]
+#define MAVLINK_MSG_RETURN_uint8_t(msg, wire_offset) (uint8_t)msg->payload[wire_offset]
+
+#ifndef MAVLINK_MSG_RETURN_uint16_t
+static inline uint16_t MAVLINK_MSG_RETURN_uint16_t(const mavlink_message_t *msg, uint8_t wire_offset)
+{
+	generic_16bit r;
+	r.b[1] = msg->payload[wire_offset+0];
+	r.b[0] = msg->payload[wire_offset+1];
+	return (uint16_t)r.s;
+}
+#endif
+
+#ifndef MAVLINK_MSG_RETURN_int16_t
+#define MAVLINK_MSG_RETURN_int16_t(msg, wire_offset) (int16_t)MAVLINK_MSG_RETURN_uint16_t(msg, wire_offset)
+#endif
+
+#ifndef MAVLINK_MSG_RETURN_uint32_t
+static inline uint32_t MAVLINK_MSG_RETURN_uint32_t(const mavlink_message_t *msg, uint8_t wire_offset)
+{
+	generic_32bit r;
+	r.b[3] = msg->payload[wire_offset+0];
+	r.b[2] = msg->payload[wire_offset+1];
+	r.b[1] = msg->payload[wire_offset+2];
+	r.b[0] = msg->payload[wire_offset+3];
+	return (uint32_t)r.i;
+}
+#endif
+
+#ifndef MAVLINK_MSG_RETURN_int32_t
+#define MAVLINK_MSG_RETURN_int32_t(msg, wire_offset) (int16_t)MAVLINK_MSG_RETURN_uint32_t(msg, wire_offset)
+#endif
+
+#ifndef MAVLINK_MSG_RETURN_uint64_t
+static inline uint64_t MAVLINK_MSG_RETURN_uint64_t(const mavlink_message_t *msg, uint8_t wire_offset)
+{
+	generic_64bit r;
+	r.b[7] = msg->payload[wire_offset+0];
+	r.b[6] = msg->payload[wire_offset+1];
+	r.b[5] = msg->payload[wire_offset+2];
+	r.b[4] = msg->payload[wire_offset+3];
+	r.b[3] = msg->payload[wire_offset+4];
+	r.b[2] = msg->payload[wire_offset+5];
+	r.b[1] = msg->payload[wire_offset+6];
+	r.b[0] = msg->payload[wire_offset+7];
+	return (uint64_t)r.ll;
+}
+#endif
+
+#ifndef MAVLINK_MSG_RETURN_int64_t
+#define MAVLINK_MSG_RETURN_int64_t(msg, wire_offset) (int16_t)MAVLINK_MSG_RETURN_uint64_t(msg, wire_offset)
+#endif
+
+#ifndef MAVLINK_MSG_RETURN_float
+static inline uint32_t MAVLINK_MSG_RETURN_float(const mavlink_message_t *msg, uint8_t wire_offset)
+{
+	generic_32bit r;
+	r.b[3] = msg->payload[wire_offset+0];
+	r.b[2] = msg->payload[wire_offset+1];
+	r.b[1] = msg->payload[wire_offset+2];
+	r.b[0] = msg->payload[wire_offset+3];
+	return r.f;
+}
+#endif
+
+static inline uint16_t MAVLINK_MSG_RETURN_char_array(const mavlink_message_t *msg, char *value, 
+						     uint8_t array_length, uint8_t wire_offset)
+{
+	memcpy(value, &msg->payload[wire_offset], array_length);
+	return array_length;
+}
+
+static inline uint16_t MAVLINK_MSG_RETURN_uint8_t_array(const mavlink_message_t *msg, uint8_t *value, 
+							uint8_t array_length, uint8_t wire_offset)
+{
+	memcpy(value, &msg->payload[wire_offset], array_length);
+	return array_length;
+}
+
+static inline uint16_t MAVLINK_MSG_RETURN_int8_t_array(const mavlink_message_t *msg, int8_t *value, 
+						       uint8_t array_length, uint8_t wire_offset)
+{
+	memcpy(value, &msg->payload[wire_offset], array_length);
+	return array_length;
+}
+
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
@@ -977,6 +1051,6 @@ static inline void mavlink_send_uart(mavlink_channel_t chan, mavlink_message_t* 
 	comm_send_ch(chan, msg->ck_a);
 	comm_send_ch(chan, msg->ck_b);
 }
-#endif
+#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
 #endif /* _MAVLINK_PROTOCOL_H_ */
