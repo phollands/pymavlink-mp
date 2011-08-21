@@ -18,7 +18,7 @@ from mavextra import *
 locator = None
 formatter = None
 
-def plotit(x, y, fields, colors=[], loc=None):
+def plotit(x, y, fields, colors=[]):
     '''plot a set of graphs using date for x axis'''
     global locator, formatter
     pylab.ion()
@@ -46,6 +46,8 @@ def plotit(x, y, fields, colors=[], loc=None):
     ax1.xaxis.set_major_locator(locator)
     ax1.xaxis.set_major_formatter(formatter)
     empty = True
+    ax1_labels = []
+    ax2_labels = []
     for i in range(0, len(fields)):
         if len(x[i]) == 0:
             print("Failed to find any values for field %s" % fields[i])
@@ -61,18 +63,27 @@ def plotit(x, y, fields, colors=[], loc=None):
             ax = ax2
             ax2.xaxis.set_major_locator(locator)
             ax2.xaxis.set_major_formatter(formatter)
+            label = fields[i]
+            if label.endswith(":2"):
+                label = label[:-2]
+            ax2_labels.append(label)
         else:
+            ax1_labels.append(fields[i])
             ax = ax1
         ax.plot_date(x[i], y[i], color=color, label=fields[i],
                      linestyle='-', marker='None', tz=None)
         pylab.draw()
         empty = False
+    if ax1_labels != []:
+        if ax2_labels == []:
+            ax1.legend(ax1_labels,loc='upper right')
+        else:
+            ax1.legend(ax1_labels,loc='upper left')
+    if ax2_labels != []:
+        ax2.legend(ax2_labels,loc='upper right')
     if empty:
         print("No data to graph")
         return
-    if loc is not None:
-        pylab.legend(loc=loc)
-        pylab.draw()
 
 
 from optparse import OptionParser
@@ -150,6 +161,10 @@ def process_file(filename):
         tdays += 719163 # pylab wants it since 0001-01-01
         add_data(tdays, msg, mlog.messages)
 
+if len(filenames) == 0:
+    print("No files to process")
+    sys.exit(1)
+
 if opts.labels is not None:
     labels = opts.labels.split(',')
     if len(labels) != len(fields)*len(filenames):
@@ -170,7 +185,7 @@ for fi in range(0, len(filenames)):
         lab = labels[fi*len(fields):(fi+1)*len(fields)]
     else:
         lab = fields[:]
-    plotit(x, y, lab, colors=colors[fi*len(fields):], loc='upper right')
+    plotit(x, y, lab, colors=colors[fi*len(fields):])
     for i in range(0, len(x)):
         x[i] = []
         y[i] = []
