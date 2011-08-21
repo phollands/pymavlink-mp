@@ -28,3 +28,7 @@ def TrueHeading(SERVO_OUTPUT_RAW):
     rc3_max = 1850
     p = float(SERVO_OUTPUT_RAW.servo3_raw - rc3_min) / (rc3_max - rc3_min)
     return 172 + (1.0-p)*(326 - 172)
+
+def kmh(mps):
+    '''convert m/s to Km/h'''
+    return mps*3.6
