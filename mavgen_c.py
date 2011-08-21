@@ -7,13 +7,14 @@ Released under GNU GPL version 3 or later
 '''
 
 import sys, textwrap, os, time
-import mavparse
-from mavparse import subwrite
+import mavparse, mavtemplate
+
+t = mavtemplate.MAVTemplate()
 
 def generate_mavlink_h(directory, xml):
     '''generate mavlink.h'''
     f = open(os.path.join(directory, "mavlink.h"), mode='w')
-    subwrite(f,'''
+    t.write(f,'''
 /** @file
  *	@brief MAVLink comm protocol built from ${basename}.xml
  *	@see http://pixhawk.ethz.ch/software/mavlink
@@ -28,23 +29,10 @@ def generate_mavlink_h(directory, xml):
 ''', xml)
     f.close()
 
-def generate_enum(f, enum):
-    '''generate one enum in main header'''
-    subwrite(f,'''
-/** @brief ${description} */
-enum ${name}
-{
-${{entry:	${name}=${value}, /* ${description} |${{param:${description}| }} */
-}}
-};
-
-''', enum)
-    
-
 def generate_main_h(directory, xml):
     '''generate main header per XML file'''
     f = open(os.path.join(directory, xml.basename + ".h"), mode='w')
-    subwrite(f, '''
+    t.write(f, '''
 /** @file
  *	@brief MAVLink comm protocol generated from ${basename}.xml
  *	@see http://qgroundcontrol.org/mavlink/
@@ -75,12 +63,15 @@ extern "C" {
 
 // ENUM DEFINITIONS
 
-''', xml)
+${{enum:
+/** @brief ${description} */
+enum ${name}
+{
+${{entry:	${name}=${value}, /* ${description} |${{param:${description}| }} */
+}}
+};
+}}
 
-    for enum in xml.enum:
-        generate_enum(f, enum)
-
-    subwrite(f, '''
 // MESSAGE DEFINITIONS
 ${{message:#include "./mavlink_msg_${name_lower}.h
 }}
@@ -102,7 +93,7 @@ ${{message:#include "./mavlink_msg_${name_lower}.h
 def generate_message_h(directory, m):
     '''generate per-message header for a XML file'''
     f = open(os.path.join(directory, 'mavlink_msg_%s.h' % m.name_lower), mode='w')
-    subwrite(f, '''
+    t.write(f, '''
 // MESSAGE ${name} PACKING
 
 #define MAVLINK_MSG_ID_${name} ${id}
