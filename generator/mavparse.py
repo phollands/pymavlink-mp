@@ -190,16 +190,19 @@ class MAVXML(object):
         for m in self.message:
             m.wire_length = 0
             m.fieldnames = []
+            m.ordered_fieldnames = []
             if self.sort_fields:
                 m.ordered_fields = sorted(m.fields,
                                           key=operator.attrgetter('type_length'),
                                           reverse=True)
             else:
                 m.ordered_fields = m.fields
+            for f in m.fields:
+                m.fieldnames.append(f.name)
             for f in m.ordered_fields:
                 f.wire_offset = m.wire_length
                 m.wire_length += f.wire_length
-                m.fieldnames.append(f.name)
+                m.ordered_fieldnames.append(f.name)
             m.crc_extra = message_checksum(m)
             self.message_lengths[m.id] = m.wire_length
             self.message_crcs[m.id] = m.crc_extra

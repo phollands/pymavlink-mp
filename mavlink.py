@@ -6,18 +6,7 @@ Generated from: ardupilotmega.xml,common.xml
 Note: this file has been auto-generated. DO NOT EDIT
 '''
 
-import struct, array
-
-def x25crc(buf):
-    '''x25 CRC - based on checksum.h from mavlink library'''
-    accum = 0xffff
-    bytes = array.array('B', buf)
-    for b in bytes:
-        tmp = b ^ (accum & 0xff)
-        tmp = (tmp ^ (tmp<<4)) & 0xFF
-        accum = (accum>>8) ^ (tmp<<8) ^ (tmp<<3) ^ (tmp>>4)
-        accum = accum & 0xFFFF
-    return accum
+import struct, array, mavutil
 
 class MAVLink_header(object):
     '''MAVLink message header'''
@@ -85,7 +74,10 @@ class MAVLink_message(object):
         self._header  = MAVLink_header(self._header.msgId, len(payload), mav.seq,
                                        mav.srcSystem, mav.srcComponent)
         self._msgbuf = self._header.pack() + payload
-        self._crc = x25crc(self._msgbuf[1:])
+        crc = mavutil.x25crc(self._msgbuf[1:])
+        if False:
+            crc.accumulate(chr(self.message_crcs[_header.msgId]))
+        self._crc = crc.crc
         self._msgbuf += struct.pack('<H', self._crc)
         return self._msgbuf
 
@@ -1523,77 +1515,77 @@ class MAVLink_debug_message(MAVLink_message):
 
 
 mavlink_map = {
-	MAVLINK_MSG_ID_SENSOR_OFFSETS : ( '>hhhfiiffffff', MAVLink_sensor_offsets_message ),
-	MAVLINK_MSG_ID_SET_MAG_OFFSETS : ( '>BBhhh', MAVLink_set_mag_offsets_message ),
-	MAVLINK_MSG_ID_HEARTBEAT : ( '>BBB', MAVLink_heartbeat_message ),
-	MAVLINK_MSG_ID_BOOT : ( '>I', MAVLink_boot_message ),
-	MAVLINK_MSG_ID_SYSTEM_TIME : ( '>Q', MAVLink_system_time_message ),
-	MAVLINK_MSG_ID_PING : ( '>IBBQ', MAVLink_ping_message ),
-	MAVLINK_MSG_ID_SYSTEM_TIME_UTC : ( '>II', MAVLink_system_time_utc_message ),
-	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL : ( '>BBB25s', MAVLink_change_operator_control_message ),
-	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK : ( '>BBB', MAVLink_change_operator_control_ack_message ),
-	MAVLINK_MSG_ID_AUTH_KEY : ( '>32s', MAVLink_auth_key_message ),
-	MAVLINK_MSG_ID_ACTION_ACK : ( '>BB', MAVLink_action_ack_message ),
-	MAVLINK_MSG_ID_ACTION : ( '>BBB', MAVLink_action_message ),
-	MAVLINK_MSG_ID_SET_MODE : ( '>BB', MAVLink_set_mode_message ),
-	MAVLINK_MSG_ID_SET_NAV_MODE : ( '>BB', MAVLink_set_nav_mode_message ),
-	MAVLINK_MSG_ID_PARAM_REQUEST_READ : ( '>BB15sh', MAVLink_param_request_read_message ),
-	MAVLINK_MSG_ID_PARAM_REQUEST_LIST : ( '>BB', MAVLink_param_request_list_message ),
-	MAVLINK_MSG_ID_PARAM_VALUE : ( '>15sfHH', MAVLink_param_value_message ),
-	MAVLINK_MSG_ID_PARAM_SET : ( '>BB15sf', MAVLink_param_set_message ),
-	MAVLINK_MSG_ID_GPS_RAW_INT : ( '>QBiiiffff', MAVLink_gps_raw_int_message ),
-	MAVLINK_MSG_ID_SCALED_IMU : ( '>Qhhhhhhhhh', MAVLink_scaled_imu_message ),
-	MAVLINK_MSG_ID_GPS_STATUS : ( '>B20s20s20s20s20s', MAVLink_gps_status_message ),
-	MAVLINK_MSG_ID_RAW_IMU : ( '>Qhhhhhhhhh', MAVLink_raw_imu_message ),
-	MAVLINK_MSG_ID_RAW_PRESSURE : ( '>Qhhhh', MAVLink_raw_pressure_message ),
-	MAVLINK_MSG_ID_SCALED_PRESSURE : ( '>Qffh', MAVLink_scaled_pressure_message ),
-	MAVLINK_MSG_ID_ATTITUDE : ( '>Qffffff', MAVLink_attitude_message ),
-	MAVLINK_MSG_ID_LOCAL_POSITION : ( '>Qffffff', MAVLink_local_position_message ),
-	MAVLINK_MSG_ID_GLOBAL_POSITION : ( '>Qffffff', MAVLink_global_position_message ),
-	MAVLINK_MSG_ID_GPS_RAW : ( '>QBfffffff', MAVLink_gps_raw_message ),
-	MAVLINK_MSG_ID_SYS_STATUS : ( '>BBBHHHH', MAVLink_sys_status_message ),
-	MAVLINK_MSG_ID_RC_CHANNELS_RAW : ( '>HHHHHHHHB', MAVLink_rc_channels_raw_message ),
-	MAVLINK_MSG_ID_RC_CHANNELS_SCALED : ( '>hhhhhhhhB', MAVLink_rc_channels_scaled_message ),
-	MAVLINK_MSG_ID_SERVO_OUTPUT_RAW : ( '>HHHHHHHH', MAVLink_servo_output_raw_message ),
-	MAVLINK_MSG_ID_WAYPOINT : ( '>BBHBBBBfffffff', MAVLink_waypoint_message ),
-	MAVLINK_MSG_ID_WAYPOINT_REQUEST : ( '>BBH', MAVLink_waypoint_request_message ),
-	MAVLINK_MSG_ID_WAYPOINT_SET_CURRENT : ( '>BBH', MAVLink_waypoint_set_current_message ),
-	MAVLINK_MSG_ID_WAYPOINT_CURRENT : ( '>H', MAVLink_waypoint_current_message ),
-	MAVLINK_MSG_ID_WAYPOINT_REQUEST_LIST : ( '>BB', MAVLink_waypoint_request_list_message ),
-	MAVLINK_MSG_ID_WAYPOINT_COUNT : ( '>BBH', MAVLink_waypoint_count_message ),
-	MAVLINK_MSG_ID_WAYPOINT_CLEAR_ALL : ( '>BB', MAVLink_waypoint_clear_all_message ),
-	MAVLINK_MSG_ID_WAYPOINT_REACHED : ( '>H', MAVLink_waypoint_reached_message ),
-	MAVLINK_MSG_ID_WAYPOINT_ACK : ( '>BBB', MAVLink_waypoint_ack_message ),
-	MAVLINK_MSG_ID_GPS_SET_GLOBAL_ORIGIN : ( '>BBiii', MAVLink_gps_set_global_origin_message ),
-	MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET : ( '>iii', MAVLink_gps_local_origin_set_message ),
-	MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_SET : ( '>BBffff', MAVLink_local_position_setpoint_set_message ),
-	MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT : ( '>ffff', MAVLink_local_position_setpoint_message ),
-	MAVLINK_MSG_ID_CONTROL_STATUS : ( '>BBBBBBBB', MAVLink_control_status_message ),
-	MAVLINK_MSG_ID_SAFETY_SET_ALLOWED_AREA : ( '>BBBffffff', MAVLink_safety_set_allowed_area_message ),
-	MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA : ( '>Bffffff', MAVLink_safety_allowed_area_message ),
-	MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_THRUST : ( '>BBffff', MAVLink_set_roll_pitch_yaw_thrust_message ),
-	MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_SPEED_THRUST : ( '>BBffff', MAVLink_set_roll_pitch_yaw_speed_thrust_message ),
-	MAVLINK_MSG_ID_ROLL_PITCH_YAW_THRUST_SETPOINT : ( '>Qffff', MAVLink_roll_pitch_yaw_thrust_setpoint_message ),
-	MAVLINK_MSG_ID_ROLL_PITCH_YAW_SPEED_THRUST_SETPOINT : ( '>Qffff', MAVLink_roll_pitch_yaw_speed_thrust_setpoint_message ),
-	MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT : ( '>ffhhHfff', MAVLink_nav_controller_output_message ),
-	MAVLINK_MSG_ID_POSITION_TARGET : ( '>ffff', MAVLink_position_target_message ),
-	MAVLINK_MSG_ID_STATE_CORRECTION : ( '>fffffffff', MAVLink_state_correction_message ),
-	MAVLINK_MSG_ID_SET_ALTITUDE : ( '>BI', MAVLink_set_altitude_message ),
-	MAVLINK_MSG_ID_REQUEST_DATA_STREAM : ( '>BBBHB', MAVLink_request_data_stream_message ),
-	MAVLINK_MSG_ID_HIL_STATE : ( '>Qffffffiiihhhhhh', MAVLink_hil_state_message ),
-	MAVLINK_MSG_ID_HIL_CONTROLS : ( '>QffffBB', MAVLink_hil_controls_message ),
-	MAVLINK_MSG_ID_MANUAL_CONTROL : ( '>BffffBBBB', MAVLink_manual_control_message ),
-	MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE : ( '>BBHHHHHHHH', MAVLink_rc_channels_override_message ),
-	MAVLINK_MSG_ID_GLOBAL_POSITION_INT : ( '>iiihhh', MAVLink_global_position_int_message ),
-	MAVLINK_MSG_ID_VFR_HUD : ( '>ffhHff', MAVLink_vfr_hud_message ),
-	MAVLINK_MSG_ID_COMMAND : ( '>BBBBffff', MAVLink_command_message ),
-	MAVLINK_MSG_ID_COMMAND_ACK : ( '>ff', MAVLink_command_ack_message ),
-	MAVLINK_MSG_ID_OPTICAL_FLOW : ( '>QBBBf', MAVLink_optical_flow_message ),
-	MAVLINK_MSG_ID_DEBUG_VECT : ( '>10sQfff', MAVLink_debug_vect_message ),
-	MAVLINK_MSG_ID_NAMED_VALUE_FLOAT : ( '>10sf', MAVLink_named_value_float_message ),
-	MAVLINK_MSG_ID_NAMED_VALUE_INT : ( '>10si', MAVLink_named_value_int_message ),
-	MAVLINK_MSG_ID_STATUSTEXT : ( '>B50s', MAVLink_statustext_message ),
-	MAVLINK_MSG_ID_DEBUG : ( '>Bf', MAVLink_debug_message ),
+	MAVLINK_MSG_ID_SENSOR_OFFSETS : ( '>hhhfiiffffff', MAVLink_sensor_offsets_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 240 ),
+	MAVLINK_MSG_ID_SET_MAG_OFFSETS : ( '>BBhhh', MAVLink_set_mag_offsets_message, [0, 1, 2, 3, 4], 247 ),
+	MAVLINK_MSG_ID_HEARTBEAT : ( '>BBB', MAVLink_heartbeat_message, [0, 1, 2], 133 ),
+	MAVLINK_MSG_ID_BOOT : ( '>I', MAVLink_boot_message, [0], 61 ),
+	MAVLINK_MSG_ID_SYSTEM_TIME : ( '>Q', MAVLink_system_time_message, [0], 13 ),
+	MAVLINK_MSG_ID_PING : ( '>IBBQ', MAVLink_ping_message, [0, 1, 2, 3], 242 ),
+	MAVLINK_MSG_ID_SYSTEM_TIME_UTC : ( '>II', MAVLink_system_time_utc_message, [0, 1], 160 ),
+	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL : ( '>BBB25s', MAVLink_change_operator_control_message, [0, 1, 2, 3], 5 ),
+	MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK : ( '>BBB', MAVLink_change_operator_control_ack_message, [0, 1, 2], 129 ),
+	MAVLINK_MSG_ID_AUTH_KEY : ( '>32s', MAVLink_auth_key_message, [0], 181 ),
+	MAVLINK_MSG_ID_ACTION_ACK : ( '>BB', MAVLink_action_ack_message, [0, 1], 8 ),
+	MAVLINK_MSG_ID_ACTION : ( '>BBB', MAVLink_action_message, [0, 1, 2], 181 ),
+	MAVLINK_MSG_ID_SET_MODE : ( '>BB', MAVLink_set_mode_message, [0, 1], 204 ),
+	MAVLINK_MSG_ID_SET_NAV_MODE : ( '>BB', MAVLink_set_nav_mode_message, [0, 1], 134 ),
+	MAVLINK_MSG_ID_PARAM_REQUEST_READ : ( '>BB15sh', MAVLink_param_request_read_message, [0, 1, 2, 3], 61 ),
+	MAVLINK_MSG_ID_PARAM_REQUEST_LIST : ( '>BB', MAVLink_param_request_list_message, [0, 1], 16 ),
+	MAVLINK_MSG_ID_PARAM_VALUE : ( '>15sfHH', MAVLink_param_value_message, [0, 1, 2, 3], 3 ),
+	MAVLINK_MSG_ID_PARAM_SET : ( '>BB15sf', MAVLink_param_set_message, [0, 1, 2, 3], 142 ),
+	MAVLINK_MSG_ID_GPS_RAW_INT : ( '>QBiiiffff', MAVLink_gps_raw_int_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 206 ),
+	MAVLINK_MSG_ID_SCALED_IMU : ( '>Qhhhhhhhhh', MAVLink_scaled_imu_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 140 ),
+	MAVLINK_MSG_ID_GPS_STATUS : ( '>B20s20s20s20s20s', MAVLink_gps_status_message, [0, 1, 2, 3, 4, 5], 101 ),
+	MAVLINK_MSG_ID_RAW_IMU : ( '>Qhhhhhhhhh', MAVLink_raw_imu_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 120 ),
+	MAVLINK_MSG_ID_RAW_PRESSURE : ( '>Qhhhh', MAVLink_raw_pressure_message, [0, 1, 2, 3, 4], 233 ),
+	MAVLINK_MSG_ID_SCALED_PRESSURE : ( '>Qffh', MAVLink_scaled_pressure_message, [0, 1, 2, 3], 153 ),
+	MAVLINK_MSG_ID_ATTITUDE : ( '>Qffffff', MAVLink_attitude_message, [0, 1, 2, 3, 4, 5, 6], 79 ),
+	MAVLINK_MSG_ID_LOCAL_POSITION : ( '>Qffffff', MAVLink_local_position_message, [0, 1, 2, 3, 4, 5, 6], 2 ),
+	MAVLINK_MSG_ID_GLOBAL_POSITION : ( '>Qffffff', MAVLink_global_position_message, [0, 1, 2, 3, 4, 5, 6], 220 ),
+	MAVLINK_MSG_ID_GPS_RAW : ( '>QBfffffff', MAVLink_gps_raw_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 215 ),
+	MAVLINK_MSG_ID_SYS_STATUS : ( '>BBBHHHH', MAVLink_sys_status_message, [0, 1, 2, 3, 4, 5, 6], 90 ),
+	MAVLINK_MSG_ID_RC_CHANNELS_RAW : ( '>HHHHHHHHB', MAVLink_rc_channels_raw_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 1 ),
+	MAVLINK_MSG_ID_RC_CHANNELS_SCALED : ( '>hhhhhhhhB', MAVLink_rc_channels_scaled_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 92 ),
+	MAVLINK_MSG_ID_SERVO_OUTPUT_RAW : ( '>HHHHHHHH', MAVLink_servo_output_raw_message, [0, 1, 2, 3, 4, 5, 6, 7], 223 ),
+	MAVLINK_MSG_ID_WAYPOINT : ( '>BBHBBBBfffffff', MAVLink_waypoint_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 195 ),
+	MAVLINK_MSG_ID_WAYPOINT_REQUEST : ( '>BBH', MAVLink_waypoint_request_message, [0, 1, 2], 138 ),
+	MAVLINK_MSG_ID_WAYPOINT_SET_CURRENT : ( '>BBH', MAVLink_waypoint_set_current_message, [0, 1, 2], 47 ),
+	MAVLINK_MSG_ID_WAYPOINT_CURRENT : ( '>H', MAVLink_waypoint_current_message, [0], 241 ),
+	MAVLINK_MSG_ID_WAYPOINT_REQUEST_LIST : ( '>BB', MAVLink_waypoint_request_list_message, [0, 1], 68 ),
+	MAVLINK_MSG_ID_WAYPOINT_COUNT : ( '>BBH', MAVLink_waypoint_count_message, [0, 1, 2], 5 ),
+	MAVLINK_MSG_ID_WAYPOINT_CLEAR_ALL : ( '>BB', MAVLink_waypoint_clear_all_message, [0, 1], 232 ),
+	MAVLINK_MSG_ID_WAYPOINT_REACHED : ( '>H', MAVLink_waypoint_reached_message, [0], 235 ),
+	MAVLINK_MSG_ID_WAYPOINT_ACK : ( '>BBB', MAVLink_waypoint_ack_message, [0, 1, 2], 46 ),
+	MAVLINK_MSG_ID_GPS_SET_GLOBAL_ORIGIN : ( '>BBiii', MAVLink_gps_set_global_origin_message, [0, 1, 2, 3, 4], 13 ),
+	MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET : ( '>iii', MAVLink_gps_local_origin_set_message, [0, 1, 2], 180 ),
+	MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_SET : ( '>BBffff', MAVLink_local_position_setpoint_set_message, [0, 1, 2, 3, 4, 5], 114 ),
+	MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT : ( '>ffff', MAVLink_local_position_setpoint_message, [0, 1, 2, 3], 40 ),
+	MAVLINK_MSG_ID_CONTROL_STATUS : ( '>BBBBBBBB', MAVLink_control_status_message, [0, 1, 2, 3, 4, 5, 6, 7], 102 ),
+	MAVLINK_MSG_ID_SAFETY_SET_ALLOWED_AREA : ( '>BBBffffff', MAVLink_safety_set_allowed_area_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 208 ),
+	MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA : ( '>Bffffff', MAVLink_safety_allowed_area_message, [0, 1, 2, 3, 4, 5, 6], 162 ),
+	MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_THRUST : ( '>BBffff', MAVLink_set_roll_pitch_yaw_thrust_message, [0, 1, 2, 3, 4, 5], 9 ),
+	MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_SPEED_THRUST : ( '>BBffff', MAVLink_set_roll_pitch_yaw_speed_thrust_message, [0, 1, 2, 3, 4, 5], 49 ),
+	MAVLINK_MSG_ID_ROLL_PITCH_YAW_THRUST_SETPOINT : ( '>Qffff', MAVLink_roll_pitch_yaw_thrust_setpoint_message, [0, 1, 2, 3, 4], 28 ),
+	MAVLINK_MSG_ID_ROLL_PITCH_YAW_SPEED_THRUST_SETPOINT : ( '>Qffff', MAVLink_roll_pitch_yaw_speed_thrust_setpoint_message, [0, 1, 2, 3, 4], 95 ),
+	MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT : ( '>ffhhHfff', MAVLink_nav_controller_output_message, [0, 1, 2, 3, 4, 5, 6, 7], 100 ),
+	MAVLINK_MSG_ID_POSITION_TARGET : ( '>ffff', MAVLink_position_target_message, [0, 1, 2, 3], 67 ),
+	MAVLINK_MSG_ID_STATE_CORRECTION : ( '>fffffffff', MAVLink_state_correction_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 227 ),
+	MAVLINK_MSG_ID_SET_ALTITUDE : ( '>BI', MAVLink_set_altitude_message, [0, 1], 223 ),
+	MAVLINK_MSG_ID_REQUEST_DATA_STREAM : ( '>BBBHB', MAVLink_request_data_stream_message, [0, 1, 2, 3, 4], 95 ),
+	MAVLINK_MSG_ID_HIL_STATE : ( '>Qffffffiiihhhhhh', MAVLink_hil_state_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 180 ),
+	MAVLINK_MSG_ID_HIL_CONTROLS : ( '>QffffBB', MAVLink_hil_controls_message, [0, 1, 2, 3, 4, 5, 6], 113 ),
+	MAVLINK_MSG_ID_MANUAL_CONTROL : ( '>BffffBBBB', MAVLink_manual_control_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 72 ),
+	MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE : ( '>BBHHHHHHHH', MAVLink_rc_channels_override_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 51 ),
+	MAVLINK_MSG_ID_GLOBAL_POSITION_INT : ( '>iiihhh', MAVLink_global_position_int_message, [0, 1, 2, 3, 4, 5], 147 ),
+	MAVLINK_MSG_ID_VFR_HUD : ( '>ffhHff', MAVLink_vfr_hud_message, [0, 1, 2, 3, 4, 5], 103 ),
+	MAVLINK_MSG_ID_COMMAND : ( '>BBBBffff', MAVLink_command_message, [0, 1, 2, 3, 4, 5, 6, 7], 130 ),
+	MAVLINK_MSG_ID_COMMAND_ACK : ( '>ff', MAVLink_command_ack_message, [0, 1], 228 ),
+	MAVLINK_MSG_ID_OPTICAL_FLOW : ( '>QBBBf', MAVLink_optical_flow_message, [0, 1, 2, 3, 4], 94 ),
+	MAVLINK_MSG_ID_DEBUG_VECT : ( '>10sQfff', MAVLink_debug_vect_message, [0, 1, 2, 3, 4], 239 ),
+	MAVLINK_MSG_ID_NAMED_VALUE_FLOAT : ( '>10sf', MAVLink_named_value_float_message, [0, 1], 6 ),
+	MAVLINK_MSG_ID_NAMED_VALUE_INT : ( '>10si', MAVLink_named_value_int_message, [0, 1], 103 ),
+	MAVLINK_MSG_ID_STATUSTEXT : ( '>B50s', MAVLink_statustext_message, [0, 1], 88 ),
+	MAVLINK_MSG_ID_DEBUG : ( '>Bf', MAVLink_debug_message, [0, 1], 197 ),
 }
 
 class MAVError(Exception):
@@ -1636,6 +1628,10 @@ class MAVLink(object):
                 self.expected_length = 6
                 self.have_prefix_error = False
                 self.robust_parsing = False
+                self.protocol_marker = 85
+                self.little_endian = False
+                self.crc_extra = False
+                self.sort_fields = False
 
         def set_callback(self, callback, *args, **kwargs):
             self.callback = callback
@@ -1703,19 +1699,23 @@ class MAVLink(object):
                 if mlen != len(msgbuf)-8:
                     raise MAVError('invalid MAVLink message length. Got %u expected %u, msgId=%u' % (len(msgbuf)-8, mlen, msgId))
 
+                if not msgId in mavlink_map:
+                    raise MAVError('unknown MAVLink message ID %u' % msgId)
+
+                # decode the payload
+                (fmt, type, order_map, crc_extra) = mavlink_map[msgId]
+
                 # decode the checksum
                 try:
                     crc, = struct.unpack('<H', msgbuf[-2:])
                 except struct.error, emsg:
                     raise MAVError('Unable to unpack MAVLink CRC: %s' % emsg)
-                crc2 = x25crc(msgbuf[1:-2])
-                if crc != crc2:
-                    raise MAVError('invalid MAVLink CRC in msgID %u 0x%04x should be 0x%04x' % (msgId, crc, crc2))
-                if not msgId in mavlink_map:
-                    raise MAVError('unknown MAVLink message ID %u' % msgId)
+                crc2 = mavutil.x25crc(msgbuf[1:-2])
+                if False:
+                    crc2.accumulate(chr(crc_extra))
+                if crc != crc2.crc:
+                    raise MAVError('invalid MAVLink CRC in msgID %u 0x%04x should be 0x%04x' % (msgId, crc, crc2.crc))
 
-                # decode the payload
-                (fmt, type) = mavlink_map[msgId]
                 try:
                     t = struct.unpack(fmt, msgbuf[6:-2])
                 except struct.error, emsg:

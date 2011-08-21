@@ -22,18 +22,7 @@ Generated from: ${FILELIST}
 Note: this file has been auto-generated. DO NOT EDIT
 '''
 
-import struct, array
-
-def x25crc(buf):
-    '''x25 CRC - based on checksum.h from mavlink library'''
-    accum = 0xffff
-    bytes = array.array('B', buf)
-    for b in bytes:
-        tmp = b ^ (accum & 0xff)
-        tmp = (tmp ^ (tmp<<4)) & 0xFF
-        accum = (accum>>8) ^ (tmp<<8) ^ (tmp<<3) ^ (tmp>>4)
-        accum = accum & 0xFFFF
-    return accum
+import struct, array, mavutil
 
 class MAVLink_header(object):
     '''MAVLink message header'''
@@ -101,12 +90,16 @@ class MAVLink_message(object):
         self._header  = MAVLink_header(self._header.msgId, len(payload), mav.seq,
                                        mav.srcSystem, mav.srcComponent)
         self._msgbuf = self._header.pack() + payload
-        self._crc = x25crc(self._msgbuf[1:])
+        crc = mavutil.x25crc(self._msgbuf[1:])
+        if ${crc_extra}:
+            crc.accumulate(chr(self.message_crcs[_header.msgId]))
+        self._crc = crc.crc
         self._msgbuf += struct.pack('<H', self._crc)
         return self._msgbuf
 
 """, {'FILELIST' : ",".join(args),
-      'PROTOCOL_MARKER' : xml.protocol_marker})
+      'PROTOCOL_MARKER' : xml.protocol_marker,
+      'crc_extra' : xml.crc_extra })
 
 
 def generate_enums(outf, enums):
@@ -147,7 +140,7 @@ class MAVLink_%s_message(MAVLink_message):
 	def pack(self, mav):
 		return MAVLink_message.pack(self, mav, struct.pack('%s'""" % m.fmtstr)
         if len(m.fields) != 0:
-        	outf.write(", self." + ", self.".join(m.fieldnames))
+        	outf.write(", self." + ", self.".join(m.ordered_fieldnames))
         outf.write("))\n")
 
 
@@ -178,8 +171,8 @@ def generate_mavlink_class(outf, msgs, xml):
 
     outf.write("\n\nmavlink_map = {\n");
     for m in msgs:
-        outf.write("\tMAVLINK_MSG_ID_%s : ( '%s', MAVLink_%s_message ),\n" % (
-            m.name.upper(), m.fmtstr, m.name.lower()))
+        outf.write("\tMAVLINK_MSG_ID_%s : ( '%s', MAVLink_%s_message, %s, %u ),\n" % (
+            m.name.upper(), m.fmtstr, m.name.lower(), m.order_map, m.crc_extra))
     outf.write("}\n\n")
     
     t.write(outf, """
@@ -223,6 +216,10 @@ class MAVLink(object):
                 self.expected_length = 6
                 self.have_prefix_error = False
                 self.robust_parsing = False
+                self.protocol_marker = ${protocol_marker}
+                self.little_endian = ${little_endian}
+                self.crc_extra = ${crc_extra}
+                self.sort_fields = ${sort_fields}
 
         def set_callback(self, callback, *args, **kwargs):
             self.callback = callback
@@ -245,7 +242,7 @@ class MAVLink(object):
         def parse_char(self, c):
             '''input some data bytes, possibly returning a new message'''
             self.buf += c
-            if len(self.buf) >= 1 and ord(self.buf[0]) != ${PROTOCOL_MARKER}:
+            if len(self.buf) >= 1 and ord(self.buf[0]) != ${protocol_marker}:
                 magic = self.buf[0]
                 self.buf = self.buf[1:]
                 if self.robust_parsing:
@@ -285,24 +282,28 @@ class MAVLink(object):
                     magic, mlen, seq, srcSystem, srcComponent, msgId = struct.unpack('cBBBBB', msgbuf[:6])
                 except struct.error, emsg:
                     raise MAVError('Unable to unpack MAVLink header: %s' % emsg)
-                if ord(magic) != ${PROTOCOL_MARKER}:
+                if ord(magic) != ${protocol_marker}:
                     raise MAVError("invalid MAVLink prefix '%s'" % magic)
                 if mlen != len(msgbuf)-8:
                     raise MAVError('invalid MAVLink message length. Got %u expected %u, msgId=%u' % (len(msgbuf)-8, mlen, msgId))
+
+                if not msgId in mavlink_map:
+                    raise MAVError('unknown MAVLink message ID %u' % msgId)
+
+                # decode the payload
+                (fmt, type, order_map, crc_extra) = mavlink_map[msgId]
 
                 # decode the checksum
                 try:
                     crc, = struct.unpack('<H', msgbuf[-2:])
                 except struct.error, emsg:
                     raise MAVError('Unable to unpack MAVLink CRC: %s' % emsg)
-                crc2 = x25crc(msgbuf[1:-2])
-                if crc != crc2:
-                    raise MAVError('invalid MAVLink CRC in msgID %u 0x%04x should be 0x%04x' % (msgId, crc, crc2))
-                if not msgId in mavlink_map:
-                    raise MAVError('unknown MAVLink message ID %u' % msgId)
+                crc2 = mavutil.x25crc(msgbuf[1:-2])
+                if ${crc_extra}:
+                    crc2.accumulate(chr(crc_extra))
+                if crc != crc2.crc:
+                    raise MAVError('invalid MAVLink CRC in msgID %u 0x%04x should be 0x%04x' % (msgId, crc, crc2.crc))
 
-                # decode the payload
-                (fmt, type) = mavlink_map[msgId]
                 try:
                     t = struct.unpack(fmt, msgbuf[6:-2])
                 except struct.error, emsg:
@@ -326,7 +327,7 @@ class MAVLink(object):
                 m._crc = crc
                 m._header = MAVLink_header(msgId, mlen, seq, srcSystem, srcComponent)
                 return m
-""", { 'PROTOCOL_MARKER' : xml.protocol_marker})
+""", xml)
 
 def generate_methods(outf, msgs):
     print("Generating methods")
@@ -381,9 +382,15 @@ def generate(basename, xml):
         filelist.append(os.path.basename(x.filename))
 
     for m in msgs:
-        m.fmtstr = '>'
-        for f in m.fields:
+        if xml[0].little_endian:
+            m.fmtstr = '<'
+        else:
+            m.fmtstr = '>'
+        for f in m.ordered_fields:
             m.fmtstr += mavfmt(f)
+        m.order_map = [ 0 ] * len(m.fieldnames)
+        for i in range(0, len(m.ordered_fieldnames)):
+            m.order_map[i] = m.fieldnames.index(m.ordered_fieldnames[i])
 
     print("Generating %s" % filename)
     outf = open(filename, "w")
