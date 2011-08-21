@@ -342,5 +342,9 @@ static inline uint16_t MAVLINK_MSG_RETURN_int8_t_array(const mavlink_message_t *
 	return array_length;
 }
 
+#ifndef MAVLINK_ALIGNED_BUFFER
+#define MAVLINK_ALIGNED_BUFFER(bufname, length) union { uint64_t _x; uint8_t _buf[length]; } bufname
+#endif
+
 #undef MAVLINK_HELPER
 #endif /* _MAVLINK_PROTOCOL_H_ */

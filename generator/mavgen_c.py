@@ -188,8 +188,8 @@ ${{arg_fields: * @param ${name} ${description}
 
 static inline void mavlink_msg_${name_lower}_send(mavlink_channel_t chan,${{arg_fields: ${array_const}${type} ${name}${array_suffix},}})
 {
-	uint16_t buffer[(MAVLINK_NUM_NON_PAYLOAD_BYTES+${wire_length}+1)/2];
-	mavlink_message_t *msg = (mavlink_message_t *)buffer;
+	MAVLINK_ALIGNED_BUFFER(buffer, MAVLINK_NUM_NON_PAYLOAD_BYTES+${wire_length});
+	mavlink_message_t *msg = (mavlink_message_t *)&buffer;
 	mavlink_msg_${name_lower}_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, msg,${{arg_fields: ${name},}});
 	mavlink_send_uart(chan, msg);
 }

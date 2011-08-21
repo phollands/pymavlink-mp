@@ -192,9 +192,7 @@ typedef struct __mavlink_message {
     uint8_t sysid;   ///< ID of message sender system/aircraft
     uint8_t compid;  ///< ID of the message sender component
     uint8_t msgid;   ///< ID of message in payload
-    uint8_t payload[MAVLINK_MAX_PAYLOAD_LEN]; ///< Payload data, ALIGNMENT IMPORTANT ON MCU
-    uint8_t checksum_dummy[2]; // allocate space, but don't use this
-			       // as offset will be wrong
+    uint8_t payload[MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES]; ///< Payload data, ALIGNMENT IMPORTANT ON MCU
 } mavlink_message_t;
 
 // checksum is immediately after the payload bytes
