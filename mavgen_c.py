@@ -100,7 +100,7 @@ def generate_message_h(directory, m):
 
 typedef struct __mavlink_${name_lower}_t
 {
-${{fields: ${type} ${name}; ///< ${description}
+${{fields: ${type} ${name}${array_suffix}; ///< ${description}
 }}
 } mavlink_${name_lower}_t;
 
@@ -115,15 +115,14 @@ ${{fields: * @param ${name} ${description}
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_${name_lower}_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						      ${{fields:${type} ${name},}})
+						      ${{fields: ${type} ${name}${array_suffix},}})
 {
-	uint16_t i = 0;
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{fields:	i += put_${type}_by_index(${name}, i, msg->payload); // ${description}
+${{fields:	put_${type}${array_tag}_by_index(${name}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
 }}
 
-	return mavlink_finalize_message(msg, system_id, component_id, i);
+	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length});
 }
 
 /**
@@ -138,15 +137,14 @@ ${{fields: * @param ${name} ${description}
  */
 static inline uint16_t mavlink_msg_${name_lower}_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           ${{fields:${type} ${name},}})
+						           ${{fields:${type} ${name}${array_suffix},}})
 {
-	uint16_t i = 0;
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{fields:	i += put_${type}_by_index(${name}, i, msg->payload); // ${description}
+${{fields:	put_${type}${array_tag}_by_index(${name}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
 }}
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, i);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length});
 }
 
 /**
@@ -171,7 +169,7 @@ ${{fields: * @param ${name} ${description}
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_${name_lower}_send(mavlink_channel_t chan,${{fields: ${type} ${name},}})
+static inline void mavlink_msg_${name_lower}_send(mavlink_channel_t chan,${{fields: ${type} ${name}${array_suffix},}})
 {
 	mavlink_message_t msg;
 	mavlink_msg_${name_lower}_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg,${{fields: ${name},}});
@@ -188,9 +186,9 @@ ${{fields:
  *
  * @return ${description}
  */
-static inline uint8_t mavlink_msg_${name_lower}_get_${name}(const mavlink_message_t* msg)
+static inline ${return_type} mavlink_msg_${name_lower}_get_${name}(const mavlink_message_t* msg${get_arg})
 {
-	MAVLINK_MSG_RETURN_${type}(msg, ${wire_offset});
+	MAVLINK_MSG_RETURN_${type}${array_tag}(msg, ${array_return_arg} ${wire_offset});
 }
 }}
 
@@ -216,6 +214,24 @@ def generate_one(basename, xml):
 
     print("Generating C implementation in directory %s" % directory)
     mavparse.mkdir_p(directory)
+
+    # add some extra field attributes for convenience with arrays
+    for m in xml.message:
+        for f in m.fields:
+            if f.array_length is not None:
+                f.array_suffix = '[%u]' % f.array_length
+                f.array_tag = '_array'
+                f.array_arg = '%u, ' % f.array_length
+                f.array_return_arg = '%s, %u, ' % (f.name, f.array_length)
+                f.return_type = 'uint16_t'
+                f.get_arg = ', %s *%s' % (f.type, f.name)
+            else:
+                f.array_suffix = ''
+                f.array_tag = ''
+                f.array_arg = ''
+                f.array_return_arg = ''
+                f.get_arg = ''
+                f.return_type = f.type
 
     generate_mavlink_h(directory, xml)
     generate_main_h(directory, xml)

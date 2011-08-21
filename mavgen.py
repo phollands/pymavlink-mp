@@ -24,12 +24,22 @@ if len(args) < 1:
 xml = []
 
 for fname in args:
+    print("Parsing %s" % fname)
     xml.append(mavparse.MAVXML(fname))
+
+# expand includes
+for x in xml[:]:
+    for i in x.include:
+        fname = os.path.join(os.path.dirname(x.filename), i)
+        print("Parsing %s" % fname)
+        xml.append(mavparse.MAVXML(fname))
+        
 
 if mavparse.check_duplicates(xml):
     sys.exit(1)
 
-print("Found %u MAVLink message types" % mavparse.total_msgs(xml))
+print("Found %u MAVLink message types in %u XML files" % (
+    mavparse.total_msgs(xml), len(xml)))
 
 if opts.language == 'python':
     mavgen_python.generate(opts.output, xml)

@@ -6,6 +6,8 @@ Copyright Andrew Tridgell 2011
 Released under GNU GPL version 3 or later
 '''
 
+from mavparse import MAVParseError
+
 class MAVTemplate(object):
     '''simple templating system'''
     def __init__(self,
@@ -26,14 +28,14 @@ class MAVTemplate(object):
         '''find the of a token.
         Returns the offset in the string immediately after the matching end_token'''
         if not text.startswith(start_token):
-            raise RuntimeError("invalid token start")
+            raise MAVParseError("invalid token start")
         offset = len(start_token)
         nesting = 1
         while nesting > 0:
             idx1 = text[offset:].find(start_token)
             idx2 = text[offset:].find(end_token)
             if idx1 == -1 and idx2 == -1:
-                raise RuntimeError("token nesting error")
+                raise MAVParseError("token nesting error")
             if idx1 == -1 or idx1 > idx2:
                 offset += idx2 + len(end_token)
                 nesting -= 1
@@ -66,7 +68,7 @@ class MAVTemplate(object):
                 break
             endidx = self.find_rep_end(text[subidx:])
             if endidx == -1:
-                raise RuntimeError("missing end macro in %s" % text[subidx:])
+                raise MAVParseError("missing end macro in %s" % text[subidx:])
             part1 = text[0:subidx]
             part2 = text[subidx+len(self.start_rep_token):subidx+(endidx-len(self.end_rep_token))]
             part3 = text[subidx+endidx:]
@@ -75,7 +77,7 @@ class MAVTemplate(object):
             rest = ':'.join(a[1:])
             v = getattr(subvars, field_name, None)
             if v is None:
-                raise RuntimeError('unable to find field %s' % field_name)
+                raise MAVParseError('unable to find field %s' % field_name)
             t1 = part1
             for f in v:
                 t1 += self.substitute(rest, f, trim_leading_lf=False, checkmissing=False)
@@ -93,12 +95,12 @@ class MAVTemplate(object):
                 return text
             endidx = text[idx:].find(self.end_var_token)
             if endidx == -1:
-                raise RuntimeError('missing end of variable: %s' % text[idx:idx+10])
+                raise MAVParseError('missing end of variable: %s' % text[idx:idx+10])
             varname = text[idx+2:idx+endidx]
             if isinstance(subvars, dict):
                 if not varname in subvars:
                     if checkmissing:
-                        raise RuntimeError("unknown variable in '%s%s%s'" % (
+                        raise MAVParseError("unknown variable in '%s%s%s'" % (
                             self.start_var_token, varname, self.end_var_token))
                     return text[0:idx+endidx] + self.substitute(text[idx+endidx:], subvars,
                                                                 trim_leading_lf=False, checkmissing=False)
@@ -107,7 +109,7 @@ class MAVTemplate(object):
                 value = getattr(subvars, varname, None)
                 if value is None:
                     if checkmissing:
-                        raise RuntimeError("unknown variable in '%s%s%s'" % (
+                        raise MAVParseError("unknown variable in '%s%s%s'" % (
                             self.start_var_token, varname, self.end_var_token))
                     return text[0:idx+endidx] + self.substitute(text[idx+endidx:], subvars,
                                                                 trim_leading_lf=False, checkmissing=False)
