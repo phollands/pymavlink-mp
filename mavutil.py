@@ -33,7 +33,8 @@ class mavfile(object):
     def __init__(self, fd, address, source_system=255):
         self.fd = fd
         self.address = address
-        self.messages = {}
+        self.messages = { 'MAV' : self,
+                          'HOME' : mavlink.MAVLink_gps_raw_message(0,0,0,0,0,0,0,0,0) }
         self.params = {}
         self.mav = None
         self.target_system = 0
@@ -45,6 +46,8 @@ class mavfile(object):
         self.param_fetch_in_progress = False
         self.param_fetch_complete = False
         self.start_time = time.time()
+        self.flightmode = "UNKNOWN"
+        self.timestamp = 0
 
     def recv(self):
         '''default recv method'''
@@ -63,6 +66,7 @@ class mavfile(object):
         msg._timestamp = time.time()
         type = msg.get_type()
         self.messages[type] = msg
+        self.timestamp = msg._timestamp
         if type == 'HEARTBEAT':
             self.target_system = msg.get_srcSystem()
             self.target_component = msg.get_srcComponent()
@@ -71,6 +75,11 @@ class mavfile(object):
             if msg.param_index+1 == msg.param_count:
                 self.param_fetch_in_progress = False
                 self.param_fetch_complete = True
+        elif type == 'SYS_STATUS':
+            self.flightmode = mode_string(msg.mode, msg.nav_mode)
+        elif type == 'GPS_RAW':
+            if self.messages['HOME'].fix_type < 2:
+                self.messages['HOME'] = msg
 
 
     def recv_msg(self):
@@ -281,6 +290,7 @@ class mavlogfile(mavfile):
             msg._timestamp = self._timestamp
         if self.planner_format:
             self.f.read(1) # trailing newline
+        self.timestamp = msg._timestamp
 
 def mavlink_connection(device, baud=115200, source_system=255,
                        planner_format=None, write=False, append=False,
@@ -388,3 +398,46 @@ def auto_detect_serial(preferred='*'):
     if os.name == 'nt':
         return auto_detect_serial_win32(preferred=preferred)
     return auto_detect_serial_unix(preferred=preferred)
+
+def mode_string(mode, nav_mode):
+    '''work out autopilot mode'''
+    MAV_MODE_UNINIT = 0
+    MAV_MODE_MANUAL = 2
+    MAV_MODE_GUIDED = 3
+    MAV_MODE_AUTO = 4
+    MAV_MODE_TEST1 = 5
+    MAV_MODE_TEST2 = 6
+    MAV_MODE_TEST3 = 7
+
+    MAV_NAV_GROUNDED = 0
+    MAV_NAV_LIFTOFF = 1
+    MAV_NAV_HOLD = 2
+    MAV_NAV_WAYPOINT = 3
+    MAV_NAV_VECTOR = 4
+    MAV_NAV_RETURNING = 5
+    MAV_NAV_LANDING = 6
+    MAV_NAV_LOST = 7
+    MAV_NAV_LOITER = 8
+    
+    cmode = (mode, nav_mode)
+    mapping = {
+        (MAV_MODE_UNINIT, MAV_NAV_GROUNDED)  : "INITIALISING",
+        (MAV_MODE_MANUAL, MAV_NAV_VECTOR)    : "MANUAL",
+        (MAV_MODE_TEST3,  MAV_NAV_VECTOR)    : "CIRCLE",
+        (MAV_MODE_GUIDED, MAV_NAV_VECTOR)    : "GUIDED",
+        (MAV_MODE_TEST1,  MAV_NAV_VECTOR)    : "STABILIZE",
+        (MAV_MODE_TEST2,  MAV_NAV_LIFTOFF)   : "FBWA",
+        (MAV_MODE_AUTO,   MAV_NAV_WAYPOINT)  : "AUTO",
+        (MAV_MODE_AUTO,   MAV_NAV_RETURNING) : "RTL",
+        (MAV_MODE_AUTO,   MAV_NAV_LOITER)    : "LOITER",
+        (MAV_MODE_AUTO,   MAV_NAV_LIFTOFF)   : "TAKEOFF",
+        (MAV_MODE_AUTO,   MAV_NAV_LANDING)   : "LANDING",
+        (100,             MAV_NAV_VECTOR)    : "STABILIZE",
+        (102,             MAV_NAV_VECTOR)    : "SIMPLE",
+        (101,             MAV_NAV_VECTOR)    : "ACRO",
+        (103,             MAV_NAV_VECTOR)    : "ALT_HOLD",
+        (MAV_MODE_AUTO,   MAV_NAV_HOLD)      : "LOITER",
+        }
+    if cmode in mapping:
+        return mapping[cmode]
+    return "Mode(%s,%s)" % cmode
