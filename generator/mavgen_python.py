@@ -11,7 +11,7 @@ import mavparse, mavtemplate
 
 t = mavtemplate.MAVTemplate()
 
-def generate_preamble(outf, msgs, args):
+def generate_preamble(outf, msgs, args, xml):
     print("Generating preamble")
     t.write(outf, """
 '''
@@ -45,7 +45,7 @@ class MAVLink_header(object):
         self.msgId = msgId
 
     def pack(self):
-        return struct.pack('cBBBBB', 'U', self.mlen, self.seq,
+        return struct.pack('BBBBBB', ${PROTOCOL_MARKER}, self.mlen, self.seq,
                           self.srcSystem, self.srcComponent, self.msgId)
 
 class MAVLink_message(object):
@@ -105,7 +105,8 @@ class MAVLink_message(object):
         self._msgbuf += struct.pack('<H', self._crc)
         return self._msgbuf
 
-""", {'FILELIST' : ",".join(args)})
+""", {'FILELIST' : ",".join(args),
+      'PROTOCOL_MARKER' : xml.protocol_marker})
 
 
 def generate_enums(outf, enums):
@@ -172,7 +173,7 @@ def mavfmt(field):
         return str(field.array_length)+map[field.type]
     return map[field.type]
 
-def generate_mavlink_class(outf, msgs):
+def generate_mavlink_class(outf, msgs, xml):
     print("Generating MAVLink class")
 
     outf.write("\n\nmavlink_map = {\n");
@@ -244,7 +245,7 @@ class MAVLink(object):
         def parse_char(self, c):
             '''input some data bytes, possibly returning a new message'''
             self.buf += c
-            if len(self.buf) >= 1 and self.buf[0] != 'U':
+            if len(self.buf) >= 1 and ord(self.buf[0]) != ${PROTOCOL_MARKER}:
                 magic = self.buf[0]
                 self.buf = self.buf[1:]
                 if self.robust_parsing:
@@ -284,7 +285,7 @@ class MAVLink(object):
                     magic, mlen, seq, srcSystem, srcComponent, msgId = struct.unpack('cBBBBB', msgbuf[:6])
                 except struct.error, emsg:
                     raise MAVError('Unable to unpack MAVLink header: %s' % emsg)
-                if magic != 'U':
+                if ord(magic) != ${PROTOCOL_MARKER}:
                     raise MAVError("invalid MAVLink prefix '%s'" % magic)
                 if mlen != len(msgbuf)-8:
                     raise MAVError('invalid MAVLink message length. Got %u expected %u, msgId=%u' % (len(msgbuf)-8, mlen, msgId))
@@ -325,7 +326,7 @@ class MAVLink(object):
                 m._crc = crc
                 m._header = MAVLink_header(msgId, mlen, seq, srcSystem, srcComponent)
                 return m
-""")
+""", { 'PROTOCOL_MARKER' : xml.protocol_marker})
 
 def generate_methods(outf, msgs):
     print("Generating methods")
@@ -386,11 +387,11 @@ def generate(basename, xml):
 
     print("Generating %s" % filename)
     outf = open(filename, "w")
-    generate_preamble(outf, msgs, filelist)
+    generate_preamble(outf, msgs, filelist, xml[0])
     generate_enums(outf, enums)
     generate_message_ids(outf, msgs)
     generate_classes(outf, msgs)
-    generate_mavlink_class(outf, msgs)
+    generate_mavlink_class(outf, msgs, xml[0])
     generate_methods(outf, msgs)
     outf.close()
     print("Generated %s OK" % filename)

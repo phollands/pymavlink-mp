@@ -23,6 +23,14 @@ def generate_mavlink_h(directory, xml):
 #ifndef MAVLINK_H
 #define MAVLINK_H
 
+#ifndef MAVLINK_STX
+#define MAVLINK_STX ${protocol_marker}
+#endif
+
+#ifndef MAVLINK_ENDIAN
+#define MAVLINK_ENDIAN ${mavlink_endian}
+#endif
+
 #include "${basename}.h"
 
 #endif // MAVLINK_H
@@ -81,7 +89,7 @@ ${{message:#include "./mavlink_msg_${name_lower}.h"
 // MESSAGE LENGTHS
 
 #undef MAVLINK_MESSAGE_LENGTHS
-#define MAVLINK_MESSAGE_LENGTHS {${{message: ${wire_length},}} }
+#define MAVLINK_MESSAGE_LENGTHS {${message_lengths_array}}
     
 #ifdef __cplusplus
 }
@@ -102,7 +110,7 @@ def generate_message_h(directory, m):
 
 typedef struct __mavlink_${name_lower}_t
 {
-${{fields: ${type} ${name}${array_suffix}; ///< ${description}
+${{ordered_fields: ${type} ${name}${array_suffix}; ///< ${description}
 }}
 } mavlink_${name_lower}_t;
 
@@ -121,7 +129,7 @@ static inline uint16_t mavlink_msg_${name_lower}_pack(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
+${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
 }}
 
 	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length});
@@ -143,7 +151,7 @@ static inline uint16_t mavlink_msg_${name_lower}_pack_chan(uint8_t system_id, ui
 {
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
+${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
 }}
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length});
@@ -202,7 +210,7 @@ static inline ${return_type} mavlink_msg_${name_lower}_get_${name}(const mavlink
  */
 static inline void mavlink_msg_${name_lower}_decode(const mavlink_message_t* msg, mavlink_${name_lower}_t* ${name_lower})
 {
-${{fields:	${decode_left}mavlink_msg_${name_lower}_get_${name}(msg${decode_right});
+${{ordered_fields:	${decode_left}mavlink_msg_${name_lower}_get_${name}(msg${decode_right});
 }}
 }
 ''', m)
@@ -217,11 +225,22 @@ def generate_one(basename, xml):
     print("Generating C implementation in directory %s" % directory)
     mavparse.mkdir_p(directory)
 
+    if xml.little_endian:
+        xml.mavlink_endian = "MAVLINK_LITTLE_ENDIAN"
+    else:
+        xml.mavlink_endian = "MAVLINK_BIG_ENDIAN"
+
     # work out the included headers
     xml.include_headers = ''
     for i in xml.include:
         base = i[:-4]
         xml.include_headers += '#include "../%s/%s.h"\n' % (base, base)
+
+    # form message lengths array
+    xml.message_lengths_array = ''
+    for mlen in xml.message_lengths:
+        xml.message_lengths_array += '%u, ' % mlen
+    xml.message_lengths_array = xml.message_lengths_array[:-2]
 
     # add some extra field attributes for convenience with arrays
     for m in xml.message:

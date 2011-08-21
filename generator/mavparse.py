@@ -6,7 +6,10 @@ Copyright Andrew Tridgell 2011
 Released under GNU GPL version 3 or later
 '''
 
-import xml.parsers.expat, os, time, sys
+import xml.parsers.expat, os, time, sys, operator, mavutil
+
+PROTOCOL_0_9 = "0.9"
+PROTOCOL_1_0 = "1.0"
 
 class MAVParseError(Exception):
     def __init__(self, message, inner_exception=None):
@@ -92,7 +95,7 @@ class MAVEnum(object):
 
 class MAVXML(object):
     '''parse a mavlink XML file'''
-    def __init__(self, filename):
+    def __init__(self, filename, wire_protocol_version=PROTOCOL_0_9):
         self.filename = filename
         self.basename = os.path.basename(filename)
         if self.basename.lower().endswith(".xml"):
@@ -103,6 +106,18 @@ class MAVXML(object):
         self.parse_time = time.asctime()
         self.version = 2
         self.include = []
+        self.wire_protocol_version = wire_protocol_version
+
+        if wire_protocol_version == PROTOCOL_0_9:
+            self.protocol_marker = ord('U')
+            self.sort_fields = False
+            self.little_endian = False
+        elif wire_protocol_version == PROTOCOL_1_0:
+            self.protocol_marker = 0xFE
+            self.sort_fields = True
+            self.little_endian = True
+        else:
+            raise MAVParseError('Unknown MAVLink wire protocol version %s' % wire_protocol_version)
 
         in_element_list = []
 
@@ -165,13 +180,23 @@ class MAVXML(object):
         p.ParseFile(f)
         f.close()
 
+        self.message_lengths = [ 0 ] * 256
+
         for m in self.message:
             m.wire_length = 0
             m.fieldnames = []
-            for f in m.fields:
+            if self.sort_fields:
+                m.ordered_fields = sorted(m.fields,
+                                          key=operator.attrgetter('type_length'),
+                                          reverse=True)
+            else:
+                m.ordered_fields = m.fields
+            for f in m.ordered_fields:
                 f.wire_offset = m.wire_length
                 m.wire_length += f.wire_length
                 m.fieldnames.append(f.name)
+            m.crc_extra = message_checksum(m)
+            self.message_lengths[m.id] = m.wire_length
 
 
     def __str__(self):
@@ -179,7 +204,13 @@ class MAVXML(object):
             self.basename, self.filename, len(self.message), len(self.enum))
     
 
-
+def message_checksum(msg):
+    '''calculate a 8-bit checksum of the key fields of a message, so we
+       can detect incompatible XML changes'''
+    crc = mavutil.x25crc(msg.name)
+    for f in msg.ordered_fields:
+        crc.accumulate(f.type)
+    return crc.crc
 
 def check_duplicates(xml):
     '''check for duplicate message IDs'''

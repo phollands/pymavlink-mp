@@ -29,7 +29,7 @@ class MAVLink_header(object):
         self.msgId = msgId
 
     def pack(self):
-        return struct.pack('cBBBBB', 'U', self.mlen, self.seq,
+        return struct.pack('BBBBBB', 85, self.mlen, self.seq,
                           self.srcSystem, self.srcComponent, self.msgId)
 
 class MAVLink_message(object):
@@ -1658,7 +1658,7 @@ class MAVLink(object):
         def parse_char(self, c):
             '''input some data bytes, possibly returning a new message'''
             self.buf += c
-            if len(self.buf) >= 1 and self.buf[0] != 'U':
+            if len(self.buf) >= 1 and ord(self.buf[0]) != 85:
                 magic = self.buf[0]
                 self.buf = self.buf[1:]
                 if self.robust_parsing:
@@ -1698,7 +1698,7 @@ class MAVLink(object):
                     magic, mlen, seq, srcSystem, srcComponent, msgId = struct.unpack('cBBBBB', msgbuf[:6])
                 except struct.error, emsg:
                     raise MAVError('Unable to unpack MAVLink header: %s' % emsg)
-                if magic != 'U':
+                if ord(magic) != 85:
                     raise MAVError("invalid MAVLink prefix '%s'" % magic)
                 if mlen != len(msgbuf)-8:
                     raise MAVError('invalid MAVLink message length. Got %u expected %u, msgId=%u' % (len(msgbuf)-8, mlen, msgId))
@@ -1820,7 +1820,7 @@ class MAVLink(object):
 
 		type              	: Type of the MAV (quadrotor, helicopter, etc., up to 15 types, defined in MAV_TYPE ENUM) (uint8_t)
 		autopilot         	: Type of the Autopilot: 0: Generic, 1: PIXHAWK, 2: SLUGS, 3: Ardupilot (up to 15 types), defined in MAV_AUTOPILOT_TYPE ENUM (uint8_t)
-		mavlink_version   	: MAVLink version (uint8_t_mavlink_version)
+		mavlink_version   	: MAVLink version (uint8_t)
 
 		'''
 		msg = MAVLink_heartbeat_message(type, autopilot, mavlink_version)
@@ -1836,7 +1836,7 @@ class MAVLink(object):
 
 		type              	: Type of the MAV (quadrotor, helicopter, etc., up to 15 types, defined in MAV_TYPE ENUM) (uint8_t)
 		autopilot         	: Type of the Autopilot: 0: Generic, 1: PIXHAWK, 2: SLUGS, 3: Ardupilot (up to 15 types), defined in MAV_AUTOPILOT_TYPE ENUM (uint8_t)
-		mavlink_version   	: MAVLink version (uint8_t_mavlink_version)
+		mavlink_version   	: MAVLink version (uint8_t)
 
 		'''
 		return self.send(self.heartbeat_encode(type, autopilot, mavlink_version))
@@ -2138,7 +2138,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (uint8_t)
+		param_id          	: Onboard parameter id (int8_t)
 		param_index       	: Parameter index. Send -1 to use the param ID field as identifier (int16_t)
 
 		'''
@@ -2159,7 +2159,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (uint8_t)
+		param_id          	: Onboard parameter id (int8_t)
 		param_index       	: Parameter index. Send -1 to use the param ID field as identifier (int16_t)
 
 		'''
@@ -2196,7 +2196,7 @@ class MAVLink(object):
 		received parameters and allows him to re-request missing parameters
 		after a loss or timeout.
 
-		param_id          	: Onboard parameter id (uint8_t)
+		param_id          	: Onboard parameter id (int8_t)
 		param_value       	: Onboard parameter value (float)
 		param_count       	: Total number of onboard parameters (uint16_t)
 		param_index       	: Index of this onboard parameter (uint16_t)
@@ -2213,7 +2213,7 @@ class MAVLink(object):
 		received parameters and allows him to re-request missing parameters
 		after a loss or timeout.
 
-		param_id          	: Onboard parameter id (uint8_t)
+		param_id          	: Onboard parameter id (int8_t)
 		param_value       	: Onboard parameter value (float)
 		param_count       	: Total number of onboard parameters (uint16_t)
 		param_index       	: Index of this onboard parameter (uint16_t)
@@ -2235,7 +2235,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (uint8_t)
+		param_id          	: Onboard parameter id (int8_t)
 		param_value       	: Onboard parameter value (float)
 
 		'''
@@ -2257,7 +2257,7 @@ class MAVLink(object):
 
 		target_system     	: System ID (uint8_t)
 		target_component  	: Component ID (uint8_t)
-		param_id          	: Onboard parameter id (uint8_t)
+		param_id          	: Onboard parameter id (int8_t)
 		param_value       	: Onboard parameter value (float)
 
 		'''
@@ -2356,11 +2356,11 @@ class MAVLink(object):
 		satellites.
 
 		satellites_visible	: Number of satellites visible (uint8_t)
-		satellite_prn     	: Global satellite ID (uint8_t)
-		satellite_used    	: 0: Satellite not used, 1: used for localization (uint8_t)
-		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (uint8_t)
-		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (uint8_t)
-		satellite_snr     	: Signal to noise ratio of satellite (uint8_t)
+		satellite_prn     	: Global satellite ID (int8_t)
+		satellite_used    	: 0: Satellite not used, 1: used for localization (int8_t)
+		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (int8_t)
+		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (int8_t)
+		satellite_snr     	: Signal to noise ratio of satellite (int8_t)
 
 		'''
 		msg = MAVLink_gps_status_message(satellites_visible, satellite_prn, satellite_used, satellite_elevation, satellite_azimuth, satellite_snr)
@@ -2376,11 +2376,11 @@ class MAVLink(object):
 		satellites.
 
 		satellites_visible	: Number of satellites visible (uint8_t)
-		satellite_prn     	: Global satellite ID (uint8_t)
-		satellite_used    	: 0: Satellite not used, 1: used for localization (uint8_t)
-		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (uint8_t)
-		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (uint8_t)
-		satellite_snr     	: Signal to noise ratio of satellite (uint8_t)
+		satellite_prn     	: Global satellite ID (int8_t)
+		satellite_used    	: 0: Satellite not used, 1: used for localization (int8_t)
+		satellite_elevation	: Elevation (0: right on top of receiver, 90: on the horizon) of satellite (int8_t)
+		satellite_azimuth 	: Direction of satellite, 0: 0 deg, 255: 360 deg. (int8_t)
+		satellite_snr     	: Signal to noise ratio of satellite (int8_t)
 
 		'''
 		return self.send(self.gps_status_encode(satellites_visible, satellite_prn, satellite_used, satellite_elevation, satellite_azimuth, satellite_snr))
