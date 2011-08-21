@@ -39,10 +39,11 @@ for x in xml[:]:
         print("Parsing %s" % fname)
         xml.append(mavparse.MAVXML(fname, opts.wire_protocol))
 
-        # include message lengths too
+        # include message lengths and CRCs too
         for idx in range(0, 256):
             if x.message_lengths[idx] == 0:
                 x.message_lengths[idx] = xml[-1].message_lengths[idx]
+                x.message_crcs[idx] = xml[-1].message_crcs[idx]
         
 
 if mavparse.check_duplicates(xml):

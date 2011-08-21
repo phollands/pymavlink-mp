@@ -9,12 +9,12 @@ enum MAV_CLASS
     MAV_CLASS_PIXHAWK = 1,        ///< PIXHAWK autopilot, http://pixhawk.ethz.ch
     MAV_CLASS_SLUGS = 2,          ///< SLUGS autopilot, http://slugsuav.soe.ucsc.edu
     MAV_CLASS_ARDUPILOTMEGA = 3,  ///< ArduPilotMega / ArduCopter, http://diydrones.com
-	MAV_CLASS_OPENPILOT = 4,      ///< OpenPilot, http://openpilot.org
-	MAV_CLASS_GENERIC_MISSION_WAYPOINTS_ONLY = 5,  ///< Generic autopilot only supporting simple waypoints
-	MAV_CLASS_GENERIC_MISSION_NAVIGATION_ONLY = 6, ///< Generic autopilot supporting waypoints and other simple navigation commands
-	MAV_CLASS_GENERIC_MISSION_FULL = 7,            ///< Generic autopilot supporting the full mission command set
-	MAV_CLASS_NONE = 8,           ///< No valid autopilot
-	MAV_CLASS_NB                  ///< Number of autopilot classes
+    MAV_CLASS_OPENPILOT = 4,      ///< OpenPilot, http://openpilot.org
+    MAV_CLASS_GENERIC_MISSION_WAYPOINTS_ONLY = 5,  ///< Generic autopilot only supporting simple waypoints
+    MAV_CLASS_GENERIC_MISSION_NAVIGATION_ONLY = 6, ///< Generic autopilot supporting waypoints and other simple navigation commands
+    MAV_CLASS_GENERIC_MISSION_FULL = 7,            ///< Generic autopilot supporting the full mission command set
+    MAV_CLASS_NONE = 8,           ///< No valid autopilot
+    MAV_CLASS_NB                  ///< Number of autopilot classes
 };
 
 enum MAV_ACTION
@@ -60,8 +60,8 @@ enum MAV_ACTION
     MAV_ACTION_CHANGE_MODE = 38,
     MAV_ACTION_LOITER_MAX_TURNS = 39,
     MAV_ACTION_LOITER_MAX_TIME = 40,
-		MAV_ACTION_START_HILSIM = 41,
-		MAV_ACTION_STOP_HILSIM = 42,    
+    MAV_ACTION_START_HILSIM = 41,
+    MAV_ACTION_STOP_HILSIM = 42,    
     MAV_ACTION_NB        ///< Number of MAV actions
 };
 
@@ -103,7 +103,7 @@ enum MAV_NAV
     MAV_NAV_LANDING,
     MAV_NAV_LOST,
     MAV_NAV_LOITER,
-	MAV_NAV_FREE_DRIFT
+    MAV_NAV_FREE_DRIFT
 };
 
 enum MAV_TYPE
@@ -115,11 +115,11 @@ enum MAV_TYPE
     MAV_HELICOPTER = 4,
     MAV_GROUND = 5,
     OCU = 6,
-	MAV_AIRSHIP = 7,
-	MAV_FREE_BALLOON = 8,
-	MAV_ROCKET = 9,
-	UGV_GROUND_ROVER = 10,
-	UGV_SURFACE_SHIP = 11
+    MAV_AIRSHIP = 7,
+    MAV_FREE_BALLOON = 8,
+    MAV_ROCKET = 9,
+    UGV_GROUND_ROVER = 10,
+    UGV_SURFACE_SHIP = 11
 };
 
 enum MAV_AUTOPILOT_TYPE
@@ -128,7 +128,7 @@ enum MAV_AUTOPILOT_TYPE
     MAV_AUTOPILOT_PIXHAWK = 1,
     MAV_AUTOPILOT_SLUGS = 2,
     MAV_AUTOPILOT_ARDUPILOTMEGA = 3,
-	MAV_AUTOPILOT_NONE = 4
+    MAV_AUTOPILOT_NONE = 4
 };
 
 enum MAV_COMPONENT
@@ -141,8 +141,8 @@ enum MAV_COMPONENT
     MAV_COMP_ID_MAPPER,
     MAV_COMP_ID_CAMERA,
     MAV_COMP_ID_IMU = 200,
-	MAV_COMP_ID_IMU_2 = 201,
-	MAV_COMP_ID_IMU_3 = 202,
+    MAV_COMP_ID_IMU_2 = 201,
+    MAV_COMP_ID_IMU_3 = 202,
     MAV_COMP_ID_UDP_BRIDGE = 240,
     MAV_COMP_ID_UART_BRIDGE = 241,
     MAV_COMP_ID_SYSTEM_CONTROL = 250
@@ -153,19 +153,18 @@ enum MAV_FRAME
     MAV_FRAME_GLOBAL = 0,
     MAV_FRAME_LOCAL = 1,
     MAV_FRAME_MISSION = 2,
-	MAV_FRAME_GLOBAL_RELATIVE_ALT = 3,
-        MAV_FRAME_LOCAL_ENU = 4
+    MAV_FRAME_GLOBAL_RELATIVE_ALT = 3,
+    MAV_FRAME_LOCAL_ENU = 4
 };
 
 enum MAVLINK_DATA_STREAM_TYPE
 {
     MAVLINK_DATA_STREAM_IMG_JPEG,
-	MAVLINK_DATA_STREAM_IMG_BMP,
-	MAVLINK_DATA_STREAM_IMG_RAW8U,
-	MAVLINK_DATA_STREAM_IMG_RAW32U,
-	MAVLINK_DATA_STREAM_IMG_PGM,
-	MAVLINK_DATA_STREAM_IMG_PNG
-	
+    MAVLINK_DATA_STREAM_IMG_BMP,
+    MAVLINK_DATA_STREAM_IMG_RAW8U,
+    MAVLINK_DATA_STREAM_IMG_RAW32U,
+    MAVLINK_DATA_STREAM_IMG_PGM,
+    MAVLINK_DATA_STREAM_IMG_PNG
 };
 
 #define MAVLINK_STX_LEN 1 ///< Length of start sign
@@ -186,19 +185,24 @@ typedef struct __mavlink_system {
     uint8_t type;    ///< Unused, can be used by user to store the system's type
     uint8_t state;   ///< Unused, can be used by user to store the system's state
     uint8_t mode;    ///< Unused, can be used by user to store the system's mode
-	uint8_t nav_mode;    ///< Unused, can be used by user to store the system's navigation mode
+    uint8_t nav_mode;    ///< Unused, can be used by user to store the system's navigation mode
 } mavlink_system_t;
 
 typedef struct __mavlink_message {
+    uint8_t magic;   ///< protocol magic marker
     uint8_t len;     ///< Length of payload
     uint8_t seq;     ///< Sequence of packet
     uint8_t sysid;   ///< ID of message sender system/aircraft
     uint8_t compid;  ///< ID of the message sender component
     uint8_t msgid;   ///< ID of message in payload
     uint8_t payload[MAVLINK_MAX_PAYLOAD_LEN]; ///< Payload data, ALIGNMENT IMPORTANT ON MCU
-    uint8_t ck_a;    ///< Checksum high byte
-    uint8_t ck_b;    ///< Checksum low byte
+    uint8_t checksum_dummy[2]; // allocate space, but don't use this
+			       // as offset will be wrong
 } mavlink_message_t;
+
+// checksum is immediately after the payload bytes
+#define mavlink_ck_a(msg) msg->payload[msg->len]
+#define mavlink_ck_b(msg) msg->payload[msg->len+1]
 
 typedef enum {
     MAVLINK_COMM_0,

@@ -112,11 +112,15 @@ class MAVXML(object):
             self.protocol_marker = ord('U')
             self.sort_fields = False
             self.little_endian = False
+            self.crc_extra = False
         elif wire_protocol_version == PROTOCOL_1_0:
             self.protocol_marker = 0xFE
             self.sort_fields = True
             self.little_endian = True
+            self.crc_extra = True
         else:
+            print("Unknown wire protocol version")
+            print("Available versions are: %s %s" % (PROTOCOL_0_9, PROTOCOL_1_0))
             raise MAVParseError('Unknown MAVLink wire protocol version %s' % wire_protocol_version)
 
         in_element_list = []
@@ -181,6 +185,7 @@ class MAVXML(object):
         f.close()
 
         self.message_lengths = [ 0 ] * 256
+        self.message_crcs = [ 0 ] * 256
 
         for m in self.message:
             m.wire_length = 0
@@ -197,6 +202,7 @@ class MAVXML(object):
                 m.fieldnames.append(f.name)
             m.crc_extra = message_checksum(m)
             self.message_lengths[m.id] = m.wire_length
+            self.message_crcs[m.id] = m.crc_extra
 
 
     def __str__(self):
@@ -210,7 +216,10 @@ def message_checksum(msg):
     crc = mavutil.x25crc(msg.name)
     for f in msg.ordered_fields:
         crc.accumulate(f.type)
-    return crc.crc
+        crc.accumulate(f.name)
+        if f.array_length:
+            crc.accumulate(chr(f.array_length))
+    return (crc.crc&0xFF) ^ (crc.crc>>8)
 
 def check_duplicates(xml):
     '''check for duplicate message IDs'''

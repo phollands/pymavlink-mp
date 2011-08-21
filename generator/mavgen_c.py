@@ -31,6 +31,10 @@ def generate_mavlink_h(directory, xml):
 #define MAVLINK_ENDIAN ${mavlink_endian}
 #endif
 
+#ifndef MAVLINK_CRC_EXTRA
+#define MAVLINK_CRC_EXTRA ${crc_extra_define}
+#endif
+
 #include "${basename}.h"
 
 #endif // MAVLINK_H
@@ -53,6 +57,14 @@ def generate_main_h(directory, xml):
 extern "C" {
 #endif
 
+// MESSAGE LENGTHS AND CRCS
+
+#undef MAVLINK_MESSAGE_LENGTHS
+#define MAVLINK_MESSAGE_LENGTHS {${message_lengths_array}}
+
+#undef MAVLINK_MESSAGE_CRCS
+#define MAVLINK_MESSAGE_CRCS {${message_crcs_array}}
+    
 
 #include "../protocol.h"
 
@@ -86,11 +98,6 @@ ${{entry:	${name}=${value}, /* ${description} |${{param:${description}| }} */
 ${{message:#include "./mavlink_msg_${name_lower}.h"
 }}
 
-// MESSAGE LENGTHS
-
-#undef MAVLINK_MESSAGE_LENGTHS
-#define MAVLINK_MESSAGE_LENGTHS {${message_lengths_array}}
-    
 #ifdef __cplusplus
 }
 #endif // __cplusplus
@@ -132,7 +139,7 @@ static inline uint16_t mavlink_msg_${name_lower}_pack(uint8_t system_id, uint8_t
 ${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
 }}
 
-	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length});
+	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length}, ${crc_extra});
 }
 
 /**
@@ -154,7 +161,7 @@ static inline uint16_t mavlink_msg_${name_lower}_pack_chan(uint8_t system_id, ui
 ${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
 }}
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length});
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length}, ${crc_extra});
 }
 
 /**
@@ -181,9 +188,10 @@ ${{arg_fields: * @param ${name} ${description}
 
 static inline void mavlink_msg_${name_lower}_send(mavlink_channel_t chan,${{arg_fields: ${array_const}${type} ${name}${array_suffix},}})
 {
-	mavlink_message_t msg;
-	mavlink_msg_${name_lower}_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, &msg,${{arg_fields: ${name},}});
-	mavlink_send_uart(chan, &msg);
+	uint16_t buffer[(MAVLINK_NUM_NON_PAYLOAD_BYTES+${wire_length}+1)/2];
+	mavlink_message_t *msg = (mavlink_message_t *)buffer;
+	mavlink_msg_${name_lower}_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, msg,${{arg_fields: ${name},}});
+	mavlink_send_uart(chan, msg);
 }
 
 #endif
@@ -230,6 +238,11 @@ def generate_one(basename, xml):
     else:
         xml.mavlink_endian = "MAVLINK_BIG_ENDIAN"
 
+    if xml.crc_extra:
+        xml.crc_extra_define = "1"
+    else:
+        xml.crc_extra_define = "0"
+
     # work out the included headers
     xml.include_headers = ''
     for i in xml.include:
@@ -241,6 +254,12 @@ def generate_one(basename, xml):
     for mlen in xml.message_lengths:
         xml.message_lengths_array += '%u, ' % mlen
     xml.message_lengths_array = xml.message_lengths_array[:-2]
+
+    # and message CRCs array
+    xml.message_crcs_array = ''
+    for crc in xml.message_crcs:
+        xml.message_crcs_array += '%u, ' % crc
+    xml.message_crcs_array = xml.message_crcs_array[:-2]
 
     # add some extra field attributes for convenience with arrays
     for m in xml.message:
