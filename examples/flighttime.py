@@ -28,10 +28,15 @@ def flight_time(logfile):
     in_air = False
     start_time = 0.0
     total_time = 0.0
+    t = None
 
     while True:
         m = mlog.recv_match(type='VFR_HUD')
         if m is None:
+            if in_air:
+                total_time += time.mktime(t) - start_time
+            if total_time > 0:
+                print("Flight time : %u:%02u" % (int(total_time)/60, int(total_time)%60))
             return total_time
         t = time.localtime(m._timestamp)
         if m.groundspeed > 3.0 and not in_air:
