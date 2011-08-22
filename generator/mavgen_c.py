@@ -167,14 +167,11 @@ ${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
 /**
- * @brief Pack a ${name_lower} message on a channel
- * @param system_id ID of this system
- * @param component_id ID of this component (e.g. 200 for IMU)
+ * @brief Pack a ${name_lower} message on a channel and send
  * @param chan The MAVLink channel this message was sent over
  * @param msg The MAVLink message to compress the data into
 ${{arg_fields: * @param ${name} ${description}
 }}
- * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline void mavlink_msg_${name_lower}_pack_chan_send(mavlink_channel_t chan,
 							   mavlink_message_t* msg,
