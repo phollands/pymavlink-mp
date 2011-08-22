@@ -164,6 +164,32 @@ ${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length}, ${crc_extra});
 }
 
+#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
+
+/**
+ * @brief Pack a ${name_lower} message on a channel
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param chan The MAVLink channel this message was sent over
+ * @param msg The MAVLink message to compress the data into
+${{arg_fields: * @param ${name} ${description}
+}}
+ * @return length of the message in bytes (excluding serial stream start sign)
+ */
+static inline void mavlink_msg_${name_lower}_pack_chan_send(mavlink_channel_t chan,
+							   mavlink_message_t* msg,
+						           ${{arg_fields:${array_const}${type} ${name}${array_suffix},}})
+{
+	msg->msgid = MAVLINK_MSG_ID_${name};
+
+${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
+}}
+
+	mavlink_finalize_message_chan_send(msg, chan, ${wire_length}, ${crc_extra});
+}
+#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
+
+
 /**
  * @brief Encode a ${name_lower} struct into a message
  *
@@ -190,8 +216,7 @@ static inline void mavlink_msg_${name_lower}_send(mavlink_channel_t chan,${{arg_
 {
 	MAVLINK_ALIGNED_BUFFER(buffer, MAVLINK_NUM_NON_PAYLOAD_BYTES+${wire_length});
 	mavlink_message_t *msg = (mavlink_message_t *)&buffer;
-	mavlink_msg_${name_lower}_pack_chan(mavlink_system.sysid, mavlink_system.compid, chan, msg,${{arg_fields: ${name},}});
-	mavlink_send_uart(chan, msg);
+	mavlink_msg_${name_lower}_pack_chan_send(chan, msg,${{arg_fields: ${name},}});
 }
 
 #endif

@@ -62,6 +62,18 @@ MAVLINK_HELPER uint16_t mavlink_finalize_message(mavlink_message_t* msg, uint8_t
 	return mavlink_finalize_message_chan(msg, system_id, component_id, MAVLINK_COMM_0, length, crc_extra);
 }
 
+#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
+/**
+ * @brief Finalize a MAVLink message with channel assignment and send
+ */
+MAVLINK_HELPER void mavlink_finalize_message_chan_send(mavlink_message_t* msg,
+						       mavlink_channel_t chan, uint16_t length, uint8_t crc_extra)
+{
+	mavlink_finalize_message_chan(msg, mavlink_system.sysid, mavlink_system.compid, chan, length, crc_extra);
+	mavlink_send_uart(chan, msg);
+}
+#endif
+
 /**
  * @brief Pack a message to send it over a serial byte stream
  */
