@@ -63,6 +63,8 @@ MAVLINK_HELPER uint16_t mavlink_finalize_message(mavlink_message_t* msg, uint8_t
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
+MAVLINK_HELPER void mavlink_send_uart(mavlink_channel_t chan, mavlink_message_t* msg);
+
 /**
  * @brief Finalize a MAVLink message with channel assignment and send
  */
@@ -334,8 +336,10 @@ MAVLINK_HELPER uint8_t put_bitfield_n_by_index(int32_t b, uint8_t bits, uint8_t 
 	int32_t v;
 	uint8_t i_bit_index, i_byte_index, curr_bits_n;
 #if MAVLINK_NEED_BYTE_SWAP
-	generic_32bit bin;
-	generic_32bit bout;
+	union {
+		int32_t i;
+		uint8_t b[4];
+	} bin, bout;
 	bin.i = b;
 	bout.b[0] = bin.b[3];
 	bout.b[1] = bin.b[2];
