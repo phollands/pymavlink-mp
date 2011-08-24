@@ -250,6 +250,37 @@ ${{ordered_fields:	${decode_left}mavlink_msg_${name_lower}_get_${name}(msg${deco
     f.close()
 
 
+def generate_testsuite_h(directory, xml):
+    '''generate testsuite.h per XML file'''
+    f = open(os.path.join(directory, xml.basename + "_testsuite.h"), mode='w')
+    t.write(f, '''
+/** @file
+ *	@brief MAVLink comm protocol testsuite generated from ${basename}.xml
+ *	@see http://qgroundcontrol.org/mavlink/
+ *	Generated on ${parse_time}
+ */
+#ifndef ${basename_upper}_TESTSUITE_H
+#define ${basename_upper}_TESTSUITE_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+static void mavtest_generate_outputs(mavlink_channel_t chan)
+{
+${{message:	mavlink_msg_${name_lower}_send(chan ${{arg_fields:, ${c_test_value} }});
+}}
+}
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
+#endif // ${basename_upper}_TESTSUITE_H
+''', xml)
+
+    f.close()
+
+
 def generate_one(basename, xml):
     '''generate headers for one XML file'''
 
@@ -299,6 +330,7 @@ def generate_one(basename, xml):
                 f.decode_right = ', %s->%s' % (m.name_lower, f.name)
                 f.return_type = 'uint16_t'
                 f.get_arg = ', %s *%s' % (f.type, f.name)
+                f.c_test_value = '"%s"' % f.test_value
             else:
                 f.array_suffix = ''
                 f.array_tag = ''
@@ -309,6 +341,10 @@ def generate_one(basename, xml):
                 f.decode_right = ''
                 f.get_arg = ''
                 f.return_type = f.type
+                if f.type == 'char':
+                    f.c_test_value = "'%s'" % f.test_value
+                else:
+                    f.c_test_value = f.test_value
 
     # cope with uint8_t_mavlink_version
     for m in xml.message:
@@ -324,6 +360,7 @@ def generate_one(basename, xml):
     generate_main_h(directory, xml)
     for m in xml.message:
         generate_message_h(directory, m)
+    generate_testsuite_h(directory, xml)
 
 
 def generate(basename, xml_list):
