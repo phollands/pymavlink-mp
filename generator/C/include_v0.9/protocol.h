@@ -27,15 +27,19 @@ MAVLINK_HELPER uint16_t mavlink_finalize_message_chan(mavlink_message_t* msg, ui
 						      uint8_t chan, uint16_t length, uint8_t crc_extra);
 MAVLINK_HELPER uint16_t mavlink_finalize_message(mavlink_message_t* msg, uint8_t system_id, uint8_t component_id, 
 						 uint16_t length, uint8_t crc_extra);
+#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 MAVLINK_HELPER void mavlink_finalize_message_chan_send(mavlink_message_t* msg,
 						       mavlink_channel_t chan, uint16_t length, uint8_t crc_extra);
+#endif
 MAVLINK_HELPER uint16_t mavlink_msg_to_send_buffer(uint8_t *buffer, const mavlink_message_t *msg);
 MAVLINK_HELPER void mavlink_start_checksum(mavlink_message_t* msg);
 MAVLINK_HELPER void mavlink_update_checksum(mavlink_message_t* msg, uint8_t c);
 MAVLINK_HELPER uint8_t mavlink_parse_char(uint8_t chan, uint8_t c, mavlink_message_t* r_message, mavlink_status_t* r_mavlink_status);
 MAVLINK_HELPER uint8_t put_bitfield_n_by_index(int32_t b, uint8_t bits, uint8_t packet_index, uint8_t bit_index, 
 					       uint8_t* r_bit_index, uint8_t* buffer);
+#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 MAVLINK_HELPER void mavlink_send_uart(mavlink_channel_t chan, mavlink_message_t* msg);
+#endif
 
 /**
  * @brief Get the required buffer size for this message
@@ -344,9 +348,20 @@ static inline uint16_t MAVLINK_MSG_RETURN_int8_t_array(const mavlink_message_t *
 	return array_length;
 }
 
-#ifndef MAVLINK_ALIGNED_BUFFER
-#define MAVLINK_ALIGNED_BUFFER(bufname, length) union { uint64_t _x; uint8_t _buf[length]; } bufname
-#endif
+/*
+  this rather strange macro creates a mavlink_message_t structure on
+  the stack, with the payload aligned on whatever boundary this
+  machine needs for accessing a uint64_t.
+ */
+#ifndef MAVLINK_ALIGNED_MESSAGE
+#define MAVLINK_ALIGNMENT_OFFSET (8-MAVLINK_NUM_HEADER_BYTES)
+#define MAVLINK_ALIGNED_MESSAGE(msg, length) \
+union { \
+	uint64_t _uint64; \
+	uint8_t  _buf[MAVLINK_ALIGNMENT_OFFSET+MAVLINK_NUM_NON_PAYLOAD_BYTES+(length)]; \
+} _buffer; \
+mavlink_message_t *msg = (mavlink_message_t *)&_buffer._buf[MAVLINK_ALIGNMENT_OFFSET]
+#endif // MAVLINK_ALIGNED_MESSAGE
 
 #undef MAVLINK_HELPER
 #endif /* _MAVLINK_PROTOCOL_H_ */
