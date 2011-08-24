@@ -1851,6 +1851,7 @@ class MAVError(Exception):
         '''MAVLink error class'''
         def __init__(self, msg):
             Exception.__init__(self, msg)
+            self.message = msg
 
 class MAVString(str):
         '''NUL terminated string'''
