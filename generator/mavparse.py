@@ -207,6 +207,9 @@ class MAVXML(object):
             self.message_lengths[m.id] = m.wire_length
             self.message_crcs[m.id] = m.crc_extra
 
+            if m.wire_length+8 > 64:
+                print("Warning: message %s is longer than 64 bytes long (%u bytes)" % (m.name, m.wire_length+8))
+
 
     def __str__(self):
         return "MAVXML for %s from %s (%u message, %u enums)" % (
