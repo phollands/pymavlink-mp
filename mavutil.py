@@ -6,7 +6,7 @@ Copyright Andrew Tridgell 2011
 Released under GNU GPL version 3 or later
 '''
 
-import mavlink, socket, math, struct, time, os, fnmatch, array
+import socket, math, struct, time, os, fnmatch, array
 from math import *
 from mavextra import *
 
@@ -31,6 +31,7 @@ def evaluate_condition(condition, vars):
 class mavfile(object):
     '''a generic mavlink port'''
     def __init__(self, fd, address, source_system=255):
+        import mavlink
         self.fd = fd
         self.address = address
         self.messages = { 'MAV' : self,
@@ -182,8 +183,8 @@ class mavserial(mavfile):
                 except Exception:
                     self.fd = None
                 return
-            except Exception, msg:
-                print("Failed to reopen %s - %s" % (self.device, msg))
+            except Exception:
+                print("Failed to reopen %s" % self.device)
                 time.sleep(1)
         
 
@@ -207,8 +208,8 @@ class mavudp(mavfile):
     def recv(self):
         try:
             data, self.last_address = self.port.recvfrom(300)
-        except socket.error, (enum, emsg):
-            if enum == 11:
+        except socket.error as e:
+            if e.errno == 11:
                 return ""
             raise
         return data
@@ -450,7 +451,11 @@ class x25crc(object):
 
     def accumulate(self, buf):
         '''add in some more bytes'''
-        bytes = array.array('B', str(buf))
+        bytes = array.array('B')
+        if isinstance(buf, str):
+            bytes.fromstring(buf)
+        else:
+            bytes.extend(buf)
         accum = self.crc
         for b in bytes:
             tmp = b ^ (accum & 0xff)
