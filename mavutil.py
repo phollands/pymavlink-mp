@@ -452,10 +452,10 @@ class x25crc(object):
     def accumulate(self, buf):
         '''add in some more bytes'''
         bytes = array.array('B')
-        if isinstance(buf, str):
-            bytes.fromstring(buf)
-        else:
+        if isinstance(buf, array.array):
             bytes.extend(buf)
+        else:
+            bytes.fromstring(buf)
         accum = self.crc
         for b in bytes:
             tmp = b ^ (accum & 0xff)
