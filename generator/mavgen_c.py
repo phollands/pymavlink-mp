@@ -211,8 +211,7 @@ ${{arg_fields: * @param ${name} ${description}
 
 static inline void mavlink_msg_${name_lower}_send(mavlink_channel_t chan,${{arg_fields: ${array_const}${type} ${name}${array_suffix},}})
 {
-	MAVLINK_ALIGNED_BUFFER(buffer, MAVLINK_NUM_NON_PAYLOAD_BYTES+${wire_length});
-	mavlink_message_t *msg = (mavlink_message_t *)&buffer;
+	MAVLINK_ALIGNED_MESSAGE(msg, ${wire_length});
 	mavlink_msg_${name_lower}_pack_chan_send(chan, msg,${{arg_fields: ${name},}});
 }
 

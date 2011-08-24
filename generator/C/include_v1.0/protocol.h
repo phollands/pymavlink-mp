@@ -186,8 +186,7 @@ static inline void put_uint64_t_by_index(uint64_t b, const uint8_t bindex, uint8
 	buffer[bindex+6] = (b>>8)&0xff;
 	buffer[bindex+7] = (b & 0xff);
 #else
-	*((uint32_t *)(buffer+bindex)) = *((uint32_t *)&b);
-	*((uint32_t *)(buffer+bindex)+1) = *(((uint32_t *)&b)+1);
+	*(uint64_t *)(buffer+bindex) = b;
 #endif
 }
 
@@ -349,9 +348,20 @@ static inline uint16_t MAVLINK_MSG_RETURN_int8_t_array(const mavlink_message_t *
 	return array_length;
 }
 
-#ifndef MAVLINK_ALIGNED_BUFFER
-#define MAVLINK_ALIGNED_BUFFER(bufname, length) union { uint64_t _x; uint8_t _buf[length]; } bufname
-#endif
+/*
+  this rather strange macro creates a mavlink_message_t structure on
+  the stack, with the payload aligned on whatever boundary this
+  machine needs for accessing a uint64_t.
+ */
+#ifndef MAVLINK_ALIGNED_MESSAGE
+#define MAVLINK_ALIGNMENT_OFFSET (8-MAVLINK_NUM_HEADER_BYTES)
+#define MAVLINK_ALIGNED_MESSAGE(msg, length) \
+union { \
+	uint64_t _uint64; \
+	uint8_t  _buf[MAVLINK_ALIGNMENT_OFFSET+MAVLINK_NUM_NON_PAYLOAD_BYTES+(length)]; \
+} _buffer; \
+mavlink_message_t *msg = (mavlink_message_t *)&_buffer._buf[MAVLINK_ALIGNMENT_OFFSET]
+#endif // MAVLINK_ALIGNED_MESSAGE
 
 #undef MAVLINK_HELPER
 #endif /* _MAVLINK_PROTOCOL_H_ */
