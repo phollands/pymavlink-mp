@@ -4,10 +4,10 @@
 
 typedef struct __mavlink_request_data_stream_t
 {
- uint16_t req_message_rate; ///< Update rate in Hertz
+ uint16_t req_message_rate; ///< The requested interval between two messages of this type
  uint8_t target_system; ///< The target requested to send the message stream.
  uint8_t target_component; ///< The target requested to send the message stream.
- uint8_t req_stream_id; ///< The ID of the requested message type
+ uint8_t req_stream_id; ///< The ID of the requested data stream
  uint8_t start_stop; ///< 1 to start sending, 0 to stop sending.
 } mavlink_request_data_stream_t;
 
@@ -19,8 +19,8 @@ typedef struct __mavlink_request_data_stream_t
  *
  * @param target_system The target requested to send the message stream.
  * @param target_component The target requested to send the message stream.
- * @param req_stream_id The ID of the requested message type
- * @param req_message_rate Update rate in Hertz
+ * @param req_stream_id The ID of the requested data stream
+ * @param req_message_rate The requested interval between two messages of this type
  * @param start_stop 1 to start sending, 0 to stop sending.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
@@ -29,10 +29,10 @@ static inline uint16_t mavlink_msg_request_data_stream_pack(uint8_t system_id, u
 {
 	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
 
-	put_uint16_t_by_index(req_message_rate, 0,  msg->payload); // Update rate in Hertz
+	put_uint16_t_by_index(req_message_rate, 0,  msg->payload); // The requested interval between two messages of this type
 	put_uint8_t_by_index(target_system, 2,  msg->payload); // The target requested to send the message stream.
 	put_uint8_t_by_index(target_component, 3,  msg->payload); // The target requested to send the message stream.
-	put_uint8_t_by_index(req_stream_id, 4,  msg->payload); // The ID of the requested message type
+	put_uint8_t_by_index(req_stream_id, 4,  msg->payload); // The ID of the requested data stream
 	put_uint8_t_by_index(start_stop, 5,  msg->payload); // 1 to start sending, 0 to stop sending.
 
 	return mavlink_finalize_message(msg, system_id, component_id, 6, 169);
@@ -46,8 +46,8 @@ static inline uint16_t mavlink_msg_request_data_stream_pack(uint8_t system_id, u
  * @param msg The MAVLink message to compress the data into
  * @param target_system The target requested to send the message stream.
  * @param target_component The target requested to send the message stream.
- * @param req_stream_id The ID of the requested message type
- * @param req_message_rate Update rate in Hertz
+ * @param req_stream_id The ID of the requested data stream
+ * @param req_message_rate The requested interval between two messages of this type
  * @param start_stop 1 to start sending, 0 to stop sending.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
@@ -57,10 +57,10 @@ static inline uint16_t mavlink_msg_request_data_stream_pack_chan(uint8_t system_
 {
 	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
 
-	put_uint16_t_by_index(req_message_rate, 0,  msg->payload); // Update rate in Hertz
+	put_uint16_t_by_index(req_message_rate, 0,  msg->payload); // The requested interval between two messages of this type
 	put_uint8_t_by_index(target_system, 2,  msg->payload); // The target requested to send the message stream.
 	put_uint8_t_by_index(target_component, 3,  msg->payload); // The target requested to send the message stream.
-	put_uint8_t_by_index(req_stream_id, 4,  msg->payload); // The ID of the requested message type
+	put_uint8_t_by_index(req_stream_id, 4,  msg->payload); // The ID of the requested data stream
 	put_uint8_t_by_index(start_stop, 5,  msg->payload); // 1 to start sending, 0 to stop sending.
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6, 169);
@@ -74,8 +74,8 @@ static inline uint16_t mavlink_msg_request_data_stream_pack_chan(uint8_t system_
  * @param msg The MAVLink message to compress the data into
  * @param target_system The target requested to send the message stream.
  * @param target_component The target requested to send the message stream.
- * @param req_stream_id The ID of the requested message type
- * @param req_message_rate Update rate in Hertz
+ * @param req_stream_id The ID of the requested data stream
+ * @param req_message_rate The requested interval between two messages of this type
  * @param start_stop 1 to start sending, 0 to stop sending.
  */
 static inline void mavlink_msg_request_data_stream_pack_chan_send(mavlink_channel_t chan,
@@ -84,10 +84,10 @@ static inline void mavlink_msg_request_data_stream_pack_chan_send(mavlink_channe
 {
 	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
 
-	put_uint16_t_by_index(req_message_rate, 0,  msg->payload); // Update rate in Hertz
+	put_uint16_t_by_index(req_message_rate, 0,  msg->payload); // The requested interval between two messages of this type
 	put_uint8_t_by_index(target_system, 2,  msg->payload); // The target requested to send the message stream.
 	put_uint8_t_by_index(target_component, 3,  msg->payload); // The target requested to send the message stream.
-	put_uint8_t_by_index(req_stream_id, 4,  msg->payload); // The ID of the requested message type
+	put_uint8_t_by_index(req_stream_id, 4,  msg->payload); // The ID of the requested data stream
 	put_uint8_t_by_index(start_stop, 5,  msg->payload); // 1 to start sending, 0 to stop sending.
 
 	mavlink_finalize_message_chan_send(msg, chan, 6, 169);
@@ -114,8 +114,8 @@ static inline uint16_t mavlink_msg_request_data_stream_encode(uint8_t system_id,
  *
  * @param target_system The target requested to send the message stream.
  * @param target_component The target requested to send the message stream.
- * @param req_stream_id The ID of the requested message type
- * @param req_message_rate Update rate in Hertz
+ * @param req_stream_id The ID of the requested data stream
+ * @param req_message_rate The requested interval between two messages of this type
  * @param start_stop 1 to start sending, 0 to stop sending.
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -154,7 +154,7 @@ static inline uint8_t mavlink_msg_request_data_stream_get_target_component(const
 /**
  * @brief Get field req_stream_id from request_data_stream message
  *
- * @return The ID of the requested message type
+ * @return The ID of the requested data stream
  */
 static inline uint8_t mavlink_msg_request_data_stream_get_req_stream_id(const mavlink_message_t* msg)
 {
@@ -164,7 +164,7 @@ static inline uint8_t mavlink_msg_request_data_stream_get_req_stream_id(const ma
 /**
  * @brief Get field req_message_rate from request_data_stream message
  *
- * @return Update rate in Hertz
+ * @return The requested interval between two messages of this type
  */
 static inline uint16_t mavlink_msg_request_data_stream_get_req_message_rate(const mavlink_message_t* msg)
 {

@@ -1,6 +1,6 @@
 // MESSAGE SYSTEM_TIME_UTC PACKING
 
-#define MAVLINK_MSG_ID_SYSTEM_TIME_UTC 4
+#define MAVLINK_MSG_ID_SYSTEM_TIME_UTC 3
 
 typedef struct __mavlink_system_time_utc_t
 {

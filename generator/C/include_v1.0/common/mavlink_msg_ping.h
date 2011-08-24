@@ -1,6 +1,6 @@
 // MESSAGE PING PACKING
 
-#define MAVLINK_MSG_ID_PING 3
+#define MAVLINK_MSG_ID_PING 4
 
 typedef struct __mavlink_ping_t
 {

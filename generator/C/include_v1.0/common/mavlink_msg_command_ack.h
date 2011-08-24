@@ -1,6 +1,6 @@
 // MESSAGE COMMAND_ACK PACKING
 
-#define MAVLINK_MSG_ID_COMMAND_ACK 76
+#define MAVLINK_MSG_ID_COMMAND_ACK 77
 
 typedef struct __mavlink_command_ack_t
 {

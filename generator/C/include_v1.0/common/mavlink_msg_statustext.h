@@ -5,7 +5,7 @@
 typedef struct __mavlink_statustext_t
 {
  uint8_t severity; ///< Severity of status, 0 = info message, 255 = critical fault
- int8_t text[50]; ///< Status text message, without null termination character
+ char text[50]; ///< Status text message, without null termination character
 } mavlink_statustext_t;
 
 /**
@@ -19,14 +19,14 @@ typedef struct __mavlink_statustext_t
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_statustext_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       uint8_t severity, const int8_t text[50])
+						       uint8_t severity, const char text[50])
 {
 	msg->msgid = MAVLINK_MSG_ID_STATUSTEXT;
 
 	put_uint8_t_by_index(severity, 0,  msg->payload); // Severity of status, 0 = info message, 255 = critical fault
-	put_int8_t_array_by_index(text, 1, 50,  msg->payload); // Status text message, without null termination character
+	put_char_array_by_index(text, 1, 50,  msg->payload); // Status text message, without null termination character
 
-	return mavlink_finalize_message(msg, system_id, component_id, 51, 88);
+	return mavlink_finalize_message(msg, system_id, component_id, 51, 55);
 }
 
 /**
@@ -41,14 +41,14 @@ static inline uint16_t mavlink_msg_statustext_pack(uint8_t system_id, uint8_t co
  */
 static inline uint16_t mavlink_msg_statustext_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           uint8_t severity,const int8_t text[50])
+						           uint8_t severity,const char text[50])
 {
 	msg->msgid = MAVLINK_MSG_ID_STATUSTEXT;
 
 	put_uint8_t_by_index(severity, 0,  msg->payload); // Severity of status, 0 = info message, 255 = critical fault
-	put_int8_t_array_by_index(text, 1, 50,  msg->payload); // Status text message, without null termination character
+	put_char_array_by_index(text, 1, 50,  msg->payload); // Status text message, without null termination character
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 51, 88);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 51, 55);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -62,14 +62,14 @@ static inline uint16_t mavlink_msg_statustext_pack_chan(uint8_t system_id, uint8
  */
 static inline void mavlink_msg_statustext_pack_chan_send(mavlink_channel_t chan,
 							   mavlink_message_t* msg,
-						           uint8_t severity,const int8_t text[50])
+						           uint8_t severity,const char text[50])
 {
 	msg->msgid = MAVLINK_MSG_ID_STATUSTEXT;
 
 	put_uint8_t_by_index(severity, 0,  msg->payload); // Severity of status, 0 = info message, 255 = critical fault
-	put_int8_t_array_by_index(text, 1, 50,  msg->payload); // Status text message, without null termination character
+	put_char_array_by_index(text, 1, 50,  msg->payload); // Status text message, without null termination character
 
-	mavlink_finalize_message_chan_send(msg, chan, 51, 88);
+	mavlink_finalize_message_chan_send(msg, chan, 51, 55);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
@@ -96,7 +96,7 @@ static inline uint16_t mavlink_msg_statustext_encode(uint8_t system_id, uint8_t 
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_statustext_send(mavlink_channel_t chan, uint8_t severity, const int8_t text[50])
+static inline void mavlink_msg_statustext_send(mavlink_channel_t chan, uint8_t severity, const char text[50])
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 51);
 	mavlink_msg_statustext_pack_chan_send(chan, msg, severity, text);
@@ -122,9 +122,9 @@ static inline uint8_t mavlink_msg_statustext_get_severity(const mavlink_message_
  *
  * @return Status text message, without null termination character
  */
-static inline uint16_t mavlink_msg_statustext_get_text(const mavlink_message_t* msg, int8_t *text)
+static inline uint16_t mavlink_msg_statustext_get_text(const mavlink_message_t* msg, char *text)
 {
-	return MAVLINK_MSG_RETURN_int8_t_array(msg, text, 50,  1);
+	return MAVLINK_MSG_RETURN_char_array(msg, text, 50,  1);
 }
 
 /**
