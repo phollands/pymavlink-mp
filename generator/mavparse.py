@@ -64,6 +64,30 @@ class MAVField(object):
         else:
             self.wire_length = self.type_length
 
+    def set_test_value(self):
+        '''set a testsuite value for a MAVField'''
+        if self.type == 'float':
+            self.test_value = 17.0 + self.wire_offset*7
+        elif self.type == 'char':
+            if self.array_length:
+                self.test_value = ''
+                for i in range(self.array_length):
+                    self.test_value += chr(ord('A') + (i*17*(self.wire_offset+1)) % 26)
+            else:
+                self.test_value = chr(ord('A') + self.wire_offset)
+        elif self.type in [ 'int8_t', 'uint8_t' ]:
+            self.test_value = (5 + self.wire_offset*67) & 0xFF
+        elif self.type in ['int16_t', 'uint16_t']:
+            self.test_value = (17235 + self.wire_offset*52) & 0xFFFF
+        elif self.type in ['int32_t', 'uint32_t']:
+            self.test_value = (963497464 + self.wire_offset*52)&0xFFFFFFFF
+        elif self.type in ['int64_t', 'uint64_t']:
+            self.test_value = 9223372036854775807 + self.wire_offset*63
+        else:
+            raise MAVError('unknown type %s' % self.type)
+
+
+
 class MAVType(object):
     def __init__(self, name, id, linenumber, description=''):
         self.name = name
@@ -203,9 +227,13 @@ class MAVXML(object):
                 f.wire_offset = m.wire_length
                 m.wire_length += f.wire_length
                 m.ordered_fieldnames.append(f.name)
+                f.set_test_value()
             m.crc_extra = message_checksum(m)
             self.message_lengths[m.id] = m.wire_length
             self.message_crcs[m.id] = m.crc_extra
+
+            if m.wire_length+8 > 64:
+                print("Warning: message %s is longer than 64 bytes long (%u bytes)" % (m.name, m.wire_length+8))
 
 
     def __str__(self):
@@ -258,3 +286,8 @@ def mkdir_p(dir):
         return
     mkdir_p(os.path.dirname(dir))
     os.mkdir(dir)
+
+# check version consistent
+# add test.xml
+# finish test suite
+# printf style error macro, if defined call errors
