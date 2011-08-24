@@ -147,7 +147,7 @@ class MAVXML(object):
             elif in_element == "mavlink.enums.enum.entry":
                 check_attrs(attrs, ['name'], 'enum entry')
                 if 'value' in attrs:
-                    value = long(attrs['value'])
+                    value = int(attrs['value'])
                 else:
                     value = self.enum[-1].next_value
                 self.enum[-1].next_value = value+1
@@ -176,7 +176,7 @@ class MAVXML(object):
             elif in_element == "mavlink.include":
                 self.include.append(data)
 
-        f = open(filename)
+        f = open(filename, mode='rb')
         p = xml.parsers.expat.ParserCreate()
         p.StartElementHandler = start_element
         p.EndElementHandler = end_element
