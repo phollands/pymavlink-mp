@@ -377,7 +377,10 @@ def generate_methods(outf, msgs):
 
 def generate(basename, xml):
     '''generate complete python implemenation'''
-    filename = basename + '.py'
+    if basename.endswith('.py'):
+        filename = basename
+    else:
+        filename = basename + '.py'
 
     msgs = []
     enums = []
