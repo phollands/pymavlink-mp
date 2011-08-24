@@ -70,6 +70,7 @@ typedef struct __mavlink_system {
 } mavlink_system_t;
 
 typedef struct __mavlink_message {
+    uint16_t checksum; /// sent at end of packet
     uint8_t magic;   ///< protocol magic marker
     uint8_t len;     ///< Length of payload
     uint8_t seq;     ///< Sequence of packet
@@ -117,8 +118,6 @@ typedef enum {
 } mavlink_parse_state_t; ///< The state machine for the comm parser
 
 typedef struct __mavlink_status {
-    uint8_t ck_a;                       ///< Checksum byte 1
-    uint8_t ck_b;                       ///< Checksum byte 2
     uint8_t msg_received;               ///< Number of received messages
     uint8_t buffer_overrun;             ///< Number of buffer overruns
     uint8_t parse_error;                ///< Number of parse errors
