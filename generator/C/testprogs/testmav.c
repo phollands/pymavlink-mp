@@ -4,7 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+
 #define MAVLINK_USE_CONVENIENCE_FUNCTIONS
+#define MAVLINK_COMM_NUM_BUFFERS 1
 
 #include <mavlink_types.h>
 static mavlink_system_t mavlink_system = {42,11,};
@@ -37,7 +39,7 @@ static void comm_send_ch(mavlink_channel_t chan, uint8_t c)
 
 int main(void)
 {
-	mavtest_generate_outputs(MAVLINK_COMM_0);
+	mavtest_generate_outputs(MAVLINK_COMM_0, 11, 10);
 	printf("Received %u messages OK\n", count);
 	return 0;
 }
