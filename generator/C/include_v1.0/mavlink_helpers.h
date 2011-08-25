@@ -42,7 +42,7 @@ MAVLINK_HELPER uint16_t mavlink_finalize_message_chan(mavlink_message_t* msg, ui
 	// One sequence number per component
 	msg->seq = mavlink_get_channel_status(chan)->current_tx_seq;
 	mavlink_get_channel_status(chan)->current_tx_seq = mavlink_get_channel_status(chan)->current_tx_seq+1;
-	checksum = crc_calculate(1+(uint8_t*)&msg->magic, length + MAVLINK_CORE_HEADER_LEN);
+	checksum = crc_calculate((uint8_t*)&msg->len, length + MAVLINK_CORE_HEADER_LEN);
 #if MAVLINK_CRC_EXTRA
 	crc_accumulate(crc_extra, &checksum);
 #endif
@@ -224,7 +224,7 @@ MAVLINK_HELPER uint8_t mavlink_parse_char(uint8_t chan, uint8_t c, mavlink_messa
 		break;
 
 	case MAVLINK_PARSE_STATE_GOT_MSGID:
-		rxmsg->payload[status->packet_idx++] = c;
+		MAVLINK_PAYLOAD(rxmsg)[status->packet_idx++] = c;
 		mavlink_update_checksum(rxmsg, c);
 		if (status->packet_idx == rxmsg->len)
 		{
@@ -434,7 +434,7 @@ MAVLINK_HELPER void mavlink_send_uart(mavlink_channel_t chan, mavlink_message_t*
 	/* fallback to one byte at a time */
 	uint8_t *buffer = (uint8_t *)&msg->magic;
 	uint16_t i;
-	for (i = 0; i < (uint16_t)(msg->len + MAVLINK_NUM_NON_PAYLOAD_BYTES); i++) {
+	for (i = 0; i < MAVLINK_NUM_NON_PAYLOAD_BYTES + (uint16_t)msg->len; i++) {
 		comm_send_ch(chan, buffer[i]);
 	}
 #endif

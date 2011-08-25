@@ -77,12 +77,14 @@ typedef struct __mavlink_message {
     uint8_t sysid;   ///< ID of message sender system/aircraft
     uint8_t compid;  ///< ID of the message sender component
     uint8_t msgid;   ///< ID of message in payload
-    uint8_t payload[MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES]; ///< Payload data, ALIGNMENT IMPORTANT ON MCU
+    uint64_t payload64[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+7)/8]; ///< Payload data, ALIGNMENT IMPORTANT ON MCU
 } mavlink_message_t;
 
+#define MAVLINK_PAYLOAD(msg) ((uint8_t *)(&(msg)->payload64[0]))
+
 // checksum is immediately after the payload bytes
-#define mavlink_ck_a(msg) msg->payload[msg->len]
-#define mavlink_ck_b(msg) msg->payload[msg->len+1]
+#define mavlink_ck_a(msg) MAVLINK_PAYLOAD(msg)[(msg)->len]
+#define mavlink_ck_b(msg) MAVLINK_PAYLOAD(msg)[1+(uint16_t)(msg)->len]
 
 typedef enum {
     MAVLINK_COMM_0,
