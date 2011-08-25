@@ -23,8 +23,8 @@ static inline uint16_t mavlink_msg_set_altitude_pack(uint8_t system_id, uint8_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_ALTITUDE;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the altitude
-	put_uint32_t_by_index(mode, 1,  msg->payload); // The new altitude in meters
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the altitude
+	put_uint32_t_by_index(mode, 1,  MAVLINK_PAYLOAD(msg)); // The new altitude in meters
 
 	return mavlink_finalize_message(msg, system_id, component_id, 5, 223);
 }
@@ -45,8 +45,8 @@ static inline uint16_t mavlink_msg_set_altitude_pack_chan(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_ALTITUDE;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the altitude
-	put_uint32_t_by_index(mode, 1,  msg->payload); // The new altitude in meters
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the altitude
+	put_uint32_t_by_index(mode, 1,  MAVLINK_PAYLOAD(msg)); // The new altitude in meters
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 5, 223);
 }
@@ -66,8 +66,8 @@ static inline void mavlink_msg_set_altitude_pack_chan_send(mavlink_channel_t cha
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_ALTITUDE;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the altitude
-	put_uint32_t_by_index(mode, 1,  msg->payload); // The new altitude in meters
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the altitude
+	put_uint32_t_by_index(mode, 1,  MAVLINK_PAYLOAD(msg)); // The new altitude in meters
 
 	mavlink_finalize_message_chan_send(msg, chan, 5, 223);
 }
@@ -139,6 +139,6 @@ static inline void mavlink_msg_set_altitude_decode(const mavlink_message_t* msg,
 	set_altitude->target = mavlink_msg_set_altitude_get_target(msg);
 	set_altitude->mode = mavlink_msg_set_altitude_get_mode(msg);
 #else
-	memcpy(set_altitude, msg->payload, 5);
+	memcpy(set_altitude, MAVLINK_PAYLOAD(msg), 5);
 #endif
 }

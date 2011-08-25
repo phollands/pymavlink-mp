@@ -25,9 +25,9 @@ static inline uint16_t mavlink_msg_slugs_action_pack(uint8_t system_id, uint8_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_SLUGS_ACTION;
 
-	put_uint16_t_by_index(actionVal, 0,  msg->payload); // Value associated with the action
-	put_uint8_t_by_index(target, 2,  msg->payload); // The system reporting the action
-	put_uint8_t_by_index(actionId, 3,  msg->payload); // Action ID. See apDefinitions.h in the SLUGS /clib directory for the ID names
+	put_uint16_t_by_index(actionVal, 0,  MAVLINK_PAYLOAD(msg)); // Value associated with the action
+	put_uint8_t_by_index(target, 2,  MAVLINK_PAYLOAD(msg)); // The system reporting the action
+	put_uint8_t_by_index(actionId, 3,  MAVLINK_PAYLOAD(msg)); // Action ID. See apDefinitions.h in the SLUGS /clib directory for the ID names
 
 	return mavlink_finalize_message(msg, system_id, component_id, 4, 146);
 }
@@ -49,9 +49,9 @@ static inline uint16_t mavlink_msg_slugs_action_pack_chan(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_SLUGS_ACTION;
 
-	put_uint16_t_by_index(actionVal, 0,  msg->payload); // Value associated with the action
-	put_uint8_t_by_index(target, 2,  msg->payload); // The system reporting the action
-	put_uint8_t_by_index(actionId, 3,  msg->payload); // Action ID. See apDefinitions.h in the SLUGS /clib directory for the ID names
+	put_uint16_t_by_index(actionVal, 0,  MAVLINK_PAYLOAD(msg)); // Value associated with the action
+	put_uint8_t_by_index(target, 2,  MAVLINK_PAYLOAD(msg)); // The system reporting the action
+	put_uint8_t_by_index(actionId, 3,  MAVLINK_PAYLOAD(msg)); // Action ID. See apDefinitions.h in the SLUGS /clib directory for the ID names
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 146);
 }
@@ -72,9 +72,9 @@ static inline void mavlink_msg_slugs_action_pack_chan_send(mavlink_channel_t cha
 {
 	msg->msgid = MAVLINK_MSG_ID_SLUGS_ACTION;
 
-	put_uint16_t_by_index(actionVal, 0,  msg->payload); // Value associated with the action
-	put_uint8_t_by_index(target, 2,  msg->payload); // The system reporting the action
-	put_uint8_t_by_index(actionId, 3,  msg->payload); // Action ID. See apDefinitions.h in the SLUGS /clib directory for the ID names
+	put_uint16_t_by_index(actionVal, 0,  MAVLINK_PAYLOAD(msg)); // Value associated with the action
+	put_uint8_t_by_index(target, 2,  MAVLINK_PAYLOAD(msg)); // The system reporting the action
+	put_uint8_t_by_index(actionId, 3,  MAVLINK_PAYLOAD(msg)); // Action ID. See apDefinitions.h in the SLUGS /clib directory for the ID names
 
 	mavlink_finalize_message_chan_send(msg, chan, 4, 146);
 }
@@ -158,6 +158,6 @@ static inline void mavlink_msg_slugs_action_decode(const mavlink_message_t* msg,
 	slugs_action->target = mavlink_msg_slugs_action_get_target(msg);
 	slugs_action->actionId = mavlink_msg_slugs_action_get_actionId(msg);
 #else
-	memcpy(slugs_action, msg->payload, 4);
+	memcpy(slugs_action, MAVLINK_PAYLOAD(msg), 4);
 #endif
 }

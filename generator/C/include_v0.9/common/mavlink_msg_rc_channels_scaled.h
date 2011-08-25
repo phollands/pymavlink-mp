@@ -37,15 +37,15 @@ static inline uint16_t mavlink_msg_rc_channels_scaled_pack(uint8_t system_id, ui
 {
 	msg->msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
 
-	put_int16_t_by_index(chan1_scaled, 0,  msg->payload); // RC channel 1 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan2_scaled, 2,  msg->payload); // RC channel 2 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan3_scaled, 4,  msg->payload); // RC channel 3 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan4_scaled, 6,  msg->payload); // RC channel 4 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan5_scaled, 8,  msg->payload); // RC channel 5 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan6_scaled, 10,  msg->payload); // RC channel 6 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan7_scaled, 12,  msg->payload); // RC channel 7 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan8_scaled, 14,  msg->payload); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_uint8_t_by_index(rssi, 16,  msg->payload); // Receive signal strength indicator, 0: 0%, 255: 100%
+	put_int16_t_by_index(chan1_scaled, 0,  MAVLINK_PAYLOAD(msg)); // RC channel 1 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan2_scaled, 2,  MAVLINK_PAYLOAD(msg)); // RC channel 2 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan3_scaled, 4,  MAVLINK_PAYLOAD(msg)); // RC channel 3 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan4_scaled, 6,  MAVLINK_PAYLOAD(msg)); // RC channel 4 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan5_scaled, 8,  MAVLINK_PAYLOAD(msg)); // RC channel 5 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan6_scaled, 10,  MAVLINK_PAYLOAD(msg)); // RC channel 6 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan7_scaled, 12,  MAVLINK_PAYLOAD(msg)); // RC channel 7 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan8_scaled, 14,  MAVLINK_PAYLOAD(msg)); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_uint8_t_by_index(rssi, 16,  MAVLINK_PAYLOAD(msg)); // Receive signal strength indicator, 0: 0%, 255: 100%
 
 	return mavlink_finalize_message(msg, system_id, component_id, 17, 92);
 }
@@ -73,15 +73,15 @@ static inline uint16_t mavlink_msg_rc_channels_scaled_pack_chan(uint8_t system_i
 {
 	msg->msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
 
-	put_int16_t_by_index(chan1_scaled, 0,  msg->payload); // RC channel 1 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan2_scaled, 2,  msg->payload); // RC channel 2 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan3_scaled, 4,  msg->payload); // RC channel 3 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan4_scaled, 6,  msg->payload); // RC channel 4 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan5_scaled, 8,  msg->payload); // RC channel 5 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan6_scaled, 10,  msg->payload); // RC channel 6 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan7_scaled, 12,  msg->payload); // RC channel 7 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan8_scaled, 14,  msg->payload); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_uint8_t_by_index(rssi, 16,  msg->payload); // Receive signal strength indicator, 0: 0%, 255: 100%
+	put_int16_t_by_index(chan1_scaled, 0,  MAVLINK_PAYLOAD(msg)); // RC channel 1 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan2_scaled, 2,  MAVLINK_PAYLOAD(msg)); // RC channel 2 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan3_scaled, 4,  MAVLINK_PAYLOAD(msg)); // RC channel 3 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan4_scaled, 6,  MAVLINK_PAYLOAD(msg)); // RC channel 4 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan5_scaled, 8,  MAVLINK_PAYLOAD(msg)); // RC channel 5 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan6_scaled, 10,  MAVLINK_PAYLOAD(msg)); // RC channel 6 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan7_scaled, 12,  MAVLINK_PAYLOAD(msg)); // RC channel 7 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan8_scaled, 14,  MAVLINK_PAYLOAD(msg)); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_uint8_t_by_index(rssi, 16,  MAVLINK_PAYLOAD(msg)); // Receive signal strength indicator, 0: 0%, 255: 100%
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 17, 92);
 }
@@ -108,15 +108,15 @@ static inline void mavlink_msg_rc_channels_scaled_pack_chan_send(mavlink_channel
 {
 	msg->msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
 
-	put_int16_t_by_index(chan1_scaled, 0,  msg->payload); // RC channel 1 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan2_scaled, 2,  msg->payload); // RC channel 2 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan3_scaled, 4,  msg->payload); // RC channel 3 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan4_scaled, 6,  msg->payload); // RC channel 4 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan5_scaled, 8,  msg->payload); // RC channel 5 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan6_scaled, 10,  msg->payload); // RC channel 6 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan7_scaled, 12,  msg->payload); // RC channel 7 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(chan8_scaled, 14,  msg->payload); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_uint8_t_by_index(rssi, 16,  msg->payload); // Receive signal strength indicator, 0: 0%, 255: 100%
+	put_int16_t_by_index(chan1_scaled, 0,  MAVLINK_PAYLOAD(msg)); // RC channel 1 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan2_scaled, 2,  MAVLINK_PAYLOAD(msg)); // RC channel 2 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan3_scaled, 4,  MAVLINK_PAYLOAD(msg)); // RC channel 3 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan4_scaled, 6,  MAVLINK_PAYLOAD(msg)); // RC channel 4 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan5_scaled, 8,  MAVLINK_PAYLOAD(msg)); // RC channel 5 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan6_scaled, 10,  MAVLINK_PAYLOAD(msg)); // RC channel 6 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan7_scaled, 12,  MAVLINK_PAYLOAD(msg)); // RC channel 7 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_int16_t_by_index(chan8_scaled, 14,  MAVLINK_PAYLOAD(msg)); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
+	put_uint8_t_by_index(rssi, 16,  MAVLINK_PAYLOAD(msg)); // Receive signal strength indicator, 0: 0%, 255: 100%
 
 	mavlink_finalize_message_chan_send(msg, chan, 17, 92);
 }
@@ -272,6 +272,6 @@ static inline void mavlink_msg_rc_channels_scaled_decode(const mavlink_message_t
 	rc_channels_scaled->chan8_scaled = mavlink_msg_rc_channels_scaled_get_chan8_scaled(msg);
 	rc_channels_scaled->rssi = mavlink_msg_rc_channels_scaled_get_rssi(msg);
 #else
-	memcpy(rc_channels_scaled, msg->payload, 17);
+	memcpy(rc_channels_scaled, MAVLINK_PAYLOAD(msg), 17);
 #endif
 }

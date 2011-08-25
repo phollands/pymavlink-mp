@@ -33,13 +33,13 @@ static inline uint16_t mavlink_msg_vicon_position_estimate_pack(uint8_t system_i
 {
 	msg->msgid = MAVLINK_MSG_ID_VICON_POSITION_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  msg->payload); // Global X position
-	put_float_by_index(y, 12,  msg->payload); // Global Y position
-	put_float_by_index(z, 16,  msg->payload); // Global Z position
-	put_float_by_index(roll, 20,  msg->payload); // Roll angle in rad
-	put_float_by_index(pitch, 24,  msg->payload); // Pitch angle in rad
-	put_float_by_index(yaw, 28,  msg->payload); // Yaw angle in rad
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
+	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X position
+	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y position
+	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z position
+	put_float_by_index(roll, 20,  MAVLINK_PAYLOAD(msg)); // Roll angle in rad
+	put_float_by_index(pitch, 24,  MAVLINK_PAYLOAD(msg)); // Pitch angle in rad
+	put_float_by_index(yaw, 28,  MAVLINK_PAYLOAD(msg)); // Yaw angle in rad
 
 	return mavlink_finalize_message(msg, system_id, component_id, 32, 96);
 }
@@ -65,13 +65,13 @@ static inline uint16_t mavlink_msg_vicon_position_estimate_pack_chan(uint8_t sys
 {
 	msg->msgid = MAVLINK_MSG_ID_VICON_POSITION_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  msg->payload); // Global X position
-	put_float_by_index(y, 12,  msg->payload); // Global Y position
-	put_float_by_index(z, 16,  msg->payload); // Global Z position
-	put_float_by_index(roll, 20,  msg->payload); // Roll angle in rad
-	put_float_by_index(pitch, 24,  msg->payload); // Pitch angle in rad
-	put_float_by_index(yaw, 28,  msg->payload); // Yaw angle in rad
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
+	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X position
+	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y position
+	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z position
+	put_float_by_index(roll, 20,  MAVLINK_PAYLOAD(msg)); // Roll angle in rad
+	put_float_by_index(pitch, 24,  MAVLINK_PAYLOAD(msg)); // Pitch angle in rad
+	put_float_by_index(yaw, 28,  MAVLINK_PAYLOAD(msg)); // Yaw angle in rad
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 96);
 }
@@ -96,13 +96,13 @@ static inline void mavlink_msg_vicon_position_estimate_pack_chan_send(mavlink_ch
 {
 	msg->msgid = MAVLINK_MSG_ID_VICON_POSITION_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  msg->payload); // Global X position
-	put_float_by_index(y, 12,  msg->payload); // Global Y position
-	put_float_by_index(z, 16,  msg->payload); // Global Z position
-	put_float_by_index(roll, 20,  msg->payload); // Roll angle in rad
-	put_float_by_index(pitch, 24,  msg->payload); // Pitch angle in rad
-	put_float_by_index(yaw, 28,  msg->payload); // Yaw angle in rad
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
+	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X position
+	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y position
+	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z position
+	put_float_by_index(roll, 20,  MAVLINK_PAYLOAD(msg)); // Roll angle in rad
+	put_float_by_index(pitch, 24,  MAVLINK_PAYLOAD(msg)); // Pitch angle in rad
+	put_float_by_index(yaw, 28,  MAVLINK_PAYLOAD(msg)); // Yaw angle in rad
 
 	mavlink_finalize_message_chan_send(msg, chan, 32, 96);
 }
@@ -234,6 +234,6 @@ static inline void mavlink_msg_vicon_position_estimate_decode(const mavlink_mess
 	vicon_position_estimate->pitch = mavlink_msg_vicon_position_estimate_get_pitch(msg);
 	vicon_position_estimate->yaw = mavlink_msg_vicon_position_estimate_get_yaw(msg);
 #else
-	memcpy(vicon_position_estimate, msg->payload, 32);
+	memcpy(vicon_position_estimate, MAVLINK_PAYLOAD(msg), 32);
 #endif
 }

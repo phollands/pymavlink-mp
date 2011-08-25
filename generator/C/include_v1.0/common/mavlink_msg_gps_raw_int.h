@@ -39,16 +39,16 @@ static inline uint16_t mavlink_msg_gps_raw_int_pack(uint8_t system_id, uint8_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_int32_t_by_index(lat, 8,  msg->payload); // Latitude in 1E7 degrees
-	put_int32_t_by_index(lon, 12,  msg->payload); // Longitude in 1E7 degrees
-	put_int32_t_by_index(alt, 16,  msg->payload); // Altitude in 1E3 meters (millimeters) above MSL
-	put_uint16_t_by_index(eph, 20,  msg->payload); // GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
-	put_uint16_t_by_index(epv, 22,  msg->payload); // GPS VDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
-	put_uint16_t_by_index(vel, 24,  msg->payload); // GPS ground speed (m/s * 100). If unknown, set to: 65535
-	put_uint16_t_by_index(hdg, 26,  msg->payload); // Compass heading in degrees * 100, 0.0..359.99 degrees. If unknown, set to: 65535
-	put_uint8_t_by_index(fix_type, 28,  msg->payload); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
-	put_uint8_t_by_index(satellites_visible, 29,  msg->payload); // Number of satellites visible. If unknown, set to 255
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_int32_t_by_index(lat, 8,  MAVLINK_PAYLOAD(msg)); // Latitude in 1E7 degrees
+	put_int32_t_by_index(lon, 12,  MAVLINK_PAYLOAD(msg)); // Longitude in 1E7 degrees
+	put_int32_t_by_index(alt, 16,  MAVLINK_PAYLOAD(msg)); // Altitude in 1E3 meters (millimeters) above MSL
+	put_uint16_t_by_index(eph, 20,  MAVLINK_PAYLOAD(msg)); // GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
+	put_uint16_t_by_index(epv, 22,  MAVLINK_PAYLOAD(msg)); // GPS VDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
+	put_uint16_t_by_index(vel, 24,  MAVLINK_PAYLOAD(msg)); // GPS ground speed (m/s * 100). If unknown, set to: 65535
+	put_uint16_t_by_index(hdg, 26,  MAVLINK_PAYLOAD(msg)); // Compass heading in degrees * 100, 0.0..359.99 degrees. If unknown, set to: 65535
+	put_uint8_t_by_index(fix_type, 28,  MAVLINK_PAYLOAD(msg)); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
+	put_uint8_t_by_index(satellites_visible, 29,  MAVLINK_PAYLOAD(msg)); // Number of satellites visible. If unknown, set to 255
 
 	return mavlink_finalize_message(msg, system_id, component_id, 30, 210);
 }
@@ -77,16 +77,16 @@ static inline uint16_t mavlink_msg_gps_raw_int_pack_chan(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_int32_t_by_index(lat, 8,  msg->payload); // Latitude in 1E7 degrees
-	put_int32_t_by_index(lon, 12,  msg->payload); // Longitude in 1E7 degrees
-	put_int32_t_by_index(alt, 16,  msg->payload); // Altitude in 1E3 meters (millimeters) above MSL
-	put_uint16_t_by_index(eph, 20,  msg->payload); // GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
-	put_uint16_t_by_index(epv, 22,  msg->payload); // GPS VDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
-	put_uint16_t_by_index(vel, 24,  msg->payload); // GPS ground speed (m/s * 100). If unknown, set to: 65535
-	put_uint16_t_by_index(hdg, 26,  msg->payload); // Compass heading in degrees * 100, 0.0..359.99 degrees. If unknown, set to: 65535
-	put_uint8_t_by_index(fix_type, 28,  msg->payload); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
-	put_uint8_t_by_index(satellites_visible, 29,  msg->payload); // Number of satellites visible. If unknown, set to 255
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_int32_t_by_index(lat, 8,  MAVLINK_PAYLOAD(msg)); // Latitude in 1E7 degrees
+	put_int32_t_by_index(lon, 12,  MAVLINK_PAYLOAD(msg)); // Longitude in 1E7 degrees
+	put_int32_t_by_index(alt, 16,  MAVLINK_PAYLOAD(msg)); // Altitude in 1E3 meters (millimeters) above MSL
+	put_uint16_t_by_index(eph, 20,  MAVLINK_PAYLOAD(msg)); // GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
+	put_uint16_t_by_index(epv, 22,  MAVLINK_PAYLOAD(msg)); // GPS VDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
+	put_uint16_t_by_index(vel, 24,  MAVLINK_PAYLOAD(msg)); // GPS ground speed (m/s * 100). If unknown, set to: 65535
+	put_uint16_t_by_index(hdg, 26,  MAVLINK_PAYLOAD(msg)); // Compass heading in degrees * 100, 0.0..359.99 degrees. If unknown, set to: 65535
+	put_uint8_t_by_index(fix_type, 28,  MAVLINK_PAYLOAD(msg)); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
+	put_uint8_t_by_index(satellites_visible, 29,  MAVLINK_PAYLOAD(msg)); // Number of satellites visible. If unknown, set to 255
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 30, 210);
 }
@@ -114,16 +114,16 @@ static inline void mavlink_msg_gps_raw_int_pack_chan_send(mavlink_channel_t chan
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_int32_t_by_index(lat, 8,  msg->payload); // Latitude in 1E7 degrees
-	put_int32_t_by_index(lon, 12,  msg->payload); // Longitude in 1E7 degrees
-	put_int32_t_by_index(alt, 16,  msg->payload); // Altitude in 1E3 meters (millimeters) above MSL
-	put_uint16_t_by_index(eph, 20,  msg->payload); // GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
-	put_uint16_t_by_index(epv, 22,  msg->payload); // GPS VDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
-	put_uint16_t_by_index(vel, 24,  msg->payload); // GPS ground speed (m/s * 100). If unknown, set to: 65535
-	put_uint16_t_by_index(hdg, 26,  msg->payload); // Compass heading in degrees * 100, 0.0..359.99 degrees. If unknown, set to: 65535
-	put_uint8_t_by_index(fix_type, 28,  msg->payload); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
-	put_uint8_t_by_index(satellites_visible, 29,  msg->payload); // Number of satellites visible. If unknown, set to 255
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_int32_t_by_index(lat, 8,  MAVLINK_PAYLOAD(msg)); // Latitude in 1E7 degrees
+	put_int32_t_by_index(lon, 12,  MAVLINK_PAYLOAD(msg)); // Longitude in 1E7 degrees
+	put_int32_t_by_index(alt, 16,  MAVLINK_PAYLOAD(msg)); // Altitude in 1E3 meters (millimeters) above MSL
+	put_uint16_t_by_index(eph, 20,  MAVLINK_PAYLOAD(msg)); // GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
+	put_uint16_t_by_index(epv, 22,  MAVLINK_PAYLOAD(msg)); // GPS VDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
+	put_uint16_t_by_index(vel, 24,  MAVLINK_PAYLOAD(msg)); // GPS ground speed (m/s * 100). If unknown, set to: 65535
+	put_uint16_t_by_index(hdg, 26,  MAVLINK_PAYLOAD(msg)); // Compass heading in degrees * 100, 0.0..359.99 degrees. If unknown, set to: 65535
+	put_uint8_t_by_index(fix_type, 28,  MAVLINK_PAYLOAD(msg)); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
+	put_uint8_t_by_index(satellites_visible, 29,  MAVLINK_PAYLOAD(msg)); // Number of satellites visible. If unknown, set to 255
 
 	mavlink_finalize_message_chan_send(msg, chan, 30, 210);
 }
@@ -291,6 +291,6 @@ static inline void mavlink_msg_gps_raw_int_decode(const mavlink_message_t* msg, 
 	gps_raw_int->fix_type = mavlink_msg_gps_raw_int_get_fix_type(msg);
 	gps_raw_int->satellites_visible = mavlink_msg_gps_raw_int_get_satellites_visible(msg);
 #else
-	memcpy(gps_raw_int, msg->payload, 30);
+	memcpy(gps_raw_int, MAVLINK_PAYLOAD(msg), 30);
 #endif
 }

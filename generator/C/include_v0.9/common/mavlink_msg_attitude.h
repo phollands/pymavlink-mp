@@ -33,13 +33,13 @@ static inline uint16_t mavlink_msg_attitude_pack(uint8_t system_id, uint8_t comp
 {
 	msg->msgid = MAVLINK_MSG_ID_ATTITUDE;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(roll, 8,  msg->payload); // Roll angle (rad)
-	put_float_by_index(pitch, 12,  msg->payload); // Pitch angle (rad)
-	put_float_by_index(yaw, 16,  msg->payload); // Yaw angle (rad)
-	put_float_by_index(rollspeed, 20,  msg->payload); // Roll angular speed (rad/s)
-	put_float_by_index(pitchspeed, 24,  msg->payload); // Pitch angular speed (rad/s)
-	put_float_by_index(yawspeed, 28,  msg->payload); // Yaw angular speed (rad/s)
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_float_by_index(roll, 8,  MAVLINK_PAYLOAD(msg)); // Roll angle (rad)
+	put_float_by_index(pitch, 12,  MAVLINK_PAYLOAD(msg)); // Pitch angle (rad)
+	put_float_by_index(yaw, 16,  MAVLINK_PAYLOAD(msg)); // Yaw angle (rad)
+	put_float_by_index(rollspeed, 20,  MAVLINK_PAYLOAD(msg)); // Roll angular speed (rad/s)
+	put_float_by_index(pitchspeed, 24,  MAVLINK_PAYLOAD(msg)); // Pitch angular speed (rad/s)
+	put_float_by_index(yawspeed, 28,  MAVLINK_PAYLOAD(msg)); // Yaw angular speed (rad/s)
 
 	return mavlink_finalize_message(msg, system_id, component_id, 32, 79);
 }
@@ -65,13 +65,13 @@ static inline uint16_t mavlink_msg_attitude_pack_chan(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_ATTITUDE;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(roll, 8,  msg->payload); // Roll angle (rad)
-	put_float_by_index(pitch, 12,  msg->payload); // Pitch angle (rad)
-	put_float_by_index(yaw, 16,  msg->payload); // Yaw angle (rad)
-	put_float_by_index(rollspeed, 20,  msg->payload); // Roll angular speed (rad/s)
-	put_float_by_index(pitchspeed, 24,  msg->payload); // Pitch angular speed (rad/s)
-	put_float_by_index(yawspeed, 28,  msg->payload); // Yaw angular speed (rad/s)
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_float_by_index(roll, 8,  MAVLINK_PAYLOAD(msg)); // Roll angle (rad)
+	put_float_by_index(pitch, 12,  MAVLINK_PAYLOAD(msg)); // Pitch angle (rad)
+	put_float_by_index(yaw, 16,  MAVLINK_PAYLOAD(msg)); // Yaw angle (rad)
+	put_float_by_index(rollspeed, 20,  MAVLINK_PAYLOAD(msg)); // Roll angular speed (rad/s)
+	put_float_by_index(pitchspeed, 24,  MAVLINK_PAYLOAD(msg)); // Pitch angular speed (rad/s)
+	put_float_by_index(yawspeed, 28,  MAVLINK_PAYLOAD(msg)); // Yaw angular speed (rad/s)
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 79);
 }
@@ -96,13 +96,13 @@ static inline void mavlink_msg_attitude_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_ATTITUDE;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(roll, 8,  msg->payload); // Roll angle (rad)
-	put_float_by_index(pitch, 12,  msg->payload); // Pitch angle (rad)
-	put_float_by_index(yaw, 16,  msg->payload); // Yaw angle (rad)
-	put_float_by_index(rollspeed, 20,  msg->payload); // Roll angular speed (rad/s)
-	put_float_by_index(pitchspeed, 24,  msg->payload); // Pitch angular speed (rad/s)
-	put_float_by_index(yawspeed, 28,  msg->payload); // Yaw angular speed (rad/s)
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_float_by_index(roll, 8,  MAVLINK_PAYLOAD(msg)); // Roll angle (rad)
+	put_float_by_index(pitch, 12,  MAVLINK_PAYLOAD(msg)); // Pitch angle (rad)
+	put_float_by_index(yaw, 16,  MAVLINK_PAYLOAD(msg)); // Yaw angle (rad)
+	put_float_by_index(rollspeed, 20,  MAVLINK_PAYLOAD(msg)); // Roll angular speed (rad/s)
+	put_float_by_index(pitchspeed, 24,  MAVLINK_PAYLOAD(msg)); // Pitch angular speed (rad/s)
+	put_float_by_index(yawspeed, 28,  MAVLINK_PAYLOAD(msg)); // Yaw angular speed (rad/s)
 
 	mavlink_finalize_message_chan_send(msg, chan, 32, 79);
 }
@@ -234,6 +234,6 @@ static inline void mavlink_msg_attitude_decode(const mavlink_message_t* msg, mav
 	attitude->pitchspeed = mavlink_msg_attitude_get_pitchspeed(msg);
 	attitude->yawspeed = mavlink_msg_attitude_get_yawspeed(msg);
 #else
-	memcpy(attitude, msg->payload, 32);
+	memcpy(attitude, MAVLINK_PAYLOAD(msg), 32);
 #endif
 }

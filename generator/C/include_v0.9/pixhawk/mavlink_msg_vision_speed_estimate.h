@@ -27,10 +27,10 @@ static inline uint16_t mavlink_msg_vision_speed_estimate_pack(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  msg->payload); // Global X speed
-	put_float_by_index(y, 12,  msg->payload); // Global Y speed
-	put_float_by_index(z, 16,  msg->payload); // Global Z speed
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
+	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X speed
+	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y speed
+	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z speed
 
 	return mavlink_finalize_message(msg, system_id, component_id, 20, 45);
 }
@@ -53,10 +53,10 @@ static inline uint16_t mavlink_msg_vision_speed_estimate_pack_chan(uint8_t syste
 {
 	msg->msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  msg->payload); // Global X speed
-	put_float_by_index(y, 12,  msg->payload); // Global Y speed
-	put_float_by_index(z, 16,  msg->payload); // Global Z speed
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
+	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X speed
+	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y speed
+	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z speed
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 45);
 }
@@ -78,10 +78,10 @@ static inline void mavlink_msg_vision_speed_estimate_pack_chan_send(mavlink_chan
 {
 	msg->msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  msg->payload); // Global X speed
-	put_float_by_index(y, 12,  msg->payload); // Global Y speed
-	put_float_by_index(z, 16,  msg->payload); // Global Z speed
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
+	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X speed
+	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y speed
+	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z speed
 
 	mavlink_finalize_message_chan_send(msg, chan, 20, 45);
 }
@@ -177,6 +177,6 @@ static inline void mavlink_msg_vision_speed_estimate_decode(const mavlink_messag
 	vision_speed_estimate->y = mavlink_msg_vision_speed_estimate_get_y(msg);
 	vision_speed_estimate->z = mavlink_msg_vision_speed_estimate_get_z(msg);
 #else
-	memcpy(vision_speed_estimate, msg->payload, 20);
+	memcpy(vision_speed_estimate, MAVLINK_PAYLOAD(msg), 20);
 #endif
 }

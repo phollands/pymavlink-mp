@@ -29,11 +29,11 @@ static inline uint16_t mavlink_msg_roll_pitch_yaw_thrust_setpoint_pack(uint8_t s
 {
 	msg->msgid = MAVLINK_MSG_ID_ROLL_PITCH_YAW_THRUST_SETPOINT;
 
-	put_uint32_t_by_index(time_ms, 0,  msg->payload); // Timestamp in milliseconds since system boot
-	put_float_by_index(roll, 4,  msg->payload); // Desired roll angle in radians
-	put_float_by_index(pitch, 8,  msg->payload); // Desired pitch angle in radians
-	put_float_by_index(yaw, 12,  msg->payload); // Desired yaw angle in radians
-	put_float_by_index(thrust, 16,  msg->payload); // Collective thrust, normalized to 0 .. 1
+	put_uint32_t_by_index(time_ms, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp in milliseconds since system boot
+	put_float_by_index(roll, 4,  MAVLINK_PAYLOAD(msg)); // Desired roll angle in radians
+	put_float_by_index(pitch, 8,  MAVLINK_PAYLOAD(msg)); // Desired pitch angle in radians
+	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in radians
+	put_float_by_index(thrust, 16,  MAVLINK_PAYLOAD(msg)); // Collective thrust, normalized to 0 .. 1
 
 	return mavlink_finalize_message(msg, system_id, component_id, 20, 1);
 }
@@ -57,11 +57,11 @@ static inline uint16_t mavlink_msg_roll_pitch_yaw_thrust_setpoint_pack_chan(uint
 {
 	msg->msgid = MAVLINK_MSG_ID_ROLL_PITCH_YAW_THRUST_SETPOINT;
 
-	put_uint32_t_by_index(time_ms, 0,  msg->payload); // Timestamp in milliseconds since system boot
-	put_float_by_index(roll, 4,  msg->payload); // Desired roll angle in radians
-	put_float_by_index(pitch, 8,  msg->payload); // Desired pitch angle in radians
-	put_float_by_index(yaw, 12,  msg->payload); // Desired yaw angle in radians
-	put_float_by_index(thrust, 16,  msg->payload); // Collective thrust, normalized to 0 .. 1
+	put_uint32_t_by_index(time_ms, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp in milliseconds since system boot
+	put_float_by_index(roll, 4,  MAVLINK_PAYLOAD(msg)); // Desired roll angle in radians
+	put_float_by_index(pitch, 8,  MAVLINK_PAYLOAD(msg)); // Desired pitch angle in radians
+	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in radians
+	put_float_by_index(thrust, 16,  MAVLINK_PAYLOAD(msg)); // Collective thrust, normalized to 0 .. 1
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 1);
 }
@@ -84,11 +84,11 @@ static inline void mavlink_msg_roll_pitch_yaw_thrust_setpoint_pack_chan_send(mav
 {
 	msg->msgid = MAVLINK_MSG_ID_ROLL_PITCH_YAW_THRUST_SETPOINT;
 
-	put_uint32_t_by_index(time_ms, 0,  msg->payload); // Timestamp in milliseconds since system boot
-	put_float_by_index(roll, 4,  msg->payload); // Desired roll angle in radians
-	put_float_by_index(pitch, 8,  msg->payload); // Desired pitch angle in radians
-	put_float_by_index(yaw, 12,  msg->payload); // Desired yaw angle in radians
-	put_float_by_index(thrust, 16,  msg->payload); // Collective thrust, normalized to 0 .. 1
+	put_uint32_t_by_index(time_ms, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp in milliseconds since system boot
+	put_float_by_index(roll, 4,  MAVLINK_PAYLOAD(msg)); // Desired roll angle in radians
+	put_float_by_index(pitch, 8,  MAVLINK_PAYLOAD(msg)); // Desired pitch angle in radians
+	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in radians
+	put_float_by_index(thrust, 16,  MAVLINK_PAYLOAD(msg)); // Collective thrust, normalized to 0 .. 1
 
 	mavlink_finalize_message_chan_send(msg, chan, 20, 1);
 }
@@ -196,6 +196,6 @@ static inline void mavlink_msg_roll_pitch_yaw_thrust_setpoint_decode(const mavli
 	roll_pitch_yaw_thrust_setpoint->yaw = mavlink_msg_roll_pitch_yaw_thrust_setpoint_get_yaw(msg);
 	roll_pitch_yaw_thrust_setpoint->thrust = mavlink_msg_roll_pitch_yaw_thrust_setpoint_get_thrust(msg);
 #else
-	memcpy(roll_pitch_yaw_thrust_setpoint, msg->payload, 20);
+	memcpy(roll_pitch_yaw_thrust_setpoint, MAVLINK_PAYLOAD(msg), 20);
 #endif
 }

@@ -23,8 +23,8 @@ static inline uint16_t mavlink_msg_param_request_list_pack(uint8_t system_id, ui
 {
 	msg->msgid = MAVLINK_MSG_ID_PARAM_REQUEST_LIST;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
 
 	return mavlink_finalize_message(msg, system_id, component_id, 2, 16);
 }
@@ -45,8 +45,8 @@ static inline uint16_t mavlink_msg_param_request_list_pack_chan(uint8_t system_i
 {
 	msg->msgid = MAVLINK_MSG_ID_PARAM_REQUEST_LIST;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 16);
 }
@@ -66,8 +66,8 @@ static inline void mavlink_msg_param_request_list_pack_chan_send(mavlink_channel
 {
 	msg->msgid = MAVLINK_MSG_ID_PARAM_REQUEST_LIST;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
 
 	mavlink_finalize_message_chan_send(msg, chan, 2, 16);
 }
@@ -139,6 +139,6 @@ static inline void mavlink_msg_param_request_list_decode(const mavlink_message_t
 	param_request_list->target_system = mavlink_msg_param_request_list_get_target_system(msg);
 	param_request_list->target_component = mavlink_msg_param_request_list_get_target_component(msg);
 #else
-	memcpy(param_request_list, msg->payload, 2);
+	memcpy(param_request_list, MAVLINK_PAYLOAD(msg), 2);
 #endif
 }

@@ -23,8 +23,8 @@ static inline uint16_t mavlink_msg_debug_pack(uint8_t system_id, uint8_t compone
 {
 	msg->msgid = MAVLINK_MSG_ID_DEBUG;
 
-	put_uint8_t_by_index(ind, 0,  msg->payload); // index of debug variable
-	put_float_by_index(value, 1,  msg->payload); // DEBUG value
+	put_uint8_t_by_index(ind, 0,  MAVLINK_PAYLOAD(msg)); // index of debug variable
+	put_float_by_index(value, 1,  MAVLINK_PAYLOAD(msg)); // DEBUG value
 
 	return mavlink_finalize_message(msg, system_id, component_id, 5, 197);
 }
@@ -45,8 +45,8 @@ static inline uint16_t mavlink_msg_debug_pack_chan(uint8_t system_id, uint8_t co
 {
 	msg->msgid = MAVLINK_MSG_ID_DEBUG;
 
-	put_uint8_t_by_index(ind, 0,  msg->payload); // index of debug variable
-	put_float_by_index(value, 1,  msg->payload); // DEBUG value
+	put_uint8_t_by_index(ind, 0,  MAVLINK_PAYLOAD(msg)); // index of debug variable
+	put_float_by_index(value, 1,  MAVLINK_PAYLOAD(msg)); // DEBUG value
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 5, 197);
 }
@@ -66,8 +66,8 @@ static inline void mavlink_msg_debug_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_DEBUG;
 
-	put_uint8_t_by_index(ind, 0,  msg->payload); // index of debug variable
-	put_float_by_index(value, 1,  msg->payload); // DEBUG value
+	put_uint8_t_by_index(ind, 0,  MAVLINK_PAYLOAD(msg)); // index of debug variable
+	put_float_by_index(value, 1,  MAVLINK_PAYLOAD(msg)); // DEBUG value
 
 	mavlink_finalize_message_chan_send(msg, chan, 5, 197);
 }
@@ -139,6 +139,6 @@ static inline void mavlink_msg_debug_decode(const mavlink_message_t* msg, mavlin
 	debug->ind = mavlink_msg_debug_get_ind(msg);
 	debug->value = mavlink_msg_debug_get_value(msg);
 #else
-	memcpy(debug, msg->payload, 5);
+	memcpy(debug, MAVLINK_PAYLOAD(msg), 5);
 #endif
 }

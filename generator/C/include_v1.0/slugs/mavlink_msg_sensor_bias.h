@@ -31,12 +31,12 @@ static inline uint16_t mavlink_msg_sensor_bias_pack(uint8_t system_id, uint8_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_SENSOR_BIAS;
 
-	put_float_by_index(axBias, 0,  msg->payload); // Accelerometer X bias (m/s)
-	put_float_by_index(ayBias, 4,  msg->payload); // Accelerometer Y bias (m/s)
-	put_float_by_index(azBias, 8,  msg->payload); // Accelerometer Z bias (m/s)
-	put_float_by_index(gxBias, 12,  msg->payload); // Gyro X bias (rad/s)
-	put_float_by_index(gyBias, 16,  msg->payload); // Gyro Y bias (rad/s)
-	put_float_by_index(gzBias, 20,  msg->payload); // Gyro Z bias (rad/s)
+	put_float_by_index(axBias, 0,  MAVLINK_PAYLOAD(msg)); // Accelerometer X bias (m/s)
+	put_float_by_index(ayBias, 4,  MAVLINK_PAYLOAD(msg)); // Accelerometer Y bias (m/s)
+	put_float_by_index(azBias, 8,  MAVLINK_PAYLOAD(msg)); // Accelerometer Z bias (m/s)
+	put_float_by_index(gxBias, 12,  MAVLINK_PAYLOAD(msg)); // Gyro X bias (rad/s)
+	put_float_by_index(gyBias, 16,  MAVLINK_PAYLOAD(msg)); // Gyro Y bias (rad/s)
+	put_float_by_index(gzBias, 20,  MAVLINK_PAYLOAD(msg)); // Gyro Z bias (rad/s)
 
 	return mavlink_finalize_message(msg, system_id, component_id, 24, 183);
 }
@@ -61,12 +61,12 @@ static inline uint16_t mavlink_msg_sensor_bias_pack_chan(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_SENSOR_BIAS;
 
-	put_float_by_index(axBias, 0,  msg->payload); // Accelerometer X bias (m/s)
-	put_float_by_index(ayBias, 4,  msg->payload); // Accelerometer Y bias (m/s)
-	put_float_by_index(azBias, 8,  msg->payload); // Accelerometer Z bias (m/s)
-	put_float_by_index(gxBias, 12,  msg->payload); // Gyro X bias (rad/s)
-	put_float_by_index(gyBias, 16,  msg->payload); // Gyro Y bias (rad/s)
-	put_float_by_index(gzBias, 20,  msg->payload); // Gyro Z bias (rad/s)
+	put_float_by_index(axBias, 0,  MAVLINK_PAYLOAD(msg)); // Accelerometer X bias (m/s)
+	put_float_by_index(ayBias, 4,  MAVLINK_PAYLOAD(msg)); // Accelerometer Y bias (m/s)
+	put_float_by_index(azBias, 8,  MAVLINK_PAYLOAD(msg)); // Accelerometer Z bias (m/s)
+	put_float_by_index(gxBias, 12,  MAVLINK_PAYLOAD(msg)); // Gyro X bias (rad/s)
+	put_float_by_index(gyBias, 16,  MAVLINK_PAYLOAD(msg)); // Gyro Y bias (rad/s)
+	put_float_by_index(gzBias, 20,  MAVLINK_PAYLOAD(msg)); // Gyro Z bias (rad/s)
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24, 183);
 }
@@ -90,12 +90,12 @@ static inline void mavlink_msg_sensor_bias_pack_chan_send(mavlink_channel_t chan
 {
 	msg->msgid = MAVLINK_MSG_ID_SENSOR_BIAS;
 
-	put_float_by_index(axBias, 0,  msg->payload); // Accelerometer X bias (m/s)
-	put_float_by_index(ayBias, 4,  msg->payload); // Accelerometer Y bias (m/s)
-	put_float_by_index(azBias, 8,  msg->payload); // Accelerometer Z bias (m/s)
-	put_float_by_index(gxBias, 12,  msg->payload); // Gyro X bias (rad/s)
-	put_float_by_index(gyBias, 16,  msg->payload); // Gyro Y bias (rad/s)
-	put_float_by_index(gzBias, 20,  msg->payload); // Gyro Z bias (rad/s)
+	put_float_by_index(axBias, 0,  MAVLINK_PAYLOAD(msg)); // Accelerometer X bias (m/s)
+	put_float_by_index(ayBias, 4,  MAVLINK_PAYLOAD(msg)); // Accelerometer Y bias (m/s)
+	put_float_by_index(azBias, 8,  MAVLINK_PAYLOAD(msg)); // Accelerometer Z bias (m/s)
+	put_float_by_index(gxBias, 12,  MAVLINK_PAYLOAD(msg)); // Gyro X bias (rad/s)
+	put_float_by_index(gyBias, 16,  MAVLINK_PAYLOAD(msg)); // Gyro Y bias (rad/s)
+	put_float_by_index(gzBias, 20,  MAVLINK_PAYLOAD(msg)); // Gyro Z bias (rad/s)
 
 	mavlink_finalize_message_chan_send(msg, chan, 24, 183);
 }
@@ -215,6 +215,6 @@ static inline void mavlink_msg_sensor_bias_decode(const mavlink_message_t* msg, 
 	sensor_bias->gyBias = mavlink_msg_sensor_bias_get_gyBias(msg);
 	sensor_bias->gzBias = mavlink_msg_sensor_bias_get_gzBias(msg);
 #else
-	memcpy(sensor_bias, msg->payload, 24);
+	memcpy(sensor_bias, MAVLINK_PAYLOAD(msg), 24);
 #endif
 }

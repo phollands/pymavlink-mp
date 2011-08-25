@@ -31,12 +31,12 @@ static inline uint16_t mavlink_msg_watchdog_process_status_pack(uint8_t system_i
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_PROCESS_STATUS;
 
-	put_uint16_t_by_index(watchdog_id, 0,  msg->payload); // Watchdog ID
-	put_uint16_t_by_index(process_id, 2,  msg->payload); // Process ID
-	put_uint8_t_by_index(state, 4,  msg->payload); // Is running / finished / suspended / crashed
-	put_uint8_t_by_index(muted, 5,  msg->payload); // Is muted
-	put_int32_t_by_index(pid, 6,  msg->payload); // PID
-	put_uint16_t_by_index(crashes, 10,  msg->payload); // Number of crashes
+	put_uint16_t_by_index(watchdog_id, 0,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
+	put_uint16_t_by_index(process_id, 2,  MAVLINK_PAYLOAD(msg)); // Process ID
+	put_uint8_t_by_index(state, 4,  MAVLINK_PAYLOAD(msg)); // Is running / finished / suspended / crashed
+	put_uint8_t_by_index(muted, 5,  MAVLINK_PAYLOAD(msg)); // Is muted
+	put_int32_t_by_index(pid, 6,  MAVLINK_PAYLOAD(msg)); // PID
+	put_uint16_t_by_index(crashes, 10,  MAVLINK_PAYLOAD(msg)); // Number of crashes
 
 	return mavlink_finalize_message(msg, system_id, component_id, 12, 124);
 }
@@ -61,12 +61,12 @@ static inline uint16_t mavlink_msg_watchdog_process_status_pack_chan(uint8_t sys
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_PROCESS_STATUS;
 
-	put_uint16_t_by_index(watchdog_id, 0,  msg->payload); // Watchdog ID
-	put_uint16_t_by_index(process_id, 2,  msg->payload); // Process ID
-	put_uint8_t_by_index(state, 4,  msg->payload); // Is running / finished / suspended / crashed
-	put_uint8_t_by_index(muted, 5,  msg->payload); // Is muted
-	put_int32_t_by_index(pid, 6,  msg->payload); // PID
-	put_uint16_t_by_index(crashes, 10,  msg->payload); // Number of crashes
+	put_uint16_t_by_index(watchdog_id, 0,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
+	put_uint16_t_by_index(process_id, 2,  MAVLINK_PAYLOAD(msg)); // Process ID
+	put_uint8_t_by_index(state, 4,  MAVLINK_PAYLOAD(msg)); // Is running / finished / suspended / crashed
+	put_uint8_t_by_index(muted, 5,  MAVLINK_PAYLOAD(msg)); // Is muted
+	put_int32_t_by_index(pid, 6,  MAVLINK_PAYLOAD(msg)); // PID
+	put_uint16_t_by_index(crashes, 10,  MAVLINK_PAYLOAD(msg)); // Number of crashes
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 12, 124);
 }
@@ -90,12 +90,12 @@ static inline void mavlink_msg_watchdog_process_status_pack_chan_send(mavlink_ch
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_PROCESS_STATUS;
 
-	put_uint16_t_by_index(watchdog_id, 0,  msg->payload); // Watchdog ID
-	put_uint16_t_by_index(process_id, 2,  msg->payload); // Process ID
-	put_uint8_t_by_index(state, 4,  msg->payload); // Is running / finished / suspended / crashed
-	put_uint8_t_by_index(muted, 5,  msg->payload); // Is muted
-	put_int32_t_by_index(pid, 6,  msg->payload); // PID
-	put_uint16_t_by_index(crashes, 10,  msg->payload); // Number of crashes
+	put_uint16_t_by_index(watchdog_id, 0,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
+	put_uint16_t_by_index(process_id, 2,  MAVLINK_PAYLOAD(msg)); // Process ID
+	put_uint8_t_by_index(state, 4,  MAVLINK_PAYLOAD(msg)); // Is running / finished / suspended / crashed
+	put_uint8_t_by_index(muted, 5,  MAVLINK_PAYLOAD(msg)); // Is muted
+	put_int32_t_by_index(pid, 6,  MAVLINK_PAYLOAD(msg)); // PID
+	put_uint16_t_by_index(crashes, 10,  MAVLINK_PAYLOAD(msg)); // Number of crashes
 
 	mavlink_finalize_message_chan_send(msg, chan, 12, 124);
 }
@@ -215,6 +215,6 @@ static inline void mavlink_msg_watchdog_process_status_decode(const mavlink_mess
 	watchdog_process_status->pid = mavlink_msg_watchdog_process_status_get_pid(msg);
 	watchdog_process_status->crashes = mavlink_msg_watchdog_process_status_get_crashes(msg);
 #else
-	memcpy(watchdog_process_status, msg->payload, 12);
+	memcpy(watchdog_process_status, MAVLINK_PAYLOAD(msg), 12);
 #endif
 }

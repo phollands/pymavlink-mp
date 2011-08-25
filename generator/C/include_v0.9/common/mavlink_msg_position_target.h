@@ -27,10 +27,10 @@ static inline uint16_t mavlink_msg_position_target_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_TARGET;
 
-	put_float_by_index(x, 0,  msg->payload); // x position
-	put_float_by_index(y, 4,  msg->payload); // y position
-	put_float_by_index(z, 8,  msg->payload); // z position
-	put_float_by_index(yaw, 12,  msg->payload); // yaw orientation in radians, 0 = NORTH
+	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
+	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
+	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
+	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // yaw orientation in radians, 0 = NORTH
 
 	return mavlink_finalize_message(msg, system_id, component_id, 16, 67);
 }
@@ -53,10 +53,10 @@ static inline uint16_t mavlink_msg_position_target_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_TARGET;
 
-	put_float_by_index(x, 0,  msg->payload); // x position
-	put_float_by_index(y, 4,  msg->payload); // y position
-	put_float_by_index(z, 8,  msg->payload); // z position
-	put_float_by_index(yaw, 12,  msg->payload); // yaw orientation in radians, 0 = NORTH
+	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
+	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
+	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
+	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // yaw orientation in radians, 0 = NORTH
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16, 67);
 }
@@ -78,10 +78,10 @@ static inline void mavlink_msg_position_target_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_TARGET;
 
-	put_float_by_index(x, 0,  msg->payload); // x position
-	put_float_by_index(y, 4,  msg->payload); // y position
-	put_float_by_index(z, 8,  msg->payload); // z position
-	put_float_by_index(yaw, 12,  msg->payload); // yaw orientation in radians, 0 = NORTH
+	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
+	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
+	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
+	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // yaw orientation in radians, 0 = NORTH
 
 	mavlink_finalize_message_chan_send(msg, chan, 16, 67);
 }
@@ -177,6 +177,6 @@ static inline void mavlink_msg_position_target_decode(const mavlink_message_t* m
 	position_target->z = mavlink_msg_position_target_get_z(msg);
 	position_target->yaw = mavlink_msg_position_target_get_yaw(msg);
 #else
-	memcpy(position_target, msg->payload, 16);
+	memcpy(position_target, MAVLINK_PAYLOAD(msg), 16);
 #endif
 }

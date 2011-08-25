@@ -23,8 +23,8 @@ static inline uint16_t mavlink_msg_system_time_utc_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME_UTC;
 
-	put_uint32_t_by_index(utc_date, 0,  msg->payload); // GPS UTC date ddmmyy
-	put_uint32_t_by_index(utc_time, 4,  msg->payload); // GPS UTC time hhmmss
+	put_uint32_t_by_index(utc_date, 0,  MAVLINK_PAYLOAD(msg)); // GPS UTC date ddmmyy
+	put_uint32_t_by_index(utc_time, 4,  MAVLINK_PAYLOAD(msg)); // GPS UTC time hhmmss
 
 	return mavlink_finalize_message(msg, system_id, component_id, 8, 160);
 }
@@ -45,8 +45,8 @@ static inline uint16_t mavlink_msg_system_time_utc_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME_UTC;
 
-	put_uint32_t_by_index(utc_date, 0,  msg->payload); // GPS UTC date ddmmyy
-	put_uint32_t_by_index(utc_time, 4,  msg->payload); // GPS UTC time hhmmss
+	put_uint32_t_by_index(utc_date, 0,  MAVLINK_PAYLOAD(msg)); // GPS UTC date ddmmyy
+	put_uint32_t_by_index(utc_time, 4,  MAVLINK_PAYLOAD(msg)); // GPS UTC time hhmmss
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8, 160);
 }
@@ -66,8 +66,8 @@ static inline void mavlink_msg_system_time_utc_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME_UTC;
 
-	put_uint32_t_by_index(utc_date, 0,  msg->payload); // GPS UTC date ddmmyy
-	put_uint32_t_by_index(utc_time, 4,  msg->payload); // GPS UTC time hhmmss
+	put_uint32_t_by_index(utc_date, 0,  MAVLINK_PAYLOAD(msg)); // GPS UTC date ddmmyy
+	put_uint32_t_by_index(utc_time, 4,  MAVLINK_PAYLOAD(msg)); // GPS UTC time hhmmss
 
 	mavlink_finalize_message_chan_send(msg, chan, 8, 160);
 }
@@ -139,6 +139,6 @@ static inline void mavlink_msg_system_time_utc_decode(const mavlink_message_t* m
 	system_time_utc->utc_date = mavlink_msg_system_time_utc_get_utc_date(msg);
 	system_time_utc->utc_time = mavlink_msg_system_time_utc_get_utc_time(msg);
 #else
-	memcpy(system_time_utc, msg->payload, 8);
+	memcpy(system_time_utc, MAVLINK_PAYLOAD(msg), 8);
 #endif
 }

@@ -31,12 +31,12 @@ static inline uint16_t mavlink_msg_set_cam_shutter_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_CAM_SHUTTER;
 
-	put_uint8_t_by_index(cam_no, 0,  msg->payload); // Camera id
-	put_uint8_t_by_index(cam_mode, 1,  msg->payload); // Camera mode: 0 = auto, 1 = manual
-	put_uint8_t_by_index(trigger_pin, 2,  msg->payload); // Trigger pin, 0-3 for PtGrey FireFly
-	put_uint16_t_by_index(interval, 3,  msg->payload); // Shutter interval, in microseconds
-	put_uint16_t_by_index(exposure, 5,  msg->payload); // Exposure time, in microseconds
-	put_float_by_index(gain, 7,  msg->payload); // Camera gain
+	put_uint8_t_by_index(cam_no, 0,  MAVLINK_PAYLOAD(msg)); // Camera id
+	put_uint8_t_by_index(cam_mode, 1,  MAVLINK_PAYLOAD(msg)); // Camera mode: 0 = auto, 1 = manual
+	put_uint8_t_by_index(trigger_pin, 2,  MAVLINK_PAYLOAD(msg)); // Trigger pin, 0-3 for PtGrey FireFly
+	put_uint16_t_by_index(interval, 3,  MAVLINK_PAYLOAD(msg)); // Shutter interval, in microseconds
+	put_uint16_t_by_index(exposure, 5,  MAVLINK_PAYLOAD(msg)); // Exposure time, in microseconds
+	put_float_by_index(gain, 7,  MAVLINK_PAYLOAD(msg)); // Camera gain
 
 	return mavlink_finalize_message(msg, system_id, component_id, 11, 206);
 }
@@ -61,12 +61,12 @@ static inline uint16_t mavlink_msg_set_cam_shutter_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_CAM_SHUTTER;
 
-	put_uint8_t_by_index(cam_no, 0,  msg->payload); // Camera id
-	put_uint8_t_by_index(cam_mode, 1,  msg->payload); // Camera mode: 0 = auto, 1 = manual
-	put_uint8_t_by_index(trigger_pin, 2,  msg->payload); // Trigger pin, 0-3 for PtGrey FireFly
-	put_uint16_t_by_index(interval, 3,  msg->payload); // Shutter interval, in microseconds
-	put_uint16_t_by_index(exposure, 5,  msg->payload); // Exposure time, in microseconds
-	put_float_by_index(gain, 7,  msg->payload); // Camera gain
+	put_uint8_t_by_index(cam_no, 0,  MAVLINK_PAYLOAD(msg)); // Camera id
+	put_uint8_t_by_index(cam_mode, 1,  MAVLINK_PAYLOAD(msg)); // Camera mode: 0 = auto, 1 = manual
+	put_uint8_t_by_index(trigger_pin, 2,  MAVLINK_PAYLOAD(msg)); // Trigger pin, 0-3 for PtGrey FireFly
+	put_uint16_t_by_index(interval, 3,  MAVLINK_PAYLOAD(msg)); // Shutter interval, in microseconds
+	put_uint16_t_by_index(exposure, 5,  MAVLINK_PAYLOAD(msg)); // Exposure time, in microseconds
+	put_float_by_index(gain, 7,  MAVLINK_PAYLOAD(msg)); // Camera gain
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 11, 206);
 }
@@ -90,12 +90,12 @@ static inline void mavlink_msg_set_cam_shutter_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_CAM_SHUTTER;
 
-	put_uint8_t_by_index(cam_no, 0,  msg->payload); // Camera id
-	put_uint8_t_by_index(cam_mode, 1,  msg->payload); // Camera mode: 0 = auto, 1 = manual
-	put_uint8_t_by_index(trigger_pin, 2,  msg->payload); // Trigger pin, 0-3 for PtGrey FireFly
-	put_uint16_t_by_index(interval, 3,  msg->payload); // Shutter interval, in microseconds
-	put_uint16_t_by_index(exposure, 5,  msg->payload); // Exposure time, in microseconds
-	put_float_by_index(gain, 7,  msg->payload); // Camera gain
+	put_uint8_t_by_index(cam_no, 0,  MAVLINK_PAYLOAD(msg)); // Camera id
+	put_uint8_t_by_index(cam_mode, 1,  MAVLINK_PAYLOAD(msg)); // Camera mode: 0 = auto, 1 = manual
+	put_uint8_t_by_index(trigger_pin, 2,  MAVLINK_PAYLOAD(msg)); // Trigger pin, 0-3 for PtGrey FireFly
+	put_uint16_t_by_index(interval, 3,  MAVLINK_PAYLOAD(msg)); // Shutter interval, in microseconds
+	put_uint16_t_by_index(exposure, 5,  MAVLINK_PAYLOAD(msg)); // Exposure time, in microseconds
+	put_float_by_index(gain, 7,  MAVLINK_PAYLOAD(msg)); // Camera gain
 
 	mavlink_finalize_message_chan_send(msg, chan, 11, 206);
 }
@@ -215,6 +215,6 @@ static inline void mavlink_msg_set_cam_shutter_decode(const mavlink_message_t* m
 	set_cam_shutter->exposure = mavlink_msg_set_cam_shutter_get_exposure(msg);
 	set_cam_shutter->gain = mavlink_msg_set_cam_shutter_get_gain(msg);
 #else
-	memcpy(set_cam_shutter, msg->payload, 11);
+	memcpy(set_cam_shutter, MAVLINK_PAYLOAD(msg), 11);
 #endif
 }

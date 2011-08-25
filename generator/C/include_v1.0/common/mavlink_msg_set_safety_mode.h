@@ -23,8 +23,8 @@ static inline uint16_t mavlink_msg_set_safety_mode_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_SAFETY_MODE;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the mode
-	put_uint8_t_by_index(safety_mode, 1,  msg->payload); // The new safety mode. The MAV will reject some mode changes during flight.
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
+	put_uint8_t_by_index(safety_mode, 1,  MAVLINK_PAYLOAD(msg)); // The new safety mode. The MAV will reject some mode changes during flight.
 
 	return mavlink_finalize_message(msg, system_id, component_id, 2, 0);
 }
@@ -45,8 +45,8 @@ static inline uint16_t mavlink_msg_set_safety_mode_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_SAFETY_MODE;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the mode
-	put_uint8_t_by_index(safety_mode, 1,  msg->payload); // The new safety mode. The MAV will reject some mode changes during flight.
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
+	put_uint8_t_by_index(safety_mode, 1,  MAVLINK_PAYLOAD(msg)); // The new safety mode. The MAV will reject some mode changes during flight.
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 0);
 }
@@ -66,8 +66,8 @@ static inline void mavlink_msg_set_safety_mode_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_SAFETY_MODE;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the mode
-	put_uint8_t_by_index(safety_mode, 1,  msg->payload); // The new safety mode. The MAV will reject some mode changes during flight.
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
+	put_uint8_t_by_index(safety_mode, 1,  MAVLINK_PAYLOAD(msg)); // The new safety mode. The MAV will reject some mode changes during flight.
 
 	mavlink_finalize_message_chan_send(msg, chan, 2, 0);
 }
@@ -139,6 +139,6 @@ static inline void mavlink_msg_set_safety_mode_decode(const mavlink_message_t* m
 	set_safety_mode->target = mavlink_msg_set_safety_mode_get_target(msg);
 	set_safety_mode->safety_mode = mavlink_msg_set_safety_mode_get_safety_mode(msg);
 #else
-	memcpy(set_safety_mode, msg->payload, 2);
+	memcpy(set_safety_mode, MAVLINK_PAYLOAD(msg), 2);
 #endif
 }

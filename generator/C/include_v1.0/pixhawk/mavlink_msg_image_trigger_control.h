@@ -21,7 +21,7 @@ static inline uint16_t mavlink_msg_image_trigger_control_pack(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_IMAGE_TRIGGER_CONTROL;
 
-	put_uint8_t_by_index(enable, 0,  msg->payload); // 0 to disable, 1 to enable
+	put_uint8_t_by_index(enable, 0,  MAVLINK_PAYLOAD(msg)); // 0 to disable, 1 to enable
 
 	return mavlink_finalize_message(msg, system_id, component_id, 1, 100);
 }
@@ -41,7 +41,7 @@ static inline uint16_t mavlink_msg_image_trigger_control_pack_chan(uint8_t syste
 {
 	msg->msgid = MAVLINK_MSG_ID_IMAGE_TRIGGER_CONTROL;
 
-	put_uint8_t_by_index(enable, 0,  msg->payload); // 0 to disable, 1 to enable
+	put_uint8_t_by_index(enable, 0,  MAVLINK_PAYLOAD(msg)); // 0 to disable, 1 to enable
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 1, 100);
 }
@@ -60,7 +60,7 @@ static inline void mavlink_msg_image_trigger_control_pack_chan_send(mavlink_chan
 {
 	msg->msgid = MAVLINK_MSG_ID_IMAGE_TRIGGER_CONTROL;
 
-	put_uint8_t_by_index(enable, 0,  msg->payload); // 0 to disable, 1 to enable
+	put_uint8_t_by_index(enable, 0,  MAVLINK_PAYLOAD(msg)); // 0 to disable, 1 to enable
 
 	mavlink_finalize_message_chan_send(msg, chan, 1, 100);
 }
@@ -120,6 +120,6 @@ static inline void mavlink_msg_image_trigger_control_decode(const mavlink_messag
 #if MAVLINK_NEED_BYTE_SWAP
 	image_trigger_control->enable = mavlink_msg_image_trigger_control_get_enable(msg);
 #else
-	memcpy(image_trigger_control, msg->payload, 1);
+	memcpy(image_trigger_control, MAVLINK_PAYLOAD(msg), 1);
 #endif
 }

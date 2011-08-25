@@ -37,15 +37,15 @@ static inline uint16_t mavlink_msg_slugs_navigation_pack(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_SLUGS_NAVIGATION;
 
-	put_float_by_index(u_m, 0,  msg->payload); // Measured Airspeed prior to the Nav Filter
-	put_float_by_index(phi_c, 4,  msg->payload); // Commanded Roll
-	put_float_by_index(theta_c, 8,  msg->payload); // Commanded Pitch
-	put_float_by_index(psiDot_c, 12,  msg->payload); // Commanded Turn rate
-	put_float_by_index(ay_body, 16,  msg->payload); // Y component of the body acceleration
-	put_float_by_index(totalDist, 20,  msg->payload); // Total Distance to Run on this leg of Navigation
-	put_float_by_index(dist2Go, 24,  msg->payload); // Remaining distance to Run on this leg of Navigation
-	put_uint8_t_by_index(fromWP, 28,  msg->payload); // Origin WP
-	put_uint8_t_by_index(toWP, 29,  msg->payload); // Destination WP
+	put_float_by_index(u_m, 0,  MAVLINK_PAYLOAD(msg)); // Measured Airspeed prior to the Nav Filter
+	put_float_by_index(phi_c, 4,  MAVLINK_PAYLOAD(msg)); // Commanded Roll
+	put_float_by_index(theta_c, 8,  MAVLINK_PAYLOAD(msg)); // Commanded Pitch
+	put_float_by_index(psiDot_c, 12,  MAVLINK_PAYLOAD(msg)); // Commanded Turn rate
+	put_float_by_index(ay_body, 16,  MAVLINK_PAYLOAD(msg)); // Y component of the body acceleration
+	put_float_by_index(totalDist, 20,  MAVLINK_PAYLOAD(msg)); // Total Distance to Run on this leg of Navigation
+	put_float_by_index(dist2Go, 24,  MAVLINK_PAYLOAD(msg)); // Remaining distance to Run on this leg of Navigation
+	put_uint8_t_by_index(fromWP, 28,  MAVLINK_PAYLOAD(msg)); // Origin WP
+	put_uint8_t_by_index(toWP, 29,  MAVLINK_PAYLOAD(msg)); // Destination WP
 
 	return mavlink_finalize_message(msg, system_id, component_id, 30, 188);
 }
@@ -73,15 +73,15 @@ static inline uint16_t mavlink_msg_slugs_navigation_pack_chan(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_SLUGS_NAVIGATION;
 
-	put_float_by_index(u_m, 0,  msg->payload); // Measured Airspeed prior to the Nav Filter
-	put_float_by_index(phi_c, 4,  msg->payload); // Commanded Roll
-	put_float_by_index(theta_c, 8,  msg->payload); // Commanded Pitch
-	put_float_by_index(psiDot_c, 12,  msg->payload); // Commanded Turn rate
-	put_float_by_index(ay_body, 16,  msg->payload); // Y component of the body acceleration
-	put_float_by_index(totalDist, 20,  msg->payload); // Total Distance to Run on this leg of Navigation
-	put_float_by_index(dist2Go, 24,  msg->payload); // Remaining distance to Run on this leg of Navigation
-	put_uint8_t_by_index(fromWP, 28,  msg->payload); // Origin WP
-	put_uint8_t_by_index(toWP, 29,  msg->payload); // Destination WP
+	put_float_by_index(u_m, 0,  MAVLINK_PAYLOAD(msg)); // Measured Airspeed prior to the Nav Filter
+	put_float_by_index(phi_c, 4,  MAVLINK_PAYLOAD(msg)); // Commanded Roll
+	put_float_by_index(theta_c, 8,  MAVLINK_PAYLOAD(msg)); // Commanded Pitch
+	put_float_by_index(psiDot_c, 12,  MAVLINK_PAYLOAD(msg)); // Commanded Turn rate
+	put_float_by_index(ay_body, 16,  MAVLINK_PAYLOAD(msg)); // Y component of the body acceleration
+	put_float_by_index(totalDist, 20,  MAVLINK_PAYLOAD(msg)); // Total Distance to Run on this leg of Navigation
+	put_float_by_index(dist2Go, 24,  MAVLINK_PAYLOAD(msg)); // Remaining distance to Run on this leg of Navigation
+	put_uint8_t_by_index(fromWP, 28,  MAVLINK_PAYLOAD(msg)); // Origin WP
+	put_uint8_t_by_index(toWP, 29,  MAVLINK_PAYLOAD(msg)); // Destination WP
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 30, 188);
 }
@@ -108,15 +108,15 @@ static inline void mavlink_msg_slugs_navigation_pack_chan_send(mavlink_channel_t
 {
 	msg->msgid = MAVLINK_MSG_ID_SLUGS_NAVIGATION;
 
-	put_float_by_index(u_m, 0,  msg->payload); // Measured Airspeed prior to the Nav Filter
-	put_float_by_index(phi_c, 4,  msg->payload); // Commanded Roll
-	put_float_by_index(theta_c, 8,  msg->payload); // Commanded Pitch
-	put_float_by_index(psiDot_c, 12,  msg->payload); // Commanded Turn rate
-	put_float_by_index(ay_body, 16,  msg->payload); // Y component of the body acceleration
-	put_float_by_index(totalDist, 20,  msg->payload); // Total Distance to Run on this leg of Navigation
-	put_float_by_index(dist2Go, 24,  msg->payload); // Remaining distance to Run on this leg of Navigation
-	put_uint8_t_by_index(fromWP, 28,  msg->payload); // Origin WP
-	put_uint8_t_by_index(toWP, 29,  msg->payload); // Destination WP
+	put_float_by_index(u_m, 0,  MAVLINK_PAYLOAD(msg)); // Measured Airspeed prior to the Nav Filter
+	put_float_by_index(phi_c, 4,  MAVLINK_PAYLOAD(msg)); // Commanded Roll
+	put_float_by_index(theta_c, 8,  MAVLINK_PAYLOAD(msg)); // Commanded Pitch
+	put_float_by_index(psiDot_c, 12,  MAVLINK_PAYLOAD(msg)); // Commanded Turn rate
+	put_float_by_index(ay_body, 16,  MAVLINK_PAYLOAD(msg)); // Y component of the body acceleration
+	put_float_by_index(totalDist, 20,  MAVLINK_PAYLOAD(msg)); // Total Distance to Run on this leg of Navigation
+	put_float_by_index(dist2Go, 24,  MAVLINK_PAYLOAD(msg)); // Remaining distance to Run on this leg of Navigation
+	put_uint8_t_by_index(fromWP, 28,  MAVLINK_PAYLOAD(msg)); // Origin WP
+	put_uint8_t_by_index(toWP, 29,  MAVLINK_PAYLOAD(msg)); // Destination WP
 
 	mavlink_finalize_message_chan_send(msg, chan, 30, 188);
 }
@@ -272,6 +272,6 @@ static inline void mavlink_msg_slugs_navigation_decode(const mavlink_message_t* 
 	slugs_navigation->fromWP = mavlink_msg_slugs_navigation_get_fromWP(msg);
 	slugs_navigation->toWP = mavlink_msg_slugs_navigation_get_toWP(msg);
 #else
-	memcpy(slugs_navigation, msg->payload, 30);
+	memcpy(slugs_navigation, MAVLINK_PAYLOAD(msg), 30);
 #endif
 }

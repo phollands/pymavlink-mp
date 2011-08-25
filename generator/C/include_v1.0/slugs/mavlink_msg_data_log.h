@@ -31,12 +31,12 @@ static inline uint16_t mavlink_msg_data_log_pack(uint8_t system_id, uint8_t comp
 {
 	msg->msgid = MAVLINK_MSG_ID_DATA_LOG;
 
-	put_float_by_index(fl_1, 0,  msg->payload); // Log value 1 
-	put_float_by_index(fl_2, 4,  msg->payload); // Log value 2 
-	put_float_by_index(fl_3, 8,  msg->payload); // Log value 3 
-	put_float_by_index(fl_4, 12,  msg->payload); // Log value 4 
-	put_float_by_index(fl_5, 16,  msg->payload); // Log value 5 
-	put_float_by_index(fl_6, 20,  msg->payload); // Log value 6 
+	put_float_by_index(fl_1, 0,  MAVLINK_PAYLOAD(msg)); // Log value 1 
+	put_float_by_index(fl_2, 4,  MAVLINK_PAYLOAD(msg)); // Log value 2 
+	put_float_by_index(fl_3, 8,  MAVLINK_PAYLOAD(msg)); // Log value 3 
+	put_float_by_index(fl_4, 12,  MAVLINK_PAYLOAD(msg)); // Log value 4 
+	put_float_by_index(fl_5, 16,  MAVLINK_PAYLOAD(msg)); // Log value 5 
+	put_float_by_index(fl_6, 20,  MAVLINK_PAYLOAD(msg)); // Log value 6 
 
 	return mavlink_finalize_message(msg, system_id, component_id, 24, 126);
 }
@@ -61,12 +61,12 @@ static inline uint16_t mavlink_msg_data_log_pack_chan(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_DATA_LOG;
 
-	put_float_by_index(fl_1, 0,  msg->payload); // Log value 1 
-	put_float_by_index(fl_2, 4,  msg->payload); // Log value 2 
-	put_float_by_index(fl_3, 8,  msg->payload); // Log value 3 
-	put_float_by_index(fl_4, 12,  msg->payload); // Log value 4 
-	put_float_by_index(fl_5, 16,  msg->payload); // Log value 5 
-	put_float_by_index(fl_6, 20,  msg->payload); // Log value 6 
+	put_float_by_index(fl_1, 0,  MAVLINK_PAYLOAD(msg)); // Log value 1 
+	put_float_by_index(fl_2, 4,  MAVLINK_PAYLOAD(msg)); // Log value 2 
+	put_float_by_index(fl_3, 8,  MAVLINK_PAYLOAD(msg)); // Log value 3 
+	put_float_by_index(fl_4, 12,  MAVLINK_PAYLOAD(msg)); // Log value 4 
+	put_float_by_index(fl_5, 16,  MAVLINK_PAYLOAD(msg)); // Log value 5 
+	put_float_by_index(fl_6, 20,  MAVLINK_PAYLOAD(msg)); // Log value 6 
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24, 126);
 }
@@ -90,12 +90,12 @@ static inline void mavlink_msg_data_log_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_DATA_LOG;
 
-	put_float_by_index(fl_1, 0,  msg->payload); // Log value 1 
-	put_float_by_index(fl_2, 4,  msg->payload); // Log value 2 
-	put_float_by_index(fl_3, 8,  msg->payload); // Log value 3 
-	put_float_by_index(fl_4, 12,  msg->payload); // Log value 4 
-	put_float_by_index(fl_5, 16,  msg->payload); // Log value 5 
-	put_float_by_index(fl_6, 20,  msg->payload); // Log value 6 
+	put_float_by_index(fl_1, 0,  MAVLINK_PAYLOAD(msg)); // Log value 1 
+	put_float_by_index(fl_2, 4,  MAVLINK_PAYLOAD(msg)); // Log value 2 
+	put_float_by_index(fl_3, 8,  MAVLINK_PAYLOAD(msg)); // Log value 3 
+	put_float_by_index(fl_4, 12,  MAVLINK_PAYLOAD(msg)); // Log value 4 
+	put_float_by_index(fl_5, 16,  MAVLINK_PAYLOAD(msg)); // Log value 5 
+	put_float_by_index(fl_6, 20,  MAVLINK_PAYLOAD(msg)); // Log value 6 
 
 	mavlink_finalize_message_chan_send(msg, chan, 24, 126);
 }
@@ -215,6 +215,6 @@ static inline void mavlink_msg_data_log_decode(const mavlink_message_t* msg, mav
 	data_log->fl_5 = mavlink_msg_data_log_get_fl_5(msg);
 	data_log->fl_6 = mavlink_msg_data_log_get_fl_6(msg);
 #else
-	memcpy(data_log, msg->payload, 24);
+	memcpy(data_log, MAVLINK_PAYLOAD(msg), 24);
 #endif
 }

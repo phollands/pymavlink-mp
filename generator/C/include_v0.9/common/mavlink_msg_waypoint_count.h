@@ -25,9 +25,9 @@ static inline uint16_t mavlink_msg_waypoint_count_pack(uint8_t system_id, uint8_
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_COUNT;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_uint16_t_by_index(count, 2,  msg->payload); // Number of Waypoints in the Sequence
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_uint16_t_by_index(count, 2,  MAVLINK_PAYLOAD(msg)); // Number of Waypoints in the Sequence
 
 	return mavlink_finalize_message(msg, system_id, component_id, 4, 5);
 }
@@ -49,9 +49,9 @@ static inline uint16_t mavlink_msg_waypoint_count_pack_chan(uint8_t system_id, u
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_COUNT;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_uint16_t_by_index(count, 2,  msg->payload); // Number of Waypoints in the Sequence
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_uint16_t_by_index(count, 2,  MAVLINK_PAYLOAD(msg)); // Number of Waypoints in the Sequence
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 5);
 }
@@ -72,9 +72,9 @@ static inline void mavlink_msg_waypoint_count_pack_chan_send(mavlink_channel_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_COUNT;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_uint16_t_by_index(count, 2,  msg->payload); // Number of Waypoints in the Sequence
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_uint16_t_by_index(count, 2,  MAVLINK_PAYLOAD(msg)); // Number of Waypoints in the Sequence
 
 	mavlink_finalize_message_chan_send(msg, chan, 4, 5);
 }
@@ -158,6 +158,6 @@ static inline void mavlink_msg_waypoint_count_decode(const mavlink_message_t* ms
 	waypoint_count->target_component = mavlink_msg_waypoint_count_get_target_component(msg);
 	waypoint_count->count = mavlink_msg_waypoint_count_get_count(msg);
 #else
-	memcpy(waypoint_count, msg->payload, 4);
+	memcpy(waypoint_count, MAVLINK_PAYLOAD(msg), 4);
 #endif
 }

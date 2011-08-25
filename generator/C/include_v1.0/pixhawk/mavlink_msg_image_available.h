@@ -65,29 +65,29 @@ static inline uint16_t mavlink_msg_image_available_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_IMAGE_AVAILABLE;
 
-	put_uint64_t_by_index(cam_id, 0,  msg->payload); // Camera id
-	put_uint64_t_by_index(timestamp, 8,  msg->payload); // Timestamp
-	put_uint64_t_by_index(valid_until, 16,  msg->payload); // Until which timestamp this buffer will stay valid
-	put_uint32_t_by_index(img_seq, 24,  msg->payload); // The image sequence number
-	put_uint32_t_by_index(img_buf_index, 28,  msg->payload); // Position of the image in the buffer, starts with 0
-	put_uint32_t_by_index(key, 32,  msg->payload); // Shared memory area key
-	put_uint32_t_by_index(exposure, 36,  msg->payload); // Exposure time, in microseconds
-	put_float_by_index(gain, 40,  msg->payload); // Camera gain
-	put_float_by_index(roll, 44,  msg->payload); // Roll angle in rad
-	put_float_by_index(pitch, 48,  msg->payload); // Pitch angle in rad
-	put_float_by_index(yaw, 52,  msg->payload); // Yaw angle in rad
-	put_float_by_index(local_z, 56,  msg->payload); // Local frame Z coordinate (height over ground)
-	put_float_by_index(lat, 60,  msg->payload); // GPS X coordinate
-	put_float_by_index(lon, 64,  msg->payload); // GPS Y coordinate
-	put_float_by_index(alt, 68,  msg->payload); // Global frame altitude
-	put_float_by_index(ground_x, 72,  msg->payload); // Ground truth X
-	put_float_by_index(ground_y, 76,  msg->payload); // Ground truth Y
-	put_float_by_index(ground_z, 80,  msg->payload); // Ground truth Z
-	put_uint16_t_by_index(width, 84,  msg->payload); // Image width
-	put_uint16_t_by_index(height, 86,  msg->payload); // Image height
-	put_uint16_t_by_index(depth, 88,  msg->payload); // Image depth
-	put_uint8_t_by_index(cam_no, 90,  msg->payload); // Camera # (starts with 0)
-	put_uint8_t_by_index(channels, 91,  msg->payload); // Image channels
+	put_uint64_t_by_index(cam_id, 0,  MAVLINK_PAYLOAD(msg)); // Camera id
+	put_uint64_t_by_index(timestamp, 8,  MAVLINK_PAYLOAD(msg)); // Timestamp
+	put_uint64_t_by_index(valid_until, 16,  MAVLINK_PAYLOAD(msg)); // Until which timestamp this buffer will stay valid
+	put_uint32_t_by_index(img_seq, 24,  MAVLINK_PAYLOAD(msg)); // The image sequence number
+	put_uint32_t_by_index(img_buf_index, 28,  MAVLINK_PAYLOAD(msg)); // Position of the image in the buffer, starts with 0
+	put_uint32_t_by_index(key, 32,  MAVLINK_PAYLOAD(msg)); // Shared memory area key
+	put_uint32_t_by_index(exposure, 36,  MAVLINK_PAYLOAD(msg)); // Exposure time, in microseconds
+	put_float_by_index(gain, 40,  MAVLINK_PAYLOAD(msg)); // Camera gain
+	put_float_by_index(roll, 44,  MAVLINK_PAYLOAD(msg)); // Roll angle in rad
+	put_float_by_index(pitch, 48,  MAVLINK_PAYLOAD(msg)); // Pitch angle in rad
+	put_float_by_index(yaw, 52,  MAVLINK_PAYLOAD(msg)); // Yaw angle in rad
+	put_float_by_index(local_z, 56,  MAVLINK_PAYLOAD(msg)); // Local frame Z coordinate (height over ground)
+	put_float_by_index(lat, 60,  MAVLINK_PAYLOAD(msg)); // GPS X coordinate
+	put_float_by_index(lon, 64,  MAVLINK_PAYLOAD(msg)); // GPS Y coordinate
+	put_float_by_index(alt, 68,  MAVLINK_PAYLOAD(msg)); // Global frame altitude
+	put_float_by_index(ground_x, 72,  MAVLINK_PAYLOAD(msg)); // Ground truth X
+	put_float_by_index(ground_y, 76,  MAVLINK_PAYLOAD(msg)); // Ground truth Y
+	put_float_by_index(ground_z, 80,  MAVLINK_PAYLOAD(msg)); // Ground truth Z
+	put_uint16_t_by_index(width, 84,  MAVLINK_PAYLOAD(msg)); // Image width
+	put_uint16_t_by_index(height, 86,  MAVLINK_PAYLOAD(msg)); // Image height
+	put_uint16_t_by_index(depth, 88,  MAVLINK_PAYLOAD(msg)); // Image depth
+	put_uint8_t_by_index(cam_no, 90,  MAVLINK_PAYLOAD(msg)); // Camera # (starts with 0)
+	put_uint8_t_by_index(channels, 91,  MAVLINK_PAYLOAD(msg)); // Image channels
 
 	return mavlink_finalize_message(msg, system_id, component_id, 92, 132);
 }
@@ -129,29 +129,29 @@ static inline uint16_t mavlink_msg_image_available_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_IMAGE_AVAILABLE;
 
-	put_uint64_t_by_index(cam_id, 0,  msg->payload); // Camera id
-	put_uint64_t_by_index(timestamp, 8,  msg->payload); // Timestamp
-	put_uint64_t_by_index(valid_until, 16,  msg->payload); // Until which timestamp this buffer will stay valid
-	put_uint32_t_by_index(img_seq, 24,  msg->payload); // The image sequence number
-	put_uint32_t_by_index(img_buf_index, 28,  msg->payload); // Position of the image in the buffer, starts with 0
-	put_uint32_t_by_index(key, 32,  msg->payload); // Shared memory area key
-	put_uint32_t_by_index(exposure, 36,  msg->payload); // Exposure time, in microseconds
-	put_float_by_index(gain, 40,  msg->payload); // Camera gain
-	put_float_by_index(roll, 44,  msg->payload); // Roll angle in rad
-	put_float_by_index(pitch, 48,  msg->payload); // Pitch angle in rad
-	put_float_by_index(yaw, 52,  msg->payload); // Yaw angle in rad
-	put_float_by_index(local_z, 56,  msg->payload); // Local frame Z coordinate (height over ground)
-	put_float_by_index(lat, 60,  msg->payload); // GPS X coordinate
-	put_float_by_index(lon, 64,  msg->payload); // GPS Y coordinate
-	put_float_by_index(alt, 68,  msg->payload); // Global frame altitude
-	put_float_by_index(ground_x, 72,  msg->payload); // Ground truth X
-	put_float_by_index(ground_y, 76,  msg->payload); // Ground truth Y
-	put_float_by_index(ground_z, 80,  msg->payload); // Ground truth Z
-	put_uint16_t_by_index(width, 84,  msg->payload); // Image width
-	put_uint16_t_by_index(height, 86,  msg->payload); // Image height
-	put_uint16_t_by_index(depth, 88,  msg->payload); // Image depth
-	put_uint8_t_by_index(cam_no, 90,  msg->payload); // Camera # (starts with 0)
-	put_uint8_t_by_index(channels, 91,  msg->payload); // Image channels
+	put_uint64_t_by_index(cam_id, 0,  MAVLINK_PAYLOAD(msg)); // Camera id
+	put_uint64_t_by_index(timestamp, 8,  MAVLINK_PAYLOAD(msg)); // Timestamp
+	put_uint64_t_by_index(valid_until, 16,  MAVLINK_PAYLOAD(msg)); // Until which timestamp this buffer will stay valid
+	put_uint32_t_by_index(img_seq, 24,  MAVLINK_PAYLOAD(msg)); // The image sequence number
+	put_uint32_t_by_index(img_buf_index, 28,  MAVLINK_PAYLOAD(msg)); // Position of the image in the buffer, starts with 0
+	put_uint32_t_by_index(key, 32,  MAVLINK_PAYLOAD(msg)); // Shared memory area key
+	put_uint32_t_by_index(exposure, 36,  MAVLINK_PAYLOAD(msg)); // Exposure time, in microseconds
+	put_float_by_index(gain, 40,  MAVLINK_PAYLOAD(msg)); // Camera gain
+	put_float_by_index(roll, 44,  MAVLINK_PAYLOAD(msg)); // Roll angle in rad
+	put_float_by_index(pitch, 48,  MAVLINK_PAYLOAD(msg)); // Pitch angle in rad
+	put_float_by_index(yaw, 52,  MAVLINK_PAYLOAD(msg)); // Yaw angle in rad
+	put_float_by_index(local_z, 56,  MAVLINK_PAYLOAD(msg)); // Local frame Z coordinate (height over ground)
+	put_float_by_index(lat, 60,  MAVLINK_PAYLOAD(msg)); // GPS X coordinate
+	put_float_by_index(lon, 64,  MAVLINK_PAYLOAD(msg)); // GPS Y coordinate
+	put_float_by_index(alt, 68,  MAVLINK_PAYLOAD(msg)); // Global frame altitude
+	put_float_by_index(ground_x, 72,  MAVLINK_PAYLOAD(msg)); // Ground truth X
+	put_float_by_index(ground_y, 76,  MAVLINK_PAYLOAD(msg)); // Ground truth Y
+	put_float_by_index(ground_z, 80,  MAVLINK_PAYLOAD(msg)); // Ground truth Z
+	put_uint16_t_by_index(width, 84,  MAVLINK_PAYLOAD(msg)); // Image width
+	put_uint16_t_by_index(height, 86,  MAVLINK_PAYLOAD(msg)); // Image height
+	put_uint16_t_by_index(depth, 88,  MAVLINK_PAYLOAD(msg)); // Image depth
+	put_uint8_t_by_index(cam_no, 90,  MAVLINK_PAYLOAD(msg)); // Camera # (starts with 0)
+	put_uint8_t_by_index(channels, 91,  MAVLINK_PAYLOAD(msg)); // Image channels
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 92, 132);
 }
@@ -192,29 +192,29 @@ static inline void mavlink_msg_image_available_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_IMAGE_AVAILABLE;
 
-	put_uint64_t_by_index(cam_id, 0,  msg->payload); // Camera id
-	put_uint64_t_by_index(timestamp, 8,  msg->payload); // Timestamp
-	put_uint64_t_by_index(valid_until, 16,  msg->payload); // Until which timestamp this buffer will stay valid
-	put_uint32_t_by_index(img_seq, 24,  msg->payload); // The image sequence number
-	put_uint32_t_by_index(img_buf_index, 28,  msg->payload); // Position of the image in the buffer, starts with 0
-	put_uint32_t_by_index(key, 32,  msg->payload); // Shared memory area key
-	put_uint32_t_by_index(exposure, 36,  msg->payload); // Exposure time, in microseconds
-	put_float_by_index(gain, 40,  msg->payload); // Camera gain
-	put_float_by_index(roll, 44,  msg->payload); // Roll angle in rad
-	put_float_by_index(pitch, 48,  msg->payload); // Pitch angle in rad
-	put_float_by_index(yaw, 52,  msg->payload); // Yaw angle in rad
-	put_float_by_index(local_z, 56,  msg->payload); // Local frame Z coordinate (height over ground)
-	put_float_by_index(lat, 60,  msg->payload); // GPS X coordinate
-	put_float_by_index(lon, 64,  msg->payload); // GPS Y coordinate
-	put_float_by_index(alt, 68,  msg->payload); // Global frame altitude
-	put_float_by_index(ground_x, 72,  msg->payload); // Ground truth X
-	put_float_by_index(ground_y, 76,  msg->payload); // Ground truth Y
-	put_float_by_index(ground_z, 80,  msg->payload); // Ground truth Z
-	put_uint16_t_by_index(width, 84,  msg->payload); // Image width
-	put_uint16_t_by_index(height, 86,  msg->payload); // Image height
-	put_uint16_t_by_index(depth, 88,  msg->payload); // Image depth
-	put_uint8_t_by_index(cam_no, 90,  msg->payload); // Camera # (starts with 0)
-	put_uint8_t_by_index(channels, 91,  msg->payload); // Image channels
+	put_uint64_t_by_index(cam_id, 0,  MAVLINK_PAYLOAD(msg)); // Camera id
+	put_uint64_t_by_index(timestamp, 8,  MAVLINK_PAYLOAD(msg)); // Timestamp
+	put_uint64_t_by_index(valid_until, 16,  MAVLINK_PAYLOAD(msg)); // Until which timestamp this buffer will stay valid
+	put_uint32_t_by_index(img_seq, 24,  MAVLINK_PAYLOAD(msg)); // The image sequence number
+	put_uint32_t_by_index(img_buf_index, 28,  MAVLINK_PAYLOAD(msg)); // Position of the image in the buffer, starts with 0
+	put_uint32_t_by_index(key, 32,  MAVLINK_PAYLOAD(msg)); // Shared memory area key
+	put_uint32_t_by_index(exposure, 36,  MAVLINK_PAYLOAD(msg)); // Exposure time, in microseconds
+	put_float_by_index(gain, 40,  MAVLINK_PAYLOAD(msg)); // Camera gain
+	put_float_by_index(roll, 44,  MAVLINK_PAYLOAD(msg)); // Roll angle in rad
+	put_float_by_index(pitch, 48,  MAVLINK_PAYLOAD(msg)); // Pitch angle in rad
+	put_float_by_index(yaw, 52,  MAVLINK_PAYLOAD(msg)); // Yaw angle in rad
+	put_float_by_index(local_z, 56,  MAVLINK_PAYLOAD(msg)); // Local frame Z coordinate (height over ground)
+	put_float_by_index(lat, 60,  MAVLINK_PAYLOAD(msg)); // GPS X coordinate
+	put_float_by_index(lon, 64,  MAVLINK_PAYLOAD(msg)); // GPS Y coordinate
+	put_float_by_index(alt, 68,  MAVLINK_PAYLOAD(msg)); // Global frame altitude
+	put_float_by_index(ground_x, 72,  MAVLINK_PAYLOAD(msg)); // Ground truth X
+	put_float_by_index(ground_y, 76,  MAVLINK_PAYLOAD(msg)); // Ground truth Y
+	put_float_by_index(ground_z, 80,  MAVLINK_PAYLOAD(msg)); // Ground truth Z
+	put_uint16_t_by_index(width, 84,  MAVLINK_PAYLOAD(msg)); // Image width
+	put_uint16_t_by_index(height, 86,  MAVLINK_PAYLOAD(msg)); // Image height
+	put_uint16_t_by_index(depth, 88,  MAVLINK_PAYLOAD(msg)); // Image depth
+	put_uint8_t_by_index(cam_no, 90,  MAVLINK_PAYLOAD(msg)); // Camera # (starts with 0)
+	put_uint8_t_by_index(channels, 91,  MAVLINK_PAYLOAD(msg)); // Image channels
 
 	mavlink_finalize_message_chan_send(msg, chan, 92, 132);
 }
@@ -538,6 +538,6 @@ static inline void mavlink_msg_image_available_decode(const mavlink_message_t* m
 	image_available->cam_no = mavlink_msg_image_available_get_cam_no(msg);
 	image_available->channels = mavlink_msg_image_available_get_channels(msg);
 #else
-	memcpy(image_available, msg->payload, 92);
+	memcpy(image_available, MAVLINK_PAYLOAD(msg), 92);
 #endif
 }

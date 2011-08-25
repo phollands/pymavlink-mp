@@ -47,20 +47,20 @@ static inline uint16_t mavlink_msg_hil_rc_inputs_raw_pack(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_HIL_RC_INPUTS_RAW;
 
-	put_uint64_t_by_index(time_us, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_uint16_t_by_index(chan1_raw, 8,  msg->payload); // RC channel 1 value, in microseconds
-	put_uint16_t_by_index(chan2_raw, 10,  msg->payload); // RC channel 2 value, in microseconds
-	put_uint16_t_by_index(chan3_raw, 12,  msg->payload); // RC channel 3 value, in microseconds
-	put_uint16_t_by_index(chan4_raw, 14,  msg->payload); // RC channel 4 value, in microseconds
-	put_uint16_t_by_index(chan5_raw, 16,  msg->payload); // RC channel 5 value, in microseconds
-	put_uint16_t_by_index(chan6_raw, 18,  msg->payload); // RC channel 6 value, in microseconds
-	put_uint16_t_by_index(chan7_raw, 20,  msg->payload); // RC channel 7 value, in microseconds
-	put_uint16_t_by_index(chan8_raw, 22,  msg->payload); // RC channel 8 value, in microseconds
-	put_uint16_t_by_index(chan9_raw, 24,  msg->payload); // RC channel 9 value, in microseconds
-	put_uint16_t_by_index(chan10_raw, 26,  msg->payload); // RC channel 10 value, in microseconds
-	put_uint16_t_by_index(chan11_raw, 28,  msg->payload); // RC channel 11 value, in microseconds
-	put_uint16_t_by_index(chan12_raw, 30,  msg->payload); // RC channel 12 value, in microseconds
-	put_uint8_t_by_index(rssi, 32,  msg->payload); // Receive signal strength indicator, 0: 0%, 255: 100%
+	put_uint64_t_by_index(time_us, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_uint16_t_by_index(chan1_raw, 8,  MAVLINK_PAYLOAD(msg)); // RC channel 1 value, in microseconds
+	put_uint16_t_by_index(chan2_raw, 10,  MAVLINK_PAYLOAD(msg)); // RC channel 2 value, in microseconds
+	put_uint16_t_by_index(chan3_raw, 12,  MAVLINK_PAYLOAD(msg)); // RC channel 3 value, in microseconds
+	put_uint16_t_by_index(chan4_raw, 14,  MAVLINK_PAYLOAD(msg)); // RC channel 4 value, in microseconds
+	put_uint16_t_by_index(chan5_raw, 16,  MAVLINK_PAYLOAD(msg)); // RC channel 5 value, in microseconds
+	put_uint16_t_by_index(chan6_raw, 18,  MAVLINK_PAYLOAD(msg)); // RC channel 6 value, in microseconds
+	put_uint16_t_by_index(chan7_raw, 20,  MAVLINK_PAYLOAD(msg)); // RC channel 7 value, in microseconds
+	put_uint16_t_by_index(chan8_raw, 22,  MAVLINK_PAYLOAD(msg)); // RC channel 8 value, in microseconds
+	put_uint16_t_by_index(chan9_raw, 24,  MAVLINK_PAYLOAD(msg)); // RC channel 9 value, in microseconds
+	put_uint16_t_by_index(chan10_raw, 26,  MAVLINK_PAYLOAD(msg)); // RC channel 10 value, in microseconds
+	put_uint16_t_by_index(chan11_raw, 28,  MAVLINK_PAYLOAD(msg)); // RC channel 11 value, in microseconds
+	put_uint16_t_by_index(chan12_raw, 30,  MAVLINK_PAYLOAD(msg)); // RC channel 12 value, in microseconds
+	put_uint8_t_by_index(rssi, 32,  MAVLINK_PAYLOAD(msg)); // Receive signal strength indicator, 0: 0%, 255: 100%
 
 	return mavlink_finalize_message(msg, system_id, component_id, 33, 62);
 }
@@ -93,20 +93,20 @@ static inline uint16_t mavlink_msg_hil_rc_inputs_raw_pack_chan(uint8_t system_id
 {
 	msg->msgid = MAVLINK_MSG_ID_HIL_RC_INPUTS_RAW;
 
-	put_uint64_t_by_index(time_us, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_uint16_t_by_index(chan1_raw, 8,  msg->payload); // RC channel 1 value, in microseconds
-	put_uint16_t_by_index(chan2_raw, 10,  msg->payload); // RC channel 2 value, in microseconds
-	put_uint16_t_by_index(chan3_raw, 12,  msg->payload); // RC channel 3 value, in microseconds
-	put_uint16_t_by_index(chan4_raw, 14,  msg->payload); // RC channel 4 value, in microseconds
-	put_uint16_t_by_index(chan5_raw, 16,  msg->payload); // RC channel 5 value, in microseconds
-	put_uint16_t_by_index(chan6_raw, 18,  msg->payload); // RC channel 6 value, in microseconds
-	put_uint16_t_by_index(chan7_raw, 20,  msg->payload); // RC channel 7 value, in microseconds
-	put_uint16_t_by_index(chan8_raw, 22,  msg->payload); // RC channel 8 value, in microseconds
-	put_uint16_t_by_index(chan9_raw, 24,  msg->payload); // RC channel 9 value, in microseconds
-	put_uint16_t_by_index(chan10_raw, 26,  msg->payload); // RC channel 10 value, in microseconds
-	put_uint16_t_by_index(chan11_raw, 28,  msg->payload); // RC channel 11 value, in microseconds
-	put_uint16_t_by_index(chan12_raw, 30,  msg->payload); // RC channel 12 value, in microseconds
-	put_uint8_t_by_index(rssi, 32,  msg->payload); // Receive signal strength indicator, 0: 0%, 255: 100%
+	put_uint64_t_by_index(time_us, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_uint16_t_by_index(chan1_raw, 8,  MAVLINK_PAYLOAD(msg)); // RC channel 1 value, in microseconds
+	put_uint16_t_by_index(chan2_raw, 10,  MAVLINK_PAYLOAD(msg)); // RC channel 2 value, in microseconds
+	put_uint16_t_by_index(chan3_raw, 12,  MAVLINK_PAYLOAD(msg)); // RC channel 3 value, in microseconds
+	put_uint16_t_by_index(chan4_raw, 14,  MAVLINK_PAYLOAD(msg)); // RC channel 4 value, in microseconds
+	put_uint16_t_by_index(chan5_raw, 16,  MAVLINK_PAYLOAD(msg)); // RC channel 5 value, in microseconds
+	put_uint16_t_by_index(chan6_raw, 18,  MAVLINK_PAYLOAD(msg)); // RC channel 6 value, in microseconds
+	put_uint16_t_by_index(chan7_raw, 20,  MAVLINK_PAYLOAD(msg)); // RC channel 7 value, in microseconds
+	put_uint16_t_by_index(chan8_raw, 22,  MAVLINK_PAYLOAD(msg)); // RC channel 8 value, in microseconds
+	put_uint16_t_by_index(chan9_raw, 24,  MAVLINK_PAYLOAD(msg)); // RC channel 9 value, in microseconds
+	put_uint16_t_by_index(chan10_raw, 26,  MAVLINK_PAYLOAD(msg)); // RC channel 10 value, in microseconds
+	put_uint16_t_by_index(chan11_raw, 28,  MAVLINK_PAYLOAD(msg)); // RC channel 11 value, in microseconds
+	put_uint16_t_by_index(chan12_raw, 30,  MAVLINK_PAYLOAD(msg)); // RC channel 12 value, in microseconds
+	put_uint8_t_by_index(rssi, 32,  MAVLINK_PAYLOAD(msg)); // Receive signal strength indicator, 0: 0%, 255: 100%
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 33, 62);
 }
@@ -138,20 +138,20 @@ static inline void mavlink_msg_hil_rc_inputs_raw_pack_chan_send(mavlink_channel_
 {
 	msg->msgid = MAVLINK_MSG_ID_HIL_RC_INPUTS_RAW;
 
-	put_uint64_t_by_index(time_us, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_uint16_t_by_index(chan1_raw, 8,  msg->payload); // RC channel 1 value, in microseconds
-	put_uint16_t_by_index(chan2_raw, 10,  msg->payload); // RC channel 2 value, in microseconds
-	put_uint16_t_by_index(chan3_raw, 12,  msg->payload); // RC channel 3 value, in microseconds
-	put_uint16_t_by_index(chan4_raw, 14,  msg->payload); // RC channel 4 value, in microseconds
-	put_uint16_t_by_index(chan5_raw, 16,  msg->payload); // RC channel 5 value, in microseconds
-	put_uint16_t_by_index(chan6_raw, 18,  msg->payload); // RC channel 6 value, in microseconds
-	put_uint16_t_by_index(chan7_raw, 20,  msg->payload); // RC channel 7 value, in microseconds
-	put_uint16_t_by_index(chan8_raw, 22,  msg->payload); // RC channel 8 value, in microseconds
-	put_uint16_t_by_index(chan9_raw, 24,  msg->payload); // RC channel 9 value, in microseconds
-	put_uint16_t_by_index(chan10_raw, 26,  msg->payload); // RC channel 10 value, in microseconds
-	put_uint16_t_by_index(chan11_raw, 28,  msg->payload); // RC channel 11 value, in microseconds
-	put_uint16_t_by_index(chan12_raw, 30,  msg->payload); // RC channel 12 value, in microseconds
-	put_uint8_t_by_index(rssi, 32,  msg->payload); // Receive signal strength indicator, 0: 0%, 255: 100%
+	put_uint64_t_by_index(time_us, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_uint16_t_by_index(chan1_raw, 8,  MAVLINK_PAYLOAD(msg)); // RC channel 1 value, in microseconds
+	put_uint16_t_by_index(chan2_raw, 10,  MAVLINK_PAYLOAD(msg)); // RC channel 2 value, in microseconds
+	put_uint16_t_by_index(chan3_raw, 12,  MAVLINK_PAYLOAD(msg)); // RC channel 3 value, in microseconds
+	put_uint16_t_by_index(chan4_raw, 14,  MAVLINK_PAYLOAD(msg)); // RC channel 4 value, in microseconds
+	put_uint16_t_by_index(chan5_raw, 16,  MAVLINK_PAYLOAD(msg)); // RC channel 5 value, in microseconds
+	put_uint16_t_by_index(chan6_raw, 18,  MAVLINK_PAYLOAD(msg)); // RC channel 6 value, in microseconds
+	put_uint16_t_by_index(chan7_raw, 20,  MAVLINK_PAYLOAD(msg)); // RC channel 7 value, in microseconds
+	put_uint16_t_by_index(chan8_raw, 22,  MAVLINK_PAYLOAD(msg)); // RC channel 8 value, in microseconds
+	put_uint16_t_by_index(chan9_raw, 24,  MAVLINK_PAYLOAD(msg)); // RC channel 9 value, in microseconds
+	put_uint16_t_by_index(chan10_raw, 26,  MAVLINK_PAYLOAD(msg)); // RC channel 10 value, in microseconds
+	put_uint16_t_by_index(chan11_raw, 28,  MAVLINK_PAYLOAD(msg)); // RC channel 11 value, in microseconds
+	put_uint16_t_by_index(chan12_raw, 30,  MAVLINK_PAYLOAD(msg)); // RC channel 12 value, in microseconds
+	put_uint8_t_by_index(rssi, 32,  MAVLINK_PAYLOAD(msg)); // Receive signal strength indicator, 0: 0%, 255: 100%
 
 	mavlink_finalize_message_chan_send(msg, chan, 33, 62);
 }
@@ -367,6 +367,6 @@ static inline void mavlink_msg_hil_rc_inputs_raw_decode(const mavlink_message_t*
 	hil_rc_inputs_raw->chan12_raw = mavlink_msg_hil_rc_inputs_raw_get_chan12_raw(msg);
 	hil_rc_inputs_raw->rssi = mavlink_msg_hil_rc_inputs_raw_get_rssi(msg);
 #else
-	memcpy(hil_rc_inputs_raw, msg->payload, 33);
+	memcpy(hil_rc_inputs_raw, MAVLINK_PAYLOAD(msg), 33);
 #endif
 }

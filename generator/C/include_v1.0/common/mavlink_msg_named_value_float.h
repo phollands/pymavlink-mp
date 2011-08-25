@@ -19,12 +19,12 @@ typedef struct __mavlink_named_value_float_t
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_named_value_float_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       const char name[10], float value)
+						       const char *name, float value)
 {
 	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_FLOAT;
 
-	put_float_by_index(value, 0,  msg->payload); // Floating point value
-	put_char_array_by_index(name, 4, 10,  msg->payload); // Name of the debug variable
+	put_float_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // Floating point value
+	put_char_array_by_index(name, 4, 10,  MAVLINK_PAYLOAD(msg)); // Name of the debug variable
 
 	return mavlink_finalize_message(msg, system_id, component_id, 14, 12);
 }
@@ -41,12 +41,12 @@ static inline uint16_t mavlink_msg_named_value_float_pack(uint8_t system_id, uin
  */
 static inline uint16_t mavlink_msg_named_value_float_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           const char name[10],float value)
+						           const char *name,float value)
 {
 	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_FLOAT;
 
-	put_float_by_index(value, 0,  msg->payload); // Floating point value
-	put_char_array_by_index(name, 4, 10,  msg->payload); // Name of the debug variable
+	put_float_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // Floating point value
+	put_char_array_by_index(name, 4, 10,  MAVLINK_PAYLOAD(msg)); // Name of the debug variable
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 12);
 }
@@ -62,12 +62,12 @@ static inline uint16_t mavlink_msg_named_value_float_pack_chan(uint8_t system_id
  */
 static inline void mavlink_msg_named_value_float_pack_chan_send(mavlink_channel_t chan,
 							   mavlink_message_t* msg,
-						           const char name[10],float value)
+						           const char *name,float value)
 {
 	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_FLOAT;
 
-	put_float_by_index(value, 0,  msg->payload); // Floating point value
-	put_char_array_by_index(name, 4, 10,  msg->payload); // Name of the debug variable
+	put_float_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // Floating point value
+	put_char_array_by_index(name, 4, 10,  MAVLINK_PAYLOAD(msg)); // Name of the debug variable
 
 	mavlink_finalize_message_chan_send(msg, chan, 14, 12);
 }
@@ -96,7 +96,7 @@ static inline uint16_t mavlink_msg_named_value_float_encode(uint8_t system_id, u
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_named_value_float_send(mavlink_channel_t chan, const char name[10], float value)
+static inline void mavlink_msg_named_value_float_send(mavlink_channel_t chan, const char *name, float value)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 14);
 	mavlink_msg_named_value_float_pack_chan_send(chan, msg, name, value);
@@ -139,6 +139,6 @@ static inline void mavlink_msg_named_value_float_decode(const mavlink_message_t*
 	named_value_float->value = mavlink_msg_named_value_float_get_value(msg);
 	mavlink_msg_named_value_float_get_name(msg, named_value_float->name);
 #else
-	memcpy(named_value_float, msg->payload, 14);
+	memcpy(named_value_float, MAVLINK_PAYLOAD(msg), 14);
 #endif
 }

@@ -21,7 +21,7 @@ static inline uint16_t mavlink_msg_system_time_pack(uint8_t system_id, uint8_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
 
-	put_uint64_t_by_index(time_usec, 0,  msg->payload); // Timestamp of the master clock in microseconds since UNIX epoch.
+	put_uint64_t_by_index(time_usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp of the master clock in microseconds since UNIX epoch.
 
 	return mavlink_finalize_message(msg, system_id, component_id, 8, 13);
 }
@@ -41,7 +41,7 @@ static inline uint16_t mavlink_msg_system_time_pack_chan(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
 
-	put_uint64_t_by_index(time_usec, 0,  msg->payload); // Timestamp of the master clock in microseconds since UNIX epoch.
+	put_uint64_t_by_index(time_usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp of the master clock in microseconds since UNIX epoch.
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8, 13);
 }
@@ -60,7 +60,7 @@ static inline void mavlink_msg_system_time_pack_chan_send(mavlink_channel_t chan
 {
 	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
 
-	put_uint64_t_by_index(time_usec, 0,  msg->payload); // Timestamp of the master clock in microseconds since UNIX epoch.
+	put_uint64_t_by_index(time_usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp of the master clock in microseconds since UNIX epoch.
 
 	mavlink_finalize_message_chan_send(msg, chan, 8, 13);
 }
@@ -120,6 +120,6 @@ static inline void mavlink_msg_system_time_decode(const mavlink_message_t* msg, 
 #if MAVLINK_NEED_BYTE_SWAP
 	system_time->time_usec = mavlink_msg_system_time_get_time_usec(msg);
 #else
-	memcpy(system_time, msg->payload, 8);
+	memcpy(system_time, MAVLINK_PAYLOAD(msg), 8);
 #endif
 }

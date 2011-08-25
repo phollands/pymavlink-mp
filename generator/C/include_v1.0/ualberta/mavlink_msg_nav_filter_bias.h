@@ -33,13 +33,13 @@ static inline uint16_t mavlink_msg_nav_filter_bias_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_NAV_FILTER_BIAS;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds)
-	put_float_by_index(accel_0, 8,  msg->payload); // b_f[0]
-	put_float_by_index(accel_1, 12,  msg->payload); // b_f[1]
-	put_float_by_index(accel_2, 16,  msg->payload); // b_f[2]
-	put_float_by_index(gyro_0, 20,  msg->payload); // b_f[0]
-	put_float_by_index(gyro_1, 24,  msg->payload); // b_f[1]
-	put_float_by_index(gyro_2, 28,  msg->payload); // b_f[2]
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds)
+	put_float_by_index(accel_0, 8,  MAVLINK_PAYLOAD(msg)); // b_f[0]
+	put_float_by_index(accel_1, 12,  MAVLINK_PAYLOAD(msg)); // b_f[1]
+	put_float_by_index(accel_2, 16,  MAVLINK_PAYLOAD(msg)); // b_f[2]
+	put_float_by_index(gyro_0, 20,  MAVLINK_PAYLOAD(msg)); // b_f[0]
+	put_float_by_index(gyro_1, 24,  MAVLINK_PAYLOAD(msg)); // b_f[1]
+	put_float_by_index(gyro_2, 28,  MAVLINK_PAYLOAD(msg)); // b_f[2]
 
 	return mavlink_finalize_message(msg, system_id, component_id, 32, 200);
 }
@@ -65,13 +65,13 @@ static inline uint16_t mavlink_msg_nav_filter_bias_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_NAV_FILTER_BIAS;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds)
-	put_float_by_index(accel_0, 8,  msg->payload); // b_f[0]
-	put_float_by_index(accel_1, 12,  msg->payload); // b_f[1]
-	put_float_by_index(accel_2, 16,  msg->payload); // b_f[2]
-	put_float_by_index(gyro_0, 20,  msg->payload); // b_f[0]
-	put_float_by_index(gyro_1, 24,  msg->payload); // b_f[1]
-	put_float_by_index(gyro_2, 28,  msg->payload); // b_f[2]
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds)
+	put_float_by_index(accel_0, 8,  MAVLINK_PAYLOAD(msg)); // b_f[0]
+	put_float_by_index(accel_1, 12,  MAVLINK_PAYLOAD(msg)); // b_f[1]
+	put_float_by_index(accel_2, 16,  MAVLINK_PAYLOAD(msg)); // b_f[2]
+	put_float_by_index(gyro_0, 20,  MAVLINK_PAYLOAD(msg)); // b_f[0]
+	put_float_by_index(gyro_1, 24,  MAVLINK_PAYLOAD(msg)); // b_f[1]
+	put_float_by_index(gyro_2, 28,  MAVLINK_PAYLOAD(msg)); // b_f[2]
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 200);
 }
@@ -96,13 +96,13 @@ static inline void mavlink_msg_nav_filter_bias_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_NAV_FILTER_BIAS;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds)
-	put_float_by_index(accel_0, 8,  msg->payload); // b_f[0]
-	put_float_by_index(accel_1, 12,  msg->payload); // b_f[1]
-	put_float_by_index(accel_2, 16,  msg->payload); // b_f[2]
-	put_float_by_index(gyro_0, 20,  msg->payload); // b_f[0]
-	put_float_by_index(gyro_1, 24,  msg->payload); // b_f[1]
-	put_float_by_index(gyro_2, 28,  msg->payload); // b_f[2]
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds)
+	put_float_by_index(accel_0, 8,  MAVLINK_PAYLOAD(msg)); // b_f[0]
+	put_float_by_index(accel_1, 12,  MAVLINK_PAYLOAD(msg)); // b_f[1]
+	put_float_by_index(accel_2, 16,  MAVLINK_PAYLOAD(msg)); // b_f[2]
+	put_float_by_index(gyro_0, 20,  MAVLINK_PAYLOAD(msg)); // b_f[0]
+	put_float_by_index(gyro_1, 24,  MAVLINK_PAYLOAD(msg)); // b_f[1]
+	put_float_by_index(gyro_2, 28,  MAVLINK_PAYLOAD(msg)); // b_f[2]
 
 	mavlink_finalize_message_chan_send(msg, chan, 32, 200);
 }
@@ -234,6 +234,6 @@ static inline void mavlink_msg_nav_filter_bias_decode(const mavlink_message_t* m
 	nav_filter_bias->gyro_1 = mavlink_msg_nav_filter_bias_get_gyro_1(msg);
 	nav_filter_bias->gyro_2 = mavlink_msg_nav_filter_bias_get_gyro_2(msg);
 #else
-	memcpy(nav_filter_bias, msg->payload, 32);
+	memcpy(nav_filter_bias, MAVLINK_PAYLOAD(msg), 32);
 #endif
 }

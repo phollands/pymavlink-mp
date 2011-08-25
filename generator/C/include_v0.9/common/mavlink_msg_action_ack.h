@@ -23,8 +23,8 @@ static inline uint16_t mavlink_msg_action_ack_pack(uint8_t system_id, uint8_t co
 {
 	msg->msgid = MAVLINK_MSG_ID_ACTION_ACK;
 
-	put_uint8_t_by_index(action, 0,  msg->payload); // The action id
-	put_uint8_t_by_index(result, 1,  msg->payload); // 0: Action DENIED, 1: Action executed
+	put_uint8_t_by_index(action, 0,  MAVLINK_PAYLOAD(msg)); // The action id
+	put_uint8_t_by_index(result, 1,  MAVLINK_PAYLOAD(msg)); // 0: Action DENIED, 1: Action executed
 
 	return mavlink_finalize_message(msg, system_id, component_id, 2, 8);
 }
@@ -45,8 +45,8 @@ static inline uint16_t mavlink_msg_action_ack_pack_chan(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_ACTION_ACK;
 
-	put_uint8_t_by_index(action, 0,  msg->payload); // The action id
-	put_uint8_t_by_index(result, 1,  msg->payload); // 0: Action DENIED, 1: Action executed
+	put_uint8_t_by_index(action, 0,  MAVLINK_PAYLOAD(msg)); // The action id
+	put_uint8_t_by_index(result, 1,  MAVLINK_PAYLOAD(msg)); // 0: Action DENIED, 1: Action executed
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 8);
 }
@@ -66,8 +66,8 @@ static inline void mavlink_msg_action_ack_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_ACTION_ACK;
 
-	put_uint8_t_by_index(action, 0,  msg->payload); // The action id
-	put_uint8_t_by_index(result, 1,  msg->payload); // 0: Action DENIED, 1: Action executed
+	put_uint8_t_by_index(action, 0,  MAVLINK_PAYLOAD(msg)); // The action id
+	put_uint8_t_by_index(result, 1,  MAVLINK_PAYLOAD(msg)); // 0: Action DENIED, 1: Action executed
 
 	mavlink_finalize_message_chan_send(msg, chan, 2, 8);
 }
@@ -139,6 +139,6 @@ static inline void mavlink_msg_action_ack_decode(const mavlink_message_t* msg, m
 	action_ack->action = mavlink_msg_action_ack_get_action(msg);
 	action_ack->result = mavlink_msg_action_ack_get_result(msg);
 #else
-	memcpy(action_ack, msg->payload, 2);
+	memcpy(action_ack, MAVLINK_PAYLOAD(msg), 2);
 #endif
 }
