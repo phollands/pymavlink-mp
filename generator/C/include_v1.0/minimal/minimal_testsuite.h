@@ -1,0 +1,48 @@
+/** @file
+ *	@brief MAVLink comm protocol testsuite generated from minimal.xml
+ *	@see http://qgroundcontrol.org/mavlink/
+ *	Generated on Fri Aug 26 09:46:52 2011
+ */
+#ifndef MINIMAL_TESTSUITE_H
+#define MINIMAL_TESTSUITE_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+static void mavlink_test_heartbeat(uint8_t system_id, uint8_t component_id)
+{
+	mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        int i;
+	mavlink_heartbeat_t packet2, packet1 = {
+		.type = 5,
+	.autopilot = 72,
+	.mode = 139,
+	.nav_mode = 206,
+	.status = 17,
+	.safety_status = 84,
+	.link_status = 151,
+	};
+	mavlink_msg_heartbeat_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_heartbeat_decode(&msg, &packet2);
+	mavlink_msg_heartbeat_pack(system_id, component_id, &msg , packet1.type , packet1.autopilot , packet1.mode , packet1.nav_mode , packet1.status , packet1.safety_status , packet1.link_status );
+	mavlink_msg_heartbeat_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.type , packet1.autopilot , packet1.mode , packet1.nav_mode , packet1.status , packet1.safety_status , packet1.link_status );
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+        	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+	mavlink_msg_heartbeat_pack_chan_send(MAVLINK_COMM_1, &msg , packet1.type , packet1.autopilot , packet1.mode , packet1.nav_mode , packet1.status , packet1.safety_status , packet1.link_status );
+	mavlink_msg_heartbeat_send(MAVLINK_COMM_2 , packet1.type , packet1.autopilot , packet1.mode , packet1.nav_mode , packet1.status , packet1.safety_status , packet1.link_status );
+}
+
+static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+{
+	mavlink_test_heartbeat(system_id, component_id);
+}
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
+#endif // MINIMAL_TESTSUITE_H

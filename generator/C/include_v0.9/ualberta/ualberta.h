@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol generated from ualberta.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Thu Aug 25 18:37:46 2011
+ *	Generated on Fri Aug 26 09:46:51 2011
  */
 #ifndef UALBERTA_H
 #define UALBERTA_H
