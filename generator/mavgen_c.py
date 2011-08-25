@@ -266,10 +266,31 @@ def generate_testsuite_h(directory, xml):
 extern "C" {
 #endif
 
-static void mavtest_generate_outputs(mavlink_channel_t chan, uint8_t system_id, uint8_t component_id)
+${{message:
+static void mavlink_test_${name_lower}(uint8_t system_id, uint8_t component_id)
 {
 	mavlink_message_t msg;
-${{message:	mavlink_msg_${name_lower}_send(chan ${{arg_fields:, ${c_test_value} }});
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        int i;
+	mavlink_${name_lower}_t packet2, packet1 = {
+		${{arg_fields:.${name} = ${c_test_value},
+	}}};
+	mavlink_msg_${name_lower}_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_${name_lower}_decode(&msg, &packet2);
+	mavlink_msg_${name_lower}_pack(system_id, component_id, &msg ${{arg_fields:, packet1.${name} }});
+	mavlink_msg_${name_lower}_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg ${{arg_fields:, packet1.${name} }});
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+        	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+	mavlink_msg_${name_lower}_pack_chan_send(MAVLINK_COMM_1, &msg ${{arg_fields:, packet1.${name} }});
+	mavlink_msg_${name_lower}_send(MAVLINK_COMM_2 ${{arg_fields:, packet1.${name} }});
+}
+}}
+
+static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+{
+${{message:	mavlink_test_${name_lower}(system_id, component_id);
 }}
 }
 
