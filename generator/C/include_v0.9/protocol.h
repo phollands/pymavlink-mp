@@ -266,7 +266,7 @@ static inline uint16_t MAVLINK_MSG_RETURN_uint16_t(const mavlink_message_t *msg,
 	return r.i;
 #elif MAVLINK_STRICT_ALIASING
 	uint16_t r;
-	memcpy(&r, &buffer[bindex], sizeof(r));
+	memcpy(&r, &MAVLINK_PAYLOAD(msg)[wire_offset], sizeof(r));
 	return r;
 #else
 	return *(uint16_t *)(&MAVLINK_PAYLOAD(msg)[wire_offset]);
@@ -290,7 +290,7 @@ static inline uint32_t MAVLINK_MSG_RETURN_uint32_t(const mavlink_message_t *msg,
 	return r.i;
 #elif MAVLINK_STRICT_ALIASING
 	uint32_t r;
-	memcpy(&r, &buffer[bindex], sizeof(r));
+	memcpy(&r, &MAVLINK_PAYLOAD(msg)[wire_offset], sizeof(r));
 	return r;
 #else
 	return *(uint32_t *)(&MAVLINK_PAYLOAD(msg)[wire_offset]);
@@ -318,7 +318,7 @@ static inline uint64_t MAVLINK_MSG_RETURN_uint64_t(const mavlink_message_t *msg,
 	return r.i;
 #elif MAVLINK_STRICT_ALIASING
 	uint64_t r;
-	memcpy(&r, &buffer[bindex], sizeof(r));
+	memcpy(&r, &MAVLINK_PAYLOAD(msg)[wire_offset], sizeof(r));
 	return r;
 #else
 	MAVLINK_ASSERT((((intptr_t)(&MAVLINK_PAYLOAD(msg)[wire_offset]))&7)==0);
@@ -343,7 +343,7 @@ static inline float MAVLINK_MSG_RETURN_float(const mavlink_message_t *msg, uint8
 	return r.f;
 #elif MAVLINK_STRICT_ALIASING
 	float r;
-	memcpy(&r, &buffer[bindex], sizeof(r));
+	memcpy(&r, &MAVLINK_PAYLOAD(msg)[wire_offset], sizeof(r));
 	return r;
 #else
 	return *(float *)(&MAVLINK_PAYLOAD(msg)[wire_offset]);
