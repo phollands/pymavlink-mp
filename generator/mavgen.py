@@ -44,6 +44,7 @@ for x in xml[:]:
             if x.message_lengths[idx] == 0:
                 x.message_lengths[idx] = xml[-1].message_lengths[idx]
                 x.message_crcs[idx] = xml[-1].message_crcs[idx]
+                x.message_names[idx] = xml[-1].message_names[idx]
         
 
 if mavparse.check_duplicates(xml):

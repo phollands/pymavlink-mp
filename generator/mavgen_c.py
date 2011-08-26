@@ -86,6 +86,10 @@ extern "C" {
 #define MAVLINK_MESSAGE_CRCS {${message_crcs_array}}
 #endif
 
+#ifndef MAVLINK_MESSAGE_INFO
+#define MAVLINK_MESSAGE_INFO {${message_info_array}}
+#endif
+
 #include "../protocol.h"
 
 #define MAVLINK_ENABLED_${basename_upper}
@@ -141,6 +145,14 @@ typedef struct __mavlink_${name_lower}_t
 ${{ordered_fields: ${type} ${name}${array_suffix}; ///< ${description}
 }}
 } mavlink_${name_lower}_t;
+
+#define MAVLINK_MESSAGE_INFO_${name} { \\
+	"${name}", \\
+	${num_fields}, \\
+	{ ${{ordered_fields: { "${name}", MAVLINK_TYPE_${type_upper}, ${array_length}, ${wire_offset}, offsetof(mavlink_${name_lower}_t, ${name}) }, \\
+        }} } \\
+}
+
 
 /**
  * @brief Pack a ${name_lower} message
@@ -384,10 +396,19 @@ def generate_one(basename, xml):
         xml.message_crcs_array += '%u, ' % crc
     xml.message_crcs_array = xml.message_crcs_array[:-2]
 
+    # form message info array
+    xml.message_info_array = ''
+    for name in xml.message_names:
+        if name is not None:
+            xml.message_info_array += 'MAVLINK_MESSAGE_INFO_%s, ' % name
+        else:
+            xml.message_info_array += '{}, '
+    xml.message_info_array = xml.message_info_array[:-2]
+
     # add some extra field attributes for convenience with arrays
     for m in xml.message:
         for f in m.fields:
-            if f.array_length is not None:
+            if f.array_length != 0:
                 f.array_suffix = '[%u]' % f.array_length
                 f.array_prefix = '*'
                 f.array_tag = '_array'

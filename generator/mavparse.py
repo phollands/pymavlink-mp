@@ -23,7 +23,7 @@ class MAVField(object):
     def __init__(self, name, type, xml, description=''):
         self.name = name
         self.description = description
-        self.array_length = None
+        self.array_length = 0
         self.omit_arg = False
         self.const_value = None
         lengths = {
@@ -61,10 +61,11 @@ class MAVField(object):
             self.type = type+'_t'
         else:
             raise MAVParseError("unknown type '%s'" % type)
-        if self.array_length is not None:
+        if self.array_length != 0:
             self.wire_length = self.array_length * self.type_length
         else:
             self.wire_length = self.type_length
+        self.type_upper = self.type.upper()
 
     def gen_test_value(self, i):
         '''generate a testsuite value for a MAVField'''
@@ -224,6 +225,7 @@ class MAVXML(object):
 
         self.message_lengths = [ 0 ] * 256
         self.message_crcs = [ 0 ] * 256
+        self.message_names = [ None ] * 256
 
         for m in self.message:
             m.wire_length = 0
@@ -242,8 +244,13 @@ class MAVXML(object):
                 m.wire_length += f.wire_length
                 m.ordered_fieldnames.append(f.name)
                 f.set_test_value()
+            m.num_fields = len(m.fieldnames)
+            if m.num_fields > 64:
+                raise MAVParseError("num_fields=%u : Maximum number of field names allowed is" % (
+                    m.num_fields, 64))
             m.crc_extra = message_checksum(m)
             self.message_lengths[m.id] = m.wire_length
+            self.message_names[m.id] = m.name
             self.message_crcs[m.id] = m.crc_extra
 
             if m.wire_length+8 > 64:
