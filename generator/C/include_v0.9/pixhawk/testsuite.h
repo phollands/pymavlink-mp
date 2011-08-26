@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from pixhawk.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 13:23:44 2011
+ *	Generated on Fri Aug 26 14:04:05 2011
  */
 #ifndef PIXHAWK_TESTSUITE_H
 #define PIXHAWK_TESTSUITE_H
@@ -38,6 +38,9 @@ static void mavlink_test_set_cam_shutter(uint8_t system_id, uint8_t component_id
 	17495,
 	66.0,
 	};
+	if (sizeof(packet2) != 11) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_set_cam_shutter_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_set_cam_shutter_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -70,6 +73,9 @@ static void mavlink_test_image_triggered(uint8_t system_id, uint8_t component_id
 	325.0,
 	353.0,
 	};
+	if (sizeof(packet2) != 52) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_image_triggered_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_image_triggered_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -91,6 +97,9 @@ static void mavlink_test_image_trigger_control(uint8_t system_id, uint8_t compon
 	mavlink_image_trigger_control_t packet2, packet1 = {
 		5,
 	};
+	if (sizeof(packet2) != 1) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_image_trigger_control_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_image_trigger_control_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -134,6 +143,9 @@ static void mavlink_test_image_available(uint8_t system_id, uint8_t component_id
 	605.0,
 	633.0,
 	};
+	if (sizeof(packet2) != 92) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_image_available_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_image_available_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -161,6 +173,9 @@ static void mavlink_test_vision_position_estimate(uint8_t system_id, uint8_t com
 	185.0,
 	213.0,
 	};
+	if (sizeof(packet2) != 32) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_vision_position_estimate_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_vision_position_estimate_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -188,6 +203,9 @@ static void mavlink_test_vicon_position_estimate(uint8_t system_id, uint8_t comp
 	185.0,
 	213.0,
 	};
+	if (sizeof(packet2) != 32) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_vicon_position_estimate_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_vicon_position_estimate_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -212,6 +230,9 @@ static void mavlink_test_vision_speed_estimate(uint8_t system_id, uint8_t compon
 	101.0,
 	129.0,
 	};
+	if (sizeof(packet2) != 20) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_vision_speed_estimate_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_vision_speed_estimate_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -239,6 +260,9 @@ static void mavlink_test_position_control_setpoint_set(uint8_t system_id, uint8_
 	101.0,
 	129.0,
 	};
+	if (sizeof(packet2) != 20) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_position_control_setpoint_set_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_position_control_setpoint_set_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -265,6 +289,9 @@ static void mavlink_test_position_control_offset_set(uint8_t system_id, uint8_t 
 	87.0,
 	115.0,
 	};
+	if (sizeof(packet2) != 18) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_position_control_offset_set_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_position_control_offset_set_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -290,6 +317,9 @@ static void mavlink_test_position_control_setpoint(uint8_t system_id, uint8_t co
 	87.0,
 	115.0,
 	};
+	if (sizeof(packet2) != 18) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_position_control_setpoint_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_position_control_setpoint_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -317,6 +347,9 @@ static void mavlink_test_marker(uint8_t system_id, uint8_t component_id)
 	143.0,
 	171.0,
 	};
+	if (sizeof(packet2) != 26) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_marker_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_marker_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -344,6 +377,9 @@ static void mavlink_test_raw_aux(uint8_t system_id, uint8_t component_id)
 	17755,
 	963498088,
 	};
+	if (sizeof(packet2) != 16) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_raw_aux_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_raw_aux_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -366,6 +402,9 @@ static void mavlink_test_watchdog_heartbeat(uint8_t system_id, uint8_t component
 		17235,
 	17339,
 	};
+	if (sizeof(packet2) != 4) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_watchdog_heartbeat_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_watchdog_heartbeat_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -391,6 +430,9 @@ static void mavlink_test_watchdog_process_info(uint8_t system_id, uint8_t compon
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOP",
 	963510516,
 	};
+	if (sizeof(packet2) != 255) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_watchdog_process_info_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_watchdog_process_info_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -417,6 +459,9 @@ static void mavlink_test_watchdog_process_status(uint8_t system_id, uint8_t comp
 	963497776,
 	17755,
 	};
+	if (sizeof(packet2) != 12) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_watchdog_process_status_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_watchdog_process_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -441,6 +486,9 @@ static void mavlink_test_watchdog_command(uint8_t system_id, uint8_t component_i
 	17391,
 	84,
 	};
+	if (sizeof(packet2) != 6) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_watchdog_command_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_watchdog_command_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -465,6 +513,9 @@ static void mavlink_test_pattern_detected(uint8_t system_id, uint8_t component_i
 	"FGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ",
 	128,
 	};
+	if (sizeof(packet2) != 106) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_pattern_detected_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_pattern_detected_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -493,6 +544,9 @@ static void mavlink_test_point_of_interest(uint8_t system_id, uint8_t component_
 	108.0,
 	"RSTUVWXYZABCDEFGHIJKLMNOP",
 	};
+	if (sizeof(packet2) != 43) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_point_of_interest_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_point_of_interest_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -524,6 +578,9 @@ static void mavlink_test_point_of_interest_connection(uint8_t system_id, uint8_t
 	192.0,
 	"DEFGHIJKLMNOPQRSTUVWXYZAB",
 	};
+	if (sizeof(packet2) != 55) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_point_of_interest_connection_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_point_of_interest_connection_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -549,6 +606,9 @@ static void mavlink_test_data_transmission_handshake(uint8_t system_id, uint8_t 
 	151,
 	218,
 	};
+	if (sizeof(packet2) != 8) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_data_transmission_handshake_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_data_transmission_handshake_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -571,6 +631,9 @@ static void mavlink_test_encapsulated_data(uint8_t system_id, uint8_t component_
 		17235,
 	{ 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135 },
 	};
+	if (sizeof(packet2) != 255) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_encapsulated_data_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_encapsulated_data_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -599,6 +662,9 @@ static void mavlink_test_brief_feature(uint8_t system_id, uint8_t component_id)
 	{ 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151 },
 	360.0,
 	};
+	if (sizeof(packet2) != 53) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_brief_feature_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_brief_feature_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -628,6 +694,9 @@ static void mavlink_test_attitude_control(uint8_t system_id, uint8_t component_i
 	254,
 	65,
 	};
+	if (sizeof(packet2) != 21) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_attitude_control_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_attitude_control_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);

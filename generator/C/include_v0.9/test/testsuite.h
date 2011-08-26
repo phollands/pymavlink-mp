@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from test.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 13:23:45 2011
+ *	Generated on Fri Aug 26 14:04:06 2011
  */
 #ifndef TEST_TESTSUITE_H
 #define TEST_TESTSUITE_H
@@ -54,6 +54,9 @@ static void mavlink_test_test_types(uint8_t system_id, uint8_t component_id)
 	{ 1018.0, 1019.0, 1020.0 },
 	{ 1208.0, 1209.0, 1210.0 },
 	};
+	if (sizeof(packet2) != 179) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_test_types_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_test_types_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);

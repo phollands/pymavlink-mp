@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from slugs.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 13:23:45 2011
+ *	Generated on Fri Aug 26 14:04:05 2011
  */
 #ifndef SLUGS_TESTSUITE_H
 #define SLUGS_TESTSUITE_H
@@ -35,6 +35,9 @@ static void mavlink_test_cpu_load(uint8_t system_id, uint8_t component_id)
 	72,
 	17339,
 	};
+	if (sizeof(packet2) != 4) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_cpu_load_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_cpu_load_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -58,6 +61,9 @@ static void mavlink_test_air_data(uint8_t system_id, uint8_t component_id)
 	45.0,
 	17651,
 	};
+	if (sizeof(packet2) != 10) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_air_data_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_air_data_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -84,6 +90,9 @@ static void mavlink_test_sensor_bias(uint8_t system_id, uint8_t component_id)
 	129.0,
 	157.0,
 	};
+	if (sizeof(packet2) != 24) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_sensor_bias_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_sensor_bias_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -110,6 +119,9 @@ static void mavlink_test_diagnostic(uint8_t system_id, uint8_t component_id)
 	17963,
 	18067,
 	};
+	if (sizeof(packet2) != 18) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_diagnostic_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_diagnostic_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -139,6 +151,9 @@ static void mavlink_test_slugs_navigation(uint8_t system_id, uint8_t component_i
 	89,
 	156,
 	};
+	if (sizeof(packet2) != 30) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_slugs_navigation_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_slugs_navigation_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -165,6 +180,9 @@ static void mavlink_test_data_log(uint8_t system_id, uint8_t component_id)
 	129.0,
 	157.0,
 	};
+	if (sizeof(packet2) != 24) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_data_log_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_data_log_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -192,6 +210,9 @@ static void mavlink_test_gps_date_time(uint8_t system_id, uint8_t component_id)
 	84,
 	151,
 	};
+	if (sizeof(packet2) != 7) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_gps_date_time_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_gps_date_time_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -216,6 +237,9 @@ static void mavlink_test_mid_lvl_cmds(uint8_t system_id, uint8_t component_id)
 	52.0,
 	80.0,
 	};
+	if (sizeof(packet2) != 13) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_mid_lvl_cmds_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_mid_lvl_cmds_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -238,6 +262,9 @@ static void mavlink_test_ctrl_srfc_pt(uint8_t system_id, uint8_t component_id)
 		5,
 	17287,
 	};
+	if (sizeof(packet2) != 3) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_ctrl_srfc_pt_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_ctrl_srfc_pt_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -261,6 +288,9 @@ static void mavlink_test_slugs_action(uint8_t system_id, uint8_t component_id)
 	72,
 	17339,
 	};
+	if (sizeof(packet2) != 4) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_slugs_action_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_slugs_action_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);

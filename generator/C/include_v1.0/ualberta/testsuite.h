@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ualberta.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 13:23:47 2011
+ *	Generated on Fri Aug 26 14:04:08 2011
  */
 #ifndef UALBERTA_TESTSUITE_H
 #define UALBERTA_TESTSUITE_H
@@ -39,6 +39,9 @@ static void mavlink_test_nav_filter_bias(uint8_t system_id, uint8_t component_id
 	185.0,
 	213.0,
 	};
+	if (sizeof(packet2) != 32) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_nav_filter_bias_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_nav_filter_bias_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -65,6 +68,9 @@ static void mavlink_test_radio_calibration(uint8_t system_id, uint8_t component_
 	{ 18379, 18380, 18381, 18382, 18383 },
 	{ 18899, 18900, 18901, 18902, 18903 },
 	};
+	if (sizeof(packet2) != 42) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_radio_calibration_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_radio_calibration_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -88,6 +94,9 @@ static void mavlink_test_ualberta_sys_status(uint8_t system_id, uint8_t componen
 	72,
 	139,
 	};
+	if (sizeof(packet2) != 3) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_ualberta_sys_status_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_ualberta_sys_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);

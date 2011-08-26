@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ardupilotmega.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 13:23:44 2011
+ *	Generated on Fri Aug 26 14:04:04 2011
  */
 #ifndef ARDUPILOTMEGA_TESTSUITE_H
 #define ARDUPILOTMEGA_TESTSUITE_H
@@ -44,6 +44,9 @@ static void mavlink_test_sensor_offsets(uint8_t system_id, uint8_t component_id)
 	255.0,
 	283.0,
 	};
+	if (sizeof(packet2) != 42) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_sensor_offsets_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_sensor_offsets_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
@@ -69,6 +72,9 @@ static void mavlink_test_set_mag_offsets(uint8_t system_id, uint8_t component_id
 	17443,
 	17547,
 	};
+	if (sizeof(packet2) != 8) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_set_mag_offsets_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_set_mag_offsets_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
