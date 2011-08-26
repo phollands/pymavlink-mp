@@ -25,8 +25,10 @@ class MAVField(object):
         self.description = description
         self.array_length = None
         self.omit_arg = False
+        self.const_value = None
         lengths = {
         'float'    : 4,
+        'double'   : 8,
         'char'     : 1,
         'int8_t'   : 1,
         'uint8_t'  : 1,
@@ -66,8 +68,12 @@ class MAVField(object):
 
     def gen_test_value(self, i):
         '''generate a testsuite value for a MAVField'''
-        if self.type == 'float':
+        if self.const_value:
+            return self.const_value
+        elif self.type == 'float':
             return 17.0 + self.wire_offset*7 + i
+        elif self.type == 'double':
+            return 123.0 + self.wire_offset*7 + i
         elif self.type == 'char':
             return chr(ord('A') + (self.wire_offset + i)%26)
         elif self.type in [ 'int8_t', 'uint8_t' ]:
@@ -77,7 +83,7 @@ class MAVField(object):
         elif self.type in ['int32_t', 'uint32_t']:
             return (963497464 + self.wire_offset*52 + i)&0xFFFFFFFF
         elif self.type in ['int64_t', 'uint64_t']:
-            return 9223372036854775807 + self.wire_offset*63 + i
+            return 93372036854775807 + self.wire_offset*63 + i
         else:
             raise MAVError('unknown type %s' % self.type)
 
