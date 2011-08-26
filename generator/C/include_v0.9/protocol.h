@@ -285,7 +285,7 @@ static inline void put_ ## TYPE ##_array_by_index(const TYPE *b, uint8_t wire_of
 { \
 	uint16_t i; \
 	for (i=0; i<array_length; i++) { \
-		put_## TYPE ##_by_index(b[i], wire_offset+(i*sizeof(b[0])), buffer+(i*sizeof(b[0]))); \
+		put_## TYPE ##_by_index(b[i], wire_offset+(i*sizeof(b[0])), buffer); \
 	} \
 }
 #else
