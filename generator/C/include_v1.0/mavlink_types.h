@@ -80,6 +80,38 @@ typedef struct __mavlink_message {
     uint64_t payload64[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+7)/8]; ///< Payload data, ALIGNMENT IMPORTANT ON MCU
 } mavlink_message_t;
 
+typedef enum {
+	MAVLINK_TYPE_CHAR     = 0,
+	MAVLINK_TYPE_UINT8_T  = 1,
+	MAVLINK_TYPE_INT8_T   = 2,
+	MAVLINK_TYPE_UINT16_T = 3,
+	MAVLINK_TYPE_INT16_T  = 4,
+	MAVLINK_TYPE_UINT32_T = 5,
+	MAVLINK_TYPE_INT32_T  = 6,
+	MAVLINK_TYPE_UINT64_T = 7,
+	MAVLINK_TYPE_INT64_T  = 8,
+	MAVLINK_TYPE_FLOAT    = 9,
+	MAVLINK_TYPE_DOUBLE   = 10
+} mavlink_message_type_t;
+
+#define MAVLINK_MAX_FIELDS 64
+
+typedef struct __mavlink_field_info {
+	const char *name;             // name of this field
+	mavlink_message_type_t type;  // type of this field
+	unsigned array_length;        // if non-zero, field is an array
+	unsigned wire_offset;         // offset of each field in the payload
+	unsigned structure_offset;    // offset in a C structure
+} mavlink_field_info_t;
+
+// note that in this structure the order of fields is the order
+// in the XML file, not necessary the wire order
+typedef struct __mavlink_message_info {
+	const char *name;                                      // name of the message
+	unsigned num_fields;                                   // how many fields in this message
+	const mavlink_field_info_t fields[MAVLINK_MAX_FIELDS]; // field information
+} mavlink_message_info_t;
+
 #define MAVLINK_PAYLOAD(msg) ((uint8_t *)(&(msg)->payload64[0]))
 
 // checksum is immediately after the payload bytes
