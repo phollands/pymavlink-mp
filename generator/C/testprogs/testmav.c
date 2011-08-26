@@ -14,8 +14,8 @@ static mavlink_system_t mavlink_system = {42,11,};
 #define MAVLINK_ASSERT(x) assert(x)
 static void comm_send_ch(mavlink_channel_t chan, uint8_t c);
 
-#include <common/mavlink.h>
-#include <common/common_testsuite.h>
+#include <mavlink.h>
+#include <testsuite.h>
 
 static unsigned chan_counts[MAVLINK_COMM_NUM_BUFFERS];
 
