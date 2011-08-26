@@ -10,6 +10,17 @@ typedef struct __mavlink_global_position_setpoint_int_t
  int16_t yaw; ///< Desired yaw angle in degrees * 100
 } mavlink_global_position_setpoint_int_t;
 
+#define MAVLINK_MESSAGE_INFO_GLOBAL_POSITION_SETPOINT_INT { \
+	"GLOBAL_POSITION_SETPOINT_INT", \
+	4, \
+	{  { "latitude", MAVLINK_TYPE_INT32_T, 0, 0, offsetof(mavlink_global_position_setpoint_int_t, latitude) }, \
+         { "longitude", MAVLINK_TYPE_INT32_T, 0, 4, offsetof(mavlink_global_position_setpoint_int_t, longitude) }, \
+         { "altitude", MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_global_position_setpoint_int_t, altitude) }, \
+         { "yaw", MAVLINK_TYPE_INT16_T, 0, 12, offsetof(mavlink_global_position_setpoint_int_t, yaw) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a global_position_setpoint_int message
  * @param system_id ID of this system
@@ -27,12 +38,12 @@ static inline uint16_t mavlink_msg_global_position_setpoint_int_pack(uint8_t sys
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_SETPOINT_INT;
 
-	put_int32_t_by_index(latitude, 0,  MAVLINK_PAYLOAD(msg)); // WGS84 Latitude position in degrees * 1E7
-	put_int32_t_by_index(longitude, 4,  MAVLINK_PAYLOAD(msg)); // WGS84 Longitude position in degrees * 1E7
-	put_int32_t_by_index(altitude, 8,  MAVLINK_PAYLOAD(msg)); // WGS84 Altitude in meters * 1000 (positive for up)
-	put_int16_t_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in degrees * 100
+	put_int32_t_by_index(msg, 0, latitude); // WGS84 Latitude position in degrees * 1E7
+	put_int32_t_by_index(msg, 4, longitude); // WGS84 Longitude position in degrees * 1E7
+	put_int32_t_by_index(msg, 8, altitude); // WGS84 Altitude in meters * 1000 (positive for up)
+	put_int16_t_by_index(msg, 12, yaw); // Desired yaw angle in degrees * 100
 
-	return mavlink_finalize_message(msg, system_id, component_id, 14, 181);
+	return mavlink_finalize_message(msg, system_id, component_id, 14, 142);
 }
 
 /**
@@ -53,12 +64,12 @@ static inline uint16_t mavlink_msg_global_position_setpoint_int_pack_chan(uint8_
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_SETPOINT_INT;
 
-	put_int32_t_by_index(latitude, 0,  MAVLINK_PAYLOAD(msg)); // WGS84 Latitude position in degrees * 1E7
-	put_int32_t_by_index(longitude, 4,  MAVLINK_PAYLOAD(msg)); // WGS84 Longitude position in degrees * 1E7
-	put_int32_t_by_index(altitude, 8,  MAVLINK_PAYLOAD(msg)); // WGS84 Altitude in meters * 1000 (positive for up)
-	put_int16_t_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in degrees * 100
+	put_int32_t_by_index(msg, 0, latitude); // WGS84 Latitude position in degrees * 1E7
+	put_int32_t_by_index(msg, 4, longitude); // WGS84 Longitude position in degrees * 1E7
+	put_int32_t_by_index(msg, 8, altitude); // WGS84 Altitude in meters * 1000 (positive for up)
+	put_int16_t_by_index(msg, 12, yaw); // Desired yaw angle in degrees * 100
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 181);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 142);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -78,12 +89,12 @@ static inline void mavlink_msg_global_position_setpoint_int_pack_chan_send(mavli
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_SETPOINT_INT;
 
-	put_int32_t_by_index(latitude, 0,  MAVLINK_PAYLOAD(msg)); // WGS84 Latitude position in degrees * 1E7
-	put_int32_t_by_index(longitude, 4,  MAVLINK_PAYLOAD(msg)); // WGS84 Longitude position in degrees * 1E7
-	put_int32_t_by_index(altitude, 8,  MAVLINK_PAYLOAD(msg)); // WGS84 Altitude in meters * 1000 (positive for up)
-	put_int16_t_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in degrees * 100
+	put_int32_t_by_index(msg, 0, latitude); // WGS84 Latitude position in degrees * 1E7
+	put_int32_t_by_index(msg, 4, longitude); // WGS84 Longitude position in degrees * 1E7
+	put_int32_t_by_index(msg, 8, altitude); // WGS84 Altitude in meters * 1000 (positive for up)
+	put_int16_t_by_index(msg, 12, yaw); // Desired yaw angle in degrees * 100
 
-	mavlink_finalize_message_chan_send(msg, chan, 14, 181);
+	mavlink_finalize_message_chan_send(msg, chan, 14, 142);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

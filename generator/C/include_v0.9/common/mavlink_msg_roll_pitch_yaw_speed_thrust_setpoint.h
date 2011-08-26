@@ -11,6 +11,18 @@ typedef struct __mavlink_roll_pitch_yaw_speed_thrust_setpoint_t
  float thrust; ///< Collective thrust, normalized to 0 .. 1
 } mavlink_roll_pitch_yaw_speed_thrust_setpoint_t;
 
+#define MAVLINK_MESSAGE_INFO_ROLL_PITCH_YAW_SPEED_THRUST_SETPOINT { \
+	"ROLL_PITCH_YAW_SPEED_THRUST_SETPOINT", \
+	5, \
+	{  { "time_us", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_roll_pitch_yaw_speed_thrust_setpoint_t, time_us) }, \
+         { "roll_speed", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_roll_pitch_yaw_speed_thrust_setpoint_t, roll_speed) }, \
+         { "pitch_speed", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_roll_pitch_yaw_speed_thrust_setpoint_t, pitch_speed) }, \
+         { "yaw_speed", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_roll_pitch_yaw_speed_thrust_setpoint_t, yaw_speed) }, \
+         { "thrust", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_roll_pitch_yaw_speed_thrust_setpoint_t, thrust) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a roll_pitch_yaw_speed_thrust_setpoint message
  * @param system_id ID of this system
@@ -29,13 +41,13 @@ static inline uint16_t mavlink_msg_roll_pitch_yaw_speed_thrust_setpoint_pack(uin
 {
 	msg->msgid = MAVLINK_MSG_ID_ROLL_PITCH_YAW_SPEED_THRUST_SETPOINT;
 
-	put_uint64_t_by_index(time_us, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp in micro seconds since unix epoch
-	put_float_by_index(roll_speed, 8,  MAVLINK_PAYLOAD(msg)); // Desired roll angular speed in rad/s
-	put_float_by_index(pitch_speed, 12,  MAVLINK_PAYLOAD(msg)); // Desired pitch angular speed in rad/s
-	put_float_by_index(yaw_speed, 16,  MAVLINK_PAYLOAD(msg)); // Desired yaw angular speed in rad/s
-	put_float_by_index(thrust, 20,  MAVLINK_PAYLOAD(msg)); // Collective thrust, normalized to 0 .. 1
+	put_uint64_t_by_index(msg, 0, time_us); // Timestamp in micro seconds since unix epoch
+	put_float_by_index(msg, 8, roll_speed); // Desired roll angular speed in rad/s
+	put_float_by_index(msg, 12, pitch_speed); // Desired pitch angular speed in rad/s
+	put_float_by_index(msg, 16, yaw_speed); // Desired yaw angular speed in rad/s
+	put_float_by_index(msg, 20, thrust); // Collective thrust, normalized to 0 .. 1
 
-	return mavlink_finalize_message(msg, system_id, component_id, 24, 95);
+	return mavlink_finalize_message(msg, system_id, component_id, 24, 127);
 }
 
 /**
@@ -57,13 +69,13 @@ static inline uint16_t mavlink_msg_roll_pitch_yaw_speed_thrust_setpoint_pack_cha
 {
 	msg->msgid = MAVLINK_MSG_ID_ROLL_PITCH_YAW_SPEED_THRUST_SETPOINT;
 
-	put_uint64_t_by_index(time_us, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp in micro seconds since unix epoch
-	put_float_by_index(roll_speed, 8,  MAVLINK_PAYLOAD(msg)); // Desired roll angular speed in rad/s
-	put_float_by_index(pitch_speed, 12,  MAVLINK_PAYLOAD(msg)); // Desired pitch angular speed in rad/s
-	put_float_by_index(yaw_speed, 16,  MAVLINK_PAYLOAD(msg)); // Desired yaw angular speed in rad/s
-	put_float_by_index(thrust, 20,  MAVLINK_PAYLOAD(msg)); // Collective thrust, normalized to 0 .. 1
+	put_uint64_t_by_index(msg, 0, time_us); // Timestamp in micro seconds since unix epoch
+	put_float_by_index(msg, 8, roll_speed); // Desired roll angular speed in rad/s
+	put_float_by_index(msg, 12, pitch_speed); // Desired pitch angular speed in rad/s
+	put_float_by_index(msg, 16, yaw_speed); // Desired yaw angular speed in rad/s
+	put_float_by_index(msg, 20, thrust); // Collective thrust, normalized to 0 .. 1
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24, 95);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24, 127);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -84,13 +96,13 @@ static inline void mavlink_msg_roll_pitch_yaw_speed_thrust_setpoint_pack_chan_se
 {
 	msg->msgid = MAVLINK_MSG_ID_ROLL_PITCH_YAW_SPEED_THRUST_SETPOINT;
 
-	put_uint64_t_by_index(time_us, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp in micro seconds since unix epoch
-	put_float_by_index(roll_speed, 8,  MAVLINK_PAYLOAD(msg)); // Desired roll angular speed in rad/s
-	put_float_by_index(pitch_speed, 12,  MAVLINK_PAYLOAD(msg)); // Desired pitch angular speed in rad/s
-	put_float_by_index(yaw_speed, 16,  MAVLINK_PAYLOAD(msg)); // Desired yaw angular speed in rad/s
-	put_float_by_index(thrust, 20,  MAVLINK_PAYLOAD(msg)); // Collective thrust, normalized to 0 .. 1
+	put_uint64_t_by_index(msg, 0, time_us); // Timestamp in micro seconds since unix epoch
+	put_float_by_index(msg, 8, roll_speed); // Desired roll angular speed in rad/s
+	put_float_by_index(msg, 12, pitch_speed); // Desired pitch angular speed in rad/s
+	put_float_by_index(msg, 16, yaw_speed); // Desired yaw angular speed in rad/s
+	put_float_by_index(msg, 20, thrust); // Collective thrust, normalized to 0 .. 1
 
-	mavlink_finalize_message_chan_send(msg, chan, 24, 95);
+	mavlink_finalize_message_chan_send(msg, chan, 24, 127);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -10,6 +10,17 @@ typedef struct __mavlink_change_operator_control_t
  char passkey[25]; ///< Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
 } mavlink_change_operator_control_t;
 
+#define MAVLINK_MESSAGE_INFO_CHANGE_OPERATOR_CONTROL { \
+	"CHANGE_OPERATOR_CONTROL", \
+	4, \
+	{  { "target_system", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_change_operator_control_t, target_system) }, \
+         { "control_request", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_change_operator_control_t, control_request) }, \
+         { "version", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_change_operator_control_t, version) }, \
+         { "passkey", MAVLINK_TYPE_CHAR, 25, 3, offsetof(mavlink_change_operator_control_t, passkey) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a change_operator_control message
  * @param system_id ID of this system
@@ -27,12 +38,12 @@ static inline uint16_t mavlink_msg_change_operator_control_pack(uint8_t system_i
 {
 	msg->msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System the GCS requests control for
-	put_uint8_t_by_index(control_request, 1,  MAVLINK_PAYLOAD(msg)); // 0: request control of this MAV, 1: Release control of this MAV
-	put_uint8_t_by_index(version, 2,  MAVLINK_PAYLOAD(msg)); // 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch.
-	put_char_array_by_index(passkey, 3, 25,  MAVLINK_PAYLOAD(msg)); // Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
+	put_uint8_t_by_index(msg, 0, target_system); // System the GCS requests control for
+	put_uint8_t_by_index(msg, 1, control_request); // 0: request control of this MAV, 1: Release control of this MAV
+	put_uint8_t_by_index(msg, 2, version); // 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch.
+	put_char_array_by_index(msg, 3, passkey, 25); // Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
 
-	return mavlink_finalize_message(msg, system_id, component_id, 28, 5);
+	return mavlink_finalize_message(msg, system_id, component_id, 28, 217);
 }
 
 /**
@@ -53,12 +64,12 @@ static inline uint16_t mavlink_msg_change_operator_control_pack_chan(uint8_t sys
 {
 	msg->msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System the GCS requests control for
-	put_uint8_t_by_index(control_request, 1,  MAVLINK_PAYLOAD(msg)); // 0: request control of this MAV, 1: Release control of this MAV
-	put_uint8_t_by_index(version, 2,  MAVLINK_PAYLOAD(msg)); // 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch.
-	put_char_array_by_index(passkey, 3, 25,  MAVLINK_PAYLOAD(msg)); // Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
+	put_uint8_t_by_index(msg, 0, target_system); // System the GCS requests control for
+	put_uint8_t_by_index(msg, 1, control_request); // 0: request control of this MAV, 1: Release control of this MAV
+	put_uint8_t_by_index(msg, 2, version); // 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch.
+	put_char_array_by_index(msg, 3, passkey, 25); // Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 28, 5);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 28, 217);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -78,12 +89,12 @@ static inline void mavlink_msg_change_operator_control_pack_chan_send(mavlink_ch
 {
 	msg->msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System the GCS requests control for
-	put_uint8_t_by_index(control_request, 1,  MAVLINK_PAYLOAD(msg)); // 0: request control of this MAV, 1: Release control of this MAV
-	put_uint8_t_by_index(version, 2,  MAVLINK_PAYLOAD(msg)); // 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch.
-	put_char_array_by_index(passkey, 3, 25,  MAVLINK_PAYLOAD(msg)); // Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
+	put_uint8_t_by_index(msg, 0, target_system); // System the GCS requests control for
+	put_uint8_t_by_index(msg, 1, control_request); // 0: request control of this MAV, 1: Release control of this MAV
+	put_uint8_t_by_index(msg, 2, version); // 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch.
+	put_char_array_by_index(msg, 3, passkey, 25); // Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
 
-	mavlink_finalize_message_chan_send(msg, chan, 28, 5);
+	mavlink_finalize_message_chan_send(msg, chan, 28, 217);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

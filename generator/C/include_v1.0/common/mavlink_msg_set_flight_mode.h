@@ -8,6 +8,15 @@ typedef struct __mavlink_set_flight_mode_t
  uint8_t flight_mode; ///< The new navigation mode
 } mavlink_set_flight_mode_t;
 
+#define MAVLINK_MESSAGE_INFO_SET_FLIGHT_MODE { \
+	"SET_FLIGHT_MODE", \
+	2, \
+	{  { "target", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_set_flight_mode_t, target) }, \
+         { "flight_mode", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_set_flight_mode_t, flight_mode) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a set_flight_mode message
  * @param system_id ID of this system
@@ -23,10 +32,10 @@ static inline uint16_t mavlink_msg_set_flight_mode_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_FLIGHT_MODE;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
-	put_uint8_t_by_index(flight_mode, 1,  MAVLINK_PAYLOAD(msg)); // The new navigation mode
+	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
+	put_uint8_t_by_index(msg, 1, flight_mode); // The new navigation mode
 
-	return mavlink_finalize_message(msg, system_id, component_id, 2, 238);
+	return mavlink_finalize_message(msg, system_id, component_id, 2, 194);
 }
 
 /**
@@ -45,10 +54,10 @@ static inline uint16_t mavlink_msg_set_flight_mode_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_FLIGHT_MODE;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
-	put_uint8_t_by_index(flight_mode, 1,  MAVLINK_PAYLOAD(msg)); // The new navigation mode
+	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
+	put_uint8_t_by_index(msg, 1, flight_mode); // The new navigation mode
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 238);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 194);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -66,10 +75,10 @@ static inline void mavlink_msg_set_flight_mode_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_FLIGHT_MODE;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
-	put_uint8_t_by_index(flight_mode, 1,  MAVLINK_PAYLOAD(msg)); // The new navigation mode
+	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
+	put_uint8_t_by_index(msg, 1, flight_mode); // The new navigation mode
 
-	mavlink_finalize_message_chan_send(msg, chan, 2, 238);
+	mavlink_finalize_message_chan_send(msg, chan, 2, 194);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

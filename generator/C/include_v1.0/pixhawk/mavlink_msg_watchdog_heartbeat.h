@@ -8,6 +8,15 @@ typedef struct __mavlink_watchdog_heartbeat_t
  uint16_t process_count; ///< Number of processes
 } mavlink_watchdog_heartbeat_t;
 
+#define MAVLINK_MESSAGE_INFO_WATCHDOG_HEARTBEAT { \
+	"WATCHDOG_HEARTBEAT", \
+	2, \
+	{  { "watchdog_id", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_watchdog_heartbeat_t, watchdog_id) }, \
+         { "process_count", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_watchdog_heartbeat_t, process_count) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a watchdog_heartbeat message
  * @param system_id ID of this system
@@ -23,10 +32,10 @@ static inline uint16_t mavlink_msg_watchdog_heartbeat_pack(uint8_t system_id, ui
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_HEARTBEAT;
 
-	put_uint16_t_by_index(watchdog_id, 0,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
-	put_uint16_t_by_index(process_count, 2,  MAVLINK_PAYLOAD(msg)); // Number of processes
+	put_uint16_t_by_index(msg, 0, watchdog_id); // Watchdog ID
+	put_uint16_t_by_index(msg, 2, process_count); // Number of processes
 
-	return mavlink_finalize_message(msg, system_id, component_id, 4, 91);
+	return mavlink_finalize_message(msg, system_id, component_id, 4, 153);
 }
 
 /**
@@ -45,10 +54,10 @@ static inline uint16_t mavlink_msg_watchdog_heartbeat_pack_chan(uint8_t system_i
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_HEARTBEAT;
 
-	put_uint16_t_by_index(watchdog_id, 0,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
-	put_uint16_t_by_index(process_count, 2,  MAVLINK_PAYLOAD(msg)); // Number of processes
+	put_uint16_t_by_index(msg, 0, watchdog_id); // Watchdog ID
+	put_uint16_t_by_index(msg, 2, process_count); // Number of processes
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 91);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 153);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -66,10 +75,10 @@ static inline void mavlink_msg_watchdog_heartbeat_pack_chan_send(mavlink_channel
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_HEARTBEAT;
 
-	put_uint16_t_by_index(watchdog_id, 0,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
-	put_uint16_t_by_index(process_count, 2,  MAVLINK_PAYLOAD(msg)); // Number of processes
+	put_uint16_t_by_index(msg, 0, watchdog_id); // Watchdog ID
+	put_uint16_t_by_index(msg, 2, process_count); // Number of processes
 
-	mavlink_finalize_message_chan_send(msg, chan, 4, 91);
+	mavlink_finalize_message_chan_send(msg, chan, 4, 153);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

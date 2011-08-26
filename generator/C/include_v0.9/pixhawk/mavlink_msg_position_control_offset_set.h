@@ -12,6 +12,19 @@ typedef struct __mavlink_position_control_offset_set_t
  float yaw; ///< yaw orientation offset in radians, 0 = NORTH
 } mavlink_position_control_offset_set_t;
 
+#define MAVLINK_MESSAGE_INFO_POSITION_CONTROL_OFFSET_SET { \
+	"POSITION_CONTROL_OFFSET_SET", \
+	6, \
+	{  { "target_system", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_position_control_offset_set_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_position_control_offset_set_t, target_component) }, \
+         { "x", MAVLINK_TYPE_FLOAT, 0, 2, offsetof(mavlink_position_control_offset_set_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 6, offsetof(mavlink_position_control_offset_set_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 10, offsetof(mavlink_position_control_offset_set_t, z) }, \
+         { "yaw", MAVLINK_TYPE_FLOAT, 0, 14, offsetof(mavlink_position_control_offset_set_t, yaw) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a position_control_offset_set message
  * @param system_id ID of this system
@@ -31,14 +44,14 @@ static inline uint16_t mavlink_msg_position_control_offset_set_pack(uint8_t syst
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_CONTROL_OFFSET_SET;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_float_by_index(x, 2,  MAVLINK_PAYLOAD(msg)); // x position offset
-	put_float_by_index(y, 6,  MAVLINK_PAYLOAD(msg)); // y position offset
-	put_float_by_index(z, 10,  MAVLINK_PAYLOAD(msg)); // z position offset
-	put_float_by_index(yaw, 14,  MAVLINK_PAYLOAD(msg)); // yaw orientation offset in radians, 0 = NORTH
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_float_by_index(msg, 2, x); // x position offset
+	put_float_by_index(msg, 6, y); // y position offset
+	put_float_by_index(msg, 10, z); // z position offset
+	put_float_by_index(msg, 14, yaw); // yaw orientation offset in radians, 0 = NORTH
 
-	return mavlink_finalize_message(msg, system_id, component_id, 18, 142);
+	return mavlink_finalize_message(msg, system_id, component_id, 18, 115);
 }
 
 /**
@@ -61,14 +74,14 @@ static inline uint16_t mavlink_msg_position_control_offset_set_pack_chan(uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_CONTROL_OFFSET_SET;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_float_by_index(x, 2,  MAVLINK_PAYLOAD(msg)); // x position offset
-	put_float_by_index(y, 6,  MAVLINK_PAYLOAD(msg)); // y position offset
-	put_float_by_index(z, 10,  MAVLINK_PAYLOAD(msg)); // z position offset
-	put_float_by_index(yaw, 14,  MAVLINK_PAYLOAD(msg)); // yaw orientation offset in radians, 0 = NORTH
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_float_by_index(msg, 2, x); // x position offset
+	put_float_by_index(msg, 6, y); // y position offset
+	put_float_by_index(msg, 10, z); // z position offset
+	put_float_by_index(msg, 14, yaw); // yaw orientation offset in radians, 0 = NORTH
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 142);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 115);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -90,14 +103,14 @@ static inline void mavlink_msg_position_control_offset_set_pack_chan_send(mavlin
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_CONTROL_OFFSET_SET;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_float_by_index(x, 2,  MAVLINK_PAYLOAD(msg)); // x position offset
-	put_float_by_index(y, 6,  MAVLINK_PAYLOAD(msg)); // y position offset
-	put_float_by_index(z, 10,  MAVLINK_PAYLOAD(msg)); // z position offset
-	put_float_by_index(yaw, 14,  MAVLINK_PAYLOAD(msg)); // yaw orientation offset in radians, 0 = NORTH
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_float_by_index(msg, 2, x); // x position offset
+	put_float_by_index(msg, 6, y); // y position offset
+	put_float_by_index(msg, 10, z); // z position offset
+	put_float_by_index(msg, 14, yaw); // yaw orientation offset in radians, 0 = NORTH
 
-	mavlink_finalize_message_chan_send(msg, chan, 18, 142);
+	mavlink_finalize_message_chan_send(msg, chan, 18, 115);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

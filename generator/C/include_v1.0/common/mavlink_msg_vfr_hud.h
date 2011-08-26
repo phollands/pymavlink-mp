@@ -12,6 +12,19 @@ typedef struct __mavlink_vfr_hud_t
  uint16_t throttle; ///< Current throttle setting in integer percent, 0 to 100
 } mavlink_vfr_hud_t;
 
+#define MAVLINK_MESSAGE_INFO_VFR_HUD { \
+	"VFR_HUD", \
+	6, \
+	{  { "airspeed", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_vfr_hud_t, airspeed) }, \
+         { "groundspeed", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_vfr_hud_t, groundspeed) }, \
+         { "alt", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_vfr_hud_t, alt) }, \
+         { "climb", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_vfr_hud_t, climb) }, \
+         { "heading", MAVLINK_TYPE_INT16_T, 0, 16, offsetof(mavlink_vfr_hud_t, heading) }, \
+         { "throttle", MAVLINK_TYPE_UINT16_T, 0, 18, offsetof(mavlink_vfr_hud_t, throttle) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a vfr_hud message
  * @param system_id ID of this system
@@ -31,14 +44,14 @@ static inline uint16_t mavlink_msg_vfr_hud_pack(uint8_t system_id, uint8_t compo
 {
 	msg->msgid = MAVLINK_MSG_ID_VFR_HUD;
 
-	put_float_by_index(airspeed, 0,  MAVLINK_PAYLOAD(msg)); // Current airspeed in m/s
-	put_float_by_index(groundspeed, 4,  MAVLINK_PAYLOAD(msg)); // Current ground speed in m/s
-	put_float_by_index(alt, 8,  MAVLINK_PAYLOAD(msg)); // Current altitude (MSL), in meters
-	put_float_by_index(climb, 12,  MAVLINK_PAYLOAD(msg)); // Current climb rate in meters/second
-	put_int16_t_by_index(heading, 16,  MAVLINK_PAYLOAD(msg)); // Current heading in degrees, in compass units (0..360, 0=north)
-	put_uint16_t_by_index(throttle, 18,  MAVLINK_PAYLOAD(msg)); // Current throttle setting in integer percent, 0 to 100
+	put_float_by_index(msg, 0, airspeed); // Current airspeed in m/s
+	put_float_by_index(msg, 4, groundspeed); // Current ground speed in m/s
+	put_float_by_index(msg, 8, alt); // Current altitude (MSL), in meters
+	put_float_by_index(msg, 12, climb); // Current climb rate in meters/second
+	put_int16_t_by_index(msg, 16, heading); // Current heading in degrees, in compass units (0..360, 0=north)
+	put_uint16_t_by_index(msg, 18, throttle); // Current throttle setting in integer percent, 0 to 100
 
-	return mavlink_finalize_message(msg, system_id, component_id, 20, 242);
+	return mavlink_finalize_message(msg, system_id, component_id, 20, 20);
 }
 
 /**
@@ -61,14 +74,14 @@ static inline uint16_t mavlink_msg_vfr_hud_pack_chan(uint8_t system_id, uint8_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_VFR_HUD;
 
-	put_float_by_index(airspeed, 0,  MAVLINK_PAYLOAD(msg)); // Current airspeed in m/s
-	put_float_by_index(groundspeed, 4,  MAVLINK_PAYLOAD(msg)); // Current ground speed in m/s
-	put_float_by_index(alt, 8,  MAVLINK_PAYLOAD(msg)); // Current altitude (MSL), in meters
-	put_float_by_index(climb, 12,  MAVLINK_PAYLOAD(msg)); // Current climb rate in meters/second
-	put_int16_t_by_index(heading, 16,  MAVLINK_PAYLOAD(msg)); // Current heading in degrees, in compass units (0..360, 0=north)
-	put_uint16_t_by_index(throttle, 18,  MAVLINK_PAYLOAD(msg)); // Current throttle setting in integer percent, 0 to 100
+	put_float_by_index(msg, 0, airspeed); // Current airspeed in m/s
+	put_float_by_index(msg, 4, groundspeed); // Current ground speed in m/s
+	put_float_by_index(msg, 8, alt); // Current altitude (MSL), in meters
+	put_float_by_index(msg, 12, climb); // Current climb rate in meters/second
+	put_int16_t_by_index(msg, 16, heading); // Current heading in degrees, in compass units (0..360, 0=north)
+	put_uint16_t_by_index(msg, 18, throttle); // Current throttle setting in integer percent, 0 to 100
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 242);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 20);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -90,14 +103,14 @@ static inline void mavlink_msg_vfr_hud_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_VFR_HUD;
 
-	put_float_by_index(airspeed, 0,  MAVLINK_PAYLOAD(msg)); // Current airspeed in m/s
-	put_float_by_index(groundspeed, 4,  MAVLINK_PAYLOAD(msg)); // Current ground speed in m/s
-	put_float_by_index(alt, 8,  MAVLINK_PAYLOAD(msg)); // Current altitude (MSL), in meters
-	put_float_by_index(climb, 12,  MAVLINK_PAYLOAD(msg)); // Current climb rate in meters/second
-	put_int16_t_by_index(heading, 16,  MAVLINK_PAYLOAD(msg)); // Current heading in degrees, in compass units (0..360, 0=north)
-	put_uint16_t_by_index(throttle, 18,  MAVLINK_PAYLOAD(msg)); // Current throttle setting in integer percent, 0 to 100
+	put_float_by_index(msg, 0, airspeed); // Current airspeed in m/s
+	put_float_by_index(msg, 4, groundspeed); // Current ground speed in m/s
+	put_float_by_index(msg, 8, alt); // Current altitude (MSL), in meters
+	put_float_by_index(msg, 12, climb); // Current climb rate in meters/second
+	put_int16_t_by_index(msg, 16, heading); // Current heading in degrees, in compass units (0..360, 0=north)
+	put_uint16_t_by_index(msg, 18, throttle); // Current throttle setting in integer percent, 0 to 100
 
-	mavlink_finalize_message_chan_send(msg, chan, 20, 242);
+	mavlink_finalize_message_chan_send(msg, chan, 20, 20);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

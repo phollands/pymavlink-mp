@@ -11,6 +11,26 @@ import mavparse, mavtemplate
 
 t = mavtemplate.MAVTemplate()
 
+def generate_version_h(directory, xml):
+    '''generate version.h'''
+    f = open(os.path.join(directory, "version.h"), mode='w')
+    t.write(f,'''
+/** @file
+ *	@brief MAVLink comm protocol built from ${basename}.xml
+ *	@see http://pixhawk.ethz.ch/software/mavlink
+ */
+#ifndef MAVLINK_VERSION_H
+#define MAVLINK_VERSION_H
+
+#define MAVLINK_BUILD_DATE "${parse_time}"
+#define MAVLINK_WIRE_PROTOCOL_VERSION "${wire_protocol_version}"
+
+#include "mavlink.h"
+
+#endif // MAVLINK_VERSION_H
+''', xml)
+    f.close()
+
 def generate_mavlink_h(directory, xml):
     '''generate mavlink.h'''
     f = open(os.path.join(directory, "mavlink.h"), mode='w')
@@ -18,7 +38,6 @@ def generate_mavlink_h(directory, xml):
 /** @file
  *	@brief MAVLink comm protocol built from ${basename}.xml
  *	@see http://pixhawk.ethz.ch/software/mavlink
- *	Generated on ${parse_time}
  */
 #ifndef MAVLINK_H
 #define MAVLINK_H
@@ -35,6 +54,7 @@ def generate_mavlink_h(directory, xml):
 #define MAVLINK_CRC_EXTRA ${crc_extra_define}
 #endif
 
+#include "version.h"
 #include "${basename}.h"
 
 #endif // MAVLINK_H
@@ -48,7 +68,6 @@ def generate_main_h(directory, xml):
 /** @file
  *	@brief MAVLink comm protocol generated from ${basename}.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on ${parse_time}
  */
 #ifndef ${basename_upper}_H
 #define ${basename_upper}_H
@@ -65,6 +84,10 @@ extern "C" {
 
 #ifndef MAVLINK_MESSAGE_CRCS
 #define MAVLINK_MESSAGE_CRCS {${message_crcs_array}}
+#endif
+
+#ifndef MAVLINK_MESSAGE_INFO
+#define MAVLINK_MESSAGE_INFO {${message_info_array}}
 #endif
 
 #include "../protocol.h"
@@ -123,6 +146,14 @@ ${{ordered_fields: ${type} ${name}${array_suffix}; ///< ${description}
 }}
 } mavlink_${name_lower}_t;
 
+#define MAVLINK_MESSAGE_INFO_${name} { \\
+	"${name}", \\
+	${num_fields}, \\
+	{ ${{ordered_fields: { "${name}", MAVLINK_TYPE_${type_upper}, ${array_length}, ${wire_offset}, offsetof(mavlink_${name_lower}_t, ${name}) }, \\
+        }} } \\
+}
+
+
 /**
  * @brief Pack a ${name_lower} message
  * @param system_id ID of this system
@@ -138,7 +169,7 @@ static inline uint16_t mavlink_msg_${name_lower}_pack(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} MAVLINK_PAYLOAD(msg)); // ${description}
+${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
 }}
 
 	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length}, ${crc_extra});
@@ -160,7 +191,7 @@ static inline uint16_t mavlink_msg_${name_lower}_pack_chan(uint8_t system_id, ui
 {
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} MAVLINK_PAYLOAD(msg)); // ${description}
+${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
 }}
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length}, ${crc_extra});
@@ -181,7 +212,7 @@ static inline void mavlink_msg_${name_lower}_pack_chan_send(mavlink_channel_t ch
 {
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} MAVLINK_PAYLOAD(msg)); // ${description}
+${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
 }}
 
 	mavlink_finalize_message_chan_send(msg, chan, ${wire_length}, ${crc_extra});
@@ -259,7 +290,6 @@ def generate_testsuite_h(directory, xml):
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ${basename}.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on ${parse_time}
  */
 #ifndef ${basename_upper}_TESTSUITE_H
 #define ${basename_upper}_TESTSUITE_H
@@ -366,14 +396,23 @@ def generate_one(basename, xml):
         xml.message_crcs_array += '%u, ' % crc
     xml.message_crcs_array = xml.message_crcs_array[:-2]
 
+    # form message info array
+    xml.message_info_array = ''
+    for name in xml.message_names:
+        if name is not None:
+            xml.message_info_array += 'MAVLINK_MESSAGE_INFO_%s, ' % name
+        else:
+            xml.message_info_array += '{}, '
+    xml.message_info_array = xml.message_info_array[:-2]
+
     # add some extra field attributes for convenience with arrays
     for m in xml.message:
         for f in m.fields:
-            if f.array_length is not None:
+            if f.array_length != 0:
                 f.array_suffix = '[%u]' % f.array_length
                 f.array_prefix = '*'
                 f.array_tag = '_array'
-                f.array_arg = '%u, ' % f.array_length
+                f.array_arg = ', %u' % f.array_length
                 f.array_return_arg = '%s, %u, ' % (f.name, f.array_length)
                 f.array_const = 'const '
                 f.decode_left = ''
@@ -418,6 +457,7 @@ def generate_one(basename, xml):
                 f.putname = f.const_value
 
     generate_mavlink_h(directory, xml)
+    generate_version_h(directory, xml)
     generate_main_h(directory, xml)
     for m in xml.message:
         generate_message_h(directory, m)

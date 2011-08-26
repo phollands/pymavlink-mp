@@ -7,6 +7,14 @@ typedef struct __mavlink_image_trigger_control_t
  uint8_t enable; ///< 0 to disable, 1 to enable
 } mavlink_image_trigger_control_t;
 
+#define MAVLINK_MESSAGE_INFO_IMAGE_TRIGGER_CONTROL { \
+	"IMAGE_TRIGGER_CONTROL", \
+	1, \
+	{  { "enable", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_image_trigger_control_t, enable) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a image_trigger_control message
  * @param system_id ID of this system
@@ -21,9 +29,9 @@ static inline uint16_t mavlink_msg_image_trigger_control_pack(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_IMAGE_TRIGGER_CONTROL;
 
-	put_uint8_t_by_index(enable, 0,  MAVLINK_PAYLOAD(msg)); // 0 to disable, 1 to enable
+	put_uint8_t_by_index(msg, 0, enable); // 0 to disable, 1 to enable
 
-	return mavlink_finalize_message(msg, system_id, component_id, 1, 100);
+	return mavlink_finalize_message(msg, system_id, component_id, 1, 95);
 }
 
 /**
@@ -41,9 +49,9 @@ static inline uint16_t mavlink_msg_image_trigger_control_pack_chan(uint8_t syste
 {
 	msg->msgid = MAVLINK_MSG_ID_IMAGE_TRIGGER_CONTROL;
 
-	put_uint8_t_by_index(enable, 0,  MAVLINK_PAYLOAD(msg)); // 0 to disable, 1 to enable
+	put_uint8_t_by_index(msg, 0, enable); // 0 to disable, 1 to enable
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 1, 100);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 1, 95);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -60,9 +68,9 @@ static inline void mavlink_msg_image_trigger_control_pack_chan_send(mavlink_chan
 {
 	msg->msgid = MAVLINK_MSG_ID_IMAGE_TRIGGER_CONTROL;
 
-	put_uint8_t_by_index(enable, 0,  MAVLINK_PAYLOAD(msg)); // 0 to disable, 1 to enable
+	put_uint8_t_by_index(msg, 0, enable); // 0 to disable, 1 to enable
 
-	mavlink_finalize_message_chan_send(msg, chan, 1, 100);
+	mavlink_finalize_message_chan_send(msg, chan, 1, 95);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

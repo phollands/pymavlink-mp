@@ -11,6 +11,18 @@ typedef struct __mavlink_set_mag_offsets_t
  uint8_t target_component; ///< Component ID
 } mavlink_set_mag_offsets_t;
 
+#define MAVLINK_MESSAGE_INFO_SET_MAG_OFFSETS { \
+	"SET_MAG_OFFSETS", \
+	5, \
+	{  { "mag_ofs_x", MAVLINK_TYPE_INT16_T, 0, 0, offsetof(mavlink_set_mag_offsets_t, mag_ofs_x) }, \
+         { "mag_ofs_y", MAVLINK_TYPE_INT16_T, 0, 2, offsetof(mavlink_set_mag_offsets_t, mag_ofs_y) }, \
+         { "mag_ofs_z", MAVLINK_TYPE_INT16_T, 0, 4, offsetof(mavlink_set_mag_offsets_t, mag_ofs_z) }, \
+         { "target_system", MAVLINK_TYPE_UINT8_T, 0, 6, offsetof(mavlink_set_mag_offsets_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 7, offsetof(mavlink_set_mag_offsets_t, target_component) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a set_mag_offsets message
  * @param system_id ID of this system
@@ -29,13 +41,13 @@ static inline uint16_t mavlink_msg_set_mag_offsets_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
 
-	put_int16_t_by_index(mag_ofs_x, 0,  MAVLINK_PAYLOAD(msg)); // magnetometer X offset
-	put_int16_t_by_index(mag_ofs_y, 2,  MAVLINK_PAYLOAD(msg)); // magnetometer Y offset
-	put_int16_t_by_index(mag_ofs_z, 4,  MAVLINK_PAYLOAD(msg)); // magnetometer Z offset
-	put_uint8_t_by_index(target_system, 6,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 7,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_int16_t_by_index(msg, 0, mag_ofs_x); // magnetometer X offset
+	put_int16_t_by_index(msg, 2, mag_ofs_y); // magnetometer Y offset
+	put_int16_t_by_index(msg, 4, mag_ofs_z); // magnetometer Z offset
+	put_uint8_t_by_index(msg, 6, target_system); // System ID
+	put_uint8_t_by_index(msg, 7, target_component); // Component ID
 
-	return mavlink_finalize_message(msg, system_id, component_id, 8, 253);
+	return mavlink_finalize_message(msg, system_id, component_id, 8, 219);
 }
 
 /**
@@ -57,13 +69,13 @@ static inline uint16_t mavlink_msg_set_mag_offsets_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
 
-	put_int16_t_by_index(mag_ofs_x, 0,  MAVLINK_PAYLOAD(msg)); // magnetometer X offset
-	put_int16_t_by_index(mag_ofs_y, 2,  MAVLINK_PAYLOAD(msg)); // magnetometer Y offset
-	put_int16_t_by_index(mag_ofs_z, 4,  MAVLINK_PAYLOAD(msg)); // magnetometer Z offset
-	put_uint8_t_by_index(target_system, 6,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 7,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_int16_t_by_index(msg, 0, mag_ofs_x); // magnetometer X offset
+	put_int16_t_by_index(msg, 2, mag_ofs_y); // magnetometer Y offset
+	put_int16_t_by_index(msg, 4, mag_ofs_z); // magnetometer Z offset
+	put_uint8_t_by_index(msg, 6, target_system); // System ID
+	put_uint8_t_by_index(msg, 7, target_component); // Component ID
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8, 253);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8, 219);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -84,13 +96,13 @@ static inline void mavlink_msg_set_mag_offsets_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
 
-	put_int16_t_by_index(mag_ofs_x, 0,  MAVLINK_PAYLOAD(msg)); // magnetometer X offset
-	put_int16_t_by_index(mag_ofs_y, 2,  MAVLINK_PAYLOAD(msg)); // magnetometer Y offset
-	put_int16_t_by_index(mag_ofs_z, 4,  MAVLINK_PAYLOAD(msg)); // magnetometer Z offset
-	put_uint8_t_by_index(target_system, 6,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 7,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_int16_t_by_index(msg, 0, mag_ofs_x); // magnetometer X offset
+	put_int16_t_by_index(msg, 2, mag_ofs_y); // magnetometer Y offset
+	put_int16_t_by_index(msg, 4, mag_ofs_z); // magnetometer Z offset
+	put_uint8_t_by_index(msg, 6, target_system); // System ID
+	put_uint8_t_by_index(msg, 7, target_component); // Component ID
 
-	mavlink_finalize_message_chan_send(msg, chan, 8, 253);
+	mavlink_finalize_message_chan_send(msg, chan, 8, 219);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

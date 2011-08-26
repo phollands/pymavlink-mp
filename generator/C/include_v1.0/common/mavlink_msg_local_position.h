@@ -13,6 +13,20 @@ typedef struct __mavlink_local_position_t
  float vz; ///< Z Speed
 } mavlink_local_position_t;
 
+#define MAVLINK_MESSAGE_INFO_LOCAL_POSITION { \
+	"LOCAL_POSITION", \
+	7, \
+	{  { "usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_local_position_t, usec) }, \
+         { "x", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_local_position_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_local_position_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_local_position_t, z) }, \
+         { "vx", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_local_position_t, vx) }, \
+         { "vy", MAVLINK_TYPE_FLOAT, 0, 24, offsetof(mavlink_local_position_t, vy) }, \
+         { "vz", MAVLINK_TYPE_FLOAT, 0, 28, offsetof(mavlink_local_position_t, vz) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a local_position message
  * @param system_id ID of this system
@@ -33,15 +47,15 @@ static inline uint16_t mavlink_msg_local_position_pack(uint8_t system_id, uint8_
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION;
 
-	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // X Position
-	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Y Position
-	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Z Position
-	put_float_by_index(vx, 20,  MAVLINK_PAYLOAD(msg)); // X Speed
-	put_float_by_index(vy, 24,  MAVLINK_PAYLOAD(msg)); // Y Speed
-	put_float_by_index(vz, 28,  MAVLINK_PAYLOAD(msg)); // Z Speed
+	put_uint64_t_by_index(msg, 0, usec); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_float_by_index(msg, 8, x); // X Position
+	put_float_by_index(msg, 12, y); // Y Position
+	put_float_by_index(msg, 16, z); // Z Position
+	put_float_by_index(msg, 20, vx); // X Speed
+	put_float_by_index(msg, 24, vy); // Y Speed
+	put_float_by_index(msg, 28, vz); // Z Speed
 
-	return mavlink_finalize_message(msg, system_id, component_id, 32, 2);
+	return mavlink_finalize_message(msg, system_id, component_id, 32, 126);
 }
 
 /**
@@ -65,15 +79,15 @@ static inline uint16_t mavlink_msg_local_position_pack_chan(uint8_t system_id, u
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION;
 
-	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // X Position
-	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Y Position
-	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Z Position
-	put_float_by_index(vx, 20,  MAVLINK_PAYLOAD(msg)); // X Speed
-	put_float_by_index(vy, 24,  MAVLINK_PAYLOAD(msg)); // Y Speed
-	put_float_by_index(vz, 28,  MAVLINK_PAYLOAD(msg)); // Z Speed
+	put_uint64_t_by_index(msg, 0, usec); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_float_by_index(msg, 8, x); // X Position
+	put_float_by_index(msg, 12, y); // Y Position
+	put_float_by_index(msg, 16, z); // Z Position
+	put_float_by_index(msg, 20, vx); // X Speed
+	put_float_by_index(msg, 24, vy); // Y Speed
+	put_float_by_index(msg, 28, vz); // Z Speed
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 2);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 126);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -96,15 +110,15 @@ static inline void mavlink_msg_local_position_pack_chan_send(mavlink_channel_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION;
 
-	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // X Position
-	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Y Position
-	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Z Position
-	put_float_by_index(vx, 20,  MAVLINK_PAYLOAD(msg)); // X Speed
-	put_float_by_index(vy, 24,  MAVLINK_PAYLOAD(msg)); // Y Speed
-	put_float_by_index(vz, 28,  MAVLINK_PAYLOAD(msg)); // Z Speed
+	put_uint64_t_by_index(msg, 0, usec); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_float_by_index(msg, 8, x); // X Position
+	put_float_by_index(msg, 12, y); // Y Position
+	put_float_by_index(msg, 16, z); // Z Position
+	put_float_by_index(msg, 20, vx); // X Speed
+	put_float_by_index(msg, 24, vy); // Y Speed
+	put_float_by_index(msg, 28, vz); // Z Speed
 
-	mavlink_finalize_message_chan_send(msg, chan, 32, 2);
+	mavlink_finalize_message_chan_send(msg, chan, 32, 126);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

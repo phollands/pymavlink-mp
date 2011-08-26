@@ -14,6 +14,21 @@ typedef struct __mavlink_point_of_interest_t
  char name[26]; ///< POI name
 } mavlink_point_of_interest_t;
 
+#define MAVLINK_MESSAGE_INFO_POINT_OF_INTEREST { \
+	"POINT_OF_INTEREST", \
+	8, \
+	{  { "x", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_point_of_interest_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_point_of_interest_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_point_of_interest_t, z) }, \
+         { "timeout", MAVLINK_TYPE_UINT16_T, 0, 12, offsetof(mavlink_point_of_interest_t, timeout) }, \
+         { "type", MAVLINK_TYPE_UINT8_T, 0, 14, offsetof(mavlink_point_of_interest_t, type) }, \
+         { "color", MAVLINK_TYPE_UINT8_T, 0, 15, offsetof(mavlink_point_of_interest_t, color) }, \
+         { "coordinate_system", MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_point_of_interest_t, coordinate_system) }, \
+         { "name", MAVLINK_TYPE_CHAR, 26, 17, offsetof(mavlink_point_of_interest_t, name) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a point_of_interest message
  * @param system_id ID of this system
@@ -35,16 +50,16 @@ static inline uint16_t mavlink_msg_point_of_interest_pack(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_POINT_OF_INTEREST;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // X Position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // Y Position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // Z Position
-	put_uint16_t_by_index(timeout, 12,  MAVLINK_PAYLOAD(msg)); // 0: no timeout, >1: timeout in seconds
-	put_uint8_t_by_index(type, 14,  MAVLINK_PAYLOAD(msg)); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
-	put_uint8_t_by_index(color, 15,  MAVLINK_PAYLOAD(msg)); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
-	put_uint8_t_by_index(coordinate_system, 16,  MAVLINK_PAYLOAD(msg)); // 0: global, 1:local
-	put_char_array_by_index(name, 17, 26,  MAVLINK_PAYLOAD(msg)); // POI name
+	put_float_by_index(msg, 0, x); // X Position
+	put_float_by_index(msg, 4, y); // Y Position
+	put_float_by_index(msg, 8, z); // Z Position
+	put_uint16_t_by_index(msg, 12, timeout); // 0: no timeout, >1: timeout in seconds
+	put_uint8_t_by_index(msg, 14, type); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
+	put_uint8_t_by_index(msg, 15, color); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
+	put_uint8_t_by_index(msg, 16, coordinate_system); // 0: global, 1:local
+	put_char_array_by_index(msg, 17, name, 26); // POI name
 
-	return mavlink_finalize_message(msg, system_id, component_id, 43, 253);
+	return mavlink_finalize_message(msg, system_id, component_id, 43, 95);
 }
 
 /**
@@ -69,16 +84,16 @@ static inline uint16_t mavlink_msg_point_of_interest_pack_chan(uint8_t system_id
 {
 	msg->msgid = MAVLINK_MSG_ID_POINT_OF_INTEREST;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // X Position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // Y Position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // Z Position
-	put_uint16_t_by_index(timeout, 12,  MAVLINK_PAYLOAD(msg)); // 0: no timeout, >1: timeout in seconds
-	put_uint8_t_by_index(type, 14,  MAVLINK_PAYLOAD(msg)); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
-	put_uint8_t_by_index(color, 15,  MAVLINK_PAYLOAD(msg)); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
-	put_uint8_t_by_index(coordinate_system, 16,  MAVLINK_PAYLOAD(msg)); // 0: global, 1:local
-	put_char_array_by_index(name, 17, 26,  MAVLINK_PAYLOAD(msg)); // POI name
+	put_float_by_index(msg, 0, x); // X Position
+	put_float_by_index(msg, 4, y); // Y Position
+	put_float_by_index(msg, 8, z); // Z Position
+	put_uint16_t_by_index(msg, 12, timeout); // 0: no timeout, >1: timeout in seconds
+	put_uint8_t_by_index(msg, 14, type); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
+	put_uint8_t_by_index(msg, 15, color); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
+	put_uint8_t_by_index(msg, 16, coordinate_system); // 0: global, 1:local
+	put_char_array_by_index(msg, 17, name, 26); // POI name
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 43, 253);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 43, 95);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -102,16 +117,16 @@ static inline void mavlink_msg_point_of_interest_pack_chan_send(mavlink_channel_
 {
 	msg->msgid = MAVLINK_MSG_ID_POINT_OF_INTEREST;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // X Position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // Y Position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // Z Position
-	put_uint16_t_by_index(timeout, 12,  MAVLINK_PAYLOAD(msg)); // 0: no timeout, >1: timeout in seconds
-	put_uint8_t_by_index(type, 14,  MAVLINK_PAYLOAD(msg)); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
-	put_uint8_t_by_index(color, 15,  MAVLINK_PAYLOAD(msg)); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
-	put_uint8_t_by_index(coordinate_system, 16,  MAVLINK_PAYLOAD(msg)); // 0: global, 1:local
-	put_char_array_by_index(name, 17, 26,  MAVLINK_PAYLOAD(msg)); // POI name
+	put_float_by_index(msg, 0, x); // X Position
+	put_float_by_index(msg, 4, y); // Y Position
+	put_float_by_index(msg, 8, z); // Z Position
+	put_uint16_t_by_index(msg, 12, timeout); // 0: no timeout, >1: timeout in seconds
+	put_uint8_t_by_index(msg, 14, type); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
+	put_uint8_t_by_index(msg, 15, color); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
+	put_uint8_t_by_index(msg, 16, coordinate_system); // 0: global, 1:local
+	put_char_array_by_index(msg, 17, name, 26); // POI name
 
-	mavlink_finalize_message_chan_send(msg, chan, 43, 253);
+	mavlink_finalize_message_chan_send(msg, chan, 43, 95);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

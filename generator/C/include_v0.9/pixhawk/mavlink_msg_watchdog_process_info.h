@@ -11,6 +11,18 @@ typedef struct __mavlink_watchdog_process_info_t
  int32_t timeout; ///< Timeout (seconds)
 } mavlink_watchdog_process_info_t;
 
+#define MAVLINK_MESSAGE_INFO_WATCHDOG_PROCESS_INFO { \
+	"WATCHDOG_PROCESS_INFO", \
+	5, \
+	{  { "watchdog_id", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_watchdog_process_info_t, watchdog_id) }, \
+         { "process_id", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_watchdog_process_info_t, process_id) }, \
+         { "name", MAVLINK_TYPE_CHAR, 100, 4, offsetof(mavlink_watchdog_process_info_t, name) }, \
+         { "arguments", MAVLINK_TYPE_CHAR, 147, 104, offsetof(mavlink_watchdog_process_info_t, arguments) }, \
+         { "timeout", MAVLINK_TYPE_INT32_T, 0, 251, offsetof(mavlink_watchdog_process_info_t, timeout) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a watchdog_process_info message
  * @param system_id ID of this system
@@ -29,13 +41,13 @@ static inline uint16_t mavlink_msg_watchdog_process_info_pack(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_PROCESS_INFO;
 
-	put_uint16_t_by_index(watchdog_id, 0,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
-	put_uint16_t_by_index(process_id, 2,  MAVLINK_PAYLOAD(msg)); // Process ID
-	put_char_array_by_index(name, 4, 100,  MAVLINK_PAYLOAD(msg)); // Process name
-	put_char_array_by_index(arguments, 104, 147,  MAVLINK_PAYLOAD(msg)); // Process arguments
-	put_int32_t_by_index(timeout, 251,  MAVLINK_PAYLOAD(msg)); // Timeout (seconds)
+	put_uint16_t_by_index(msg, 0, watchdog_id); // Watchdog ID
+	put_uint16_t_by_index(msg, 2, process_id); // Process ID
+	put_char_array_by_index(msg, 4, name, 100); // Process name
+	put_char_array_by_index(msg, 104, arguments, 147); // Process arguments
+	put_int32_t_by_index(msg, 251, timeout); // Timeout (seconds)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 255, 6);
+	return mavlink_finalize_message(msg, system_id, component_id, 255, 110);
 }
 
 /**
@@ -57,13 +69,13 @@ static inline uint16_t mavlink_msg_watchdog_process_info_pack_chan(uint8_t syste
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_PROCESS_INFO;
 
-	put_uint16_t_by_index(watchdog_id, 0,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
-	put_uint16_t_by_index(process_id, 2,  MAVLINK_PAYLOAD(msg)); // Process ID
-	put_char_array_by_index(name, 4, 100,  MAVLINK_PAYLOAD(msg)); // Process name
-	put_char_array_by_index(arguments, 104, 147,  MAVLINK_PAYLOAD(msg)); // Process arguments
-	put_int32_t_by_index(timeout, 251,  MAVLINK_PAYLOAD(msg)); // Timeout (seconds)
+	put_uint16_t_by_index(msg, 0, watchdog_id); // Watchdog ID
+	put_uint16_t_by_index(msg, 2, process_id); // Process ID
+	put_char_array_by_index(msg, 4, name, 100); // Process name
+	put_char_array_by_index(msg, 104, arguments, 147); // Process arguments
+	put_int32_t_by_index(msg, 251, timeout); // Timeout (seconds)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 255, 6);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 255, 110);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -84,13 +96,13 @@ static inline void mavlink_msg_watchdog_process_info_pack_chan_send(mavlink_chan
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_PROCESS_INFO;
 
-	put_uint16_t_by_index(watchdog_id, 0,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
-	put_uint16_t_by_index(process_id, 2,  MAVLINK_PAYLOAD(msg)); // Process ID
-	put_char_array_by_index(name, 4, 100,  MAVLINK_PAYLOAD(msg)); // Process name
-	put_char_array_by_index(arguments, 104, 147,  MAVLINK_PAYLOAD(msg)); // Process arguments
-	put_int32_t_by_index(timeout, 251,  MAVLINK_PAYLOAD(msg)); // Timeout (seconds)
+	put_uint16_t_by_index(msg, 0, watchdog_id); // Watchdog ID
+	put_uint16_t_by_index(msg, 2, process_id); // Process ID
+	put_char_array_by_index(msg, 4, name, 100); // Process name
+	put_char_array_by_index(msg, 104, arguments, 147); // Process arguments
+	put_int32_t_by_index(msg, 251, timeout); // Timeout (seconds)
 
-	mavlink_finalize_message_chan_send(msg, chan, 255, 6);
+	mavlink_finalize_message_chan_send(msg, chan, 255, 110);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

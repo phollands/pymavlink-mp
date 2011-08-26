@@ -1,7 +1,6 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from pixhawk.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 14:04:05 2011
  */
 #ifndef PIXHAWK_TESTSUITE_H
 #define PIXHAWK_TESTSUITE_H

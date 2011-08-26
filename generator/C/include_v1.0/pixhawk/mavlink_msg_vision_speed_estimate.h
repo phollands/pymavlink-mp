@@ -10,6 +10,17 @@ typedef struct __mavlink_vision_speed_estimate_t
  float z; ///< Global Z speed
 } mavlink_vision_speed_estimate_t;
 
+#define MAVLINK_MESSAGE_INFO_VISION_SPEED_ESTIMATE { \
+	"VISION_SPEED_ESTIMATE", \
+	4, \
+	{  { "usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_vision_speed_estimate_t, usec) }, \
+         { "x", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_vision_speed_estimate_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_vision_speed_estimate_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_vision_speed_estimate_t, z) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a vision_speed_estimate message
  * @param system_id ID of this system
@@ -27,12 +38,12 @@ static inline uint16_t mavlink_msg_vision_speed_estimate_pack(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X speed
-	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y speed
-	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z speed
+	put_uint64_t_by_index(msg, 0, usec); // Timestamp (milliseconds)
+	put_float_by_index(msg, 8, x); // Global X speed
+	put_float_by_index(msg, 12, y); // Global Y speed
+	put_float_by_index(msg, 16, z); // Global Z speed
 
-	return mavlink_finalize_message(msg, system_id, component_id, 20, 45);
+	return mavlink_finalize_message(msg, system_id, component_id, 20, 208);
 }
 
 /**
@@ -53,12 +64,12 @@ static inline uint16_t mavlink_msg_vision_speed_estimate_pack_chan(uint8_t syste
 {
 	msg->msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X speed
-	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y speed
-	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z speed
+	put_uint64_t_by_index(msg, 0, usec); // Timestamp (milliseconds)
+	put_float_by_index(msg, 8, x); // Global X speed
+	put_float_by_index(msg, 12, y); // Global Y speed
+	put_float_by_index(msg, 16, z); // Global Z speed
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 45);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 208);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -78,12 +89,12 @@ static inline void mavlink_msg_vision_speed_estimate_pack_chan_send(mavlink_chan
 {
 	msg->msgid = MAVLINK_MSG_ID_VISION_SPEED_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X speed
-	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y speed
-	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z speed
+	put_uint64_t_by_index(msg, 0, usec); // Timestamp (milliseconds)
+	put_float_by_index(msg, 8, x); // Global X speed
+	put_float_by_index(msg, 12, y); // Global Y speed
+	put_float_by_index(msg, 16, z); // Global Z speed
 
-	mavlink_finalize_message_chan_send(msg, chan, 20, 45);
+	mavlink_finalize_message_chan_send(msg, chan, 20, 208);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

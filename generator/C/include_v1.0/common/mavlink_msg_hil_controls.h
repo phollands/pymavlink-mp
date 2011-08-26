@@ -17,6 +17,24 @@ typedef struct __mavlink_hil_controls_t
  uint8_t nav_mode; ///< Navigation mode (MAV_NAV_MODE)
 } mavlink_hil_controls_t;
 
+#define MAVLINK_MESSAGE_INFO_HIL_CONTROLS { \
+	"HIL_CONTROLS", \
+	11, \
+	{  { "time_us", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_hil_controls_t, time_us) }, \
+         { "roll_ailerons", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_hil_controls_t, roll_ailerons) }, \
+         { "pitch_elevator", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_hil_controls_t, pitch_elevator) }, \
+         { "yaw_rudder", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_hil_controls_t, yaw_rudder) }, \
+         { "throttle", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_hil_controls_t, throttle) }, \
+         { "aux1", MAVLINK_TYPE_FLOAT, 0, 24, offsetof(mavlink_hil_controls_t, aux1) }, \
+         { "aux2", MAVLINK_TYPE_FLOAT, 0, 28, offsetof(mavlink_hil_controls_t, aux2) }, \
+         { "aux3", MAVLINK_TYPE_FLOAT, 0, 32, offsetof(mavlink_hil_controls_t, aux3) }, \
+         { "aux4", MAVLINK_TYPE_FLOAT, 0, 36, offsetof(mavlink_hil_controls_t, aux4) }, \
+         { "mode", MAVLINK_TYPE_UINT8_T, 0, 40, offsetof(mavlink_hil_controls_t, mode) }, \
+         { "nav_mode", MAVLINK_TYPE_UINT8_T, 0, 41, offsetof(mavlink_hil_controls_t, nav_mode) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a hil_controls message
  * @param system_id ID of this system
@@ -41,19 +59,19 @@ static inline uint16_t mavlink_msg_hil_controls_pack(uint8_t system_id, uint8_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
 
-	put_uint64_t_by_index(time_us, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(roll_ailerons, 8,  MAVLINK_PAYLOAD(msg)); // Control output -1 .. 1
-	put_float_by_index(pitch_elevator, 12,  MAVLINK_PAYLOAD(msg)); // Control output -1 .. 1
-	put_float_by_index(yaw_rudder, 16,  MAVLINK_PAYLOAD(msg)); // Control output -1 .. 1
-	put_float_by_index(throttle, 20,  MAVLINK_PAYLOAD(msg)); // Throttle 0 .. 1
-	put_float_by_index(aux1, 24,  MAVLINK_PAYLOAD(msg)); // Aux 1, -1 .. 1
-	put_float_by_index(aux2, 28,  MAVLINK_PAYLOAD(msg)); // Aux 2, -1 .. 1
-	put_float_by_index(aux3, 32,  MAVLINK_PAYLOAD(msg)); // Aux 3, -1 .. 1
-	put_float_by_index(aux4, 36,  MAVLINK_PAYLOAD(msg)); // Aux 4, -1 .. 1
-	put_uint8_t_by_index(mode, 40,  MAVLINK_PAYLOAD(msg)); // System mode (MAV_MODE)
-	put_uint8_t_by_index(nav_mode, 41,  MAVLINK_PAYLOAD(msg)); // Navigation mode (MAV_NAV_MODE)
+	put_uint64_t_by_index(msg, 0, time_us); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_float_by_index(msg, 8, roll_ailerons); // Control output -1 .. 1
+	put_float_by_index(msg, 12, pitch_elevator); // Control output -1 .. 1
+	put_float_by_index(msg, 16, yaw_rudder); // Control output -1 .. 1
+	put_float_by_index(msg, 20, throttle); // Throttle 0 .. 1
+	put_float_by_index(msg, 24, aux1); // Aux 1, -1 .. 1
+	put_float_by_index(msg, 28, aux2); // Aux 2, -1 .. 1
+	put_float_by_index(msg, 32, aux3); // Aux 3, -1 .. 1
+	put_float_by_index(msg, 36, aux4); // Aux 4, -1 .. 1
+	put_uint8_t_by_index(msg, 40, mode); // System mode (MAV_MODE)
+	put_uint8_t_by_index(msg, 41, nav_mode); // Navigation mode (MAV_NAV_MODE)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 42, 76);
+	return mavlink_finalize_message(msg, system_id, component_id, 42, 250);
 }
 
 /**
@@ -81,19 +99,19 @@ static inline uint16_t mavlink_msg_hil_controls_pack_chan(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
 
-	put_uint64_t_by_index(time_us, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(roll_ailerons, 8,  MAVLINK_PAYLOAD(msg)); // Control output -1 .. 1
-	put_float_by_index(pitch_elevator, 12,  MAVLINK_PAYLOAD(msg)); // Control output -1 .. 1
-	put_float_by_index(yaw_rudder, 16,  MAVLINK_PAYLOAD(msg)); // Control output -1 .. 1
-	put_float_by_index(throttle, 20,  MAVLINK_PAYLOAD(msg)); // Throttle 0 .. 1
-	put_float_by_index(aux1, 24,  MAVLINK_PAYLOAD(msg)); // Aux 1, -1 .. 1
-	put_float_by_index(aux2, 28,  MAVLINK_PAYLOAD(msg)); // Aux 2, -1 .. 1
-	put_float_by_index(aux3, 32,  MAVLINK_PAYLOAD(msg)); // Aux 3, -1 .. 1
-	put_float_by_index(aux4, 36,  MAVLINK_PAYLOAD(msg)); // Aux 4, -1 .. 1
-	put_uint8_t_by_index(mode, 40,  MAVLINK_PAYLOAD(msg)); // System mode (MAV_MODE)
-	put_uint8_t_by_index(nav_mode, 41,  MAVLINK_PAYLOAD(msg)); // Navigation mode (MAV_NAV_MODE)
+	put_uint64_t_by_index(msg, 0, time_us); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_float_by_index(msg, 8, roll_ailerons); // Control output -1 .. 1
+	put_float_by_index(msg, 12, pitch_elevator); // Control output -1 .. 1
+	put_float_by_index(msg, 16, yaw_rudder); // Control output -1 .. 1
+	put_float_by_index(msg, 20, throttle); // Throttle 0 .. 1
+	put_float_by_index(msg, 24, aux1); // Aux 1, -1 .. 1
+	put_float_by_index(msg, 28, aux2); // Aux 2, -1 .. 1
+	put_float_by_index(msg, 32, aux3); // Aux 3, -1 .. 1
+	put_float_by_index(msg, 36, aux4); // Aux 4, -1 .. 1
+	put_uint8_t_by_index(msg, 40, mode); // System mode (MAV_MODE)
+	put_uint8_t_by_index(msg, 41, nav_mode); // Navigation mode (MAV_NAV_MODE)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 42, 76);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 42, 250);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -120,19 +138,19 @@ static inline void mavlink_msg_hil_controls_pack_chan_send(mavlink_channel_t cha
 {
 	msg->msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
 
-	put_uint64_t_by_index(time_us, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(roll_ailerons, 8,  MAVLINK_PAYLOAD(msg)); // Control output -1 .. 1
-	put_float_by_index(pitch_elevator, 12,  MAVLINK_PAYLOAD(msg)); // Control output -1 .. 1
-	put_float_by_index(yaw_rudder, 16,  MAVLINK_PAYLOAD(msg)); // Control output -1 .. 1
-	put_float_by_index(throttle, 20,  MAVLINK_PAYLOAD(msg)); // Throttle 0 .. 1
-	put_float_by_index(aux1, 24,  MAVLINK_PAYLOAD(msg)); // Aux 1, -1 .. 1
-	put_float_by_index(aux2, 28,  MAVLINK_PAYLOAD(msg)); // Aux 2, -1 .. 1
-	put_float_by_index(aux3, 32,  MAVLINK_PAYLOAD(msg)); // Aux 3, -1 .. 1
-	put_float_by_index(aux4, 36,  MAVLINK_PAYLOAD(msg)); // Aux 4, -1 .. 1
-	put_uint8_t_by_index(mode, 40,  MAVLINK_PAYLOAD(msg)); // System mode (MAV_MODE)
-	put_uint8_t_by_index(nav_mode, 41,  MAVLINK_PAYLOAD(msg)); // Navigation mode (MAV_NAV_MODE)
+	put_uint64_t_by_index(msg, 0, time_us); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_float_by_index(msg, 8, roll_ailerons); // Control output -1 .. 1
+	put_float_by_index(msg, 12, pitch_elevator); // Control output -1 .. 1
+	put_float_by_index(msg, 16, yaw_rudder); // Control output -1 .. 1
+	put_float_by_index(msg, 20, throttle); // Throttle 0 .. 1
+	put_float_by_index(msg, 24, aux1); // Aux 1, -1 .. 1
+	put_float_by_index(msg, 28, aux2); // Aux 2, -1 .. 1
+	put_float_by_index(msg, 32, aux3); // Aux 3, -1 .. 1
+	put_float_by_index(msg, 36, aux4); // Aux 4, -1 .. 1
+	put_uint8_t_by_index(msg, 40, mode); // System mode (MAV_MODE)
+	put_uint8_t_by_index(msg, 41, nav_mode); // Navigation mode (MAV_NAV_MODE)
 
-	mavlink_finalize_message_chan_send(msg, chan, 42, 76);
+	mavlink_finalize_message_chan_send(msg, chan, 42, 250);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -8,6 +8,15 @@ typedef struct __mavlink_named_value_int_t
  char name[10]; ///< Name of the debug variable
 } mavlink_named_value_int_t;
 
+#define MAVLINK_MESSAGE_INFO_NAMED_VALUE_INT { \
+	"NAMED_VALUE_INT", \
+	2, \
+	{  { "value", MAVLINK_TYPE_INT32_T, 0, 0, offsetof(mavlink_named_value_int_t, value) }, \
+         { "name", MAVLINK_TYPE_CHAR, 10, 4, offsetof(mavlink_named_value_int_t, name) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a named_value_int message
  * @param system_id ID of this system
@@ -23,10 +32,10 @@ static inline uint16_t mavlink_msg_named_value_int_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
 
-	put_int32_t_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // Signed integer value
-	put_char_array_by_index(name, 4, 10,  MAVLINK_PAYLOAD(msg)); // Name of the debug variable
+	put_int32_t_by_index(msg, 0, value); // Signed integer value
+	put_char_array_by_index(msg, 4, name, 10); // Name of the debug variable
 
-	return mavlink_finalize_message(msg, system_id, component_id, 14, 22);
+	return mavlink_finalize_message(msg, system_id, component_id, 14, 63);
 }
 
 /**
@@ -45,10 +54,10 @@ static inline uint16_t mavlink_msg_named_value_int_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
 
-	put_int32_t_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // Signed integer value
-	put_char_array_by_index(name, 4, 10,  MAVLINK_PAYLOAD(msg)); // Name of the debug variable
+	put_int32_t_by_index(msg, 0, value); // Signed integer value
+	put_char_array_by_index(msg, 4, name, 10); // Name of the debug variable
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 22);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 63);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -66,10 +75,10 @@ static inline void mavlink_msg_named_value_int_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
 
-	put_int32_t_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // Signed integer value
-	put_char_array_by_index(name, 4, 10,  MAVLINK_PAYLOAD(msg)); // Name of the debug variable
+	put_int32_t_by_index(msg, 0, value); // Signed integer value
+	put_char_array_by_index(msg, 4, name, 10); // Name of the debug variable
 
-	mavlink_finalize_message_chan_send(msg, chan, 14, 22);
+	mavlink_finalize_message_chan_send(msg, chan, 14, 63);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -13,6 +13,20 @@ typedef struct __mavlink_vision_position_estimate_t
  float yaw; ///< Yaw angle in rad
 } mavlink_vision_position_estimate_t;
 
+#define MAVLINK_MESSAGE_INFO_VISION_POSITION_ESTIMATE { \
+	"VISION_POSITION_ESTIMATE", \
+	7, \
+	{  { "usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_vision_position_estimate_t, usec) }, \
+         { "x", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_vision_position_estimate_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_vision_position_estimate_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_vision_position_estimate_t, z) }, \
+         { "roll", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_vision_position_estimate_t, roll) }, \
+         { "pitch", MAVLINK_TYPE_FLOAT, 0, 24, offsetof(mavlink_vision_position_estimate_t, pitch) }, \
+         { "yaw", MAVLINK_TYPE_FLOAT, 0, 28, offsetof(mavlink_vision_position_estimate_t, yaw) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a vision_position_estimate message
  * @param system_id ID of this system
@@ -33,15 +47,15 @@ static inline uint16_t mavlink_msg_vision_position_estimate_pack(uint8_t system_
 {
 	msg->msgid = MAVLINK_MSG_ID_VISION_POSITION_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X position
-	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y position
-	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z position
-	put_float_by_index(roll, 20,  MAVLINK_PAYLOAD(msg)); // Roll angle in rad
-	put_float_by_index(pitch, 24,  MAVLINK_PAYLOAD(msg)); // Pitch angle in rad
-	put_float_by_index(yaw, 28,  MAVLINK_PAYLOAD(msg)); // Yaw angle in rad
+	put_uint64_t_by_index(msg, 0, usec); // Timestamp (milliseconds)
+	put_float_by_index(msg, 8, x); // Global X position
+	put_float_by_index(msg, 12, y); // Global Y position
+	put_float_by_index(msg, 16, z); // Global Z position
+	put_float_by_index(msg, 20, roll); // Roll angle in rad
+	put_float_by_index(msg, 24, pitch); // Pitch angle in rad
+	put_float_by_index(msg, 28, yaw); // Yaw angle in rad
 
-	return mavlink_finalize_message(msg, system_id, component_id, 32, 36);
+	return mavlink_finalize_message(msg, system_id, component_id, 32, 158);
 }
 
 /**
@@ -65,15 +79,15 @@ static inline uint16_t mavlink_msg_vision_position_estimate_pack_chan(uint8_t sy
 {
 	msg->msgid = MAVLINK_MSG_ID_VISION_POSITION_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X position
-	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y position
-	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z position
-	put_float_by_index(roll, 20,  MAVLINK_PAYLOAD(msg)); // Roll angle in rad
-	put_float_by_index(pitch, 24,  MAVLINK_PAYLOAD(msg)); // Pitch angle in rad
-	put_float_by_index(yaw, 28,  MAVLINK_PAYLOAD(msg)); // Yaw angle in rad
+	put_uint64_t_by_index(msg, 0, usec); // Timestamp (milliseconds)
+	put_float_by_index(msg, 8, x); // Global X position
+	put_float_by_index(msg, 12, y); // Global Y position
+	put_float_by_index(msg, 16, z); // Global Z position
+	put_float_by_index(msg, 20, roll); // Roll angle in rad
+	put_float_by_index(msg, 24, pitch); // Pitch angle in rad
+	put_float_by_index(msg, 28, yaw); // Yaw angle in rad
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 36);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 158);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -96,15 +110,15 @@ static inline void mavlink_msg_vision_position_estimate_pack_chan_send(mavlink_c
 {
 	msg->msgid = MAVLINK_MSG_ID_VISION_POSITION_ESTIMATE;
 
-	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (milliseconds)
-	put_float_by_index(x, 8,  MAVLINK_PAYLOAD(msg)); // Global X position
-	put_float_by_index(y, 12,  MAVLINK_PAYLOAD(msg)); // Global Y position
-	put_float_by_index(z, 16,  MAVLINK_PAYLOAD(msg)); // Global Z position
-	put_float_by_index(roll, 20,  MAVLINK_PAYLOAD(msg)); // Roll angle in rad
-	put_float_by_index(pitch, 24,  MAVLINK_PAYLOAD(msg)); // Pitch angle in rad
-	put_float_by_index(yaw, 28,  MAVLINK_PAYLOAD(msg)); // Yaw angle in rad
+	put_uint64_t_by_index(msg, 0, usec); // Timestamp (milliseconds)
+	put_float_by_index(msg, 8, x); // Global X position
+	put_float_by_index(msg, 12, y); // Global Y position
+	put_float_by_index(msg, 16, z); // Global Z position
+	put_float_by_index(msg, 20, roll); // Roll angle in rad
+	put_float_by_index(msg, 24, pitch); // Pitch angle in rad
+	put_float_by_index(msg, 28, yaw); // Yaw angle in rad
 
-	mavlink_finalize_message_chan_send(msg, chan, 32, 36);
+	mavlink_finalize_message_chan_send(msg, chan, 32, 158);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

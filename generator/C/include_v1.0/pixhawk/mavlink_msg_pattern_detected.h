@@ -10,6 +10,17 @@ typedef struct __mavlink_pattern_detected_t
  uint8_t detected; ///< Accepted as true detection, 0 no, 1 yes
 } mavlink_pattern_detected_t;
 
+#define MAVLINK_MESSAGE_INFO_PATTERN_DETECTED { \
+	"PATTERN_DETECTED", \
+	4, \
+	{  { "confidence", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_pattern_detected_t, confidence) }, \
+         { "type", MAVLINK_TYPE_UINT8_T, 0, 4, offsetof(mavlink_pattern_detected_t, type) }, \
+         { "file", MAVLINK_TYPE_CHAR, 100, 5, offsetof(mavlink_pattern_detected_t, file) }, \
+         { "detected", MAVLINK_TYPE_UINT8_T, 0, 105, offsetof(mavlink_pattern_detected_t, detected) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a pattern_detected message
  * @param system_id ID of this system
@@ -27,12 +38,12 @@ static inline uint16_t mavlink_msg_pattern_detected_pack(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_PATTERN_DETECTED;
 
-	put_float_by_index(confidence, 0,  MAVLINK_PAYLOAD(msg)); // Confidence of detection
-	put_uint8_t_by_index(type, 4,  MAVLINK_PAYLOAD(msg)); // 0: Pattern, 1: Letter
-	put_char_array_by_index(file, 5, 100,  MAVLINK_PAYLOAD(msg)); // Pattern file name
-	put_uint8_t_by_index(detected, 105,  MAVLINK_PAYLOAD(msg)); // Accepted as true detection, 0 no, 1 yes
+	put_float_by_index(msg, 0, confidence); // Confidence of detection
+	put_uint8_t_by_index(msg, 4, type); // 0: Pattern, 1: Letter
+	put_char_array_by_index(msg, 5, file, 100); // Pattern file name
+	put_uint8_t_by_index(msg, 105, detected); // Accepted as true detection, 0 no, 1 yes
 
-	return mavlink_finalize_message(msg, system_id, component_id, 106, 4);
+	return mavlink_finalize_message(msg, system_id, component_id, 106, 90);
 }
 
 /**
@@ -53,12 +64,12 @@ static inline uint16_t mavlink_msg_pattern_detected_pack_chan(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_PATTERN_DETECTED;
 
-	put_float_by_index(confidence, 0,  MAVLINK_PAYLOAD(msg)); // Confidence of detection
-	put_uint8_t_by_index(type, 4,  MAVLINK_PAYLOAD(msg)); // 0: Pattern, 1: Letter
-	put_char_array_by_index(file, 5, 100,  MAVLINK_PAYLOAD(msg)); // Pattern file name
-	put_uint8_t_by_index(detected, 105,  MAVLINK_PAYLOAD(msg)); // Accepted as true detection, 0 no, 1 yes
+	put_float_by_index(msg, 0, confidence); // Confidence of detection
+	put_uint8_t_by_index(msg, 4, type); // 0: Pattern, 1: Letter
+	put_char_array_by_index(msg, 5, file, 100); // Pattern file name
+	put_uint8_t_by_index(msg, 105, detected); // Accepted as true detection, 0 no, 1 yes
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 106, 4);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 106, 90);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -78,12 +89,12 @@ static inline void mavlink_msg_pattern_detected_pack_chan_send(mavlink_channel_t
 {
 	msg->msgid = MAVLINK_MSG_ID_PATTERN_DETECTED;
 
-	put_float_by_index(confidence, 0,  MAVLINK_PAYLOAD(msg)); // Confidence of detection
-	put_uint8_t_by_index(type, 4,  MAVLINK_PAYLOAD(msg)); // 0: Pattern, 1: Letter
-	put_char_array_by_index(file, 5, 100,  MAVLINK_PAYLOAD(msg)); // Pattern file name
-	put_uint8_t_by_index(detected, 105,  MAVLINK_PAYLOAD(msg)); // Accepted as true detection, 0 no, 1 yes
+	put_float_by_index(msg, 0, confidence); // Confidence of detection
+	put_uint8_t_by_index(msg, 4, type); // 0: Pattern, 1: Letter
+	put_char_array_by_index(msg, 5, file, 100); // Pattern file name
+	put_uint8_t_by_index(msg, 105, detected); // Accepted as true detection, 0 no, 1 yes
 
-	mavlink_finalize_message_chan_send(msg, chan, 106, 4);
+	mavlink_finalize_message_chan_send(msg, chan, 106, 90);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

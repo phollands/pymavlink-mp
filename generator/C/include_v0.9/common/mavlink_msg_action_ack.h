@@ -8,6 +8,15 @@ typedef struct __mavlink_action_ack_t
  uint8_t result; ///< 0: Action DENIED, 1: Action executed
 } mavlink_action_ack_t;
 
+#define MAVLINK_MESSAGE_INFO_ACTION_ACK { \
+	"ACTION_ACK", \
+	2, \
+	{  { "action", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_action_ack_t, action) }, \
+         { "result", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_action_ack_t, result) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a action_ack message
  * @param system_id ID of this system
@@ -23,10 +32,10 @@ static inline uint16_t mavlink_msg_action_ack_pack(uint8_t system_id, uint8_t co
 {
 	msg->msgid = MAVLINK_MSG_ID_ACTION_ACK;
 
-	put_uint8_t_by_index(action, 0,  MAVLINK_PAYLOAD(msg)); // The action id
-	put_uint8_t_by_index(result, 1,  MAVLINK_PAYLOAD(msg)); // 0: Action DENIED, 1: Action executed
+	put_uint8_t_by_index(msg, 0, action); // The action id
+	put_uint8_t_by_index(msg, 1, result); // 0: Action DENIED, 1: Action executed
 
-	return mavlink_finalize_message(msg, system_id, component_id, 2, 8);
+	return mavlink_finalize_message(msg, system_id, component_id, 2, 219);
 }
 
 /**
@@ -45,10 +54,10 @@ static inline uint16_t mavlink_msg_action_ack_pack_chan(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_ACTION_ACK;
 
-	put_uint8_t_by_index(action, 0,  MAVLINK_PAYLOAD(msg)); // The action id
-	put_uint8_t_by_index(result, 1,  MAVLINK_PAYLOAD(msg)); // 0: Action DENIED, 1: Action executed
+	put_uint8_t_by_index(msg, 0, action); // The action id
+	put_uint8_t_by_index(msg, 1, result); // 0: Action DENIED, 1: Action executed
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 8);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 219);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -66,10 +75,10 @@ static inline void mavlink_msg_action_ack_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_ACTION_ACK;
 
-	put_uint8_t_by_index(action, 0,  MAVLINK_PAYLOAD(msg)); // The action id
-	put_uint8_t_by_index(result, 1,  MAVLINK_PAYLOAD(msg)); // 0: Action DENIED, 1: Action executed
+	put_uint8_t_by_index(msg, 0, action); // The action id
+	put_uint8_t_by_index(msg, 1, result); // 0: Action DENIED, 1: Action executed
 
-	mavlink_finalize_message_chan_send(msg, chan, 2, 8);
+	mavlink_finalize_message_chan_send(msg, chan, 2, 219);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

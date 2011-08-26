@@ -11,6 +11,18 @@ typedef struct __mavlink_request_data_stream_t
  uint8_t start_stop; ///< 1 to start sending, 0 to stop sending.
 } mavlink_request_data_stream_t;
 
+#define MAVLINK_MESSAGE_INFO_REQUEST_DATA_STREAM { \
+	"REQUEST_DATA_STREAM", \
+	5, \
+	{  { "target_system", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_request_data_stream_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_request_data_stream_t, target_component) }, \
+         { "req_stream_id", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_request_data_stream_t, req_stream_id) }, \
+         { "req_message_rate", MAVLINK_TYPE_UINT16_T, 0, 3, offsetof(mavlink_request_data_stream_t, req_message_rate) }, \
+         { "start_stop", MAVLINK_TYPE_UINT8_T, 0, 5, offsetof(mavlink_request_data_stream_t, start_stop) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a request_data_stream message
  * @param system_id ID of this system
@@ -29,13 +41,13 @@ static inline uint16_t mavlink_msg_request_data_stream_pack(uint8_t system_id, u
 {
 	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(req_stream_id, 2,  MAVLINK_PAYLOAD(msg)); // The ID of the requested message type
-	put_uint16_t_by_index(req_message_rate, 3,  MAVLINK_PAYLOAD(msg)); // Update rate in Hertz
-	put_uint8_t_by_index(start_stop, 5,  MAVLINK_PAYLOAD(msg)); // 1 to start sending, 0 to stop sending.
+	put_uint8_t_by_index(msg, 0, target_system); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 1, target_component); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 2, req_stream_id); // The ID of the requested message type
+	put_uint16_t_by_index(msg, 3, req_message_rate); // Update rate in Hertz
+	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
 
-	return mavlink_finalize_message(msg, system_id, component_id, 6, 95);
+	return mavlink_finalize_message(msg, system_id, component_id, 6, 193);
 }
 
 /**
@@ -57,13 +69,13 @@ static inline uint16_t mavlink_msg_request_data_stream_pack_chan(uint8_t system_
 {
 	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(req_stream_id, 2,  MAVLINK_PAYLOAD(msg)); // The ID of the requested message type
-	put_uint16_t_by_index(req_message_rate, 3,  MAVLINK_PAYLOAD(msg)); // Update rate in Hertz
-	put_uint8_t_by_index(start_stop, 5,  MAVLINK_PAYLOAD(msg)); // 1 to start sending, 0 to stop sending.
+	put_uint8_t_by_index(msg, 0, target_system); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 1, target_component); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 2, req_stream_id); // The ID of the requested message type
+	put_uint16_t_by_index(msg, 3, req_message_rate); // Update rate in Hertz
+	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6, 95);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6, 193);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -84,13 +96,13 @@ static inline void mavlink_msg_request_data_stream_pack_chan_send(mavlink_channe
 {
 	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(req_stream_id, 2,  MAVLINK_PAYLOAD(msg)); // The ID of the requested message type
-	put_uint16_t_by_index(req_message_rate, 3,  MAVLINK_PAYLOAD(msg)); // Update rate in Hertz
-	put_uint8_t_by_index(start_stop, 5,  MAVLINK_PAYLOAD(msg)); // 1 to start sending, 0 to stop sending.
+	put_uint8_t_by_index(msg, 0, target_system); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 1, target_component); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 2, req_stream_id); // The ID of the requested message type
+	put_uint16_t_by_index(msg, 3, req_message_rate); // Update rate in Hertz
+	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
 
-	mavlink_finalize_message_chan_send(msg, chan, 6, 95);
+	mavlink_finalize_message_chan_send(msg, chan, 6, 193);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

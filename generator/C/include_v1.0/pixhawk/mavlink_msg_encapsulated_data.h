@@ -8,6 +8,15 @@ typedef struct __mavlink_encapsulated_data_t
  uint8_t data[253]; ///< image data bytes
 } mavlink_encapsulated_data_t;
 
+#define MAVLINK_MESSAGE_INFO_ENCAPSULATED_DATA { \
+	"ENCAPSULATED_DATA", \
+	2, \
+	{  { "seqnr", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_encapsulated_data_t, seqnr) }, \
+         { "data", MAVLINK_TYPE_UINT8_T, 253, 2, offsetof(mavlink_encapsulated_data_t, data) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a encapsulated_data message
  * @param system_id ID of this system
@@ -23,10 +32,10 @@ static inline uint16_t mavlink_msg_encapsulated_data_pack(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
 
-	put_uint16_t_by_index(seqnr, 0,  MAVLINK_PAYLOAD(msg)); // sequence number (starting with 0 on every transmission)
-	put_uint8_t_array_by_index(data, 2, 253,  MAVLINK_PAYLOAD(msg)); // image data bytes
+	put_uint16_t_by_index(msg, 0, seqnr); // sequence number (starting with 0 on every transmission)
+	put_uint8_t_array_by_index(msg, 2, data, 253); // image data bytes
 
-	return mavlink_finalize_message(msg, system_id, component_id, 255, 184);
+	return mavlink_finalize_message(msg, system_id, component_id, 255, 223);
 }
 
 /**
@@ -45,10 +54,10 @@ static inline uint16_t mavlink_msg_encapsulated_data_pack_chan(uint8_t system_id
 {
 	msg->msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
 
-	put_uint16_t_by_index(seqnr, 0,  MAVLINK_PAYLOAD(msg)); // sequence number (starting with 0 on every transmission)
-	put_uint8_t_array_by_index(data, 2, 253,  MAVLINK_PAYLOAD(msg)); // image data bytes
+	put_uint16_t_by_index(msg, 0, seqnr); // sequence number (starting with 0 on every transmission)
+	put_uint8_t_array_by_index(msg, 2, data, 253); // image data bytes
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 255, 184);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 255, 223);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -66,10 +75,10 @@ static inline void mavlink_msg_encapsulated_data_pack_chan_send(mavlink_channel_
 {
 	msg->msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
 
-	put_uint16_t_by_index(seqnr, 0,  MAVLINK_PAYLOAD(msg)); // sequence number (starting with 0 on every transmission)
-	put_uint8_t_array_by_index(data, 2, 253,  MAVLINK_PAYLOAD(msg)); // image data bytes
+	put_uint16_t_by_index(msg, 0, seqnr); // sequence number (starting with 0 on every transmission)
+	put_uint8_t_array_by_index(msg, 2, data, 253); // image data bytes
 
-	mavlink_finalize_message_chan_send(msg, chan, 255, 184);
+	mavlink_finalize_message_chan_send(msg, chan, 255, 223);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

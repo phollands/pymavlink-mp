@@ -14,6 +14,21 @@ typedef struct __mavlink_servo_output_raw_t
  uint16_t servo8_raw; ///< Servo output 8 value, in microseconds
 } mavlink_servo_output_raw_t;
 
+#define MAVLINK_MESSAGE_INFO_SERVO_OUTPUT_RAW { \
+	"SERVO_OUTPUT_RAW", \
+	8, \
+	{  { "servo1_raw", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_servo_output_raw_t, servo1_raw) }, \
+         { "servo2_raw", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_servo_output_raw_t, servo2_raw) }, \
+         { "servo3_raw", MAVLINK_TYPE_UINT16_T, 0, 4, offsetof(mavlink_servo_output_raw_t, servo3_raw) }, \
+         { "servo4_raw", MAVLINK_TYPE_UINT16_T, 0, 6, offsetof(mavlink_servo_output_raw_t, servo4_raw) }, \
+         { "servo5_raw", MAVLINK_TYPE_UINT16_T, 0, 8, offsetof(mavlink_servo_output_raw_t, servo5_raw) }, \
+         { "servo6_raw", MAVLINK_TYPE_UINT16_T, 0, 10, offsetof(mavlink_servo_output_raw_t, servo6_raw) }, \
+         { "servo7_raw", MAVLINK_TYPE_UINT16_T, 0, 12, offsetof(mavlink_servo_output_raw_t, servo7_raw) }, \
+         { "servo8_raw", MAVLINK_TYPE_UINT16_T, 0, 14, offsetof(mavlink_servo_output_raw_t, servo8_raw) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a servo_output_raw message
  * @param system_id ID of this system
@@ -35,16 +50,16 @@ static inline uint16_t mavlink_msg_servo_output_raw_pack(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_SERVO_OUTPUT_RAW;
 
-	put_uint16_t_by_index(servo1_raw, 0,  MAVLINK_PAYLOAD(msg)); // Servo output 1 value, in microseconds
-	put_uint16_t_by_index(servo2_raw, 2,  MAVLINK_PAYLOAD(msg)); // Servo output 2 value, in microseconds
-	put_uint16_t_by_index(servo3_raw, 4,  MAVLINK_PAYLOAD(msg)); // Servo output 3 value, in microseconds
-	put_uint16_t_by_index(servo4_raw, 6,  MAVLINK_PAYLOAD(msg)); // Servo output 4 value, in microseconds
-	put_uint16_t_by_index(servo5_raw, 8,  MAVLINK_PAYLOAD(msg)); // Servo output 5 value, in microseconds
-	put_uint16_t_by_index(servo6_raw, 10,  MAVLINK_PAYLOAD(msg)); // Servo output 6 value, in microseconds
-	put_uint16_t_by_index(servo7_raw, 12,  MAVLINK_PAYLOAD(msg)); // Servo output 7 value, in microseconds
-	put_uint16_t_by_index(servo8_raw, 14,  MAVLINK_PAYLOAD(msg)); // Servo output 8 value, in microseconds
+	put_uint16_t_by_index(msg, 0, servo1_raw); // Servo output 1 value, in microseconds
+	put_uint16_t_by_index(msg, 2, servo2_raw); // Servo output 2 value, in microseconds
+	put_uint16_t_by_index(msg, 4, servo3_raw); // Servo output 3 value, in microseconds
+	put_uint16_t_by_index(msg, 6, servo4_raw); // Servo output 4 value, in microseconds
+	put_uint16_t_by_index(msg, 8, servo5_raw); // Servo output 5 value, in microseconds
+	put_uint16_t_by_index(msg, 10, servo6_raw); // Servo output 6 value, in microseconds
+	put_uint16_t_by_index(msg, 12, servo7_raw); // Servo output 7 value, in microseconds
+	put_uint16_t_by_index(msg, 14, servo8_raw); // Servo output 8 value, in microseconds
 
-	return mavlink_finalize_message(msg, system_id, component_id, 16, 223);
+	return mavlink_finalize_message(msg, system_id, component_id, 16, 215);
 }
 
 /**
@@ -69,16 +84,16 @@ static inline uint16_t mavlink_msg_servo_output_raw_pack_chan(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_SERVO_OUTPUT_RAW;
 
-	put_uint16_t_by_index(servo1_raw, 0,  MAVLINK_PAYLOAD(msg)); // Servo output 1 value, in microseconds
-	put_uint16_t_by_index(servo2_raw, 2,  MAVLINK_PAYLOAD(msg)); // Servo output 2 value, in microseconds
-	put_uint16_t_by_index(servo3_raw, 4,  MAVLINK_PAYLOAD(msg)); // Servo output 3 value, in microseconds
-	put_uint16_t_by_index(servo4_raw, 6,  MAVLINK_PAYLOAD(msg)); // Servo output 4 value, in microseconds
-	put_uint16_t_by_index(servo5_raw, 8,  MAVLINK_PAYLOAD(msg)); // Servo output 5 value, in microseconds
-	put_uint16_t_by_index(servo6_raw, 10,  MAVLINK_PAYLOAD(msg)); // Servo output 6 value, in microseconds
-	put_uint16_t_by_index(servo7_raw, 12,  MAVLINK_PAYLOAD(msg)); // Servo output 7 value, in microseconds
-	put_uint16_t_by_index(servo8_raw, 14,  MAVLINK_PAYLOAD(msg)); // Servo output 8 value, in microseconds
+	put_uint16_t_by_index(msg, 0, servo1_raw); // Servo output 1 value, in microseconds
+	put_uint16_t_by_index(msg, 2, servo2_raw); // Servo output 2 value, in microseconds
+	put_uint16_t_by_index(msg, 4, servo3_raw); // Servo output 3 value, in microseconds
+	put_uint16_t_by_index(msg, 6, servo4_raw); // Servo output 4 value, in microseconds
+	put_uint16_t_by_index(msg, 8, servo5_raw); // Servo output 5 value, in microseconds
+	put_uint16_t_by_index(msg, 10, servo6_raw); // Servo output 6 value, in microseconds
+	put_uint16_t_by_index(msg, 12, servo7_raw); // Servo output 7 value, in microseconds
+	put_uint16_t_by_index(msg, 14, servo8_raw); // Servo output 8 value, in microseconds
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16, 223);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16, 215);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -102,16 +117,16 @@ static inline void mavlink_msg_servo_output_raw_pack_chan_send(mavlink_channel_t
 {
 	msg->msgid = MAVLINK_MSG_ID_SERVO_OUTPUT_RAW;
 
-	put_uint16_t_by_index(servo1_raw, 0,  MAVLINK_PAYLOAD(msg)); // Servo output 1 value, in microseconds
-	put_uint16_t_by_index(servo2_raw, 2,  MAVLINK_PAYLOAD(msg)); // Servo output 2 value, in microseconds
-	put_uint16_t_by_index(servo3_raw, 4,  MAVLINK_PAYLOAD(msg)); // Servo output 3 value, in microseconds
-	put_uint16_t_by_index(servo4_raw, 6,  MAVLINK_PAYLOAD(msg)); // Servo output 4 value, in microseconds
-	put_uint16_t_by_index(servo5_raw, 8,  MAVLINK_PAYLOAD(msg)); // Servo output 5 value, in microseconds
-	put_uint16_t_by_index(servo6_raw, 10,  MAVLINK_PAYLOAD(msg)); // Servo output 6 value, in microseconds
-	put_uint16_t_by_index(servo7_raw, 12,  MAVLINK_PAYLOAD(msg)); // Servo output 7 value, in microseconds
-	put_uint16_t_by_index(servo8_raw, 14,  MAVLINK_PAYLOAD(msg)); // Servo output 8 value, in microseconds
+	put_uint16_t_by_index(msg, 0, servo1_raw); // Servo output 1 value, in microseconds
+	put_uint16_t_by_index(msg, 2, servo2_raw); // Servo output 2 value, in microseconds
+	put_uint16_t_by_index(msg, 4, servo3_raw); // Servo output 3 value, in microseconds
+	put_uint16_t_by_index(msg, 6, servo4_raw); // Servo output 4 value, in microseconds
+	put_uint16_t_by_index(msg, 8, servo5_raw); // Servo output 5 value, in microseconds
+	put_uint16_t_by_index(msg, 10, servo6_raw); // Servo output 6 value, in microseconds
+	put_uint16_t_by_index(msg, 12, servo7_raw); // Servo output 7 value, in microseconds
+	put_uint16_t_by_index(msg, 14, servo8_raw); // Servo output 8 value, in microseconds
 
-	mavlink_finalize_message_chan_send(msg, chan, 16, 223);
+	mavlink_finalize_message_chan_send(msg, chan, 16, 215);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

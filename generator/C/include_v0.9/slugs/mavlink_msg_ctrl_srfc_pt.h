@@ -8,6 +8,15 @@ typedef struct __mavlink_ctrl_srfc_pt_t
  uint16_t bitfieldPt; ///< Bitfield containing the PT configuration
 } mavlink_ctrl_srfc_pt_t;
 
+#define MAVLINK_MESSAGE_INFO_CTRL_SRFC_PT { \
+	"CTRL_SRFC_PT", \
+	2, \
+	{  { "target", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_ctrl_srfc_pt_t, target) }, \
+         { "bitfieldPt", MAVLINK_TYPE_UINT16_T, 0, 1, offsetof(mavlink_ctrl_srfc_pt_t, bitfieldPt) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a ctrl_srfc_pt message
  * @param system_id ID of this system
@@ -23,10 +32,10 @@ static inline uint16_t mavlink_msg_ctrl_srfc_pt_pack(uint8_t system_id, uint8_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_CTRL_SRFC_PT;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the commands
-	put_uint16_t_by_index(bitfieldPt, 1,  MAVLINK_PAYLOAD(msg)); // Bitfield containing the PT configuration
+	put_uint8_t_by_index(msg, 0, target); // The system setting the commands
+	put_uint16_t_by_index(msg, 1, bitfieldPt); // Bitfield containing the PT configuration
 
-	return mavlink_finalize_message(msg, system_id, component_id, 3, 142);
+	return mavlink_finalize_message(msg, system_id, component_id, 3, 52);
 }
 
 /**
@@ -45,10 +54,10 @@ static inline uint16_t mavlink_msg_ctrl_srfc_pt_pack_chan(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_CTRL_SRFC_PT;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the commands
-	put_uint16_t_by_index(bitfieldPt, 1,  MAVLINK_PAYLOAD(msg)); // Bitfield containing the PT configuration
+	put_uint8_t_by_index(msg, 0, target); // The system setting the commands
+	put_uint16_t_by_index(msg, 1, bitfieldPt); // Bitfield containing the PT configuration
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 142);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 52);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -66,10 +75,10 @@ static inline void mavlink_msg_ctrl_srfc_pt_pack_chan_send(mavlink_channel_t cha
 {
 	msg->msgid = MAVLINK_MSG_ID_CTRL_SRFC_PT;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the commands
-	put_uint16_t_by_index(bitfieldPt, 1,  MAVLINK_PAYLOAD(msg)); // Bitfield containing the PT configuration
+	put_uint8_t_by_index(msg, 0, target); // The system setting the commands
+	put_uint16_t_by_index(msg, 1, bitfieldPt); // Bitfield containing the PT configuration
 
-	mavlink_finalize_message_chan_send(msg, chan, 3, 142);
+	mavlink_finalize_message_chan_send(msg, chan, 3, 52);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

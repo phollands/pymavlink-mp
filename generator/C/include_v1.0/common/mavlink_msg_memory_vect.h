@@ -10,6 +10,17 @@ typedef struct __mavlink_memory_vect_t
  int8_t value[32]; ///< Memory contents at specified address
 } mavlink_memory_vect_t;
 
+#define MAVLINK_MESSAGE_INFO_MEMORY_VECT { \
+	"MEMORY_VECT", \
+	4, \
+	{  { "address", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_memory_vect_t, address) }, \
+         { "ver", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_memory_vect_t, ver) }, \
+         { "type", MAVLINK_TYPE_UINT8_T, 0, 3, offsetof(mavlink_memory_vect_t, type) }, \
+         { "value", MAVLINK_TYPE_INT8_T, 32, 4, offsetof(mavlink_memory_vect_t, value) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a memory_vect message
  * @param system_id ID of this system
@@ -27,12 +38,12 @@ static inline uint16_t mavlink_msg_memory_vect_pack(uint8_t system_id, uint8_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_MEMORY_VECT;
 
-	put_uint16_t_by_index(address, 0,  MAVLINK_PAYLOAD(msg)); // Starting address of the debug variables
-	put_uint8_t_by_index(ver, 2,  MAVLINK_PAYLOAD(msg)); // Version code of the type variable. 0=unknown, type ignored and assumed int16_t. 1=as below
-	put_uint8_t_by_index(type, 3,  MAVLINK_PAYLOAD(msg)); // Type code of the memory variables. for ver = 1: 0=16 x int16_t, 1=16 x uint16_t, 2=16 x Q15, 3=16 x 1Q14
-	put_int8_t_array_by_index(value, 4, 32,  MAVLINK_PAYLOAD(msg)); // Memory contents at specified address
+	put_uint16_t_by_index(msg, 0, address); // Starting address of the debug variables
+	put_uint8_t_by_index(msg, 2, ver); // Version code of the type variable. 0=unknown, type ignored and assumed int16_t. 1=as below
+	put_uint8_t_by_index(msg, 3, type); // Type code of the memory variables. for ver = 1: 0=16 x int16_t, 1=16 x uint16_t, 2=16 x Q15, 3=16 x 1Q14
+	put_int8_t_array_by_index(msg, 4, value, 32); // Memory contents at specified address
 
-	return mavlink_finalize_message(msg, system_id, component_id, 36, 174);
+	return mavlink_finalize_message(msg, system_id, component_id, 36, 204);
 }
 
 /**
@@ -53,12 +64,12 @@ static inline uint16_t mavlink_msg_memory_vect_pack_chan(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_MEMORY_VECT;
 
-	put_uint16_t_by_index(address, 0,  MAVLINK_PAYLOAD(msg)); // Starting address of the debug variables
-	put_uint8_t_by_index(ver, 2,  MAVLINK_PAYLOAD(msg)); // Version code of the type variable. 0=unknown, type ignored and assumed int16_t. 1=as below
-	put_uint8_t_by_index(type, 3,  MAVLINK_PAYLOAD(msg)); // Type code of the memory variables. for ver = 1: 0=16 x int16_t, 1=16 x uint16_t, 2=16 x Q15, 3=16 x 1Q14
-	put_int8_t_array_by_index(value, 4, 32,  MAVLINK_PAYLOAD(msg)); // Memory contents at specified address
+	put_uint16_t_by_index(msg, 0, address); // Starting address of the debug variables
+	put_uint8_t_by_index(msg, 2, ver); // Version code of the type variable. 0=unknown, type ignored and assumed int16_t. 1=as below
+	put_uint8_t_by_index(msg, 3, type); // Type code of the memory variables. for ver = 1: 0=16 x int16_t, 1=16 x uint16_t, 2=16 x Q15, 3=16 x 1Q14
+	put_int8_t_array_by_index(msg, 4, value, 32); // Memory contents at specified address
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 36, 174);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 36, 204);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -78,12 +89,12 @@ static inline void mavlink_msg_memory_vect_pack_chan_send(mavlink_channel_t chan
 {
 	msg->msgid = MAVLINK_MSG_ID_MEMORY_VECT;
 
-	put_uint16_t_by_index(address, 0,  MAVLINK_PAYLOAD(msg)); // Starting address of the debug variables
-	put_uint8_t_by_index(ver, 2,  MAVLINK_PAYLOAD(msg)); // Version code of the type variable. 0=unknown, type ignored and assumed int16_t. 1=as below
-	put_uint8_t_by_index(type, 3,  MAVLINK_PAYLOAD(msg)); // Type code of the memory variables. for ver = 1: 0=16 x int16_t, 1=16 x uint16_t, 2=16 x Q15, 3=16 x 1Q14
-	put_int8_t_array_by_index(value, 4, 32,  MAVLINK_PAYLOAD(msg)); // Memory contents at specified address
+	put_uint16_t_by_index(msg, 0, address); // Starting address of the debug variables
+	put_uint8_t_by_index(msg, 2, ver); // Version code of the type variable. 0=unknown, type ignored and assumed int16_t. 1=as below
+	put_uint8_t_by_index(msg, 3, type); // Type code of the memory variables. for ver = 1: 0=16 x int16_t, 1=16 x uint16_t, 2=16 x Q15, 3=16 x 1Q14
+	put_int8_t_array_by_index(msg, 4, value, 32); // Memory contents at specified address
 
-	mavlink_finalize_message_chan_send(msg, chan, 36, 174);
+	mavlink_finalize_message_chan_send(msg, chan, 36, 204);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

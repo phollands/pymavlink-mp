@@ -28,6 +28,35 @@ typedef struct __mavlink_test_types_t
  double d_array[3]; ///< double_array
 } mavlink_test_types_t;
 
+#define MAVLINK_MESSAGE_INFO_TEST_TYPES { \
+	"TEST_TYPES", \
+	22, \
+	{  { "c", MAVLINK_TYPE_CHAR, 0, 0, offsetof(mavlink_test_types_t, c) }, \
+         { "s", MAVLINK_TYPE_CHAR, 10, 1, offsetof(mavlink_test_types_t, s) }, \
+         { "u8", MAVLINK_TYPE_UINT8_T, 0, 11, offsetof(mavlink_test_types_t, u8) }, \
+         { "u16", MAVLINK_TYPE_UINT16_T, 0, 12, offsetof(mavlink_test_types_t, u16) }, \
+         { "u32", MAVLINK_TYPE_UINT32_T, 0, 14, offsetof(mavlink_test_types_t, u32) }, \
+         { "u64", MAVLINK_TYPE_UINT64_T, 0, 18, offsetof(mavlink_test_types_t, u64) }, \
+         { "s8", MAVLINK_TYPE_INT8_T, 0, 26, offsetof(mavlink_test_types_t, s8) }, \
+         { "s16", MAVLINK_TYPE_INT16_T, 0, 27, offsetof(mavlink_test_types_t, s16) }, \
+         { "s32", MAVLINK_TYPE_INT32_T, 0, 29, offsetof(mavlink_test_types_t, s32) }, \
+         { "s64", MAVLINK_TYPE_INT64_T, 0, 33, offsetof(mavlink_test_types_t, s64) }, \
+         { "f", MAVLINK_TYPE_FLOAT, 0, 41, offsetof(mavlink_test_types_t, f) }, \
+         { "d", MAVLINK_TYPE_DOUBLE, 0, 45, offsetof(mavlink_test_types_t, d) }, \
+         { "u8_array", MAVLINK_TYPE_UINT8_T, 3, 53, offsetof(mavlink_test_types_t, u8_array) }, \
+         { "u16_array", MAVLINK_TYPE_UINT16_T, 3, 56, offsetof(mavlink_test_types_t, u16_array) }, \
+         { "u32_array", MAVLINK_TYPE_UINT32_T, 3, 62, offsetof(mavlink_test_types_t, u32_array) }, \
+         { "u64_array", MAVLINK_TYPE_UINT64_T, 3, 74, offsetof(mavlink_test_types_t, u64_array) }, \
+         { "s8_array", MAVLINK_TYPE_INT8_T, 3, 98, offsetof(mavlink_test_types_t, s8_array) }, \
+         { "s16_array", MAVLINK_TYPE_INT16_T, 3, 101, offsetof(mavlink_test_types_t, s16_array) }, \
+         { "s32_array", MAVLINK_TYPE_INT32_T, 3, 107, offsetof(mavlink_test_types_t, s32_array) }, \
+         { "s64_array", MAVLINK_TYPE_INT64_T, 3, 119, offsetof(mavlink_test_types_t, s64_array) }, \
+         { "f_array", MAVLINK_TYPE_FLOAT, 3, 143, offsetof(mavlink_test_types_t, f_array) }, \
+         { "d_array", MAVLINK_TYPE_DOUBLE, 3, 155, offsetof(mavlink_test_types_t, d_array) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a test_types message
  * @param system_id ID of this system
@@ -63,30 +92,30 @@ static inline uint16_t mavlink_msg_test_types_pack(uint8_t system_id, uint8_t co
 {
 	msg->msgid = MAVLINK_MSG_ID_TEST_TYPES;
 
-	put_char_by_index(c, 0,  MAVLINK_PAYLOAD(msg)); // char
-	put_char_array_by_index(s, 1, 10,  MAVLINK_PAYLOAD(msg)); // string
-	put_uint8_t_by_index(u8, 11,  MAVLINK_PAYLOAD(msg)); // uint8_t
-	put_uint16_t_by_index(u16, 12,  MAVLINK_PAYLOAD(msg)); // uint16_t
-	put_uint32_t_by_index(u32, 14,  MAVLINK_PAYLOAD(msg)); // uint32_t
-	put_uint64_t_by_index(u64, 18,  MAVLINK_PAYLOAD(msg)); // uint64_t
-	put_int8_t_by_index(s8, 26,  MAVLINK_PAYLOAD(msg)); // int8_t
-	put_int16_t_by_index(s16, 27,  MAVLINK_PAYLOAD(msg)); // int16_t
-	put_int32_t_by_index(s32, 29,  MAVLINK_PAYLOAD(msg)); // int32_t
-	put_int64_t_by_index(s64, 33,  MAVLINK_PAYLOAD(msg)); // int64_t
-	put_float_by_index(f, 41,  MAVLINK_PAYLOAD(msg)); // float
-	put_double_by_index(d, 45,  MAVLINK_PAYLOAD(msg)); // double
-	put_uint8_t_array_by_index(u8_array, 53, 3,  MAVLINK_PAYLOAD(msg)); // uint8_t_array
-	put_uint16_t_array_by_index(u16_array, 56, 3,  MAVLINK_PAYLOAD(msg)); // uint16_t_array
-	put_uint32_t_array_by_index(u32_array, 62, 3,  MAVLINK_PAYLOAD(msg)); // uint32_t_array
-	put_uint64_t_array_by_index(u64_array, 74, 3,  MAVLINK_PAYLOAD(msg)); // uint64_t_array
-	put_int8_t_array_by_index(s8_array, 98, 3,  MAVLINK_PAYLOAD(msg)); // int8_t_array
-	put_int16_t_array_by_index(s16_array, 101, 3,  MAVLINK_PAYLOAD(msg)); // int16_t_array
-	put_int32_t_array_by_index(s32_array, 107, 3,  MAVLINK_PAYLOAD(msg)); // int32_t_array
-	put_int64_t_array_by_index(s64_array, 119, 3,  MAVLINK_PAYLOAD(msg)); // int64_t_array
-	put_float_array_by_index(f_array, 143, 3,  MAVLINK_PAYLOAD(msg)); // float_array
-	put_double_array_by_index(d_array, 155, 3,  MAVLINK_PAYLOAD(msg)); // double_array
+	put_char_by_index(msg, 0, c); // char
+	put_char_array_by_index(msg, 1, s, 10); // string
+	put_uint8_t_by_index(msg, 11, u8); // uint8_t
+	put_uint16_t_by_index(msg, 12, u16); // uint16_t
+	put_uint32_t_by_index(msg, 14, u32); // uint32_t
+	put_uint64_t_by_index(msg, 18, u64); // uint64_t
+	put_int8_t_by_index(msg, 26, s8); // int8_t
+	put_int16_t_by_index(msg, 27, s16); // int16_t
+	put_int32_t_by_index(msg, 29, s32); // int32_t
+	put_int64_t_by_index(msg, 33, s64); // int64_t
+	put_float_by_index(msg, 41, f); // float
+	put_double_by_index(msg, 45, d); // double
+	put_uint8_t_array_by_index(msg, 53, u8_array, 3); // uint8_t_array
+	put_uint16_t_array_by_index(msg, 56, u16_array, 3); // uint16_t_array
+	put_uint32_t_array_by_index(msg, 62, u32_array, 3); // uint32_t_array
+	put_uint64_t_array_by_index(msg, 74, u64_array, 3); // uint64_t_array
+	put_int8_t_array_by_index(msg, 98, s8_array, 3); // int8_t_array
+	put_int16_t_array_by_index(msg, 101, s16_array, 3); // int16_t_array
+	put_int32_t_array_by_index(msg, 107, s32_array, 3); // int32_t_array
+	put_int64_t_array_by_index(msg, 119, s64_array, 3); // int64_t_array
+	put_float_array_by_index(msg, 143, f_array, 3); // float_array
+	put_double_array_by_index(msg, 155, d_array, 3); // double_array
 
-	return mavlink_finalize_message(msg, system_id, component_id, 179, 255);
+	return mavlink_finalize_message(msg, system_id, component_id, 179, 91);
 }
 
 /**
@@ -125,30 +154,30 @@ static inline uint16_t mavlink_msg_test_types_pack_chan(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_TEST_TYPES;
 
-	put_char_by_index(c, 0,  MAVLINK_PAYLOAD(msg)); // char
-	put_char_array_by_index(s, 1, 10,  MAVLINK_PAYLOAD(msg)); // string
-	put_uint8_t_by_index(u8, 11,  MAVLINK_PAYLOAD(msg)); // uint8_t
-	put_uint16_t_by_index(u16, 12,  MAVLINK_PAYLOAD(msg)); // uint16_t
-	put_uint32_t_by_index(u32, 14,  MAVLINK_PAYLOAD(msg)); // uint32_t
-	put_uint64_t_by_index(u64, 18,  MAVLINK_PAYLOAD(msg)); // uint64_t
-	put_int8_t_by_index(s8, 26,  MAVLINK_PAYLOAD(msg)); // int8_t
-	put_int16_t_by_index(s16, 27,  MAVLINK_PAYLOAD(msg)); // int16_t
-	put_int32_t_by_index(s32, 29,  MAVLINK_PAYLOAD(msg)); // int32_t
-	put_int64_t_by_index(s64, 33,  MAVLINK_PAYLOAD(msg)); // int64_t
-	put_float_by_index(f, 41,  MAVLINK_PAYLOAD(msg)); // float
-	put_double_by_index(d, 45,  MAVLINK_PAYLOAD(msg)); // double
-	put_uint8_t_array_by_index(u8_array, 53, 3,  MAVLINK_PAYLOAD(msg)); // uint8_t_array
-	put_uint16_t_array_by_index(u16_array, 56, 3,  MAVLINK_PAYLOAD(msg)); // uint16_t_array
-	put_uint32_t_array_by_index(u32_array, 62, 3,  MAVLINK_PAYLOAD(msg)); // uint32_t_array
-	put_uint64_t_array_by_index(u64_array, 74, 3,  MAVLINK_PAYLOAD(msg)); // uint64_t_array
-	put_int8_t_array_by_index(s8_array, 98, 3,  MAVLINK_PAYLOAD(msg)); // int8_t_array
-	put_int16_t_array_by_index(s16_array, 101, 3,  MAVLINK_PAYLOAD(msg)); // int16_t_array
-	put_int32_t_array_by_index(s32_array, 107, 3,  MAVLINK_PAYLOAD(msg)); // int32_t_array
-	put_int64_t_array_by_index(s64_array, 119, 3,  MAVLINK_PAYLOAD(msg)); // int64_t_array
-	put_float_array_by_index(f_array, 143, 3,  MAVLINK_PAYLOAD(msg)); // float_array
-	put_double_array_by_index(d_array, 155, 3,  MAVLINK_PAYLOAD(msg)); // double_array
+	put_char_by_index(msg, 0, c); // char
+	put_char_array_by_index(msg, 1, s, 10); // string
+	put_uint8_t_by_index(msg, 11, u8); // uint8_t
+	put_uint16_t_by_index(msg, 12, u16); // uint16_t
+	put_uint32_t_by_index(msg, 14, u32); // uint32_t
+	put_uint64_t_by_index(msg, 18, u64); // uint64_t
+	put_int8_t_by_index(msg, 26, s8); // int8_t
+	put_int16_t_by_index(msg, 27, s16); // int16_t
+	put_int32_t_by_index(msg, 29, s32); // int32_t
+	put_int64_t_by_index(msg, 33, s64); // int64_t
+	put_float_by_index(msg, 41, f); // float
+	put_double_by_index(msg, 45, d); // double
+	put_uint8_t_array_by_index(msg, 53, u8_array, 3); // uint8_t_array
+	put_uint16_t_array_by_index(msg, 56, u16_array, 3); // uint16_t_array
+	put_uint32_t_array_by_index(msg, 62, u32_array, 3); // uint32_t_array
+	put_uint64_t_array_by_index(msg, 74, u64_array, 3); // uint64_t_array
+	put_int8_t_array_by_index(msg, 98, s8_array, 3); // int8_t_array
+	put_int16_t_array_by_index(msg, 101, s16_array, 3); // int16_t_array
+	put_int32_t_array_by_index(msg, 107, s32_array, 3); // int32_t_array
+	put_int64_t_array_by_index(msg, 119, s64_array, 3); // int64_t_array
+	put_float_array_by_index(msg, 143, f_array, 3); // float_array
+	put_double_array_by_index(msg, 155, d_array, 3); // double_array
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 179, 255);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 179, 91);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -186,30 +215,30 @@ static inline void mavlink_msg_test_types_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_TEST_TYPES;
 
-	put_char_by_index(c, 0,  MAVLINK_PAYLOAD(msg)); // char
-	put_char_array_by_index(s, 1, 10,  MAVLINK_PAYLOAD(msg)); // string
-	put_uint8_t_by_index(u8, 11,  MAVLINK_PAYLOAD(msg)); // uint8_t
-	put_uint16_t_by_index(u16, 12,  MAVLINK_PAYLOAD(msg)); // uint16_t
-	put_uint32_t_by_index(u32, 14,  MAVLINK_PAYLOAD(msg)); // uint32_t
-	put_uint64_t_by_index(u64, 18,  MAVLINK_PAYLOAD(msg)); // uint64_t
-	put_int8_t_by_index(s8, 26,  MAVLINK_PAYLOAD(msg)); // int8_t
-	put_int16_t_by_index(s16, 27,  MAVLINK_PAYLOAD(msg)); // int16_t
-	put_int32_t_by_index(s32, 29,  MAVLINK_PAYLOAD(msg)); // int32_t
-	put_int64_t_by_index(s64, 33,  MAVLINK_PAYLOAD(msg)); // int64_t
-	put_float_by_index(f, 41,  MAVLINK_PAYLOAD(msg)); // float
-	put_double_by_index(d, 45,  MAVLINK_PAYLOAD(msg)); // double
-	put_uint8_t_array_by_index(u8_array, 53, 3,  MAVLINK_PAYLOAD(msg)); // uint8_t_array
-	put_uint16_t_array_by_index(u16_array, 56, 3,  MAVLINK_PAYLOAD(msg)); // uint16_t_array
-	put_uint32_t_array_by_index(u32_array, 62, 3,  MAVLINK_PAYLOAD(msg)); // uint32_t_array
-	put_uint64_t_array_by_index(u64_array, 74, 3,  MAVLINK_PAYLOAD(msg)); // uint64_t_array
-	put_int8_t_array_by_index(s8_array, 98, 3,  MAVLINK_PAYLOAD(msg)); // int8_t_array
-	put_int16_t_array_by_index(s16_array, 101, 3,  MAVLINK_PAYLOAD(msg)); // int16_t_array
-	put_int32_t_array_by_index(s32_array, 107, 3,  MAVLINK_PAYLOAD(msg)); // int32_t_array
-	put_int64_t_array_by_index(s64_array, 119, 3,  MAVLINK_PAYLOAD(msg)); // int64_t_array
-	put_float_array_by_index(f_array, 143, 3,  MAVLINK_PAYLOAD(msg)); // float_array
-	put_double_array_by_index(d_array, 155, 3,  MAVLINK_PAYLOAD(msg)); // double_array
+	put_char_by_index(msg, 0, c); // char
+	put_char_array_by_index(msg, 1, s, 10); // string
+	put_uint8_t_by_index(msg, 11, u8); // uint8_t
+	put_uint16_t_by_index(msg, 12, u16); // uint16_t
+	put_uint32_t_by_index(msg, 14, u32); // uint32_t
+	put_uint64_t_by_index(msg, 18, u64); // uint64_t
+	put_int8_t_by_index(msg, 26, s8); // int8_t
+	put_int16_t_by_index(msg, 27, s16); // int16_t
+	put_int32_t_by_index(msg, 29, s32); // int32_t
+	put_int64_t_by_index(msg, 33, s64); // int64_t
+	put_float_by_index(msg, 41, f); // float
+	put_double_by_index(msg, 45, d); // double
+	put_uint8_t_array_by_index(msg, 53, u8_array, 3); // uint8_t_array
+	put_uint16_t_array_by_index(msg, 56, u16_array, 3); // uint16_t_array
+	put_uint32_t_array_by_index(msg, 62, u32_array, 3); // uint32_t_array
+	put_uint64_t_array_by_index(msg, 74, u64_array, 3); // uint64_t_array
+	put_int8_t_array_by_index(msg, 98, s8_array, 3); // int8_t_array
+	put_int16_t_array_by_index(msg, 101, s16_array, 3); // int16_t_array
+	put_int32_t_array_by_index(msg, 107, s32_array, 3); // int32_t_array
+	put_int64_t_array_by_index(msg, 119, s64_array, 3); // int64_t_array
+	put_float_array_by_index(msg, 143, f_array, 3); // float_array
+	put_double_array_by_index(msg, 155, d_array, 3); // double_array
 
-	mavlink_finalize_message_chan_send(msg, chan, 179, 255);
+	mavlink_finalize_message_chan_send(msg, chan, 179, 91);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

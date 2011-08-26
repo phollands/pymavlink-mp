@@ -8,6 +8,15 @@ typedef struct __mavlink_system_time_t
  uint32_t time_boot_ms; ///< Timestamp of the component clock since boot time in milliseconds.
 } mavlink_system_time_t;
 
+#define MAVLINK_MESSAGE_INFO_SYSTEM_TIME { \
+	"SYSTEM_TIME", \
+	2, \
+	{  { "time_usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_system_time_t, time_usec) }, \
+         { "time_boot_ms", MAVLINK_TYPE_UINT32_T, 0, 8, offsetof(mavlink_system_time_t, time_boot_ms) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a system_time message
  * @param system_id ID of this system
@@ -23,10 +32,10 @@ static inline uint16_t mavlink_msg_system_time_pack(uint8_t system_id, uint8_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
 
-	put_uint64_t_by_index(time_usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp of the master clock in microseconds since UNIX epoch.
-	put_uint32_t_by_index(time_boot_ms, 8,  MAVLINK_PAYLOAD(msg)); // Timestamp of the component clock since boot time in milliseconds.
+	put_uint64_t_by_index(msg, 0, time_usec); // Timestamp of the master clock in microseconds since UNIX epoch.
+	put_uint32_t_by_index(msg, 8, time_boot_ms); // Timestamp of the component clock since boot time in milliseconds.
 
-	return mavlink_finalize_message(msg, system_id, component_id, 12, 235);
+	return mavlink_finalize_message(msg, system_id, component_id, 12, 143);
 }
 
 /**
@@ -45,10 +54,10 @@ static inline uint16_t mavlink_msg_system_time_pack_chan(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
 
-	put_uint64_t_by_index(time_usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp of the master clock in microseconds since UNIX epoch.
-	put_uint32_t_by_index(time_boot_ms, 8,  MAVLINK_PAYLOAD(msg)); // Timestamp of the component clock since boot time in milliseconds.
+	put_uint64_t_by_index(msg, 0, time_usec); // Timestamp of the master clock in microseconds since UNIX epoch.
+	put_uint32_t_by_index(msg, 8, time_boot_ms); // Timestamp of the component clock since boot time in milliseconds.
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 12, 235);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 12, 143);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -66,10 +75,10 @@ static inline void mavlink_msg_system_time_pack_chan_send(mavlink_channel_t chan
 {
 	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
 
-	put_uint64_t_by_index(time_usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp of the master clock in microseconds since UNIX epoch.
-	put_uint32_t_by_index(time_boot_ms, 8,  MAVLINK_PAYLOAD(msg)); // Timestamp of the component clock since boot time in milliseconds.
+	put_uint64_t_by_index(msg, 0, time_usec); // Timestamp of the master clock in microseconds since UNIX epoch.
+	put_uint32_t_by_index(msg, 8, time_boot_ms); // Timestamp of the component clock since boot time in milliseconds.
 
-	mavlink_finalize_message_chan_send(msg, chan, 12, 235);
+	mavlink_finalize_message_chan_send(msg, chan, 12, 143);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -13,6 +13,20 @@ typedef struct __mavlink_marker_t
  float yaw; ///< yaw orientation
 } mavlink_marker_t;
 
+#define MAVLINK_MESSAGE_INFO_MARKER { \
+	"MARKER", \
+	7, \
+	{  { "id", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_marker_t, id) }, \
+         { "x", MAVLINK_TYPE_FLOAT, 0, 2, offsetof(mavlink_marker_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 6, offsetof(mavlink_marker_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 10, offsetof(mavlink_marker_t, z) }, \
+         { "roll", MAVLINK_TYPE_FLOAT, 0, 14, offsetof(mavlink_marker_t, roll) }, \
+         { "pitch", MAVLINK_TYPE_FLOAT, 0, 18, offsetof(mavlink_marker_t, pitch) }, \
+         { "yaw", MAVLINK_TYPE_FLOAT, 0, 22, offsetof(mavlink_marker_t, yaw) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a marker message
  * @param system_id ID of this system
@@ -33,15 +47,15 @@ static inline uint16_t mavlink_msg_marker_pack(uint8_t system_id, uint8_t compon
 {
 	msg->msgid = MAVLINK_MSG_ID_MARKER;
 
-	put_uint16_t_by_index(id, 0,  MAVLINK_PAYLOAD(msg)); // ID
-	put_float_by_index(x, 2,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 6,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 10,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(roll, 14,  MAVLINK_PAYLOAD(msg)); // roll orientation
-	put_float_by_index(pitch, 18,  MAVLINK_PAYLOAD(msg)); // pitch orientation
-	put_float_by_index(yaw, 22,  MAVLINK_PAYLOAD(msg)); // yaw orientation
+	put_uint16_t_by_index(msg, 0, id); // ID
+	put_float_by_index(msg, 2, x); // x position
+	put_float_by_index(msg, 6, y); // y position
+	put_float_by_index(msg, 10, z); // z position
+	put_float_by_index(msg, 14, roll); // roll orientation
+	put_float_by_index(msg, 18, pitch); // pitch orientation
+	put_float_by_index(msg, 22, yaw); // yaw orientation
 
-	return mavlink_finalize_message(msg, system_id, component_id, 26, 200);
+	return mavlink_finalize_message(msg, system_id, component_id, 26, 136);
 }
 
 /**
@@ -65,15 +79,15 @@ static inline uint16_t mavlink_msg_marker_pack_chan(uint8_t system_id, uint8_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_MARKER;
 
-	put_uint16_t_by_index(id, 0,  MAVLINK_PAYLOAD(msg)); // ID
-	put_float_by_index(x, 2,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 6,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 10,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(roll, 14,  MAVLINK_PAYLOAD(msg)); // roll orientation
-	put_float_by_index(pitch, 18,  MAVLINK_PAYLOAD(msg)); // pitch orientation
-	put_float_by_index(yaw, 22,  MAVLINK_PAYLOAD(msg)); // yaw orientation
+	put_uint16_t_by_index(msg, 0, id); // ID
+	put_float_by_index(msg, 2, x); // x position
+	put_float_by_index(msg, 6, y); // y position
+	put_float_by_index(msg, 10, z); // z position
+	put_float_by_index(msg, 14, roll); // roll orientation
+	put_float_by_index(msg, 18, pitch); // pitch orientation
+	put_float_by_index(msg, 22, yaw); // yaw orientation
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26, 200);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26, 136);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -96,15 +110,15 @@ static inline void mavlink_msg_marker_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_MARKER;
 
-	put_uint16_t_by_index(id, 0,  MAVLINK_PAYLOAD(msg)); // ID
-	put_float_by_index(x, 2,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 6,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 10,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(roll, 14,  MAVLINK_PAYLOAD(msg)); // roll orientation
-	put_float_by_index(pitch, 18,  MAVLINK_PAYLOAD(msg)); // pitch orientation
-	put_float_by_index(yaw, 22,  MAVLINK_PAYLOAD(msg)); // yaw orientation
+	put_uint16_t_by_index(msg, 0, id); // ID
+	put_float_by_index(msg, 2, x); // x position
+	put_float_by_index(msg, 6, y); // y position
+	put_float_by_index(msg, 10, z); // z position
+	put_float_by_index(msg, 14, roll); // roll orientation
+	put_float_by_index(msg, 18, pitch); // pitch orientation
+	put_float_by_index(msg, 22, yaw); // yaw orientation
 
-	mavlink_finalize_message_chan_send(msg, chan, 26, 200);
+	mavlink_finalize_message_chan_send(msg, chan, 26, 136);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

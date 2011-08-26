@@ -11,6 +11,18 @@ typedef struct __mavlink_debug_vect_t
  float z; ///< z
 } mavlink_debug_vect_t;
 
+#define MAVLINK_MESSAGE_INFO_DEBUG_VECT { \
+	"DEBUG_VECT", \
+	5, \
+	{  { "name", MAVLINK_TYPE_CHAR, 10, 0, offsetof(mavlink_debug_vect_t, name) }, \
+         { "usec", MAVLINK_TYPE_UINT64_T, 0, 10, offsetof(mavlink_debug_vect_t, usec) }, \
+         { "x", MAVLINK_TYPE_FLOAT, 0, 18, offsetof(mavlink_debug_vect_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 22, offsetof(mavlink_debug_vect_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 26, offsetof(mavlink_debug_vect_t, z) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a debug_vect message
  * @param system_id ID of this system
@@ -29,13 +41,13 @@ static inline uint16_t mavlink_msg_debug_vect_pack(uint8_t system_id, uint8_t co
 {
 	msg->msgid = MAVLINK_MSG_ID_DEBUG_VECT;
 
-	put_char_array_by_index(name, 0, 10,  MAVLINK_PAYLOAD(msg)); // Name
-	put_uint64_t_by_index(usec, 10,  MAVLINK_PAYLOAD(msg)); // Timestamp
-	put_float_by_index(x, 18,  MAVLINK_PAYLOAD(msg)); // x
-	put_float_by_index(y, 22,  MAVLINK_PAYLOAD(msg)); // y
-	put_float_by_index(z, 26,  MAVLINK_PAYLOAD(msg)); // z
+	put_char_array_by_index(msg, 0, name, 10); // Name
+	put_uint64_t_by_index(msg, 10, usec); // Timestamp
+	put_float_by_index(msg, 18, x); // x
+	put_float_by_index(msg, 22, y); // y
+	put_float_by_index(msg, 26, z); // z
 
-	return mavlink_finalize_message(msg, system_id, component_id, 30, 239);
+	return mavlink_finalize_message(msg, system_id, component_id, 30, 178);
 }
 
 /**
@@ -57,13 +69,13 @@ static inline uint16_t mavlink_msg_debug_vect_pack_chan(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_DEBUG_VECT;
 
-	put_char_array_by_index(name, 0, 10,  MAVLINK_PAYLOAD(msg)); // Name
-	put_uint64_t_by_index(usec, 10,  MAVLINK_PAYLOAD(msg)); // Timestamp
-	put_float_by_index(x, 18,  MAVLINK_PAYLOAD(msg)); // x
-	put_float_by_index(y, 22,  MAVLINK_PAYLOAD(msg)); // y
-	put_float_by_index(z, 26,  MAVLINK_PAYLOAD(msg)); // z
+	put_char_array_by_index(msg, 0, name, 10); // Name
+	put_uint64_t_by_index(msg, 10, usec); // Timestamp
+	put_float_by_index(msg, 18, x); // x
+	put_float_by_index(msg, 22, y); // y
+	put_float_by_index(msg, 26, z); // z
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 30, 239);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 30, 178);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -84,13 +96,13 @@ static inline void mavlink_msg_debug_vect_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_DEBUG_VECT;
 
-	put_char_array_by_index(name, 0, 10,  MAVLINK_PAYLOAD(msg)); // Name
-	put_uint64_t_by_index(usec, 10,  MAVLINK_PAYLOAD(msg)); // Timestamp
-	put_float_by_index(x, 18,  MAVLINK_PAYLOAD(msg)); // x
-	put_float_by_index(y, 22,  MAVLINK_PAYLOAD(msg)); // y
-	put_float_by_index(z, 26,  MAVLINK_PAYLOAD(msg)); // z
+	put_char_array_by_index(msg, 0, name, 10); // Name
+	put_uint64_t_by_index(msg, 10, usec); // Timestamp
+	put_float_by_index(msg, 18, x); // x
+	put_float_by_index(msg, 22, y); // y
+	put_float_by_index(msg, 26, z); // z
 
-	mavlink_finalize_message_chan_send(msg, chan, 30, 239);
+	mavlink_finalize_message_chan_send(msg, chan, 30, 178);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
