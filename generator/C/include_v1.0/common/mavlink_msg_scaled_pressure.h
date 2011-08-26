@@ -10,6 +10,17 @@ typedef struct __mavlink_scaled_pressure_t
  int16_t temperature; ///< Temperature measurement (0.01 degrees celsius)
 } mavlink_scaled_pressure_t;
 
+#define MAVLINK_MESSAGE_INFO_SCALED_PRESSURE { \
+	"SCALED_PRESSURE", \
+	4, \
+	{  { "usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_scaled_pressure_t, usec) }, \
+         { "press_abs", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_scaled_pressure_t, press_abs) }, \
+         { "press_diff", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_scaled_pressure_t, press_diff) }, \
+         { "temperature", MAVLINK_TYPE_INT16_T, 0, 16, offsetof(mavlink_scaled_pressure_t, temperature) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a scaled_pressure message
  * @param system_id ID of this system

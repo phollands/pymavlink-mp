@@ -10,6 +10,17 @@ typedef struct __mavlink_vision_speed_estimate_t
  float z; ///< Global Z speed
 } mavlink_vision_speed_estimate_t;
 
+#define MAVLINK_MESSAGE_INFO_VISION_SPEED_ESTIMATE { \
+	"VISION_SPEED_ESTIMATE", \
+	4, \
+	{  { "usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_vision_speed_estimate_t, usec) }, \
+         { "x", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_vision_speed_estimate_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_vision_speed_estimate_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_vision_speed_estimate_t, z) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a vision_speed_estimate message
  * @param system_id ID of this system

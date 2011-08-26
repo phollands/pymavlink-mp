@@ -10,6 +10,17 @@ typedef struct __mavlink_global_position_setpoint_int_t
  int16_t yaw; ///< Desired yaw angle in degrees * 100
 } mavlink_global_position_setpoint_int_t;
 
+#define MAVLINK_MESSAGE_INFO_GLOBAL_POSITION_SETPOINT_INT { \
+	"GLOBAL_POSITION_SETPOINT_INT", \
+	4, \
+	{  { "latitude", MAVLINK_TYPE_INT32_T, 0, 0, offsetof(mavlink_global_position_setpoint_int_t, latitude) }, \
+         { "longitude", MAVLINK_TYPE_INT32_T, 0, 4, offsetof(mavlink_global_position_setpoint_int_t, longitude) }, \
+         { "altitude", MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_global_position_setpoint_int_t, altitude) }, \
+         { "yaw", MAVLINK_TYPE_INT16_T, 0, 12, offsetof(mavlink_global_position_setpoint_int_t, yaw) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a global_position_setpoint_int message
  * @param system_id ID of this system

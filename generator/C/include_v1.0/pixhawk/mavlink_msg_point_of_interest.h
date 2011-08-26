@@ -14,6 +14,21 @@ typedef struct __mavlink_point_of_interest_t
  char name[26]; ///< POI name
 } mavlink_point_of_interest_t;
 
+#define MAVLINK_MESSAGE_INFO_POINT_OF_INTEREST { \
+	"POINT_OF_INTEREST", \
+	8, \
+	{  { "x", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_point_of_interest_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_point_of_interest_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_point_of_interest_t, z) }, \
+         { "timeout", MAVLINK_TYPE_UINT16_T, 0, 12, offsetof(mavlink_point_of_interest_t, timeout) }, \
+         { "type", MAVLINK_TYPE_UINT8_T, 0, 14, offsetof(mavlink_point_of_interest_t, type) }, \
+         { "color", MAVLINK_TYPE_UINT8_T, 0, 15, offsetof(mavlink_point_of_interest_t, color) }, \
+         { "coordinate_system", MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_point_of_interest_t, coordinate_system) }, \
+         { "name", MAVLINK_TYPE_CHAR, 26, 17, offsetof(mavlink_point_of_interest_t, name) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a point_of_interest message
  * @param system_id ID of this system

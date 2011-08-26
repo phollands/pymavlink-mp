@@ -8,6 +8,15 @@ typedef struct __mavlink_system_time_utc_t
  uint32_t utc_time; ///< GPS UTC time hhmmss
 } mavlink_system_time_utc_t;
 
+#define MAVLINK_MESSAGE_INFO_SYSTEM_TIME_UTC { \
+	"SYSTEM_TIME_UTC", \
+	2, \
+	{  { "utc_date", MAVLINK_TYPE_UINT32_T, 0, 0, offsetof(mavlink_system_time_utc_t, utc_date) }, \
+         { "utc_time", MAVLINK_TYPE_UINT32_T, 0, 4, offsetof(mavlink_system_time_utc_t, utc_time) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a system_time_utc message
  * @param system_id ID of this system

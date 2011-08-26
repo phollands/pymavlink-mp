@@ -13,6 +13,20 @@ typedef struct __mavlink_safety_allowed_area_t
  uint8_t frame; ///< Coordinate frame, as defined by MAV_FRAME enum in mavlink_types.h. Can be either global, GPS, right-handed with Z axis up or local, right handed, Z axis down.
 } mavlink_safety_allowed_area_t;
 
+#define MAVLINK_MESSAGE_INFO_SAFETY_ALLOWED_AREA { \
+	"SAFETY_ALLOWED_AREA", \
+	7, \
+	{  { "p1x", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_safety_allowed_area_t, p1x) }, \
+         { "p1y", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_safety_allowed_area_t, p1y) }, \
+         { "p1z", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_safety_allowed_area_t, p1z) }, \
+         { "p2x", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_safety_allowed_area_t, p2x) }, \
+         { "p2y", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_safety_allowed_area_t, p2y) }, \
+         { "p2z", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_safety_allowed_area_t, p2z) }, \
+         { "frame", MAVLINK_TYPE_UINT8_T, 0, 24, offsetof(mavlink_safety_allowed_area_t, frame) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a safety_allowed_area message
  * @param system_id ID of this system

@@ -11,6 +11,18 @@ typedef struct __mavlink_gps_set_global_origin_t
  int32_t altitude; ///< global position * 1000
 } mavlink_gps_set_global_origin_t;
 
+#define MAVLINK_MESSAGE_INFO_GPS_SET_GLOBAL_ORIGIN { \
+	"GPS_SET_GLOBAL_ORIGIN", \
+	5, \
+	{  { "target_system", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_gps_set_global_origin_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_gps_set_global_origin_t, target_component) }, \
+         { "latitude", MAVLINK_TYPE_INT32_T, 0, 2, offsetof(mavlink_gps_set_global_origin_t, latitude) }, \
+         { "longitude", MAVLINK_TYPE_INT32_T, 0, 6, offsetof(mavlink_gps_set_global_origin_t, longitude) }, \
+         { "altitude", MAVLINK_TYPE_INT32_T, 0, 10, offsetof(mavlink_gps_set_global_origin_t, altitude) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a gps_set_global_origin message
  * @param system_id ID of this system

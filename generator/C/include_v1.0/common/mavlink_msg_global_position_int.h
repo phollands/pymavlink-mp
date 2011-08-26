@@ -13,6 +13,20 @@ typedef struct __mavlink_global_position_int_t
  uint16_t hdg; ///< Compass heading in degrees * 100, 0.0..359.99 degrees. If unknown, set to: 65535
 } mavlink_global_position_int_t;
 
+#define MAVLINK_MESSAGE_INFO_GLOBAL_POSITION_INT { \
+	"GLOBAL_POSITION_INT", \
+	7, \
+	{  { "lat", MAVLINK_TYPE_INT32_T, 0, 0, offsetof(mavlink_global_position_int_t, lat) }, \
+         { "lon", MAVLINK_TYPE_INT32_T, 0, 4, offsetof(mavlink_global_position_int_t, lon) }, \
+         { "alt", MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_global_position_int_t, alt) }, \
+         { "vx", MAVLINK_TYPE_INT16_T, 0, 12, offsetof(mavlink_global_position_int_t, vx) }, \
+         { "vy", MAVLINK_TYPE_INT16_T, 0, 14, offsetof(mavlink_global_position_int_t, vy) }, \
+         { "vz", MAVLINK_TYPE_INT16_T, 0, 16, offsetof(mavlink_global_position_int_t, vz) }, \
+         { "hdg", MAVLINK_TYPE_UINT16_T, 0, 18, offsetof(mavlink_global_position_int_t, hdg) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a global_position_int message
  * @param system_id ID of this system

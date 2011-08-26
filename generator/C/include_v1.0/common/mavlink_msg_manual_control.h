@@ -15,6 +15,22 @@ typedef struct __mavlink_manual_control_t
  uint8_t thrust_manual; ///< thrust auto:0, manual:1
 } mavlink_manual_control_t;
 
+#define MAVLINK_MESSAGE_INFO_MANUAL_CONTROL { \
+	"MANUAL_CONTROL", \
+	9, \
+	{  { "roll", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_manual_control_t, roll) }, \
+         { "pitch", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_manual_control_t, pitch) }, \
+         { "yaw", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_manual_control_t, yaw) }, \
+         { "thrust", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_manual_control_t, thrust) }, \
+         { "target", MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_manual_control_t, target) }, \
+         { "roll_manual", MAVLINK_TYPE_UINT8_T, 0, 17, offsetof(mavlink_manual_control_t, roll_manual) }, \
+         { "pitch_manual", MAVLINK_TYPE_UINT8_T, 0, 18, offsetof(mavlink_manual_control_t, pitch_manual) }, \
+         { "yaw_manual", MAVLINK_TYPE_UINT8_T, 0, 19, offsetof(mavlink_manual_control_t, yaw_manual) }, \
+         { "thrust_manual", MAVLINK_TYPE_UINT8_T, 0, 20, offsetof(mavlink_manual_control_t, thrust_manual) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a manual_control message
  * @param system_id ID of this system

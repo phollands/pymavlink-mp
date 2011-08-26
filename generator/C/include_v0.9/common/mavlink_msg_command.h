@@ -14,6 +14,21 @@ typedef struct __mavlink_command_t
  float param4; ///< Parameter 4, as defined by MAV_CMD enum.
 } mavlink_command_t;
 
+#define MAVLINK_MESSAGE_INFO_COMMAND { \
+	"COMMAND", \
+	8, \
+	{  { "target_system", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_command_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_command_t, target_component) }, \
+         { "command", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_command_t, command) }, \
+         { "confirmation", MAVLINK_TYPE_UINT8_T, 0, 3, offsetof(mavlink_command_t, confirmation) }, \
+         { "param1", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_command_t, param1) }, \
+         { "param2", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_command_t, param2) }, \
+         { "param3", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_command_t, param3) }, \
+         { "param4", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_command_t, param4) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a command message
  * @param system_id ID of this system

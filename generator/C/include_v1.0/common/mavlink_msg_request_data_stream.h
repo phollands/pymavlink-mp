@@ -11,6 +11,18 @@ typedef struct __mavlink_request_data_stream_t
  uint8_t start_stop; ///< 1 to start sending, 0 to stop sending.
 } mavlink_request_data_stream_t;
 
+#define MAVLINK_MESSAGE_INFO_REQUEST_DATA_STREAM { \
+	"REQUEST_DATA_STREAM", \
+	5, \
+	{  { "req_message_rate", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_request_data_stream_t, req_message_rate) }, \
+         { "target_system", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_request_data_stream_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 3, offsetof(mavlink_request_data_stream_t, target_component) }, \
+         { "req_stream_id", MAVLINK_TYPE_UINT8_T, 0, 4, offsetof(mavlink_request_data_stream_t, req_stream_id) }, \
+         { "start_stop", MAVLINK_TYPE_UINT8_T, 0, 5, offsetof(mavlink_request_data_stream_t, start_stop) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a request_data_stream message
  * @param system_id ID of this system

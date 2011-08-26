@@ -8,6 +8,15 @@ typedef struct __mavlink_debug_t
  uint8_t ind; ///< index of debug variable
 } mavlink_debug_t;
 
+#define MAVLINK_MESSAGE_INFO_DEBUG { \
+	"DEBUG", \
+	2, \
+	{  { "value", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_debug_t, value) }, \
+         { "ind", MAVLINK_TYPE_UINT8_T, 0, 4, offsetof(mavlink_debug_t, ind) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a debug message
  * @param system_id ID of this system

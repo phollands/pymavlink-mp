@@ -8,6 +8,15 @@ typedef struct __mavlink_ctrl_srfc_pt_t
  uint16_t bitfieldPt; ///< Bitfield containing the PT configuration
 } mavlink_ctrl_srfc_pt_t;
 
+#define MAVLINK_MESSAGE_INFO_CTRL_SRFC_PT { \
+	"CTRL_SRFC_PT", \
+	2, \
+	{  { "target", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_ctrl_srfc_pt_t, target) }, \
+         { "bitfieldPt", MAVLINK_TYPE_UINT16_T, 0, 1, offsetof(mavlink_ctrl_srfc_pt_t, bitfieldPt) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a ctrl_srfc_pt message
  * @param system_id ID of this system

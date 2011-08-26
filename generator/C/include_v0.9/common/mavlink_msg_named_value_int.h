@@ -8,6 +8,15 @@ typedef struct __mavlink_named_value_int_t
  int32_t value; ///< Signed integer value
 } mavlink_named_value_int_t;
 
+#define MAVLINK_MESSAGE_INFO_NAMED_VALUE_INT { \
+	"NAMED_VALUE_INT", \
+	2, \
+	{  { "name", MAVLINK_TYPE_CHAR, 10, 0, offsetof(mavlink_named_value_int_t, name) }, \
+         { "value", MAVLINK_TYPE_INT32_T, 0, 10, offsetof(mavlink_named_value_int_t, value) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a named_value_int message
  * @param system_id ID of this system

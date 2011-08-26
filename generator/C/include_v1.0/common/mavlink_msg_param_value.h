@@ -11,6 +11,18 @@ typedef struct __mavlink_param_value_t
  uint8_t param_type; ///< Onboard parameter type: 0: float, 1: uint8_t, 2: int8_t, 3: uint16_t, 4: int16_t, 5: uint32_t, 6: int32_t
 } mavlink_param_value_t;
 
+#define MAVLINK_MESSAGE_INFO_PARAM_VALUE { \
+	"PARAM_VALUE", \
+	5, \
+	{  { "param_value", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_param_value_t, param_value) }, \
+         { "param_count", MAVLINK_TYPE_UINT16_T, 0, 4, offsetof(mavlink_param_value_t, param_count) }, \
+         { "param_index", MAVLINK_TYPE_UINT16_T, 0, 6, offsetof(mavlink_param_value_t, param_index) }, \
+         { "param_id", MAVLINK_TYPE_CHAR, 16, 8, offsetof(mavlink_param_value_t, param_id) }, \
+         { "param_type", MAVLINK_TYPE_UINT8_T, 0, 24, offsetof(mavlink_param_value_t, param_type) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a param_value message
  * @param system_id ID of this system

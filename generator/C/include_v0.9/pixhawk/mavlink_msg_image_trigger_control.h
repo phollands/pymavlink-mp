@@ -7,6 +7,14 @@ typedef struct __mavlink_image_trigger_control_t
  uint8_t enable; ///< 0 to disable, 1 to enable
 } mavlink_image_trigger_control_t;
 
+#define MAVLINK_MESSAGE_INFO_IMAGE_TRIGGER_CONTROL { \
+	"IMAGE_TRIGGER_CONTROL", \
+	1, \
+	{  { "enable", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_image_trigger_control_t, enable) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a image_trigger_control message
  * @param system_id ID of this system

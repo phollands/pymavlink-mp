@@ -12,6 +12,19 @@ typedef struct __mavlink_set_roll_pitch_yaw_thrust_t
  uint8_t target_component; ///< Component ID
 } mavlink_set_roll_pitch_yaw_thrust_t;
 
+#define MAVLINK_MESSAGE_INFO_SET_ROLL_PITCH_YAW_THRUST { \
+	"SET_ROLL_PITCH_YAW_THRUST", \
+	6, \
+	{  { "roll", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_set_roll_pitch_yaw_thrust_t, roll) }, \
+         { "pitch", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_set_roll_pitch_yaw_thrust_t, pitch) }, \
+         { "yaw", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_set_roll_pitch_yaw_thrust_t, yaw) }, \
+         { "thrust", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_set_roll_pitch_yaw_thrust_t, thrust) }, \
+         { "target_system", MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_set_roll_pitch_yaw_thrust_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 17, offsetof(mavlink_set_roll_pitch_yaw_thrust_t, target_component) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a set_roll_pitch_yaw_thrust message
  * @param system_id ID of this system

@@ -8,6 +8,15 @@ typedef struct __mavlink_watchdog_heartbeat_t
  uint16_t process_count; ///< Number of processes
 } mavlink_watchdog_heartbeat_t;
 
+#define MAVLINK_MESSAGE_INFO_WATCHDOG_HEARTBEAT { \
+	"WATCHDOG_HEARTBEAT", \
+	2, \
+	{  { "watchdog_id", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_watchdog_heartbeat_t, watchdog_id) }, \
+         { "process_count", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_watchdog_heartbeat_t, process_count) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a watchdog_heartbeat message
  * @param system_id ID of this system

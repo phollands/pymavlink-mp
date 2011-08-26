@@ -11,6 +11,18 @@ typedef struct __mavlink_position_control_setpoint_t
  uint16_t id; ///< ID of waypoint, 0 for plain position
 } mavlink_position_control_setpoint_t;
 
+#define MAVLINK_MESSAGE_INFO_POSITION_CONTROL_SETPOINT { \
+	"POSITION_CONTROL_SETPOINT", \
+	5, \
+	{  { "x", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_position_control_setpoint_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_position_control_setpoint_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_position_control_setpoint_t, z) }, \
+         { "yaw", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_position_control_setpoint_t, yaw) }, \
+         { "id", MAVLINK_TYPE_UINT16_T, 0, 16, offsetof(mavlink_position_control_setpoint_t, id) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a position_control_setpoint message
  * @param system_id ID of this system

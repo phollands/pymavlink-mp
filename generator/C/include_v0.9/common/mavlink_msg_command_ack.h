@@ -8,6 +8,15 @@ typedef struct __mavlink_command_ack_t
  float result; ///< 1: Action ACCEPTED and EXECUTED, 1: Action TEMPORARY REJECTED/DENIED, 2: Action PERMANENTLY DENIED, 3: Action UNKNOWN/UNSUPPORTED, 4: Requesting CONFIRMATION
 } mavlink_command_ack_t;
 
+#define MAVLINK_MESSAGE_INFO_COMMAND_ACK { \
+	"COMMAND_ACK", \
+	2, \
+	{  { "command", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_command_ack_t, command) }, \
+         { "result", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_command_ack_t, result) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a command_ack message
  * @param system_id ID of this system

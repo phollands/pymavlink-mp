@@ -8,6 +8,15 @@ typedef struct __mavlink_statustext_t
  char text[50]; ///< Status text message, without null termination character
 } mavlink_statustext_t;
 
+#define MAVLINK_MESSAGE_INFO_STATUSTEXT { \
+	"STATUSTEXT", \
+	2, \
+	{  { "severity", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_statustext_t, severity) }, \
+         { "text", MAVLINK_TYPE_CHAR, 50, 1, offsetof(mavlink_statustext_t, text) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a statustext message
  * @param system_id ID of this system

@@ -11,6 +11,18 @@ typedef struct __mavlink_watchdog_process_info_t
  int32_t timeout; ///< Timeout (seconds)
 } mavlink_watchdog_process_info_t;
 
+#define MAVLINK_MESSAGE_INFO_WATCHDOG_PROCESS_INFO { \
+	"WATCHDOG_PROCESS_INFO", \
+	5, \
+	{  { "watchdog_id", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_watchdog_process_info_t, watchdog_id) }, \
+         { "process_id", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_watchdog_process_info_t, process_id) }, \
+         { "name", MAVLINK_TYPE_CHAR, 100, 4, offsetof(mavlink_watchdog_process_info_t, name) }, \
+         { "arguments", MAVLINK_TYPE_CHAR, 147, 104, offsetof(mavlink_watchdog_process_info_t, arguments) }, \
+         { "timeout", MAVLINK_TYPE_INT32_T, 0, 251, offsetof(mavlink_watchdog_process_info_t, timeout) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a watchdog_process_info message
  * @param system_id ID of this system

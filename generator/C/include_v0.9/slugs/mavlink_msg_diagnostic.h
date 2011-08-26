@@ -12,6 +12,19 @@ typedef struct __mavlink_diagnostic_t
  int16_t diagSh3; ///< Diagnostic short 3
 } mavlink_diagnostic_t;
 
+#define MAVLINK_MESSAGE_INFO_DIAGNOSTIC { \
+	"DIAGNOSTIC", \
+	6, \
+	{  { "diagFl1", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_diagnostic_t, diagFl1) }, \
+         { "diagFl2", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_diagnostic_t, diagFl2) }, \
+         { "diagFl3", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_diagnostic_t, diagFl3) }, \
+         { "diagSh1", MAVLINK_TYPE_INT16_T, 0, 12, offsetof(mavlink_diagnostic_t, diagSh1) }, \
+         { "diagSh2", MAVLINK_TYPE_INT16_T, 0, 14, offsetof(mavlink_diagnostic_t, diagSh2) }, \
+         { "diagSh3", MAVLINK_TYPE_INT16_T, 0, 16, offsetof(mavlink_diagnostic_t, diagSh3) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a diagnostic message
  * @param system_id ID of this system

@@ -11,6 +11,18 @@ typedef struct __mavlink_debug_vect_t
  float z; ///< z
 } mavlink_debug_vect_t;
 
+#define MAVLINK_MESSAGE_INFO_DEBUG_VECT { \
+	"DEBUG_VECT", \
+	5, \
+	{  { "name", MAVLINK_TYPE_CHAR, 10, 0, offsetof(mavlink_debug_vect_t, name) }, \
+         { "usec", MAVLINK_TYPE_UINT64_T, 0, 10, offsetof(mavlink_debug_vect_t, usec) }, \
+         { "x", MAVLINK_TYPE_FLOAT, 0, 18, offsetof(mavlink_debug_vect_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 22, offsetof(mavlink_debug_vect_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 26, offsetof(mavlink_debug_vect_t, z) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a debug_vect message
  * @param system_id ID of this system

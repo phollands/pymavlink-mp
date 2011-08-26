@@ -8,6 +8,15 @@ typedef struct __mavlink_named_value_float_t
  char name[10]; ///< Name of the debug variable
 } mavlink_named_value_float_t;
 
+#define MAVLINK_MESSAGE_INFO_NAMED_VALUE_FLOAT { \
+	"NAMED_VALUE_FLOAT", \
+	2, \
+	{  { "value", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_named_value_float_t, value) }, \
+         { "name", MAVLINK_TYPE_CHAR, 10, 4, offsetof(mavlink_named_value_float_t, name) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a named_value_float message
  * @param system_id ID of this system

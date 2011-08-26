@@ -18,6 +18,25 @@ typedef struct __mavlink_image_triggered_t
  float ground_z; ///< Ground truth Z
 } mavlink_image_triggered_t;
 
+#define MAVLINK_MESSAGE_INFO_IMAGE_TRIGGERED { \
+	"IMAGE_TRIGGERED", \
+	12, \
+	{  { "timestamp", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_image_triggered_t, timestamp) }, \
+         { "seq", MAVLINK_TYPE_UINT32_T, 0, 8, offsetof(mavlink_image_triggered_t, seq) }, \
+         { "roll", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_image_triggered_t, roll) }, \
+         { "pitch", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_image_triggered_t, pitch) }, \
+         { "yaw", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_image_triggered_t, yaw) }, \
+         { "local_z", MAVLINK_TYPE_FLOAT, 0, 24, offsetof(mavlink_image_triggered_t, local_z) }, \
+         { "lat", MAVLINK_TYPE_FLOAT, 0, 28, offsetof(mavlink_image_triggered_t, lat) }, \
+         { "lon", MAVLINK_TYPE_FLOAT, 0, 32, offsetof(mavlink_image_triggered_t, lon) }, \
+         { "alt", MAVLINK_TYPE_FLOAT, 0, 36, offsetof(mavlink_image_triggered_t, alt) }, \
+         { "ground_x", MAVLINK_TYPE_FLOAT, 0, 40, offsetof(mavlink_image_triggered_t, ground_x) }, \
+         { "ground_y", MAVLINK_TYPE_FLOAT, 0, 44, offsetof(mavlink_image_triggered_t, ground_y) }, \
+         { "ground_z", MAVLINK_TYPE_FLOAT, 0, 48, offsetof(mavlink_image_triggered_t, ground_z) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a image_triggered message
  * @param system_id ID of this system

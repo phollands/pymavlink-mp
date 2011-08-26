@@ -13,6 +13,20 @@ typedef struct __mavlink_attitude_t
  float yawspeed; ///< Yaw angular speed (rad/s)
 } mavlink_attitude_t;
 
+#define MAVLINK_MESSAGE_INFO_ATTITUDE { \
+	"ATTITUDE", \
+	7, \
+	{  { "usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_attitude_t, usec) }, \
+         { "roll", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_attitude_t, roll) }, \
+         { "pitch", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_attitude_t, pitch) }, \
+         { "yaw", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_attitude_t, yaw) }, \
+         { "rollspeed", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_attitude_t, rollspeed) }, \
+         { "pitchspeed", MAVLINK_TYPE_FLOAT, 0, 24, offsetof(mavlink_attitude_t, pitchspeed) }, \
+         { "yawspeed", MAVLINK_TYPE_FLOAT, 0, 28, offsetof(mavlink_attitude_t, yawspeed) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a attitude message
  * @param system_id ID of this system

@@ -7,6 +7,14 @@ typedef struct __mavlink_system_time_t
  uint64_t time_usec; ///< Timestamp of the master clock in microseconds since UNIX epoch.
 } mavlink_system_time_t;
 
+#define MAVLINK_MESSAGE_INFO_SYSTEM_TIME { \
+	"SYSTEM_TIME", \
+	1, \
+	{  { "time_usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_system_time_t, time_usec) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a system_time message
  * @param system_id ID of this system

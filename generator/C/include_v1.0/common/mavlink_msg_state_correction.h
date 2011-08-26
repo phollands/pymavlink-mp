@@ -15,6 +15,22 @@ typedef struct __mavlink_state_correction_t
  float vzErr; ///< z velocity
 } mavlink_state_correction_t;
 
+#define MAVLINK_MESSAGE_INFO_STATE_CORRECTION { \
+	"STATE_CORRECTION", \
+	9, \
+	{  { "xErr", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_state_correction_t, xErr) }, \
+         { "yErr", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_state_correction_t, yErr) }, \
+         { "zErr", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_state_correction_t, zErr) }, \
+         { "rollErr", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_state_correction_t, rollErr) }, \
+         { "pitchErr", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_state_correction_t, pitchErr) }, \
+         { "yawErr", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_state_correction_t, yawErr) }, \
+         { "vxErr", MAVLINK_TYPE_FLOAT, 0, 24, offsetof(mavlink_state_correction_t, vxErr) }, \
+         { "vyErr", MAVLINK_TYPE_FLOAT, 0, 28, offsetof(mavlink_state_correction_t, vyErr) }, \
+         { "vzErr", MAVLINK_TYPE_FLOAT, 0, 32, offsetof(mavlink_state_correction_t, vzErr) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a state_correction message
  * @param system_id ID of this system

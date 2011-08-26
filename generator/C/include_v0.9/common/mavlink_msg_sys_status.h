@@ -13,6 +13,20 @@ typedef struct __mavlink_sys_status_t
  uint16_t packet_drop; ///< Dropped packets (packets that were corrupted on reception on the MAV)
 } mavlink_sys_status_t;
 
+#define MAVLINK_MESSAGE_INFO_SYS_STATUS { \
+	"SYS_STATUS", \
+	7, \
+	{  { "mode", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_sys_status_t, mode) }, \
+         { "nav_mode", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_sys_status_t, nav_mode) }, \
+         { "status", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_sys_status_t, status) }, \
+         { "load", MAVLINK_TYPE_UINT16_T, 0, 3, offsetof(mavlink_sys_status_t, load) }, \
+         { "vbat", MAVLINK_TYPE_UINT16_T, 0, 5, offsetof(mavlink_sys_status_t, vbat) }, \
+         { "battery_remaining", MAVLINK_TYPE_UINT16_T, 0, 7, offsetof(mavlink_sys_status_t, battery_remaining) }, \
+         { "packet_drop", MAVLINK_TYPE_UINT16_T, 0, 9, offsetof(mavlink_sys_status_t, packet_drop) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a sys_status message
  * @param system_id ID of this system

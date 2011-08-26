@@ -9,6 +9,16 @@ typedef struct __mavlink_cpu_load_t
  uint8_t ctrlLoad; ///< Control DSC Load
 } mavlink_cpu_load_t;
 
+#define MAVLINK_MESSAGE_INFO_CPU_LOAD { \
+	"CPU_LOAD", \
+	3, \
+	{  { "batVolt", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_cpu_load_t, batVolt) }, \
+         { "sensLoad", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_cpu_load_t, sensLoad) }, \
+         { "ctrlLoad", MAVLINK_TYPE_UINT8_T, 0, 3, offsetof(mavlink_cpu_load_t, ctrlLoad) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a cpu_load message
  * @param system_id ID of this system

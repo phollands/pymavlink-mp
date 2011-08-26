@@ -15,6 +15,22 @@ typedef struct __mavlink_gps_raw_int_t
  float hdg; ///< Compass heading in degrees, 0..360 degrees
 } mavlink_gps_raw_int_t;
 
+#define MAVLINK_MESSAGE_INFO_GPS_RAW_INT { \
+	"GPS_RAW_INT", \
+	9, \
+	{  { "usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_gps_raw_int_t, usec) }, \
+         { "fix_type", MAVLINK_TYPE_UINT8_T, 0, 8, offsetof(mavlink_gps_raw_int_t, fix_type) }, \
+         { "lat", MAVLINK_TYPE_INT32_T, 0, 9, offsetof(mavlink_gps_raw_int_t, lat) }, \
+         { "lon", MAVLINK_TYPE_INT32_T, 0, 13, offsetof(mavlink_gps_raw_int_t, lon) }, \
+         { "alt", MAVLINK_TYPE_INT32_T, 0, 17, offsetof(mavlink_gps_raw_int_t, alt) }, \
+         { "eph", MAVLINK_TYPE_FLOAT, 0, 21, offsetof(mavlink_gps_raw_int_t, eph) }, \
+         { "epv", MAVLINK_TYPE_FLOAT, 0, 25, offsetof(mavlink_gps_raw_int_t, epv) }, \
+         { "v", MAVLINK_TYPE_FLOAT, 0, 29, offsetof(mavlink_gps_raw_int_t, v) }, \
+         { "hdg", MAVLINK_TYPE_FLOAT, 0, 33, offsetof(mavlink_gps_raw_int_t, hdg) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a gps_raw_int message
  * @param system_id ID of this system

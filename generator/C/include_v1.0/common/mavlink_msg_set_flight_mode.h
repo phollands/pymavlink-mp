@@ -8,6 +8,15 @@ typedef struct __mavlink_set_flight_mode_t
  uint8_t flight_mode; ///< The new navigation mode
 } mavlink_set_flight_mode_t;
 
+#define MAVLINK_MESSAGE_INFO_SET_FLIGHT_MODE { \
+	"SET_FLIGHT_MODE", \
+	2, \
+	{  { "target", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_set_flight_mode_t, target) }, \
+         { "flight_mode", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_set_flight_mode_t, flight_mode) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a set_flight_mode message
  * @param system_id ID of this system

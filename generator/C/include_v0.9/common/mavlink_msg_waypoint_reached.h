@@ -7,6 +7,14 @@ typedef struct __mavlink_waypoint_reached_t
  uint16_t seq; ///< Sequence
 } mavlink_waypoint_reached_t;
 
+#define MAVLINK_MESSAGE_INFO_WAYPOINT_REACHED { \
+	"WAYPOINT_REACHED", \
+	1, \
+	{  { "seq", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_waypoint_reached_t, seq) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a waypoint_reached message
  * @param system_id ID of this system

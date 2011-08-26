@@ -7,6 +7,14 @@ typedef struct __mavlink_auth_key_t
  char key[32]; ///< key
 } mavlink_auth_key_t;
 
+#define MAVLINK_MESSAGE_INFO_AUTH_KEY { \
+	"AUTH_KEY", \
+	1, \
+	{  { "key", MAVLINK_TYPE_CHAR, 32, 0, offsetof(mavlink_auth_key_t, key) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a auth_key message
  * @param system_id ID of this system

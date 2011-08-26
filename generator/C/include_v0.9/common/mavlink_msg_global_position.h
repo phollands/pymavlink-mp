@@ -13,6 +13,20 @@ typedef struct __mavlink_global_position_t
  float vz; ///< Z Speed (in Altitude direction, positive: going up)
 } mavlink_global_position_t;
 
+#define MAVLINK_MESSAGE_INFO_GLOBAL_POSITION { \
+	"GLOBAL_POSITION", \
+	7, \
+	{  { "usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_global_position_t, usec) }, \
+         { "lat", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_global_position_t, lat) }, \
+         { "lon", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_global_position_t, lon) }, \
+         { "alt", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_global_position_t, alt) }, \
+         { "vx", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_global_position_t, vx) }, \
+         { "vy", MAVLINK_TYPE_FLOAT, 0, 24, offsetof(mavlink_global_position_t, vy) }, \
+         { "vz", MAVLINK_TYPE_FLOAT, 0, 28, offsetof(mavlink_global_position_t, vz) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a global_position message
  * @param system_id ID of this system

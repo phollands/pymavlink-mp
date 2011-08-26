@@ -11,6 +11,18 @@ typedef struct __mavlink_data_transmission_handshake_t
  uint8_t jpg_quality; ///< JPEG quality out of [1,100]
 } mavlink_data_transmission_handshake_t;
 
+#define MAVLINK_MESSAGE_INFO_DATA_TRANSMISSION_HANDSHAKE { \
+	"DATA_TRANSMISSION_HANDSHAKE", \
+	5, \
+	{  { "type", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_data_transmission_handshake_t, type) }, \
+         { "size", MAVLINK_TYPE_UINT32_T, 0, 1, offsetof(mavlink_data_transmission_handshake_t, size) }, \
+         { "packets", MAVLINK_TYPE_UINT8_T, 0, 5, offsetof(mavlink_data_transmission_handshake_t, packets) }, \
+         { "payload", MAVLINK_TYPE_UINT8_T, 0, 6, offsetof(mavlink_data_transmission_handshake_t, payload) }, \
+         { "jpg_quality", MAVLINK_TYPE_UINT8_T, 0, 7, offsetof(mavlink_data_transmission_handshake_t, jpg_quality) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a data_transmission_handshake message
  * @param system_id ID of this system

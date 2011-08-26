@@ -12,6 +12,19 @@ typedef struct __mavlink_optical_flow_t
  uint8_t quality; ///< Optical flow quality / confidence. 0: bad, 255: maximum quality
 } mavlink_optical_flow_t;
 
+#define MAVLINK_MESSAGE_INFO_OPTICAL_FLOW { \
+	"OPTICAL_FLOW", \
+	6, \
+	{  { "time", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_optical_flow_t, time) }, \
+         { "ground_distance", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_optical_flow_t, ground_distance) }, \
+         { "flow_x", MAVLINK_TYPE_INT16_T, 0, 12, offsetof(mavlink_optical_flow_t, flow_x) }, \
+         { "flow_y", MAVLINK_TYPE_INT16_T, 0, 14, offsetof(mavlink_optical_flow_t, flow_y) }, \
+         { "sensor_id", MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_optical_flow_t, sensor_id) }, \
+         { "quality", MAVLINK_TYPE_UINT8_T, 0, 17, offsetof(mavlink_optical_flow_t, quality) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a optical_flow message
  * @param system_id ID of this system

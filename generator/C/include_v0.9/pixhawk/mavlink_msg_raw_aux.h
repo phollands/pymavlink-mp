@@ -13,6 +13,20 @@ typedef struct __mavlink_raw_aux_t
  int32_t baro; ///< Barometric pressure (hecto Pascal)
 } mavlink_raw_aux_t;
 
+#define MAVLINK_MESSAGE_INFO_RAW_AUX { \
+	"RAW_AUX", \
+	7, \
+	{  { "adc1", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_raw_aux_t, adc1) }, \
+         { "adc2", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_raw_aux_t, adc2) }, \
+         { "adc3", MAVLINK_TYPE_UINT16_T, 0, 4, offsetof(mavlink_raw_aux_t, adc3) }, \
+         { "adc4", MAVLINK_TYPE_UINT16_T, 0, 6, offsetof(mavlink_raw_aux_t, adc4) }, \
+         { "vbat", MAVLINK_TYPE_UINT16_T, 0, 8, offsetof(mavlink_raw_aux_t, vbat) }, \
+         { "temp", MAVLINK_TYPE_INT16_T, 0, 10, offsetof(mavlink_raw_aux_t, temp) }, \
+         { "baro", MAVLINK_TYPE_INT32_T, 0, 12, offsetof(mavlink_raw_aux_t, baro) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a raw_aux message
  * @param system_id ID of this system

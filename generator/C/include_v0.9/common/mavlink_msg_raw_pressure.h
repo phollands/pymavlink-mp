@@ -11,6 +11,18 @@ typedef struct __mavlink_raw_pressure_t
  int16_t temperature; ///< Raw Temperature measurement (raw)
 } mavlink_raw_pressure_t;
 
+#define MAVLINK_MESSAGE_INFO_RAW_PRESSURE { \
+	"RAW_PRESSURE", \
+	5, \
+	{  { "usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_raw_pressure_t, usec) }, \
+         { "press_abs", MAVLINK_TYPE_INT16_T, 0, 8, offsetof(mavlink_raw_pressure_t, press_abs) }, \
+         { "press_diff1", MAVLINK_TYPE_INT16_T, 0, 10, offsetof(mavlink_raw_pressure_t, press_diff1) }, \
+         { "press_diff2", MAVLINK_TYPE_INT16_T, 0, 12, offsetof(mavlink_raw_pressure_t, press_diff2) }, \
+         { "temperature", MAVLINK_TYPE_INT16_T, 0, 14, offsetof(mavlink_raw_pressure_t, temperature) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a raw_pressure message
  * @param system_id ID of this system

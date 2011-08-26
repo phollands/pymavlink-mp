@@ -12,6 +12,19 @@ typedef struct __mavlink_local_position_setpoint_set_t
  uint8_t target_component; ///< Component ID
 } mavlink_local_position_setpoint_set_t;
 
+#define MAVLINK_MESSAGE_INFO_LOCAL_POSITION_SETPOINT_SET { \
+	"LOCAL_POSITION_SETPOINT_SET", \
+	6, \
+	{  { "x", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_local_position_setpoint_set_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_local_position_setpoint_set_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_local_position_setpoint_set_t, z) }, \
+         { "yaw", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_local_position_setpoint_set_t, yaw) }, \
+         { "target_system", MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_local_position_setpoint_set_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 17, offsetof(mavlink_local_position_setpoint_set_t, target_component) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a local_position_setpoint_set message
  * @param system_id ID of this system

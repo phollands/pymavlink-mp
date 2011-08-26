@@ -12,6 +12,19 @@ typedef struct __mavlink_data_log_t
  float fl_6; ///< Log value 6 
 } mavlink_data_log_t;
 
+#define MAVLINK_MESSAGE_INFO_DATA_LOG { \
+	"DATA_LOG", \
+	6, \
+	{  { "fl_1", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_data_log_t, fl_1) }, \
+         { "fl_2", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_data_log_t, fl_2) }, \
+         { "fl_3", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_data_log_t, fl_3) }, \
+         { "fl_4", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_data_log_t, fl_4) }, \
+         { "fl_5", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_data_log_t, fl_5) }, \
+         { "fl_6", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_data_log_t, fl_6) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a data_log message
  * @param system_id ID of this system

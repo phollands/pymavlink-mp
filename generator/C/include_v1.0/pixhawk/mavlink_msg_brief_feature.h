@@ -14,6 +14,21 @@ typedef struct __mavlink_brief_feature_t
  uint8_t descriptor[32]; ///< Descriptor
 } mavlink_brief_feature_t;
 
+#define MAVLINK_MESSAGE_INFO_BRIEF_FEATURE { \
+	"BRIEF_FEATURE", \
+	8, \
+	{  { "x", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_brief_feature_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_brief_feature_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_brief_feature_t, z) }, \
+         { "response", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_brief_feature_t, response) }, \
+         { "size", MAVLINK_TYPE_UINT16_T, 0, 16, offsetof(mavlink_brief_feature_t, size) }, \
+         { "orientation", MAVLINK_TYPE_UINT16_T, 0, 18, offsetof(mavlink_brief_feature_t, orientation) }, \
+         { "orientation_assignment", MAVLINK_TYPE_UINT8_T, 0, 20, offsetof(mavlink_brief_feature_t, orientation_assignment) }, \
+         { "descriptor", MAVLINK_TYPE_UINT8_T, 32, 21, offsetof(mavlink_brief_feature_t, descriptor) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a brief_feature message
  * @param system_id ID of this system

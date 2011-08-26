@@ -13,6 +13,20 @@ typedef struct __mavlink_marker_t
  uint16_t id; ///< ID
 } mavlink_marker_t;
 
+#define MAVLINK_MESSAGE_INFO_MARKER { \
+	"MARKER", \
+	7, \
+	{  { "x", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_marker_t, x) }, \
+         { "y", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_marker_t, y) }, \
+         { "z", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_marker_t, z) }, \
+         { "roll", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_marker_t, roll) }, \
+         { "pitch", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_marker_t, pitch) }, \
+         { "yaw", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_marker_t, yaw) }, \
+         { "id", MAVLINK_TYPE_UINT16_T, 0, 24, offsetof(mavlink_marker_t, id) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a marker message
  * @param system_id ID of this system

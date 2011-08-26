@@ -12,6 +12,19 @@ typedef struct __mavlink_set_roll_pitch_yaw_speed_thrust_t
  float thrust; ///< Collective thrust, normalized to 0 .. 1
 } mavlink_set_roll_pitch_yaw_speed_thrust_t;
 
+#define MAVLINK_MESSAGE_INFO_SET_ROLL_PITCH_YAW_SPEED_THRUST { \
+	"SET_ROLL_PITCH_YAW_SPEED_THRUST", \
+	6, \
+	{  { "target_system", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_set_roll_pitch_yaw_speed_thrust_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_set_roll_pitch_yaw_speed_thrust_t, target_component) }, \
+         { "roll_speed", MAVLINK_TYPE_FLOAT, 0, 2, offsetof(mavlink_set_roll_pitch_yaw_speed_thrust_t, roll_speed) }, \
+         { "pitch_speed", MAVLINK_TYPE_FLOAT, 0, 6, offsetof(mavlink_set_roll_pitch_yaw_speed_thrust_t, pitch_speed) }, \
+         { "yaw_speed", MAVLINK_TYPE_FLOAT, 0, 10, offsetof(mavlink_set_roll_pitch_yaw_speed_thrust_t, yaw_speed) }, \
+         { "thrust", MAVLINK_TYPE_FLOAT, 0, 14, offsetof(mavlink_set_roll_pitch_yaw_speed_thrust_t, thrust) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a set_roll_pitch_yaw_speed_thrust message
  * @param system_id ID of this system

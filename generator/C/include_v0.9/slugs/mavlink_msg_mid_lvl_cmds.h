@@ -10,6 +10,17 @@ typedef struct __mavlink_mid_lvl_cmds_t
  float rCommand; ///< Log value 3 
 } mavlink_mid_lvl_cmds_t;
 
+#define MAVLINK_MESSAGE_INFO_MID_LVL_CMDS { \
+	"MID_LVL_CMDS", \
+	4, \
+	{  { "target", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_mid_lvl_cmds_t, target) }, \
+         { "hCommand", MAVLINK_TYPE_FLOAT, 0, 1, offsetof(mavlink_mid_lvl_cmds_t, hCommand) }, \
+         { "uCommand", MAVLINK_TYPE_FLOAT, 0, 5, offsetof(mavlink_mid_lvl_cmds_t, uCommand) }, \
+         { "rCommand", MAVLINK_TYPE_FLOAT, 0, 9, offsetof(mavlink_mid_lvl_cmds_t, rCommand) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a mid_lvl_cmds message
  * @param system_id ID of this system

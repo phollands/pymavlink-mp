@@ -12,6 +12,19 @@ typedef struct __mavlink_set_cam_shutter_t
  uint8_t trigger_pin; ///< Trigger pin, 0-3 for PtGrey FireFly
 } mavlink_set_cam_shutter_t;
 
+#define MAVLINK_MESSAGE_INFO_SET_CAM_SHUTTER { \
+	"SET_CAM_SHUTTER", \
+	6, \
+	{  { "gain", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_set_cam_shutter_t, gain) }, \
+         { "interval", MAVLINK_TYPE_UINT16_T, 0, 4, offsetof(mavlink_set_cam_shutter_t, interval) }, \
+         { "exposure", MAVLINK_TYPE_UINT16_T, 0, 6, offsetof(mavlink_set_cam_shutter_t, exposure) }, \
+         { "cam_no", MAVLINK_TYPE_UINT8_T, 0, 8, offsetof(mavlink_set_cam_shutter_t, cam_no) }, \
+         { "cam_mode", MAVLINK_TYPE_UINT8_T, 0, 9, offsetof(mavlink_set_cam_shutter_t, cam_mode) }, \
+         { "trigger_pin", MAVLINK_TYPE_UINT8_T, 0, 10, offsetof(mavlink_set_cam_shutter_t, trigger_pin) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a set_cam_shutter message
  * @param system_id ID of this system

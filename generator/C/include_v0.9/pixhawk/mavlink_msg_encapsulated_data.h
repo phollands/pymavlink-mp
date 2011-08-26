@@ -8,6 +8,15 @@ typedef struct __mavlink_encapsulated_data_t
  uint8_t data[253]; ///< image data bytes
 } mavlink_encapsulated_data_t;
 
+#define MAVLINK_MESSAGE_INFO_ENCAPSULATED_DATA { \
+	"ENCAPSULATED_DATA", \
+	2, \
+	{  { "seqnr", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_encapsulated_data_t, seqnr) }, \
+         { "data", MAVLINK_TYPE_UINT8_T, 253, 2, offsetof(mavlink_encapsulated_data_t, data) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a encapsulated_data message
  * @param system_id ID of this system

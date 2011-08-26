@@ -10,6 +10,17 @@ typedef struct __mavlink_ping_t
  uint64_t time; ///< Unix timestamp in microseconds
 } mavlink_ping_t;
 
+#define MAVLINK_MESSAGE_INFO_PING { \
+	"PING", \
+	4, \
+	{  { "seq", MAVLINK_TYPE_UINT32_T, 0, 0, offsetof(mavlink_ping_t, seq) }, \
+         { "target_system", MAVLINK_TYPE_UINT8_T, 0, 4, offsetof(mavlink_ping_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 5, offsetof(mavlink_ping_t, target_component) }, \
+         { "time", MAVLINK_TYPE_UINT64_T, 0, 6, offsetof(mavlink_ping_t, time) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a ping message
  * @param system_id ID of this system

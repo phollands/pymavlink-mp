@@ -9,6 +9,16 @@ typedef struct __mavlink_waypoint_count_t
  uint8_t target_component; ///< Component ID
 } mavlink_waypoint_count_t;
 
+#define MAVLINK_MESSAGE_INFO_WAYPOINT_COUNT { \
+	"WAYPOINT_COUNT", \
+	3, \
+	{  { "count", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_waypoint_count_t, count) }, \
+         { "target_system", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_waypoint_count_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 3, offsetof(mavlink_waypoint_count_t, target_component) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a waypoint_count message
  * @param system_id ID of this system

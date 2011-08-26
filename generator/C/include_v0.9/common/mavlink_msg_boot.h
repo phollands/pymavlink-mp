@@ -7,6 +7,14 @@ typedef struct __mavlink_boot_t
  uint32_t version; ///< The onboard software version
 } mavlink_boot_t;
 
+#define MAVLINK_MESSAGE_INFO_BOOT { \
+	"BOOT", \
+	1, \
+	{  { "version", MAVLINK_TYPE_UINT32_T, 0, 0, offsetof(mavlink_boot_t, version) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a boot message
  * @param system_id ID of this system

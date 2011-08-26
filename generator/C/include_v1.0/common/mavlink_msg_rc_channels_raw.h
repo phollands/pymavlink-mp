@@ -15,6 +15,22 @@ typedef struct __mavlink_rc_channels_raw_t
  uint8_t rssi; ///< Receive signal strength indicator, 0: 0%, 255: 100%
 } mavlink_rc_channels_raw_t;
 
+#define MAVLINK_MESSAGE_INFO_RC_CHANNELS_RAW { \
+	"RC_CHANNELS_RAW", \
+	9, \
+	{  { "chan1_raw", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_rc_channels_raw_t, chan1_raw) }, \
+         { "chan2_raw", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_rc_channels_raw_t, chan2_raw) }, \
+         { "chan3_raw", MAVLINK_TYPE_UINT16_T, 0, 4, offsetof(mavlink_rc_channels_raw_t, chan3_raw) }, \
+         { "chan4_raw", MAVLINK_TYPE_UINT16_T, 0, 6, offsetof(mavlink_rc_channels_raw_t, chan4_raw) }, \
+         { "chan5_raw", MAVLINK_TYPE_UINT16_T, 0, 8, offsetof(mavlink_rc_channels_raw_t, chan5_raw) }, \
+         { "chan6_raw", MAVLINK_TYPE_UINT16_T, 0, 10, offsetof(mavlink_rc_channels_raw_t, chan6_raw) }, \
+         { "chan7_raw", MAVLINK_TYPE_UINT16_T, 0, 12, offsetof(mavlink_rc_channels_raw_t, chan7_raw) }, \
+         { "chan8_raw", MAVLINK_TYPE_UINT16_T, 0, 14, offsetof(mavlink_rc_channels_raw_t, chan8_raw) }, \
+         { "rssi", MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_rc_channels_raw_t, rssi) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a rc_channels_raw message
  * @param system_id ID of this system

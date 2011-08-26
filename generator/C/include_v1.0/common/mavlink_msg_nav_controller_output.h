@@ -14,6 +14,21 @@ typedef struct __mavlink_nav_controller_output_t
  uint16_t wp_dist; ///< Distance to active waypoint in meters
 } mavlink_nav_controller_output_t;
 
+#define MAVLINK_MESSAGE_INFO_NAV_CONTROLLER_OUTPUT { \
+	"NAV_CONTROLLER_OUTPUT", \
+	8, \
+	{  { "nav_roll", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_nav_controller_output_t, nav_roll) }, \
+         { "nav_pitch", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_nav_controller_output_t, nav_pitch) }, \
+         { "alt_error", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_nav_controller_output_t, alt_error) }, \
+         { "aspd_error", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_nav_controller_output_t, aspd_error) }, \
+         { "xtrack_error", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_nav_controller_output_t, xtrack_error) }, \
+         { "nav_bearing", MAVLINK_TYPE_INT16_T, 0, 20, offsetof(mavlink_nav_controller_output_t, nav_bearing) }, \
+         { "target_bearing", MAVLINK_TYPE_INT16_T, 0, 22, offsetof(mavlink_nav_controller_output_t, target_bearing) }, \
+         { "wp_dist", MAVLINK_TYPE_UINT16_T, 0, 24, offsetof(mavlink_nav_controller_output_t, wp_dist) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a nav_controller_output message
  * @param system_id ID of this system

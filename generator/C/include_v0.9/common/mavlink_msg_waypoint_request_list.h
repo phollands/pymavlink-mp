@@ -8,6 +8,15 @@ typedef struct __mavlink_waypoint_request_list_t
  uint8_t target_component; ///< Component ID
 } mavlink_waypoint_request_list_t;
 
+#define MAVLINK_MESSAGE_INFO_WAYPOINT_REQUEST_LIST { \
+	"WAYPOINT_REQUEST_LIST", \
+	2, \
+	{  { "target_system", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_waypoint_request_list_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_waypoint_request_list_t, target_component) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a waypoint_request_list message
  * @param system_id ID of this system

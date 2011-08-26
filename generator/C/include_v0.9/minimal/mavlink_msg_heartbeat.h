@@ -9,6 +9,16 @@ typedef struct __mavlink_heartbeat_t
  uint8_t mavlink_version; ///< MAVLink version
 } mavlink_heartbeat_t;
 
+#define MAVLINK_MESSAGE_INFO_HEARTBEAT { \
+	"HEARTBEAT", \
+	3, \
+	{  { "type", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_heartbeat_t, type) }, \
+         { "autopilot", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_heartbeat_t, autopilot) }, \
+         { "mavlink_version", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_heartbeat_t, mavlink_version) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a heartbeat message
  * @param system_id ID of this system

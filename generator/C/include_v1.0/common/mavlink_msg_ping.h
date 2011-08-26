@@ -10,6 +10,17 @@ typedef struct __mavlink_ping_t
  uint8_t target_component; ///< 0: request ping from all receiving components, if greater than 0: message is a ping response and number is the system id of the requesting system
 } mavlink_ping_t;
 
+#define MAVLINK_MESSAGE_INFO_PING { \
+	"PING", \
+	4, \
+	{  { "time", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_ping_t, time) }, \
+         { "seq", MAVLINK_TYPE_UINT32_T, 0, 8, offsetof(mavlink_ping_t, seq) }, \
+         { "target_system", MAVLINK_TYPE_UINT8_T, 0, 12, offsetof(mavlink_ping_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 13, offsetof(mavlink_ping_t, target_component) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a ping message
  * @param system_id ID of this system

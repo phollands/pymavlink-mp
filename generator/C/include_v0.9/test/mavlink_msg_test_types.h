@@ -28,6 +28,35 @@ typedef struct __mavlink_test_types_t
  double d_array[3]; ///< double_array
 } mavlink_test_types_t;
 
+#define MAVLINK_MESSAGE_INFO_TEST_TYPES { \
+	"TEST_TYPES", \
+	22, \
+	{  { "c", MAVLINK_TYPE_CHAR, 0, 0, offsetof(mavlink_test_types_t, c) }, \
+         { "s", MAVLINK_TYPE_CHAR, 10, 1, offsetof(mavlink_test_types_t, s) }, \
+         { "u8", MAVLINK_TYPE_UINT8_T, 0, 11, offsetof(mavlink_test_types_t, u8) }, \
+         { "u16", MAVLINK_TYPE_UINT16_T, 0, 12, offsetof(mavlink_test_types_t, u16) }, \
+         { "u32", MAVLINK_TYPE_UINT32_T, 0, 14, offsetof(mavlink_test_types_t, u32) }, \
+         { "u64", MAVLINK_TYPE_UINT64_T, 0, 18, offsetof(mavlink_test_types_t, u64) }, \
+         { "s8", MAVLINK_TYPE_INT8_T, 0, 26, offsetof(mavlink_test_types_t, s8) }, \
+         { "s16", MAVLINK_TYPE_INT16_T, 0, 27, offsetof(mavlink_test_types_t, s16) }, \
+         { "s32", MAVLINK_TYPE_INT32_T, 0, 29, offsetof(mavlink_test_types_t, s32) }, \
+         { "s64", MAVLINK_TYPE_INT64_T, 0, 33, offsetof(mavlink_test_types_t, s64) }, \
+         { "f", MAVLINK_TYPE_FLOAT, 0, 41, offsetof(mavlink_test_types_t, f) }, \
+         { "d", MAVLINK_TYPE_DOUBLE, 0, 45, offsetof(mavlink_test_types_t, d) }, \
+         { "u8_array", MAVLINK_TYPE_UINT8_T, 3, 53, offsetof(mavlink_test_types_t, u8_array) }, \
+         { "u16_array", MAVLINK_TYPE_UINT16_T, 3, 56, offsetof(mavlink_test_types_t, u16_array) }, \
+         { "u32_array", MAVLINK_TYPE_UINT32_T, 3, 62, offsetof(mavlink_test_types_t, u32_array) }, \
+         { "u64_array", MAVLINK_TYPE_UINT64_T, 3, 74, offsetof(mavlink_test_types_t, u64_array) }, \
+         { "s8_array", MAVLINK_TYPE_INT8_T, 3, 98, offsetof(mavlink_test_types_t, s8_array) }, \
+         { "s16_array", MAVLINK_TYPE_INT16_T, 3, 101, offsetof(mavlink_test_types_t, s16_array) }, \
+         { "s32_array", MAVLINK_TYPE_INT32_T, 3, 107, offsetof(mavlink_test_types_t, s32_array) }, \
+         { "s64_array", MAVLINK_TYPE_INT64_T, 3, 119, offsetof(mavlink_test_types_t, s64_array) }, \
+         { "f_array", MAVLINK_TYPE_FLOAT, 3, 143, offsetof(mavlink_test_types_t, f_array) }, \
+         { "d_array", MAVLINK_TYPE_DOUBLE, 3, 155, offsetof(mavlink_test_types_t, d_array) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a test_types message
  * @param system_id ID of this system

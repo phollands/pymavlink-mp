@@ -9,6 +9,16 @@ typedef struct __mavlink_ualberta_sys_status_t
  uint8_t pilot; ///< Pilot mode, see UALBERTA_PILOT_MODE
 } mavlink_ualberta_sys_status_t;
 
+#define MAVLINK_MESSAGE_INFO_UALBERTA_SYS_STATUS { \
+	"UALBERTA_SYS_STATUS", \
+	3, \
+	{  { "mode", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_ualberta_sys_status_t, mode) }, \
+         { "nav_mode", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_ualberta_sys_status_t, nav_mode) }, \
+         { "pilot", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_ualberta_sys_status_t, pilot) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a ualberta_sys_status message
  * @param system_id ID of this system

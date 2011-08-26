@@ -9,6 +9,16 @@ typedef struct __mavlink_data_stream_t
  uint8_t on_off; ///< 1 stream is enabled, 0 stream is stopped.
 } mavlink_data_stream_t;
 
+#define MAVLINK_MESSAGE_INFO_DATA_STREAM { \
+	"DATA_STREAM", \
+	3, \
+	{  { "message_rate", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_data_stream_t, message_rate) }, \
+         { "stream_id", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_data_stream_t, stream_id) }, \
+         { "on_off", MAVLINK_TYPE_UINT8_T, 0, 3, offsetof(mavlink_data_stream_t, on_off) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a data_stream message
  * @param system_id ID of this system

@@ -16,6 +16,23 @@ typedef struct __mavlink_scaled_imu_t
  int16_t zmag; ///< Z Magnetic field (milli tesla)
 } mavlink_scaled_imu_t;
 
+#define MAVLINK_MESSAGE_INFO_SCALED_IMU { \
+	"SCALED_IMU", \
+	10, \
+	{  { "usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_scaled_imu_t, usec) }, \
+         { "xacc", MAVLINK_TYPE_INT16_T, 0, 8, offsetof(mavlink_scaled_imu_t, xacc) }, \
+         { "yacc", MAVLINK_TYPE_INT16_T, 0, 10, offsetof(mavlink_scaled_imu_t, yacc) }, \
+         { "zacc", MAVLINK_TYPE_INT16_T, 0, 12, offsetof(mavlink_scaled_imu_t, zacc) }, \
+         { "xgyro", MAVLINK_TYPE_INT16_T, 0, 14, offsetof(mavlink_scaled_imu_t, xgyro) }, \
+         { "ygyro", MAVLINK_TYPE_INT16_T, 0, 16, offsetof(mavlink_scaled_imu_t, ygyro) }, \
+         { "zgyro", MAVLINK_TYPE_INT16_T, 0, 18, offsetof(mavlink_scaled_imu_t, zgyro) }, \
+         { "xmag", MAVLINK_TYPE_INT16_T, 0, 20, offsetof(mavlink_scaled_imu_t, xmag) }, \
+         { "ymag", MAVLINK_TYPE_INT16_T, 0, 22, offsetof(mavlink_scaled_imu_t, ymag) }, \
+         { "zmag", MAVLINK_TYPE_INT16_T, 0, 24, offsetof(mavlink_scaled_imu_t, zmag) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a scaled_imu message
  * @param system_id ID of this system

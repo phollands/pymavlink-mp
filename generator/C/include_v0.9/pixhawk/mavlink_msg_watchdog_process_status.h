@@ -12,6 +12,19 @@ typedef struct __mavlink_watchdog_process_status_t
  uint16_t crashes; ///< Number of crashes
 } mavlink_watchdog_process_status_t;
 
+#define MAVLINK_MESSAGE_INFO_WATCHDOG_PROCESS_STATUS { \
+	"WATCHDOG_PROCESS_STATUS", \
+	6, \
+	{  { "watchdog_id", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_watchdog_process_status_t, watchdog_id) }, \
+         { "process_id", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_watchdog_process_status_t, process_id) }, \
+         { "state", MAVLINK_TYPE_UINT8_T, 0, 4, offsetof(mavlink_watchdog_process_status_t, state) }, \
+         { "muted", MAVLINK_TYPE_UINT8_T, 0, 5, offsetof(mavlink_watchdog_process_status_t, muted) }, \
+         { "pid", MAVLINK_TYPE_INT32_T, 0, 6, offsetof(mavlink_watchdog_process_status_t, pid) }, \
+         { "crashes", MAVLINK_TYPE_UINT16_T, 0, 10, offsetof(mavlink_watchdog_process_status_t, crashes) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a watchdog_process_status message
  * @param system_id ID of this system

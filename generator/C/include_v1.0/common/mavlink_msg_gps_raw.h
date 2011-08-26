@@ -16,6 +16,23 @@ typedef struct __mavlink_gps_raw_t
  uint8_t satellites_visible; ///< Number of satellites visible
 } mavlink_gps_raw_t;
 
+#define MAVLINK_MESSAGE_INFO_GPS_RAW { \
+	"GPS_RAW", \
+	10, \
+	{  { "usec", MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_gps_raw_t, usec) }, \
+         { "lat", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_gps_raw_t, lat) }, \
+         { "lon", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_gps_raw_t, lon) }, \
+         { "alt", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_gps_raw_t, alt) }, \
+         { "eph", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_gps_raw_t, eph) }, \
+         { "epv", MAVLINK_TYPE_FLOAT, 0, 24, offsetof(mavlink_gps_raw_t, epv) }, \
+         { "v", MAVLINK_TYPE_FLOAT, 0, 28, offsetof(mavlink_gps_raw_t, v) }, \
+         { "hdg", MAVLINK_TYPE_FLOAT, 0, 32, offsetof(mavlink_gps_raw_t, hdg) }, \
+         { "fix_type", MAVLINK_TYPE_UINT8_T, 0, 36, offsetof(mavlink_gps_raw_t, fix_type) }, \
+         { "satellites_visible", MAVLINK_TYPE_UINT8_T, 0, 37, offsetof(mavlink_gps_raw_t, satellites_visible) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a gps_raw message
  * @param system_id ID of this system

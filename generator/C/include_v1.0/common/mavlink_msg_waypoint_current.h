@@ -7,6 +7,14 @@ typedef struct __mavlink_waypoint_current_t
  uint16_t seq; ///< Sequence
 } mavlink_waypoint_current_t;
 
+#define MAVLINK_MESSAGE_INFO_WAYPOINT_CURRENT { \
+	"WAYPOINT_CURRENT", \
+	1, \
+	{  { "seq", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_waypoint_current_t, seq) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a waypoint_current message
  * @param system_id ID of this system

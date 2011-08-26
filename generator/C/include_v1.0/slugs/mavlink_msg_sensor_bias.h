@@ -12,6 +12,19 @@ typedef struct __mavlink_sensor_bias_t
  float gzBias; ///< Gyro Z bias (rad/s)
 } mavlink_sensor_bias_t;
 
+#define MAVLINK_MESSAGE_INFO_SENSOR_BIAS { \
+	"SENSOR_BIAS", \
+	6, \
+	{  { "axBias", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_sensor_bias_t, axBias) }, \
+         { "ayBias", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_sensor_bias_t, ayBias) }, \
+         { "azBias", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_sensor_bias_t, azBias) }, \
+         { "gxBias", MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_sensor_bias_t, gxBias) }, \
+         { "gyBias", MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_sensor_bias_t, gyBias) }, \
+         { "gzBias", MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_sensor_bias_t, gzBias) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a sensor_bias message
  * @param system_id ID of this system

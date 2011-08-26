@@ -9,6 +9,16 @@ typedef struct __mavlink_waypoint_ack_t
  uint8_t type; ///< 0: OK, 1: Error
 } mavlink_waypoint_ack_t;
 
+#define MAVLINK_MESSAGE_INFO_WAYPOINT_ACK { \
+	"WAYPOINT_ACK", \
+	3, \
+	{  { "target_system", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_waypoint_ack_t, target_system) }, \
+         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_waypoint_ack_t, target_component) }, \
+         { "type", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_waypoint_ack_t, type) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a waypoint_ack message
  * @param system_id ID of this system

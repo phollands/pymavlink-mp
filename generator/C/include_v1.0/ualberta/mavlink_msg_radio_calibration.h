@@ -12,6 +12,19 @@ typedef struct __mavlink_radio_calibration_t
  uint16_t throttle[5]; ///< Throttle curve setpoints (every 25%)
 } mavlink_radio_calibration_t;
 
+#define MAVLINK_MESSAGE_INFO_RADIO_CALIBRATION { \
+	"RADIO_CALIBRATION", \
+	6, \
+	{  { "aileron", MAVLINK_TYPE_UINT16_T, 3, 0, offsetof(mavlink_radio_calibration_t, aileron) }, \
+         { "elevator", MAVLINK_TYPE_UINT16_T, 3, 6, offsetof(mavlink_radio_calibration_t, elevator) }, \
+         { "rudder", MAVLINK_TYPE_UINT16_T, 3, 12, offsetof(mavlink_radio_calibration_t, rudder) }, \
+         { "gyro", MAVLINK_TYPE_UINT16_T, 2, 18, offsetof(mavlink_radio_calibration_t, gyro) }, \
+         { "pitch", MAVLINK_TYPE_UINT16_T, 5, 22, offsetof(mavlink_radio_calibration_t, pitch) }, \
+         { "throttle", MAVLINK_TYPE_UINT16_T, 5, 32, offsetof(mavlink_radio_calibration_t, throttle) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a radio_calibration message
  * @param system_id ID of this system

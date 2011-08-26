@@ -9,6 +9,16 @@ typedef struct __mavlink_slugs_action_t
  uint8_t actionId; ///< Action ID. See apDefinitions.h in the SLUGS /clib directory for the ID names
 } mavlink_slugs_action_t;
 
+#define MAVLINK_MESSAGE_INFO_SLUGS_ACTION { \
+	"SLUGS_ACTION", \
+	3, \
+	{  { "actionVal", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_slugs_action_t, actionVal) }, \
+         { "target", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_slugs_action_t, target) }, \
+         { "actionId", MAVLINK_TYPE_UINT8_T, 0, 3, offsetof(mavlink_slugs_action_t, actionId) }, \
+         } \
+}
+
+
 /**
  * @brief Pack a slugs_action message
  * @param system_id ID of this system
