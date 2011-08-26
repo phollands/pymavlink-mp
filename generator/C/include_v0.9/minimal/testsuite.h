@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from minimal.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 10:31:43 2011
+ *	Generated on Fri Aug 26 11:31:01 2011
  */
 #ifndef MINIMAL_TESTSUITE_H
 #define MINIMAL_TESTSUITE_H
@@ -9,6 +9,20 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifndef MAVLINK_TEST_ALL
+#define MAVLINK_TEST_ALL
+
+static void mavlink_test_minimal(uint8_t, uint8_t);
+
+static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+{
+
+	mavlink_test_minimal(system_id, component_id);
+}
+#endif
+
+
 
 
 static void mavlink_test_heartbeat(uint8_t system_id, uint8_t component_id)
@@ -33,7 +47,7 @@ static void mavlink_test_heartbeat(uint8_t system_id, uint8_t component_id)
 	mavlink_msg_heartbeat_send(MAVLINK_COMM_2 , packet1.type , packet1.autopilot );
 }
 
-static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+static void mavlink_test_minimal(uint8_t system_id, uint8_t component_id)
 {
 	mavlink_test_heartbeat(system_id, component_id);
 }

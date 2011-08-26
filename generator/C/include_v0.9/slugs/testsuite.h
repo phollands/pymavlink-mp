@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from slugs.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 10:31:44 2011
+ *	Generated on Fri Aug 26 11:31:01 2011
  */
 #ifndef SLUGS_TESTSUITE_H
 #define SLUGS_TESTSUITE_H
@@ -9,6 +9,20 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifndef MAVLINK_TEST_ALL
+#define MAVLINK_TEST_ALL
+static void mavlink_test_common(uint8_t, uint8_t);
+static void mavlink_test_slugs(uint8_t, uint8_t);
+
+static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+{
+	mavlink_test_common(system_id, component_id);
+	mavlink_test_slugs(system_id, component_id);
+}
+#endif
+
+#include "../common/testsuite.h"
 
 
 static void mavlink_test_cpu_load(uint8_t system_id, uint8_t component_id)
@@ -250,7 +264,7 @@ static void mavlink_test_slugs_action(uint8_t system_id, uint8_t component_id)
 	mavlink_msg_slugs_action_send(MAVLINK_COMM_2 , packet1.target , packet1.actionId , packet1.actionVal );
 }
 
-static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+static void mavlink_test_slugs(uint8_t system_id, uint8_t component_id)
 {
 	mavlink_test_cpu_load(system_id, component_id);
 	mavlink_test_air_data(system_id, component_id);

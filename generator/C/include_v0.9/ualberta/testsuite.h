@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ualberta.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 10:31:45 2011
+ *	Generated on Fri Aug 26 11:31:01 2011
  */
 #ifndef UALBERTA_TESTSUITE_H
 #define UALBERTA_TESTSUITE_H
@@ -9,6 +9,20 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifndef MAVLINK_TEST_ALL
+#define MAVLINK_TEST_ALL
+static void mavlink_test_common(uint8_t, uint8_t);
+static void mavlink_test_ualberta(uint8_t, uint8_t);
+
+static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+{
+	mavlink_test_common(system_id, component_id);
+	mavlink_test_ualberta(system_id, component_id);
+}
+#endif
+
+#include "../common/testsuite.h"
 
 
 static void mavlink_test_nav_filter_bias(uint8_t system_id, uint8_t component_id)
@@ -84,7 +98,7 @@ static void mavlink_test_ualberta_sys_status(uint8_t system_id, uint8_t componen
 	mavlink_msg_ualberta_sys_status_send(MAVLINK_COMM_2 , packet1.mode , packet1.nav_mode , packet1.pilot );
 }
 
-static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+static void mavlink_test_ualberta(uint8_t system_id, uint8_t component_id)
 {
 	mavlink_test_nav_filter_bias(system_id, component_id);
 	mavlink_test_radio_calibration(system_id, component_id);

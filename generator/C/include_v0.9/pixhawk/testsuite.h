@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from pixhawk.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 10:31:45 2011
+ *	Generated on Fri Aug 26 11:31:01 2011
  */
 #ifndef PIXHAWK_TESTSUITE_H
 #define PIXHAWK_TESTSUITE_H
@@ -10,6 +10,20 @@
 extern "C" {
 #endif
 
+#ifndef MAVLINK_TEST_ALL
+#define MAVLINK_TEST_ALL
+static void mavlink_test_common(uint8_t, uint8_t);
+static void mavlink_test_pixhawk(uint8_t, uint8_t);
+
+static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+{
+	mavlink_test_common(system_id, component_id);
+	mavlink_test_pixhawk(system_id, component_id);
+}
+#endif
+
+#include "../common/testsuite.h"
+
 
 static void mavlink_test_set_cam_shutter(uint8_t system_id, uint8_t component_id)
 {
@@ -17,12 +31,12 @@ static void mavlink_test_set_cam_shutter(uint8_t system_id, uint8_t component_id
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_set_cam_shutter_t packet2, packet1 = {
-		17.0,
-	17443,
-	17547,
-	29,
-	96,
-	163,
+		5,
+	72,
+	139,
+	17391,
+	17495,
+	66.0,
 	};
 	mavlink_msg_set_cam_shutter_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_set_cam_shutter_decode(&msg, &packet2);
@@ -94,14 +108,17 @@ static void mavlink_test_image_available(uint8_t system_id, uint8_t component_id
         uint16_t i;
 	mavlink_image_available_t packet2, packet1 = {
 		9223372036854775807ULL,
-	9223372036854776311ULL,
-	9223372036854776815ULL,
-	963498712,
-	963498920,
-	963499128,
-	963499336,
-	297.0,
-	325.0,
+	29,
+	9223372036854776374ULL,
+	9223372036854776878ULL,
+	963498764,
+	963498972,
+	18951,
+	19055,
+	19159,
+	58,
+	963499544,
+	963499752,
 	353.0,
 	381.0,
 	409.0,
@@ -111,11 +128,8 @@ static void mavlink_test_image_available(uint8_t system_id, uint8_t component_id
 	521.0,
 	549.0,
 	577.0,
-	21603,
-	21707,
-	21811,
-	147,
-	214,
+	605.0,
+	633.0,
 	};
 	mavlink_msg_image_available_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_image_available_decode(&msg, &packet2);
@@ -210,13 +224,13 @@ static void mavlink_test_position_control_setpoint_set(uint8_t system_id, uint8_
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_position_control_setpoint_set_t packet2, packet1 = {
-		17.0,
+		5,
+	72,
+	17339,
 	45.0,
 	73.0,
 	101.0,
-	18067,
-	187,
-	254,
+	129.0,
 	};
 	mavlink_msg_position_control_setpoint_set_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_position_control_setpoint_set_decode(&msg, &packet2);
@@ -236,12 +250,12 @@ static void mavlink_test_position_control_offset_set(uint8_t system_id, uint8_t 
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_position_control_offset_set_t packet2, packet1 = {
-		17.0,
-	45.0,
-	73.0,
-	101.0,
-	53,
-	120,
+		5,
+	72,
+	31.0,
+	59.0,
+	87.0,
+	115.0,
 	};
 	mavlink_msg_position_control_offset_set_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_position_control_offset_set_decode(&msg, &packet2);
@@ -261,11 +275,11 @@ static void mavlink_test_position_control_setpoint(uint8_t system_id, uint8_t co
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_position_control_setpoint_t packet2, packet1 = {
-		17.0,
-	45.0,
-	73.0,
-	101.0,
-	18067,
+		17235,
+	31.0,
+	59.0,
+	87.0,
+	115.0,
 	};
 	mavlink_msg_position_control_setpoint_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_position_control_setpoint_decode(&msg, &packet2);
@@ -285,13 +299,13 @@ static void mavlink_test_marker(uint8_t system_id, uint8_t component_id)
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_marker_t packet2, packet1 = {
-		17.0,
-	45.0,
-	73.0,
-	101.0,
-	129.0,
-	157.0,
-	18483,
+		17235,
+	31.0,
+	59.0,
+	87.0,
+	115.0,
+	143.0,
+	171.0,
 	};
 	mavlink_msg_marker_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_marker_decode(&msg, &packet2);
@@ -311,13 +325,13 @@ static void mavlink_test_raw_aux(uint8_t system_id, uint8_t component_id)
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_raw_aux_t packet2, packet1 = {
-		963497464,
+		17235,
+	17339,
 	17443,
 	17547,
 	17651,
 	17755,
-	17859,
-	17963,
+	963498088,
 	};
 	mavlink_msg_raw_aux_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_raw_aux_decode(&msg, &packet2);
@@ -358,11 +372,11 @@ static void mavlink_test_watchdog_process_info(uint8_t system_id, uint8_t compon
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_watchdog_process_info_t packet2, packet1 = {
-		963497464,
-	17443,
-	17547,
-	"IJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABC",
-	"EFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRST",
+		17235,
+	17339,
+	"EFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXY",
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOP",
+	963510516,
 	};
 	mavlink_msg_watchdog_process_info_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_watchdog_process_info_decode(&msg, &packet2);
@@ -382,12 +396,12 @@ static void mavlink_test_watchdog_process_status(uint8_t system_id, uint8_t comp
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_watchdog_process_status_t packet2, packet1 = {
-		963497464,
-	17443,
-	17547,
-	17651,
-	163,
-	230,
+		17235,
+	17339,
+	17,
+	84,
+	963497776,
+	17755,
 	};
 	mavlink_msg_watchdog_process_status_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_watchdog_process_status_decode(&msg, &packet2);
@@ -407,9 +421,9 @@ static void mavlink_test_watchdog_command(uint8_t system_id, uint8_t component_i
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_watchdog_command_t packet2, packet1 = {
-		17235,
-	17339,
-	17,
+		5,
+	17287,
+	17391,
 	84,
 	};
 	mavlink_msg_watchdog_command_encode(system_id, component_id, &msg, &packet1);
@@ -430,8 +444,8 @@ static void mavlink_test_pattern_detected(uint8_t system_id, uint8_t component_i
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_pattern_detected_t packet2, packet1 = {
-		17.0,
-	17,
+		5,
+	24.0,
 	"FGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ",
 	128,
 	};
@@ -453,13 +467,13 @@ static void mavlink_test_point_of_interest(uint8_t system_id, uint8_t component_
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_point_of_interest_t packet2, packet1 = {
-		17.0,
-	45.0,
-	73.0,
-	17859,
-	175,
-	242,
-	53,
+		5,
+	72,
+	139,
+	17391,
+	52.0,
+	80.0,
+	108.0,
 	"RSTUVWXYZABCDEFGHIJKLMNOP",
 	};
 	mavlink_msg_point_of_interest_encode(system_id, component_id, &msg, &packet1);
@@ -480,16 +494,16 @@ static void mavlink_test_point_of_interest_connection(uint8_t system_id, uint8_t
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_point_of_interest_connection_t packet2, packet1 = {
-		17.0,
-	45.0,
-	73.0,
-	101.0,
-	129.0,
-	157.0,
-	18483,
-	211,
-	22,
-	89,
+		5,
+	72,
+	139,
+	17391,
+	52.0,
+	80.0,
+	108.0,
+	136.0,
+	164.0,
+	192.0,
 	"DEFGHIJKLMNOPQRSTUVWXYZAB",
 	};
 	mavlink_msg_point_of_interest_connection_encode(system_id, component_id, &msg, &packet1);
@@ -510,8 +524,8 @@ static void mavlink_test_data_transmission_handshake(uint8_t system_id, uint8_t 
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_data_transmission_handshake_t packet2, packet1 = {
-		963497464,
-	17,
+		5,
+	963497516,
 	84,
 	151,
 	218,
@@ -558,11 +572,11 @@ static void mavlink_test_brief_feature(uint8_t system_id, uint8_t component_id)
 		17.0,
 	45.0,
 	73.0,
-	101.0,
-	18067,
-	18171,
-	65,
-	{ 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163 },
+	41,
+	17911,
+	18015,
+	{ 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151 },
+	360.0,
 	};
 	mavlink_msg_brief_feature_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_brief_feature_decode(&msg, &packet2);
@@ -582,11 +596,11 @@ static void mavlink_test_attitude_control(uint8_t system_id, uint8_t component_i
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_attitude_control_t packet2, packet1 = {
-		17.0,
-	45.0,
-	73.0,
-	101.0,
-	53,
+		5,
+	24.0,
+	52.0,
+	80.0,
+	108.0,
 	120,
 	187,
 	254,
@@ -604,7 +618,7 @@ static void mavlink_test_attitude_control(uint8_t system_id, uint8_t component_i
 	mavlink_msg_attitude_control_send(MAVLINK_COMM_2 , packet1.target , packet1.roll , packet1.pitch , packet1.yaw , packet1.thrust , packet1.roll_manual , packet1.pitch_manual , packet1.yaw_manual , packet1.thrust_manual );
 }
 
-static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+static void mavlink_test_pixhawk(uint8_t system_id, uint8_t component_id)
 {
 	mavlink_test_set_cam_shutter(system_id, component_id);
 	mavlink_test_image_triggered(system_id, component_id);

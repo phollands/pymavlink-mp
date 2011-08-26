@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ardupilotmega.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 10:31:43 2011
+ *	Generated on Fri Aug 26 11:31:00 2011
  */
 #ifndef ARDUPILOTMEGA_TESTSUITE_H
 #define ARDUPILOTMEGA_TESTSUITE_H
@@ -9,6 +9,20 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifndef MAVLINK_TEST_ALL
+#define MAVLINK_TEST_ALL
+static void mavlink_test_common(uint8_t, uint8_t);
+static void mavlink_test_ardupilotmega(uint8_t, uint8_t);
+
+static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+{
+	mavlink_test_common(system_id, component_id);
+	mavlink_test_ardupilotmega(system_id, component_id);
+}
+#endif
+
+#include "../common/testsuite.h"
 
 
 static void mavlink_test_sensor_offsets(uint8_t system_id, uint8_t component_id)
@@ -66,7 +80,7 @@ static void mavlink_test_set_mag_offsets(uint8_t system_id, uint8_t component_id
 	mavlink_msg_set_mag_offsets_send(MAVLINK_COMM_2 , packet1.target_system , packet1.target_component , packet1.mag_ofs_x , packet1.mag_ofs_y , packet1.mag_ofs_z );
 }
 
-static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+static void mavlink_test_ardupilotmega(uint8_t system_id, uint8_t component_id)
 {
 	mavlink_test_sensor_offsets(system_id, component_id);
 	mavlink_test_set_mag_offsets(system_id, component_id);
