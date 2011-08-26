@@ -86,7 +86,7 @@ class MAVField(object):
         if self.array_length:
             self.test_value = []
             for i in range(self.array_length):
-                self.test_value.append(str(self.gen_test_value(i)))
+                self.test_value.append(self.gen_test_value(i))
         else:
                 self.test_value = self.gen_test_value(0)
         if self.type == 'char' and self.array_length:

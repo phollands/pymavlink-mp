@@ -59,18 +59,20 @@ extern "C" {
 
 // MESSAGE LENGTHS AND CRCS
 
-#undef MAVLINK_MESSAGE_LENGTHS
+#ifndef MAVLINK_MESSAGE_LENGTHS
 #define MAVLINK_MESSAGE_LENGTHS {${message_lengths_array}}
+#endif
 
-#undef MAVLINK_MESSAGE_CRCS
+#ifndef MAVLINK_MESSAGE_CRCS
 #define MAVLINK_MESSAGE_CRCS {${message_crcs_array}}
-    
+#endif
 
 #include "../protocol.h"
 
 #define MAVLINK_ENABLED_${basename_upper}
 
-${include_headers}
+${{include_list:#include "../${base}/${base}.h"
+}}
 
 // MAVLINK VERSION
 
@@ -252,7 +254,7 @@ ${{ordered_fields:	${decode_left}mavlink_msg_${name_lower}_get_${name}(msg${deco
 
 def generate_testsuite_h(directory, xml):
     '''generate testsuite.h per XML file'''
-    f = open(os.path.join(directory, xml.basename + "_testsuite.h"), mode='w')
+    f = open(os.path.join(directory, "testsuite.h"), mode='w')
     t.write(f, '''
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ${basename}.xml
@@ -265,6 +267,23 @@ def generate_testsuite_h(directory, xml):
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifndef MAVLINK_TEST_ALL
+#define MAVLINK_TEST_ALL
+${{include_list:static void mavlink_test_${base}(uint8_t, uint8_t);
+}}
+static void mavlink_test_${basename}(uint8_t, uint8_t);
+
+static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+{
+${{include_list:	mavlink_test_${base}(system_id, component_id);
+}}
+	mavlink_test_${basename}(system_id, component_id);
+}
+#endif
+
+${{include_list:#include "../${base}/testsuite.h"
+}}
 
 ${{message:
 static void mavlink_test_${name_lower}(uint8_t system_id, uint8_t component_id)
@@ -288,7 +307,7 @@ static void mavlink_test_${name_lower}(uint8_t system_id, uint8_t component_id)
 }
 }}
 
-static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+static void mavlink_test_${basename}(uint8_t system_id, uint8_t component_id)
 {
 ${{message:	mavlink_test_${name_lower}(system_id, component_id);
 }}
@@ -302,6 +321,10 @@ ${{message:	mavlink_test_${name_lower}(system_id, component_id);
 
     f.close()
 
+
+class mav_include(object):
+    def __init__(self, base):
+        self.base = base
 
 def generate_one(basename, xml):
     '''generate headers for one XML file'''
@@ -322,10 +345,10 @@ def generate_one(basename, xml):
         xml.crc_extra_define = "0"
 
     # work out the included headers
-    xml.include_headers = ''
+    xml.include_list = []
     for i in xml.include:
         base = i[:-4]
-        xml.include_headers += '#include "../%s/%s.h"\n' % (base, base)
+        xml.include_list.append(mav_include(base))
 
     # form message lengths array
     xml.message_lengths_array = ''
@@ -356,7 +379,10 @@ def generate_one(basename, xml):
                 if f.type == 'char':
                     f.c_test_value = '"%s"' % f.test_value
                 else:
-                    f.c_test_value = '{ %s }' % ', '.join(f.test_value)
+                    test_strings = []
+                    for v in f.test_value:
+                        test_strings.append(str(v))
+                    f.c_test_value = '{ %s }' % ', '.join(test_strings)
             else:
                 f.array_suffix = ''
                 f.array_prefix = ''
