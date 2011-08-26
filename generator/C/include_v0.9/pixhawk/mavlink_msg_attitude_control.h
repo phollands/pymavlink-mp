@@ -15,6 +15,11 @@ typedef struct __mavlink_attitude_control_t
  uint8_t thrust_manual; ///< thrust auto:0, manual:1
 } mavlink_attitude_control_t;
 
+#define MAVLINK_MSG_ID_ATTITUDE_CONTROL_LEN 21
+#define MAVLINK_MSG_ID_200_LEN 21
+
+
+
 #define MAVLINK_MESSAGE_INFO_ATTITUDE_CONTROL { \
 	"ATTITUDE_CONTROL", \
 	9, \

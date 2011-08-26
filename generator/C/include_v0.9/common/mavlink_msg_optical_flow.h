@@ -12,6 +12,11 @@ typedef struct __mavlink_optical_flow_t
  float ground_distance; ///< Ground distance in meters
 } mavlink_optical_flow_t;
 
+#define MAVLINK_MSG_ID_OPTICAL_FLOW_LEN 18
+#define MAVLINK_MSG_ID_100_LEN 18
+
+
+
 #define MAVLINK_MESSAGE_INFO_OPTICAL_FLOW { \
 	"OPTICAL_FLOW", \
 	6, \

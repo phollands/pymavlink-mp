@@ -10,6 +10,11 @@ typedef struct __mavlink_param_request_read_t
  int16_t param_index; ///< Parameter index. Send -1 to use the param ID field as identifier
 } mavlink_param_request_read_t;
 
+#define MAVLINK_MSG_ID_PARAM_REQUEST_READ_LEN 19
+#define MAVLINK_MSG_ID_20_LEN 19
+
+#define MAVLINK_MSG_PARAM_REQUEST_READ_FIELD_PARAM_ID_LEN 15
+
 #define MAVLINK_MESSAGE_INFO_PARAM_REQUEST_READ { \
 	"PARAM_REQUEST_READ", \
 	4, \

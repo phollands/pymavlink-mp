@@ -10,6 +10,11 @@ typedef struct __mavlink_memory_vect_t
  int8_t value[32]; ///< Memory contents at specified address
 } mavlink_memory_vect_t;
 
+#define MAVLINK_MSG_ID_MEMORY_VECT_LEN 36
+#define MAVLINK_MSG_ID_250_LEN 36
+
+#define MAVLINK_MSG_MEMORY_VECT_FIELD_VALUE_LEN 32
+
 #define MAVLINK_MESSAGE_INFO_MEMORY_VECT { \
 	"MEMORY_VECT", \
 	4, \

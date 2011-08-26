@@ -12,6 +12,11 @@ typedef struct __mavlink_data_log_t
  float fl_6; ///< Log value 6 
 } mavlink_data_log_t;
 
+#define MAVLINK_MSG_ID_DATA_LOG_LEN 24
+#define MAVLINK_MSG_ID_177_LEN 24
+
+
+
 #define MAVLINK_MESSAGE_INFO_DATA_LOG { \
 	"DATA_LOG", \
 	6, \

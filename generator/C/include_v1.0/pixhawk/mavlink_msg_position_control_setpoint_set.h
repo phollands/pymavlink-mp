@@ -13,6 +13,11 @@ typedef struct __mavlink_position_control_setpoint_set_t
  uint8_t target_component; ///< Component ID
 } mavlink_position_control_setpoint_set_t;
 
+#define MAVLINK_MSG_ID_POSITION_CONTROL_SETPOINT_SET_LEN 20
+#define MAVLINK_MSG_ID_159_LEN 20
+
+
+
 #define MAVLINK_MESSAGE_INFO_POSITION_CONTROL_SETPOINT_SET { \
 	"POSITION_CONTROL_SETPOINT_SET", \
 	7, \

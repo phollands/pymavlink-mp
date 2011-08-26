@@ -8,6 +8,11 @@ typedef struct __mavlink_system_time_t
  uint32_t time_boot_ms; ///< Timestamp of the component clock since boot time in milliseconds.
 } mavlink_system_time_t;
 
+#define MAVLINK_MSG_ID_SYSTEM_TIME_LEN 12
+#define MAVLINK_MSG_ID_2_LEN 12
+
+
+
 #define MAVLINK_MESSAGE_INFO_SYSTEM_TIME { \
 	"SYSTEM_TIME", \
 	2, \

@@ -8,6 +8,11 @@ typedef struct __mavlink_set_mode_t
  uint8_t mode; ///< The new mode
 } mavlink_set_mode_t;
 
+#define MAVLINK_MSG_ID_SET_MODE_LEN 2
+#define MAVLINK_MSG_ID_11_LEN 2
+
+
+
 #define MAVLINK_MESSAGE_INFO_SET_MODE { \
 	"SET_MODE", \
 	2, \

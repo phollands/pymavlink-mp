@@ -8,6 +8,11 @@ typedef struct __mavlink_statustext_t
  char text[50]; ///< Status text message, without null termination character
 } mavlink_statustext_t;
 
+#define MAVLINK_MSG_ID_STATUSTEXT_LEN 51
+#define MAVLINK_MSG_ID_254_LEN 51
+
+#define MAVLINK_MSG_STATUSTEXT_FIELD_TEXT_LEN 50
+
 #define MAVLINK_MESSAGE_INFO_STATUSTEXT { \
 	"STATUSTEXT", \
 	2, \

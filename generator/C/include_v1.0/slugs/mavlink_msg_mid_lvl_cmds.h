@@ -10,6 +10,11 @@ typedef struct __mavlink_mid_lvl_cmds_t
  uint8_t target; ///< The system setting the commands
 } mavlink_mid_lvl_cmds_t;
 
+#define MAVLINK_MSG_ID_MID_LVL_CMDS_LEN 13
+#define MAVLINK_MSG_ID_180_LEN 13
+
+
+
 #define MAVLINK_MESSAGE_INFO_MID_LVL_CMDS { \
 	"MID_LVL_CMDS", \
 	4, \

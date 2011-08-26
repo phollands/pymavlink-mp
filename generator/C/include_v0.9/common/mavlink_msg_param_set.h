@@ -10,6 +10,11 @@ typedef struct __mavlink_param_set_t
  float param_value; ///< Onboard parameter value
 } mavlink_param_set_t;
 
+#define MAVLINK_MSG_ID_PARAM_SET_LEN 21
+#define MAVLINK_MSG_ID_23_LEN 21
+
+#define MAVLINK_MSG_PARAM_SET_FIELD_PARAM_ID_LEN 15
+
 #define MAVLINK_MESSAGE_INFO_PARAM_SET { \
 	"PARAM_SET", \
 	4, \

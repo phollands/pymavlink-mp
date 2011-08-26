@@ -10,6 +10,11 @@ typedef struct __mavlink_param_request_read_t
  char param_id[16]; ///< Onboard parameter id
 } mavlink_param_request_read_t;
 
+#define MAVLINK_MSG_ID_PARAM_REQUEST_READ_LEN 20
+#define MAVLINK_MSG_ID_20_LEN 20
+
+#define MAVLINK_MSG_PARAM_REQUEST_READ_FIELD_PARAM_ID_LEN 16
+
 #define MAVLINK_MESSAGE_INFO_PARAM_REQUEST_READ { \
 	"PARAM_REQUEST_READ", \
 	4, \

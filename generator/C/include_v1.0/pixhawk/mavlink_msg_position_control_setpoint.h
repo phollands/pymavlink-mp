@@ -11,6 +11,11 @@ typedef struct __mavlink_position_control_setpoint_t
  uint16_t id; ///< ID of waypoint, 0 for plain position
 } mavlink_position_control_setpoint_t;
 
+#define MAVLINK_MSG_ID_POSITION_CONTROL_SETPOINT_LEN 18
+#define MAVLINK_MSG_ID_170_LEN 18
+
+
+
 #define MAVLINK_MESSAGE_INFO_POSITION_CONTROL_SETPOINT { \
 	"POSITION_CONTROL_SETPOINT", \
 	5, \

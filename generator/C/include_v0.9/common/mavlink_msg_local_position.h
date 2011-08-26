@@ -13,6 +13,11 @@ typedef struct __mavlink_local_position_t
  float vz; ///< Z Speed
 } mavlink_local_position_t;
 
+#define MAVLINK_MSG_ID_LOCAL_POSITION_LEN 32
+#define MAVLINK_MSG_ID_31_LEN 32
+
+
+
 #define MAVLINK_MESSAGE_INFO_LOCAL_POSITION { \
 	"LOCAL_POSITION", \
 	7, \

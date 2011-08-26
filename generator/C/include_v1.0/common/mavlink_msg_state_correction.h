@@ -15,6 +15,11 @@ typedef struct __mavlink_state_correction_t
  float vzErr; ///< z velocity
 } mavlink_state_correction_t;
 
+#define MAVLINK_MSG_ID_STATE_CORRECTION_LEN 36
+#define MAVLINK_MSG_ID_64_LEN 36
+
+
+
 #define MAVLINK_MESSAGE_INFO_STATE_CORRECTION { \
 	"STATE_CORRECTION", \
 	9, \

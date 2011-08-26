@@ -16,6 +16,11 @@ typedef struct __mavlink_rc_channels_override_t
  uint8_t target_component; ///< Component ID
 } mavlink_rc_channels_override_t;
 
+#define MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE_LEN 18
+#define MAVLINK_MSG_ID_70_LEN 18
+
+
+
 #define MAVLINK_MESSAGE_INFO_RC_CHANNELS_OVERRIDE { \
 	"RC_CHANNELS_OVERRIDE", \
 	10, \

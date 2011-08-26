@@ -14,6 +14,11 @@ typedef struct __mavlink_servo_output_raw_t
  uint16_t servo8_raw; ///< Servo output 8 value, in microseconds
 } mavlink_servo_output_raw_t;
 
+#define MAVLINK_MSG_ID_SERVO_OUTPUT_RAW_LEN 16
+#define MAVLINK_MSG_ID_37_LEN 16
+
+
+
 #define MAVLINK_MESSAGE_INFO_SERVO_OUTPUT_RAW { \
 	"SERVO_OUTPUT_RAW", \
 	8, \

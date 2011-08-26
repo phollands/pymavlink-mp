@@ -16,6 +16,11 @@ typedef struct __mavlink_gps_raw_t
  uint8_t satellites_visible; ///< Number of satellites visible
 } mavlink_gps_raw_t;
 
+#define MAVLINK_MSG_ID_GPS_RAW_LEN 38
+#define MAVLINK_MSG_ID_32_LEN 38
+
+
+
 #define MAVLINK_MESSAGE_INFO_GPS_RAW { \
 	"GPS_RAW", \
 	10, \

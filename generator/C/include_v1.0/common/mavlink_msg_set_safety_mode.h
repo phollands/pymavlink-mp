@@ -8,6 +8,11 @@ typedef struct __mavlink_set_safety_mode_t
  uint8_t safety_mode; ///< The new safety mode. The MAV will reject some mode changes during flight.
 } mavlink_set_safety_mode_t;
 
+#define MAVLINK_MSG_ID_SET_SAFETY_MODE_LEN 2
+#define MAVLINK_MSG_ID_13_LEN 2
+
+
+
 #define MAVLINK_MESSAGE_INFO_SET_SAFETY_MODE { \
 	"SET_SAFETY_MODE", \
 	2, \

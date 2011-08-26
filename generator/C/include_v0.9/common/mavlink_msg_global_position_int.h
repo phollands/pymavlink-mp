@@ -12,6 +12,11 @@ typedef struct __mavlink_global_position_int_t
  int16_t vz; ///< Ground Z Speed (Altitude), expressed as m/s * 100
 } mavlink_global_position_int_t;
 
+#define MAVLINK_MSG_ID_GLOBAL_POSITION_INT_LEN 18
+#define MAVLINK_MSG_ID_73_LEN 18
+
+
+
 #define MAVLINK_MESSAGE_INFO_GLOBAL_POSITION_INT { \
 	"GLOBAL_POSITION_INT", \
 	6, \

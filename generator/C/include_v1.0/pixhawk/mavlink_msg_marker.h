@@ -13,6 +13,11 @@ typedef struct __mavlink_marker_t
  uint16_t id; ///< ID
 } mavlink_marker_t;
 
+#define MAVLINK_MSG_ID_MARKER_LEN 26
+#define MAVLINK_MSG_ID_171_LEN 26
+
+
+
 #define MAVLINK_MESSAGE_INFO_MARKER { \
 	"MARKER", \
 	7, \

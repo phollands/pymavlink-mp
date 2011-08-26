@@ -16,6 +16,11 @@ typedef struct __mavlink_scaled_imu_t
  int16_t zmag; ///< Z Magnetic field (milli tesla)
 } mavlink_scaled_imu_t;
 
+#define MAVLINK_MSG_ID_SCALED_IMU_LEN 26
+#define MAVLINK_MSG_ID_26_LEN 26
+
+
+
 #define MAVLINK_MESSAGE_INFO_SCALED_IMU { \
 	"SCALED_IMU", \
 	10, \

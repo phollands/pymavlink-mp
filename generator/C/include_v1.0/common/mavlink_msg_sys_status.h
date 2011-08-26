@@ -18,6 +18,11 @@ typedef struct __mavlink_sys_status_t
  uint8_t battery_percent; ///< Remaining battery energy: (0%: 0, 100%: 255)
 } mavlink_sys_status_t;
 
+#define MAVLINK_MSG_ID_SYS_STATUS_LEN 23
+#define MAVLINK_MSG_ID_1_LEN 23
+
+
+
 #define MAVLINK_MESSAGE_INFO_SYS_STATUS { \
 	"SYS_STATUS", \
 	12, \

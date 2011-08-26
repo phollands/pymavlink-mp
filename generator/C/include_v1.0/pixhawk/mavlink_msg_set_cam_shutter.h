@@ -12,6 +12,11 @@ typedef struct __mavlink_set_cam_shutter_t
  uint8_t trigger_pin; ///< Trigger pin, 0-3 for PtGrey FireFly
 } mavlink_set_cam_shutter_t;
 
+#define MAVLINK_MSG_ID_SET_CAM_SHUTTER_LEN 11
+#define MAVLINK_MSG_ID_151_LEN 11
+
+
+
 #define MAVLINK_MESSAGE_INFO_SET_CAM_SHUTTER { \
 	"SET_CAM_SHUTTER", \
 	6, \

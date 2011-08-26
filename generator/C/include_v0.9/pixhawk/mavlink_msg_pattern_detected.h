@@ -10,6 +10,11 @@ typedef struct __mavlink_pattern_detected_t
  uint8_t detected; ///< Accepted as true detection, 0 no, 1 yes
 } mavlink_pattern_detected_t;
 
+#define MAVLINK_MSG_ID_PATTERN_DETECTED_LEN 106
+#define MAVLINK_MSG_ID_190_LEN 106
+
+#define MAVLINK_MSG_PATTERN_DETECTED_FIELD_FILE_LEN 100
+
 #define MAVLINK_MESSAGE_INFO_PATTERN_DETECTED { \
 	"PATTERN_DETECTED", \
 	4, \

@@ -8,6 +8,11 @@ typedef struct __mavlink_encapsulated_data_t
  uint8_t data[253]; ///< image data bytes
 } mavlink_encapsulated_data_t;
 
+#define MAVLINK_MSG_ID_ENCAPSULATED_DATA_LEN 255
+#define MAVLINK_MSG_ID_194_LEN 255
+
+#define MAVLINK_MSG_ENCAPSULATED_DATA_FIELD_DATA_LEN 253
+
 #define MAVLINK_MESSAGE_INFO_ENCAPSULATED_DATA { \
 	"ENCAPSULATED_DATA", \
 	2, \

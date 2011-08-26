@@ -9,6 +9,11 @@ typedef struct __mavlink_change_operator_control_ack_t
  uint8_t ack; ///< 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK: Already under control
 } mavlink_change_operator_control_ack_t;
 
+#define MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK_LEN 3
+#define MAVLINK_MSG_ID_6_LEN 3
+
+
+
 #define MAVLINK_MESSAGE_INFO_CHANGE_OPERATOR_CONTROL_ACK { \
 	"CHANGE_OPERATOR_CONTROL_ACK", \
 	3, \

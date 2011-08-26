@@ -12,6 +12,11 @@ typedef struct __mavlink_sensor_bias_t
  float gzBias; ///< Gyro Z bias (rad/s)
 } mavlink_sensor_bias_t;
 
+#define MAVLINK_MSG_ID_SENSOR_BIAS_LEN 24
+#define MAVLINK_MSG_ID_172_LEN 24
+
+
+
 #define MAVLINK_MESSAGE_INFO_SENSOR_BIAS { \
 	"SENSOR_BIAS", \
 	6, \

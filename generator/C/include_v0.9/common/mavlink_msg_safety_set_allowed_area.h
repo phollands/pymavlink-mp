@@ -15,6 +15,11 @@ typedef struct __mavlink_safety_set_allowed_area_t
  float p2z; ///< z position 2 / Altitude 2
 } mavlink_safety_set_allowed_area_t;
 
+#define MAVLINK_MSG_ID_SAFETY_SET_ALLOWED_AREA_LEN 27
+#define MAVLINK_MSG_ID_53_LEN 27
+
+
+
 #define MAVLINK_MESSAGE_INFO_SAFETY_SET_ALLOWED_AREA { \
 	"SAFETY_SET_ALLOWED_AREA", \
 	9, \

@@ -8,6 +8,11 @@ typedef struct __mavlink_debug_t
  float value; ///< DEBUG value
 } mavlink_debug_t;
 
+#define MAVLINK_MSG_ID_DEBUG_LEN 5
+#define MAVLINK_MSG_ID_255_LEN 5
+
+
+
 #define MAVLINK_MESSAGE_INFO_DEBUG { \
 	"DEBUG", \
 	2, \

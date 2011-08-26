@@ -12,6 +12,11 @@ typedef struct __mavlink_watchdog_process_status_t
  uint16_t crashes; ///< Number of crashes
 } mavlink_watchdog_process_status_t;
 
+#define MAVLINK_MSG_ID_WATCHDOG_PROCESS_STATUS_LEN 12
+#define MAVLINK_MSG_ID_182_LEN 12
+
+
+
 #define MAVLINK_MESSAGE_INFO_WATCHDOG_PROCESS_STATUS { \
 	"WATCHDOG_PROCESS_STATUS", \
 	6, \

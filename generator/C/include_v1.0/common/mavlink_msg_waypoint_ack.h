@@ -9,6 +9,11 @@ typedef struct __mavlink_waypoint_ack_t
  uint8_t type; ///< 0: OK, 1: Error
 } mavlink_waypoint_ack_t;
 
+#define MAVLINK_MSG_ID_WAYPOINT_ACK_LEN 3
+#define MAVLINK_MSG_ID_47_LEN 3
+
+
+
 #define MAVLINK_MESSAGE_INFO_WAYPOINT_ACK { \
 	"WAYPOINT_ACK", \
 	3, \

@@ -9,6 +9,11 @@ typedef struct __mavlink_waypoint_set_current_t
  uint16_t seq; ///< Sequence
 } mavlink_waypoint_set_current_t;
 
+#define MAVLINK_MSG_ID_WAYPOINT_SET_CURRENT_LEN 4
+#define MAVLINK_MSG_ID_41_LEN 4
+
+
+
 #define MAVLINK_MESSAGE_INFO_WAYPOINT_SET_CURRENT { \
 	"WAYPOINT_SET_CURRENT", \
 	3, \

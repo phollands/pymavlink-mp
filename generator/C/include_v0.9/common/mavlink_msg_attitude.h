@@ -13,6 +13,11 @@ typedef struct __mavlink_attitude_t
  float yawspeed; ///< Yaw angular speed (rad/s)
 } mavlink_attitude_t;
 
+#define MAVLINK_MSG_ID_ATTITUDE_LEN 32
+#define MAVLINK_MSG_ID_30_LEN 32
+
+
+
 #define MAVLINK_MESSAGE_INFO_ATTITUDE { \
 	"ATTITUDE", \
 	7, \

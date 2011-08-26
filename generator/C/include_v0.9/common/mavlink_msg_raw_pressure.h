@@ -11,6 +11,11 @@ typedef struct __mavlink_raw_pressure_t
  int16_t temperature; ///< Raw Temperature measurement (raw)
 } mavlink_raw_pressure_t;
 
+#define MAVLINK_MSG_ID_RAW_PRESSURE_LEN 16
+#define MAVLINK_MSG_ID_29_LEN 16
+
+
+
 #define MAVLINK_MESSAGE_INFO_RAW_PRESSURE { \
 	"RAW_PRESSURE", \
 	5, \

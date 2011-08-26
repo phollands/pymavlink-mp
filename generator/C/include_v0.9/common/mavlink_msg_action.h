@@ -9,6 +9,11 @@ typedef struct __mavlink_action_t
  uint8_t action; ///< The action id
 } mavlink_action_t;
 
+#define MAVLINK_MSG_ID_ACTION_LEN 3
+#define MAVLINK_MSG_ID_10_LEN 3
+
+
+
 #define MAVLINK_MESSAGE_INFO_ACTION { \
 	"ACTION", \
 	3, \

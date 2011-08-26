@@ -9,6 +9,11 @@ typedef struct __mavlink_air_data_t
  uint16_t temperature; ///< Board temperature
 } mavlink_air_data_t;
 
+#define MAVLINK_MSG_ID_AIR_DATA_LEN 10
+#define MAVLINK_MSG_ID_171_LEN 10
+
+
+
 #define MAVLINK_MESSAGE_INFO_AIR_DATA { \
 	"AIR_DATA", \
 	3, \

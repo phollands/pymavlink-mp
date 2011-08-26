@@ -18,6 +18,11 @@ typedef struct __mavlink_image_triggered_t
  float ground_z; ///< Ground truth Z
 } mavlink_image_triggered_t;
 
+#define MAVLINK_MSG_ID_IMAGE_TRIGGERED_LEN 52
+#define MAVLINK_MSG_ID_152_LEN 52
+
+
+
 #define MAVLINK_MESSAGE_INFO_IMAGE_TRIGGERED { \
 	"IMAGE_TRIGGERED", \
 	12, \

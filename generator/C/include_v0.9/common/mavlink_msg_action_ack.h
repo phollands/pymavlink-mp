@@ -8,6 +8,11 @@ typedef struct __mavlink_action_ack_t
  uint8_t result; ///< 0: Action DENIED, 1: Action executed
 } mavlink_action_ack_t;
 
+#define MAVLINK_MSG_ID_ACTION_ACK_LEN 2
+#define MAVLINK_MSG_ID_9_LEN 2
+
+
+
 #define MAVLINK_MESSAGE_INFO_ACTION_ACK { \
 	"ACTION_ACK", \
 	2, \

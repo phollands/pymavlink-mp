@@ -12,6 +12,11 @@ typedef struct __mavlink_diagnostic_t
  int16_t diagSh3; ///< Diagnostic short 3
 } mavlink_diagnostic_t;
 
+#define MAVLINK_MSG_ID_DIAGNOSTIC_LEN 18
+#define MAVLINK_MSG_ID_173_LEN 18
+
+
+
 #define MAVLINK_MESSAGE_INFO_DIAGNOSTIC { \
 	"DIAGNOSTIC", \
 	6, \

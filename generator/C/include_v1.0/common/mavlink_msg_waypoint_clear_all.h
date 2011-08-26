@@ -8,6 +8,11 @@ typedef struct __mavlink_waypoint_clear_all_t
  uint8_t target_component; ///< Component ID
 } mavlink_waypoint_clear_all_t;
 
+#define MAVLINK_MSG_ID_WAYPOINT_CLEAR_ALL_LEN 2
+#define MAVLINK_MSG_ID_45_LEN 2
+
+
+
 #define MAVLINK_MESSAGE_INFO_WAYPOINT_CLEAR_ALL { \
 	"WAYPOINT_CLEAR_ALL", \
 	2, \

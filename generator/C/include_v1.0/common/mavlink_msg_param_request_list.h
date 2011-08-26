@@ -8,6 +8,11 @@ typedef struct __mavlink_param_request_list_t
  uint8_t target_component; ///< Component ID
 } mavlink_param_request_list_t;
 
+#define MAVLINK_MSG_ID_PARAM_REQUEST_LIST_LEN 2
+#define MAVLINK_MSG_ID_21_LEN 2
+
+
+
 #define MAVLINK_MESSAGE_INFO_PARAM_REQUEST_LIST { \
 	"PARAM_REQUEST_LIST", \
 	2, \

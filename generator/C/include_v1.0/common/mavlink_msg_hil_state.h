@@ -22,6 +22,11 @@ typedef struct __mavlink_hil_state_t
  int16_t zacc; ///< Z acceleration (mg)
 } mavlink_hil_state_t;
 
+#define MAVLINK_MSG_ID_HIL_STATE_LEN 56
+#define MAVLINK_MSG_ID_90_LEN 56
+
+
+
 #define MAVLINK_MESSAGE_INFO_HIL_STATE { \
 	"HIL_STATE", \
 	16, \

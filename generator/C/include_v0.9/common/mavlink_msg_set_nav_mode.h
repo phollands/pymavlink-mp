@@ -8,6 +8,11 @@ typedef struct __mavlink_set_nav_mode_t
  uint8_t nav_mode; ///< The new navigation mode
 } mavlink_set_nav_mode_t;
 
+#define MAVLINK_MSG_ID_SET_NAV_MODE_LEN 2
+#define MAVLINK_MSG_ID_12_LEN 2
+
+
+
 #define MAVLINK_MESSAGE_INFO_SET_NAV_MODE { \
 	"SET_NAV_MODE", \
 	2, \

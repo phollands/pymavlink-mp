@@ -20,6 +20,11 @@ typedef struct __mavlink_hil_rc_inputs_raw_t
  uint8_t rssi; ///< Receive signal strength indicator, 0: 0%, 255: 100%
 } mavlink_hil_rc_inputs_raw_t;
 
+#define MAVLINK_MSG_ID_HIL_RC_INPUTS_RAW_LEN 33
+#define MAVLINK_MSG_ID_92_LEN 33
+
+
+
 #define MAVLINK_MESSAGE_INFO_HIL_RC_INPUTS_RAW { \
 	"HIL_RC_INPUTS_RAW", \
 	14, \

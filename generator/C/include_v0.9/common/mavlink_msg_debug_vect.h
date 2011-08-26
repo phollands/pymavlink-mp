@@ -11,6 +11,11 @@ typedef struct __mavlink_debug_vect_t
  float z; ///< z
 } mavlink_debug_vect_t;
 
+#define MAVLINK_MSG_ID_DEBUG_VECT_LEN 30
+#define MAVLINK_MSG_ID_251_LEN 30
+
+#define MAVLINK_MSG_DEBUG_VECT_FIELD_NAME_LEN 10
+
 #define MAVLINK_MESSAGE_INFO_DEBUG_VECT { \
 	"DEBUG_VECT", \
 	5, \

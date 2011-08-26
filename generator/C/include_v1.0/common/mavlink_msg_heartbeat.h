@@ -14,6 +14,11 @@ typedef struct __mavlink_heartbeat_t
  uint8_t mavlink_version; ///< MAVLink version
 } mavlink_heartbeat_t;
 
+#define MAVLINK_MSG_ID_HEARTBEAT_LEN 8
+#define MAVLINK_MSG_ID_0_LEN 8
+
+
+
 #define MAVLINK_MESSAGE_INFO_HEARTBEAT { \
 	"HEARTBEAT", \
 	8, \

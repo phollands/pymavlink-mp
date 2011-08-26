@@ -16,6 +16,11 @@ typedef struct __mavlink_raw_imu_t
  int16_t zmag; ///< Z Magnetic field (raw)
 } mavlink_raw_imu_t;
 
+#define MAVLINK_MSG_ID_RAW_IMU_LEN 26
+#define MAVLINK_MSG_ID_28_LEN 26
+
+
+
 #define MAVLINK_MESSAGE_INFO_RAW_IMU { \
 	"RAW_IMU", \
 	10, \

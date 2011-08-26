@@ -15,6 +15,11 @@ typedef struct __mavlink_rc_channels_scaled_t
  uint8_t rssi; ///< Receive signal strength indicator, 0: 0%, 255: 100%
 } mavlink_rc_channels_scaled_t;
 
+#define MAVLINK_MSG_ID_RC_CHANNELS_SCALED_LEN 17
+#define MAVLINK_MSG_ID_36_LEN 17
+
+
+
 #define MAVLINK_MESSAGE_INFO_RC_CHANNELS_SCALED { \
 	"RC_CHANNELS_SCALED", \
 	9, \

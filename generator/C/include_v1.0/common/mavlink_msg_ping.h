@@ -10,6 +10,11 @@ typedef struct __mavlink_ping_t
  uint8_t target_component; ///< 0: request ping from all receiving components, if greater than 0: message is a ping response and number is the system id of the requesting system
 } mavlink_ping_t;
 
+#define MAVLINK_MSG_ID_PING_LEN 14
+#define MAVLINK_MSG_ID_4_LEN 14
+
+
+
 #define MAVLINK_MESSAGE_INFO_PING { \
 	"PING", \
 	4, \

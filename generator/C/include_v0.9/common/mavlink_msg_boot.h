@@ -7,6 +7,11 @@ typedef struct __mavlink_boot_t
  uint32_t version; ///< The onboard software version
 } mavlink_boot_t;
 
+#define MAVLINK_MSG_ID_BOOT_LEN 4
+#define MAVLINK_MSG_ID_1_LEN 4
+
+
+
 #define MAVLINK_MESSAGE_INFO_BOOT { \
 	"BOOT", \
 	1, \

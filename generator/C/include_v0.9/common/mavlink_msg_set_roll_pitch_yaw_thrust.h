@@ -12,6 +12,11 @@ typedef struct __mavlink_set_roll_pitch_yaw_thrust_t
  float thrust; ///< Collective thrust, normalized to 0 .. 1
 } mavlink_set_roll_pitch_yaw_thrust_t;
 
+#define MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_THRUST_LEN 18
+#define MAVLINK_MSG_ID_55_LEN 18
+
+
+
 #define MAVLINK_MESSAGE_INFO_SET_ROLL_PITCH_YAW_THRUST { \
 	"SET_ROLL_PITCH_YAW_THRUST", \
 	6, \
