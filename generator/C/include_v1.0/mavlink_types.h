@@ -77,7 +77,19 @@ typedef struct __mavlink_message {
     uint8_t sysid;   ///< ID of message sender system/aircraft
     uint8_t compid;  ///< ID of the message sender component
     uint8_t msgid;   ///< ID of message in payload
-    uint64_t payload64[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+7)/8]; ///< Payload data, ALIGNMENT IMPORTANT ON MCU
+    union {  ///< Payload data, ALIGNMENT IMPORTANT ON MCU
+	char       c[MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES];
+	int8_t    i8[MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES];
+	uint8_t   u8[MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES];
+	int16_t  i16[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+1)/2];
+	uint16_t u16[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+1)/2];
+	int32_t  i32[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+3)/4];
+	uint32_t u32[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+3)/4];
+	int64_t  i64[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+7)/8];
+	uint64_t u64[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+7)/8];
+	float      f[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+3)/4];
+	double     d[(MAVLINK_MAX_PAYLOAD_LEN+MAVLINK_NUM_CHECKSUM_BYTES+7)/8];
+    } payload;
 } mavlink_message_t;
 
 typedef enum {
@@ -112,11 +124,11 @@ typedef struct __mavlink_message_info {
 	const mavlink_field_info_t fields[MAVLINK_MAX_FIELDS]; // field information
 } mavlink_message_info_t;
 
-#define MAVLINK_PAYLOAD(msg) ((uint8_t *)(&(msg)->payload64[0]))
+#define MAVLINK_PAYLOAD(msg) msg->payload.u8
 
 // checksum is immediately after the payload bytes
-#define mavlink_ck_a(msg) MAVLINK_PAYLOAD(msg)[(msg)->len]
-#define mavlink_ck_b(msg) MAVLINK_PAYLOAD(msg)[1+(uint16_t)(msg)->len]
+#define mavlink_ck_a(msg) msg->payload.u8[(msg)->len]
+#define mavlink_ck_b(msg) msg->payload.u8[1+(uint16_t)(msg)->len]
 
 typedef enum {
     MAVLINK_COMM_0,

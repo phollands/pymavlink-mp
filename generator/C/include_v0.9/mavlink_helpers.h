@@ -224,7 +224,7 @@ MAVLINK_HELPER uint8_t mavlink_parse_char(uint8_t chan, uint8_t c, mavlink_messa
 		break;
 
 	case MAVLINK_PARSE_STATE_GOT_MSGID:
-		MAVLINK_PAYLOAD(rxmsg)[status->packet_idx++] = c;
+		rxmsg->payload.u8[status->packet_idx++] = c;
 		mavlink_update_checksum(rxmsg, c);
 		if (status->packet_idx == rxmsg->len)
 		{

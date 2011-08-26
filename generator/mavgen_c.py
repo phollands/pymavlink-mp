@@ -169,7 +169,7 @@ static inline uint16_t mavlink_msg_${name_lower}_pack(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} MAVLINK_PAYLOAD(msg)); // ${description}
+${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
 }}
 
 	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length}, ${crc_extra});
@@ -191,7 +191,7 @@ static inline uint16_t mavlink_msg_${name_lower}_pack_chan(uint8_t system_id, ui
 {
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} MAVLINK_PAYLOAD(msg)); // ${description}
+${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
 }}
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length}, ${crc_extra});
@@ -212,7 +212,7 @@ static inline void mavlink_msg_${name_lower}_pack_chan_send(mavlink_channel_t ch
 {
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} MAVLINK_PAYLOAD(msg)); // ${description}
+${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
 }}
 
 	mavlink_finalize_message_chan_send(msg, chan, ${wire_length}, ${crc_extra});
@@ -412,7 +412,7 @@ def generate_one(basename, xml):
                 f.array_suffix = '[%u]' % f.array_length
                 f.array_prefix = '*'
                 f.array_tag = '_array'
-                f.array_arg = '%u, ' % f.array_length
+                f.array_arg = ', %u' % f.array_length
                 f.array_return_arg = '%s, %u, ' % (f.name, f.array_length)
                 f.array_const = 'const '
                 f.decode_left = ''
