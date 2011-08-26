@@ -22,6 +22,7 @@ class MAVParseError(Exception):
 class MAVField(object):
     def __init__(self, name, type, xml, description=''):
         self.name = name
+        self.name_upper = name.upper()
         self.description = description
         self.array_length = 0
         self.omit_arg = False

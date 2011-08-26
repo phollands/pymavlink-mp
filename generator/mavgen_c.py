@@ -146,6 +146,12 @@ ${{ordered_fields: ${type} ${name}${array_suffix}; ///< ${description}
 }}
 } mavlink_${name_lower}_t;
 
+#define MAVLINK_MSG_ID_${name}_LEN ${wire_length}
+#define MAVLINK_MSG_ID_${id}_LEN ${wire_length}
+
+${{array_fields:#define MAVLINK_MSG_${msg_name}_FIELD_${name_upper}_LEN ${array_length}
+}}
+
 #define MAVLINK_MESSAGE_INFO_${name} { \\
 	"${name}", \\
 	${num_fields}, \\
@@ -407,6 +413,7 @@ def generate_one(basename, xml):
 
     # add some extra field attributes for convenience with arrays
     for m in xml.message:
+        m.msg_name = m.name
         for f in m.fields:
             if f.array_length != 0:
                 f.array_suffix = '[%u]' % f.array_length
@@ -449,7 +456,10 @@ def generate_one(basename, xml):
     # cope with uint8_t_mavlink_version
     for m in xml.message:
         m.arg_fields = []
+        m.array_fields = []
         for f in m.fields:
+            if f.array_length != 0:
+                m.array_fields.append(f)
             if not f.omit_arg:
                 m.arg_fields.append(f)
                 f.putname = f.name
