@@ -294,6 +294,9 @@ static void mavlink_test_${name_lower}(uint8_t system_id, uint8_t component_id)
 	mavlink_${name_lower}_t packet2, packet1 = {
 		${{ordered_fields:${c_test_value},
 	}}};
+	if (sizeof(packet2) != ${wire_length}) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
 	mavlink_msg_${name_lower}_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_${name_lower}_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
