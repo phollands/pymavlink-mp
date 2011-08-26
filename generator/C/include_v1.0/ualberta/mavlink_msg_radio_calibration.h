@@ -44,14 +44,14 @@ static inline uint16_t mavlink_msg_radio_calibration_pack(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_RADIO_CALIBRATION;
 
-	put_uint16_t_array_by_index(aileron, 0, 3,  MAVLINK_PAYLOAD(msg)); // Aileron setpoints: left, center, right
-	put_uint16_t_array_by_index(elevator, 6, 3,  MAVLINK_PAYLOAD(msg)); // Elevator setpoints: nose down, center, nose up
-	put_uint16_t_array_by_index(rudder, 12, 3,  MAVLINK_PAYLOAD(msg)); // Rudder setpoints: nose left, center, nose right
-	put_uint16_t_array_by_index(gyro, 18, 2,  MAVLINK_PAYLOAD(msg)); // Tail gyro mode/gain setpoints: heading hold, rate mode
-	put_uint16_t_array_by_index(pitch, 22, 5,  MAVLINK_PAYLOAD(msg)); // Pitch curve setpoints (every 25%)
-	put_uint16_t_array_by_index(throttle, 32, 5,  MAVLINK_PAYLOAD(msg)); // Throttle curve setpoints (every 25%)
+	put_uint16_t_array_by_index(msg, 0, aileron, 3); // Aileron setpoints: left, center, right
+	put_uint16_t_array_by_index(msg, 6, elevator, 3); // Elevator setpoints: nose down, center, nose up
+	put_uint16_t_array_by_index(msg, 12, rudder, 3); // Rudder setpoints: nose left, center, nose right
+	put_uint16_t_array_by_index(msg, 18, gyro, 2); // Tail gyro mode/gain setpoints: heading hold, rate mode
+	put_uint16_t_array_by_index(msg, 22, pitch, 5); // Pitch curve setpoints (every 25%)
+	put_uint16_t_array_by_index(msg, 32, throttle, 5); // Throttle curve setpoints (every 25%)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 42, 41);
+	return mavlink_finalize_message(msg, system_id, component_id, 42, 71);
 }
 
 /**
@@ -74,14 +74,14 @@ static inline uint16_t mavlink_msg_radio_calibration_pack_chan(uint8_t system_id
 {
 	msg->msgid = MAVLINK_MSG_ID_RADIO_CALIBRATION;
 
-	put_uint16_t_array_by_index(aileron, 0, 3,  MAVLINK_PAYLOAD(msg)); // Aileron setpoints: left, center, right
-	put_uint16_t_array_by_index(elevator, 6, 3,  MAVLINK_PAYLOAD(msg)); // Elevator setpoints: nose down, center, nose up
-	put_uint16_t_array_by_index(rudder, 12, 3,  MAVLINK_PAYLOAD(msg)); // Rudder setpoints: nose left, center, nose right
-	put_uint16_t_array_by_index(gyro, 18, 2,  MAVLINK_PAYLOAD(msg)); // Tail gyro mode/gain setpoints: heading hold, rate mode
-	put_uint16_t_array_by_index(pitch, 22, 5,  MAVLINK_PAYLOAD(msg)); // Pitch curve setpoints (every 25%)
-	put_uint16_t_array_by_index(throttle, 32, 5,  MAVLINK_PAYLOAD(msg)); // Throttle curve setpoints (every 25%)
+	put_uint16_t_array_by_index(msg, 0, aileron, 3); // Aileron setpoints: left, center, right
+	put_uint16_t_array_by_index(msg, 6, elevator, 3); // Elevator setpoints: nose down, center, nose up
+	put_uint16_t_array_by_index(msg, 12, rudder, 3); // Rudder setpoints: nose left, center, nose right
+	put_uint16_t_array_by_index(msg, 18, gyro, 2); // Tail gyro mode/gain setpoints: heading hold, rate mode
+	put_uint16_t_array_by_index(msg, 22, pitch, 5); // Pitch curve setpoints (every 25%)
+	put_uint16_t_array_by_index(msg, 32, throttle, 5); // Throttle curve setpoints (every 25%)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 42, 41);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 42, 71);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -103,14 +103,14 @@ static inline void mavlink_msg_radio_calibration_pack_chan_send(mavlink_channel_
 {
 	msg->msgid = MAVLINK_MSG_ID_RADIO_CALIBRATION;
 
-	put_uint16_t_array_by_index(aileron, 0, 3,  MAVLINK_PAYLOAD(msg)); // Aileron setpoints: left, center, right
-	put_uint16_t_array_by_index(elevator, 6, 3,  MAVLINK_PAYLOAD(msg)); // Elevator setpoints: nose down, center, nose up
-	put_uint16_t_array_by_index(rudder, 12, 3,  MAVLINK_PAYLOAD(msg)); // Rudder setpoints: nose left, center, nose right
-	put_uint16_t_array_by_index(gyro, 18, 2,  MAVLINK_PAYLOAD(msg)); // Tail gyro mode/gain setpoints: heading hold, rate mode
-	put_uint16_t_array_by_index(pitch, 22, 5,  MAVLINK_PAYLOAD(msg)); // Pitch curve setpoints (every 25%)
-	put_uint16_t_array_by_index(throttle, 32, 5,  MAVLINK_PAYLOAD(msg)); // Throttle curve setpoints (every 25%)
+	put_uint16_t_array_by_index(msg, 0, aileron, 3); // Aileron setpoints: left, center, right
+	put_uint16_t_array_by_index(msg, 6, elevator, 3); // Elevator setpoints: nose down, center, nose up
+	put_uint16_t_array_by_index(msg, 12, rudder, 3); // Rudder setpoints: nose left, center, nose right
+	put_uint16_t_array_by_index(msg, 18, gyro, 2); // Tail gyro mode/gain setpoints: heading hold, rate mode
+	put_uint16_t_array_by_index(msg, 22, pitch, 5); // Pitch curve setpoints (every 25%)
+	put_uint16_t_array_by_index(msg, 32, throttle, 5); // Throttle curve setpoints (every 25%)
 
-	mavlink_finalize_message_chan_send(msg, chan, 42, 41);
+	mavlink_finalize_message_chan_send(msg, chan, 42, 71);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -32,10 +32,10 @@ static inline uint16_t mavlink_msg_debug_pack(uint8_t system_id, uint8_t compone
 {
 	msg->msgid = MAVLINK_MSG_ID_DEBUG;
 
-	put_float_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // DEBUG value
-	put_uint8_t_by_index(ind, 4,  MAVLINK_PAYLOAD(msg)); // index of debug variable
+	put_float_by_index(msg, 0, value); // DEBUG value
+	put_uint8_t_by_index(msg, 4, ind); // index of debug variable
 
-	return mavlink_finalize_message(msg, system_id, component_id, 5, 132);
+	return mavlink_finalize_message(msg, system_id, component_id, 5, 127);
 }
 
 /**
@@ -54,10 +54,10 @@ static inline uint16_t mavlink_msg_debug_pack_chan(uint8_t system_id, uint8_t co
 {
 	msg->msgid = MAVLINK_MSG_ID_DEBUG;
 
-	put_float_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // DEBUG value
-	put_uint8_t_by_index(ind, 4,  MAVLINK_PAYLOAD(msg)); // index of debug variable
+	put_float_by_index(msg, 0, value); // DEBUG value
+	put_uint8_t_by_index(msg, 4, ind); // index of debug variable
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 5, 132);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 5, 127);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -75,10 +75,10 @@ static inline void mavlink_msg_debug_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_DEBUG;
 
-	put_float_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // DEBUG value
-	put_uint8_t_by_index(ind, 4,  MAVLINK_PAYLOAD(msg)); // index of debug variable
+	put_float_by_index(msg, 0, value); // DEBUG value
+	put_uint8_t_by_index(msg, 4, ind); // index of debug variable
 
-	mavlink_finalize_message_chan_send(msg, chan, 5, 132);
+	mavlink_finalize_message_chan_send(msg, chan, 5, 127);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

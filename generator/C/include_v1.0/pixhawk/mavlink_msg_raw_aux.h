@@ -47,15 +47,15 @@ static inline uint16_t mavlink_msg_raw_aux_pack(uint8_t system_id, uint8_t compo
 {
 	msg->msgid = MAVLINK_MSG_ID_RAW_AUX;
 
-	put_int32_t_by_index(baro, 0,  MAVLINK_PAYLOAD(msg)); // Barometric pressure (hecto Pascal)
-	put_uint16_t_by_index(adc1, 4,  MAVLINK_PAYLOAD(msg)); // ADC1 (J405 ADC3, LPC2148 AD0.6)
-	put_uint16_t_by_index(adc2, 6,  MAVLINK_PAYLOAD(msg)); // ADC2 (J405 ADC5, LPC2148 AD0.2)
-	put_uint16_t_by_index(adc3, 8,  MAVLINK_PAYLOAD(msg)); // ADC3 (J405 ADC6, LPC2148 AD0.1)
-	put_uint16_t_by_index(adc4, 10,  MAVLINK_PAYLOAD(msg)); // ADC4 (J405 ADC7, LPC2148 AD1.3)
-	put_uint16_t_by_index(vbat, 12,  MAVLINK_PAYLOAD(msg)); // Battery voltage
-	put_int16_t_by_index(temp, 14,  MAVLINK_PAYLOAD(msg)); // Temperature (degrees celcius)
+	put_int32_t_by_index(msg, 0, baro); // Barometric pressure (hecto Pascal)
+	put_uint16_t_by_index(msg, 4, adc1); // ADC1 (J405 ADC3, LPC2148 AD0.6)
+	put_uint16_t_by_index(msg, 6, adc2); // ADC2 (J405 ADC5, LPC2148 AD0.2)
+	put_uint16_t_by_index(msg, 8, adc3); // ADC3 (J405 ADC6, LPC2148 AD0.1)
+	put_uint16_t_by_index(msg, 10, adc4); // ADC4 (J405 ADC7, LPC2148 AD1.3)
+	put_uint16_t_by_index(msg, 12, vbat); // Battery voltage
+	put_int16_t_by_index(msg, 14, temp); // Temperature (degrees celcius)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 16, 159);
+	return mavlink_finalize_message(msg, system_id, component_id, 16, 182);
 }
 
 /**
@@ -79,15 +79,15 @@ static inline uint16_t mavlink_msg_raw_aux_pack_chan(uint8_t system_id, uint8_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_RAW_AUX;
 
-	put_int32_t_by_index(baro, 0,  MAVLINK_PAYLOAD(msg)); // Barometric pressure (hecto Pascal)
-	put_uint16_t_by_index(adc1, 4,  MAVLINK_PAYLOAD(msg)); // ADC1 (J405 ADC3, LPC2148 AD0.6)
-	put_uint16_t_by_index(adc2, 6,  MAVLINK_PAYLOAD(msg)); // ADC2 (J405 ADC5, LPC2148 AD0.2)
-	put_uint16_t_by_index(adc3, 8,  MAVLINK_PAYLOAD(msg)); // ADC3 (J405 ADC6, LPC2148 AD0.1)
-	put_uint16_t_by_index(adc4, 10,  MAVLINK_PAYLOAD(msg)); // ADC4 (J405 ADC7, LPC2148 AD1.3)
-	put_uint16_t_by_index(vbat, 12,  MAVLINK_PAYLOAD(msg)); // Battery voltage
-	put_int16_t_by_index(temp, 14,  MAVLINK_PAYLOAD(msg)); // Temperature (degrees celcius)
+	put_int32_t_by_index(msg, 0, baro); // Barometric pressure (hecto Pascal)
+	put_uint16_t_by_index(msg, 4, adc1); // ADC1 (J405 ADC3, LPC2148 AD0.6)
+	put_uint16_t_by_index(msg, 6, adc2); // ADC2 (J405 ADC5, LPC2148 AD0.2)
+	put_uint16_t_by_index(msg, 8, adc3); // ADC3 (J405 ADC6, LPC2148 AD0.1)
+	put_uint16_t_by_index(msg, 10, adc4); // ADC4 (J405 ADC7, LPC2148 AD1.3)
+	put_uint16_t_by_index(msg, 12, vbat); // Battery voltage
+	put_int16_t_by_index(msg, 14, temp); // Temperature (degrees celcius)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16, 159);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16, 182);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -110,15 +110,15 @@ static inline void mavlink_msg_raw_aux_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_RAW_AUX;
 
-	put_int32_t_by_index(baro, 0,  MAVLINK_PAYLOAD(msg)); // Barometric pressure (hecto Pascal)
-	put_uint16_t_by_index(adc1, 4,  MAVLINK_PAYLOAD(msg)); // ADC1 (J405 ADC3, LPC2148 AD0.6)
-	put_uint16_t_by_index(adc2, 6,  MAVLINK_PAYLOAD(msg)); // ADC2 (J405 ADC5, LPC2148 AD0.2)
-	put_uint16_t_by_index(adc3, 8,  MAVLINK_PAYLOAD(msg)); // ADC3 (J405 ADC6, LPC2148 AD0.1)
-	put_uint16_t_by_index(adc4, 10,  MAVLINK_PAYLOAD(msg)); // ADC4 (J405 ADC7, LPC2148 AD1.3)
-	put_uint16_t_by_index(vbat, 12,  MAVLINK_PAYLOAD(msg)); // Battery voltage
-	put_int16_t_by_index(temp, 14,  MAVLINK_PAYLOAD(msg)); // Temperature (degrees celcius)
+	put_int32_t_by_index(msg, 0, baro); // Barometric pressure (hecto Pascal)
+	put_uint16_t_by_index(msg, 4, adc1); // ADC1 (J405 ADC3, LPC2148 AD0.6)
+	put_uint16_t_by_index(msg, 6, adc2); // ADC2 (J405 ADC5, LPC2148 AD0.2)
+	put_uint16_t_by_index(msg, 8, adc3); // ADC3 (J405 ADC6, LPC2148 AD0.1)
+	put_uint16_t_by_index(msg, 10, adc4); // ADC4 (J405 ADC7, LPC2148 AD1.3)
+	put_uint16_t_by_index(msg, 12, vbat); // Battery voltage
+	put_int16_t_by_index(msg, 14, temp); // Temperature (degrees celcius)
 
-	mavlink_finalize_message_chan_send(msg, chan, 16, 159);
+	mavlink_finalize_message_chan_send(msg, chan, 16, 182);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

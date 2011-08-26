@@ -41,13 +41,13 @@ static inline uint16_t mavlink_msg_set_mag_offsets_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_int16_t_by_index(mag_ofs_x, 2,  MAVLINK_PAYLOAD(msg)); // magnetometer X offset
-	put_int16_t_by_index(mag_ofs_y, 4,  MAVLINK_PAYLOAD(msg)); // magnetometer Y offset
-	put_int16_t_by_index(mag_ofs_z, 6,  MAVLINK_PAYLOAD(msg)); // magnetometer Z offset
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_int16_t_by_index(msg, 2, mag_ofs_x); // magnetometer X offset
+	put_int16_t_by_index(msg, 4, mag_ofs_y); // magnetometer Y offset
+	put_int16_t_by_index(msg, 6, mag_ofs_z); // magnetometer Z offset
 
-	return mavlink_finalize_message(msg, system_id, component_id, 8, 247);
+	return mavlink_finalize_message(msg, system_id, component_id, 8, 29);
 }
 
 /**
@@ -69,13 +69,13 @@ static inline uint16_t mavlink_msg_set_mag_offsets_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_int16_t_by_index(mag_ofs_x, 2,  MAVLINK_PAYLOAD(msg)); // magnetometer X offset
-	put_int16_t_by_index(mag_ofs_y, 4,  MAVLINK_PAYLOAD(msg)); // magnetometer Y offset
-	put_int16_t_by_index(mag_ofs_z, 6,  MAVLINK_PAYLOAD(msg)); // magnetometer Z offset
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_int16_t_by_index(msg, 2, mag_ofs_x); // magnetometer X offset
+	put_int16_t_by_index(msg, 4, mag_ofs_y); // magnetometer Y offset
+	put_int16_t_by_index(msg, 6, mag_ofs_z); // magnetometer Z offset
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8, 247);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8, 29);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -96,13 +96,13 @@ static inline void mavlink_msg_set_mag_offsets_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MAG_OFFSETS;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_int16_t_by_index(mag_ofs_x, 2,  MAVLINK_PAYLOAD(msg)); // magnetometer X offset
-	put_int16_t_by_index(mag_ofs_y, 4,  MAVLINK_PAYLOAD(msg)); // magnetometer Y offset
-	put_int16_t_by_index(mag_ofs_z, 6,  MAVLINK_PAYLOAD(msg)); // magnetometer Z offset
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_int16_t_by_index(msg, 2, mag_ofs_x); // magnetometer X offset
+	put_int16_t_by_index(msg, 4, mag_ofs_y); // magnetometer Y offset
+	put_int16_t_by_index(msg, 6, mag_ofs_z); // magnetometer Z offset
 
-	mavlink_finalize_message_chan_send(msg, chan, 8, 247);
+	mavlink_finalize_message_chan_send(msg, chan, 8, 29);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

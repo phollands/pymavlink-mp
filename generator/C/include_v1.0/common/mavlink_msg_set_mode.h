@@ -32,10 +32,10 @@ static inline uint16_t mavlink_msg_set_mode_pack(uint8_t system_id, uint8_t comp
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MODE;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
-	put_uint8_t_by_index(mode, 1,  MAVLINK_PAYLOAD(msg)); // The new mode
+	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
+	put_uint8_t_by_index(msg, 1, mode); // The new mode
 
-	return mavlink_finalize_message(msg, system_id, component_id, 2, 204);
+	return mavlink_finalize_message(msg, system_id, component_id, 2, 186);
 }
 
 /**
@@ -54,10 +54,10 @@ static inline uint16_t mavlink_msg_set_mode_pack_chan(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MODE;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
-	put_uint8_t_by_index(mode, 1,  MAVLINK_PAYLOAD(msg)); // The new mode
+	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
+	put_uint8_t_by_index(msg, 1, mode); // The new mode
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 204);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 186);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -75,10 +75,10 @@ static inline void mavlink_msg_set_mode_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MODE;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
-	put_uint8_t_by_index(mode, 1,  MAVLINK_PAYLOAD(msg)); // The new mode
+	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
+	put_uint8_t_by_index(msg, 1, mode); // The new mode
 
-	mavlink_finalize_message_chan_send(msg, chan, 2, 204);
+	mavlink_finalize_message_chan_send(msg, chan, 2, 186);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

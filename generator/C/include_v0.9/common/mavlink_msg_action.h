@@ -35,11 +35,11 @@ static inline uint16_t mavlink_msg_action_pack(uint8_t system_id, uint8_t compon
 {
 	msg->msgid = MAVLINK_MSG_ID_ACTION;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system executing the action
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // The component executing the action
-	put_uint8_t_by_index(action, 2,  MAVLINK_PAYLOAD(msg)); // The action id
+	put_uint8_t_by_index(msg, 0, target); // The system executing the action
+	put_uint8_t_by_index(msg, 1, target_component); // The component executing the action
+	put_uint8_t_by_index(msg, 2, action); // The action id
 
-	return mavlink_finalize_message(msg, system_id, component_id, 3, 181);
+	return mavlink_finalize_message(msg, system_id, component_id, 3, 60);
 }
 
 /**
@@ -59,11 +59,11 @@ static inline uint16_t mavlink_msg_action_pack_chan(uint8_t system_id, uint8_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_ACTION;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system executing the action
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // The component executing the action
-	put_uint8_t_by_index(action, 2,  MAVLINK_PAYLOAD(msg)); // The action id
+	put_uint8_t_by_index(msg, 0, target); // The system executing the action
+	put_uint8_t_by_index(msg, 1, target_component); // The component executing the action
+	put_uint8_t_by_index(msg, 2, action); // The action id
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 181);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 60);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -82,11 +82,11 @@ static inline void mavlink_msg_action_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_ACTION;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system executing the action
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // The component executing the action
-	put_uint8_t_by_index(action, 2,  MAVLINK_PAYLOAD(msg)); // The action id
+	put_uint8_t_by_index(msg, 0, target); // The system executing the action
+	put_uint8_t_by_index(msg, 1, target_component); // The component executing the action
+	put_uint8_t_by_index(msg, 2, action); // The action id
 
-	mavlink_finalize_message_chan_send(msg, chan, 3, 181);
+	mavlink_finalize_message_chan_send(msg, chan, 3, 60);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

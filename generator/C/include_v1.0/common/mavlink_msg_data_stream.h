@@ -35,11 +35,11 @@ static inline uint16_t mavlink_msg_data_stream_pack(uint8_t system_id, uint8_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_DATA_STREAM;
 
-	put_uint16_t_by_index(message_rate, 0,  MAVLINK_PAYLOAD(msg)); // The requested interval between two messages of this type
-	put_uint8_t_by_index(stream_id, 2,  MAVLINK_PAYLOAD(msg)); // The ID of the requested data stream
-	put_uint8_t_by_index(on_off, 3,  MAVLINK_PAYLOAD(msg)); // 1 stream is enabled, 0 stream is stopped.
+	put_uint16_t_by_index(msg, 0, message_rate); // The requested interval between two messages of this type
+	put_uint8_t_by_index(msg, 2, stream_id); // The ID of the requested data stream
+	put_uint8_t_by_index(msg, 3, on_off); // 1 stream is enabled, 0 stream is stopped.
 
-	return mavlink_finalize_message(msg, system_id, component_id, 4, 126);
+	return mavlink_finalize_message(msg, system_id, component_id, 4, 21);
 }
 
 /**
@@ -59,11 +59,11 @@ static inline uint16_t mavlink_msg_data_stream_pack_chan(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_DATA_STREAM;
 
-	put_uint16_t_by_index(message_rate, 0,  MAVLINK_PAYLOAD(msg)); // The requested interval between two messages of this type
-	put_uint8_t_by_index(stream_id, 2,  MAVLINK_PAYLOAD(msg)); // The ID of the requested data stream
-	put_uint8_t_by_index(on_off, 3,  MAVLINK_PAYLOAD(msg)); // 1 stream is enabled, 0 stream is stopped.
+	put_uint16_t_by_index(msg, 0, message_rate); // The requested interval between two messages of this type
+	put_uint8_t_by_index(msg, 2, stream_id); // The ID of the requested data stream
+	put_uint8_t_by_index(msg, 3, on_off); // 1 stream is enabled, 0 stream is stopped.
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 126);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 21);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -82,11 +82,11 @@ static inline void mavlink_msg_data_stream_pack_chan_send(mavlink_channel_t chan
 {
 	msg->msgid = MAVLINK_MSG_ID_DATA_STREAM;
 
-	put_uint16_t_by_index(message_rate, 0,  MAVLINK_PAYLOAD(msg)); // The requested interval between two messages of this type
-	put_uint8_t_by_index(stream_id, 2,  MAVLINK_PAYLOAD(msg)); // The ID of the requested data stream
-	put_uint8_t_by_index(on_off, 3,  MAVLINK_PAYLOAD(msg)); // 1 stream is enabled, 0 stream is stopped.
+	put_uint16_t_by_index(msg, 0, message_rate); // The requested interval between two messages of this type
+	put_uint8_t_by_index(msg, 2, stream_id); // The ID of the requested data stream
+	put_uint8_t_by_index(msg, 3, on_off); // 1 stream is enabled, 0 stream is stopped.
 
-	mavlink_finalize_message_chan_send(msg, chan, 4, 126);
+	mavlink_finalize_message_chan_send(msg, chan, 4, 21);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

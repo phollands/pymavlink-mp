@@ -38,12 +38,12 @@ static inline uint16_t mavlink_msg_mid_lvl_cmds_pack(uint8_t system_id, uint8_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_MID_LVL_CMDS;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the commands
-	put_float_by_index(hCommand, 1,  MAVLINK_PAYLOAD(msg)); // Commanded Airspeed
-	put_float_by_index(uCommand, 5,  MAVLINK_PAYLOAD(msg)); // Log value 2 
-	put_float_by_index(rCommand, 9,  MAVLINK_PAYLOAD(msg)); // Log value 3 
+	put_uint8_t_by_index(msg, 0, target); // The system setting the commands
+	put_float_by_index(msg, 1, hCommand); // Commanded Airspeed
+	put_float_by_index(msg, 5, uCommand); // Log value 2 
+	put_float_by_index(msg, 9, rCommand); // Log value 3 
 
-	return mavlink_finalize_message(msg, system_id, component_id, 13, 144);
+	return mavlink_finalize_message(msg, system_id, component_id, 13, 2);
 }
 
 /**
@@ -64,12 +64,12 @@ static inline uint16_t mavlink_msg_mid_lvl_cmds_pack_chan(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_MID_LVL_CMDS;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the commands
-	put_float_by_index(hCommand, 1,  MAVLINK_PAYLOAD(msg)); // Commanded Airspeed
-	put_float_by_index(uCommand, 5,  MAVLINK_PAYLOAD(msg)); // Log value 2 
-	put_float_by_index(rCommand, 9,  MAVLINK_PAYLOAD(msg)); // Log value 3 
+	put_uint8_t_by_index(msg, 0, target); // The system setting the commands
+	put_float_by_index(msg, 1, hCommand); // Commanded Airspeed
+	put_float_by_index(msg, 5, uCommand); // Log value 2 
+	put_float_by_index(msg, 9, rCommand); // Log value 3 
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 13, 144);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 13, 2);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -89,12 +89,12 @@ static inline void mavlink_msg_mid_lvl_cmds_pack_chan_send(mavlink_channel_t cha
 {
 	msg->msgid = MAVLINK_MSG_ID_MID_LVL_CMDS;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the commands
-	put_float_by_index(hCommand, 1,  MAVLINK_PAYLOAD(msg)); // Commanded Airspeed
-	put_float_by_index(uCommand, 5,  MAVLINK_PAYLOAD(msg)); // Log value 2 
-	put_float_by_index(rCommand, 9,  MAVLINK_PAYLOAD(msg)); // Log value 3 
+	put_uint8_t_by_index(msg, 0, target); // The system setting the commands
+	put_float_by_index(msg, 1, hCommand); // Commanded Airspeed
+	put_float_by_index(msg, 5, uCommand); // Log value 2 
+	put_float_by_index(msg, 9, rCommand); // Log value 3 
 
-	mavlink_finalize_message_chan_send(msg, chan, 13, 144);
+	mavlink_finalize_message_chan_send(msg, chan, 13, 2);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

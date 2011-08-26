@@ -35,11 +35,11 @@ static inline uint16_t mavlink_msg_waypoint_ack_pack(uint8_t system_id, uint8_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_ACK;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_uint8_t_by_index(type, 2,  MAVLINK_PAYLOAD(msg)); // 0: OK, 1: Error
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_uint8_t_by_index(msg, 2, type); // 0: OK, 1: Error
 
-	return mavlink_finalize_message(msg, system_id, component_id, 3, 46);
+	return mavlink_finalize_message(msg, system_id, component_id, 3, 214);
 }
 
 /**
@@ -59,11 +59,11 @@ static inline uint16_t mavlink_msg_waypoint_ack_pack_chan(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_ACK;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_uint8_t_by_index(type, 2,  MAVLINK_PAYLOAD(msg)); // 0: OK, 1: Error
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_uint8_t_by_index(msg, 2, type); // 0: OK, 1: Error
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 46);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 214);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -82,11 +82,11 @@ static inline void mavlink_msg_waypoint_ack_pack_chan_send(mavlink_channel_t cha
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_ACK;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_uint8_t_by_index(type, 2,  MAVLINK_PAYLOAD(msg)); // 0: OK, 1: Error
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_uint8_t_by_index(msg, 2, type); // 0: OK, 1: Error
 
-	mavlink_finalize_message_chan_send(msg, chan, 3, 46);
+	mavlink_finalize_message_chan_send(msg, chan, 3, 214);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

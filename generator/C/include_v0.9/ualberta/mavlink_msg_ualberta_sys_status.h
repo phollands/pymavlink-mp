@@ -35,11 +35,11 @@ static inline uint16_t mavlink_msg_ualberta_sys_status_pack(uint8_t system_id, u
 {
 	msg->msgid = MAVLINK_MSG_ID_UALBERTA_SYS_STATUS;
 
-	put_uint8_t_by_index(mode, 0,  MAVLINK_PAYLOAD(msg)); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
-	put_uint8_t_by_index(nav_mode, 1,  MAVLINK_PAYLOAD(msg)); // Navigation mode, see UALBERTA_NAV_MODE ENUM
-	put_uint8_t_by_index(pilot, 2,  MAVLINK_PAYLOAD(msg)); // Pilot mode, see UALBERTA_PILOT_MODE
+	put_uint8_t_by_index(msg, 0, mode); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
+	put_uint8_t_by_index(msg, 1, nav_mode); // Navigation mode, see UALBERTA_NAV_MODE ENUM
+	put_uint8_t_by_index(msg, 2, pilot); // Pilot mode, see UALBERTA_PILOT_MODE
 
-	return mavlink_finalize_message(msg, system_id, component_id, 3, 104);
+	return mavlink_finalize_message(msg, system_id, component_id, 3, 15);
 }
 
 /**
@@ -59,11 +59,11 @@ static inline uint16_t mavlink_msg_ualberta_sys_status_pack_chan(uint8_t system_
 {
 	msg->msgid = MAVLINK_MSG_ID_UALBERTA_SYS_STATUS;
 
-	put_uint8_t_by_index(mode, 0,  MAVLINK_PAYLOAD(msg)); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
-	put_uint8_t_by_index(nav_mode, 1,  MAVLINK_PAYLOAD(msg)); // Navigation mode, see UALBERTA_NAV_MODE ENUM
-	put_uint8_t_by_index(pilot, 2,  MAVLINK_PAYLOAD(msg)); // Pilot mode, see UALBERTA_PILOT_MODE
+	put_uint8_t_by_index(msg, 0, mode); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
+	put_uint8_t_by_index(msg, 1, nav_mode); // Navigation mode, see UALBERTA_NAV_MODE ENUM
+	put_uint8_t_by_index(msg, 2, pilot); // Pilot mode, see UALBERTA_PILOT_MODE
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 104);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 15);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -82,11 +82,11 @@ static inline void mavlink_msg_ualberta_sys_status_pack_chan_send(mavlink_channe
 {
 	msg->msgid = MAVLINK_MSG_ID_UALBERTA_SYS_STATUS;
 
-	put_uint8_t_by_index(mode, 0,  MAVLINK_PAYLOAD(msg)); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
-	put_uint8_t_by_index(nav_mode, 1,  MAVLINK_PAYLOAD(msg)); // Navigation mode, see UALBERTA_NAV_MODE ENUM
-	put_uint8_t_by_index(pilot, 2,  MAVLINK_PAYLOAD(msg)); // Pilot mode, see UALBERTA_PILOT_MODE
+	put_uint8_t_by_index(msg, 0, mode); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
+	put_uint8_t_by_index(msg, 1, nav_mode); // Navigation mode, see UALBERTA_NAV_MODE ENUM
+	put_uint8_t_by_index(msg, 2, pilot); // Pilot mode, see UALBERTA_PILOT_MODE
 
-	mavlink_finalize_message_chan_send(msg, chan, 3, 104);
+	mavlink_finalize_message_chan_send(msg, chan, 3, 15);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

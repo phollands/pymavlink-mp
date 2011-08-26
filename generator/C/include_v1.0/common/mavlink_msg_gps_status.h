@@ -44,14 +44,14 @@ static inline uint16_t mavlink_msg_gps_status_pack(uint8_t system_id, uint8_t co
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_STATUS;
 
-	put_uint8_t_by_index(satellites_visible, 0,  MAVLINK_PAYLOAD(msg)); // Number of satellites visible
-	put_uint8_t_array_by_index(satellite_prn, 1, 20,  MAVLINK_PAYLOAD(msg)); // Global satellite ID
-	put_uint8_t_array_by_index(satellite_used, 21, 20,  MAVLINK_PAYLOAD(msg)); // 0: Satellite not used, 1: used for localization
-	put_uint8_t_array_by_index(satellite_elevation, 41, 20,  MAVLINK_PAYLOAD(msg)); // Elevation (0: right on top of receiver, 90: on the horizon) of satellite
-	put_uint8_t_array_by_index(satellite_azimuth, 61, 20,  MAVLINK_PAYLOAD(msg)); // Direction of satellite, 0: 0 deg, 255: 360 deg.
-	put_uint8_t_array_by_index(satellite_snr, 81, 20,  MAVLINK_PAYLOAD(msg)); // Signal to noise ratio of satellite
+	put_uint8_t_by_index(msg, 0, satellites_visible); // Number of satellites visible
+	put_uint8_t_array_by_index(msg, 1, satellite_prn, 20); // Global satellite ID
+	put_uint8_t_array_by_index(msg, 21, satellite_used, 20); // 0: Satellite not used, 1: used for localization
+	put_uint8_t_array_by_index(msg, 41, satellite_elevation, 20); // Elevation (0: right on top of receiver, 90: on the horizon) of satellite
+	put_uint8_t_array_by_index(msg, 61, satellite_azimuth, 20); // Direction of satellite, 0: 0 deg, 255: 360 deg.
+	put_uint8_t_array_by_index(msg, 81, satellite_snr, 20); // Signal to noise ratio of satellite
 
-	return mavlink_finalize_message(msg, system_id, component_id, 101, 88);
+	return mavlink_finalize_message(msg, system_id, component_id, 101, 23);
 }
 
 /**
@@ -74,14 +74,14 @@ static inline uint16_t mavlink_msg_gps_status_pack_chan(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_STATUS;
 
-	put_uint8_t_by_index(satellites_visible, 0,  MAVLINK_PAYLOAD(msg)); // Number of satellites visible
-	put_uint8_t_array_by_index(satellite_prn, 1, 20,  MAVLINK_PAYLOAD(msg)); // Global satellite ID
-	put_uint8_t_array_by_index(satellite_used, 21, 20,  MAVLINK_PAYLOAD(msg)); // 0: Satellite not used, 1: used for localization
-	put_uint8_t_array_by_index(satellite_elevation, 41, 20,  MAVLINK_PAYLOAD(msg)); // Elevation (0: right on top of receiver, 90: on the horizon) of satellite
-	put_uint8_t_array_by_index(satellite_azimuth, 61, 20,  MAVLINK_PAYLOAD(msg)); // Direction of satellite, 0: 0 deg, 255: 360 deg.
-	put_uint8_t_array_by_index(satellite_snr, 81, 20,  MAVLINK_PAYLOAD(msg)); // Signal to noise ratio of satellite
+	put_uint8_t_by_index(msg, 0, satellites_visible); // Number of satellites visible
+	put_uint8_t_array_by_index(msg, 1, satellite_prn, 20); // Global satellite ID
+	put_uint8_t_array_by_index(msg, 21, satellite_used, 20); // 0: Satellite not used, 1: used for localization
+	put_uint8_t_array_by_index(msg, 41, satellite_elevation, 20); // Elevation (0: right on top of receiver, 90: on the horizon) of satellite
+	put_uint8_t_array_by_index(msg, 61, satellite_azimuth, 20); // Direction of satellite, 0: 0 deg, 255: 360 deg.
+	put_uint8_t_array_by_index(msg, 81, satellite_snr, 20); // Signal to noise ratio of satellite
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 101, 88);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 101, 23);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -103,14 +103,14 @@ static inline void mavlink_msg_gps_status_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_STATUS;
 
-	put_uint8_t_by_index(satellites_visible, 0,  MAVLINK_PAYLOAD(msg)); // Number of satellites visible
-	put_uint8_t_array_by_index(satellite_prn, 1, 20,  MAVLINK_PAYLOAD(msg)); // Global satellite ID
-	put_uint8_t_array_by_index(satellite_used, 21, 20,  MAVLINK_PAYLOAD(msg)); // 0: Satellite not used, 1: used for localization
-	put_uint8_t_array_by_index(satellite_elevation, 41, 20,  MAVLINK_PAYLOAD(msg)); // Elevation (0: right on top of receiver, 90: on the horizon) of satellite
-	put_uint8_t_array_by_index(satellite_azimuth, 61, 20,  MAVLINK_PAYLOAD(msg)); // Direction of satellite, 0: 0 deg, 255: 360 deg.
-	put_uint8_t_array_by_index(satellite_snr, 81, 20,  MAVLINK_PAYLOAD(msg)); // Signal to noise ratio of satellite
+	put_uint8_t_by_index(msg, 0, satellites_visible); // Number of satellites visible
+	put_uint8_t_array_by_index(msg, 1, satellite_prn, 20); // Global satellite ID
+	put_uint8_t_array_by_index(msg, 21, satellite_used, 20); // 0: Satellite not used, 1: used for localization
+	put_uint8_t_array_by_index(msg, 41, satellite_elevation, 20); // Elevation (0: right on top of receiver, 90: on the horizon) of satellite
+	put_uint8_t_array_by_index(msg, 61, satellite_azimuth, 20); // Direction of satellite, 0: 0 deg, 255: 360 deg.
+	put_uint8_t_array_by_index(msg, 81, satellite_snr, 20); // Signal to noise ratio of satellite
 
-	mavlink_finalize_message_chan_send(msg, chan, 101, 88);
+	mavlink_finalize_message_chan_send(msg, chan, 101, 23);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

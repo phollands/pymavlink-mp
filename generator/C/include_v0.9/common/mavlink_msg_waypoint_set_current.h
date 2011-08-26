@@ -35,11 +35,11 @@ static inline uint16_t mavlink_msg_waypoint_set_current_pack(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_SET_CURRENT;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_uint16_t_by_index(seq, 2,  MAVLINK_PAYLOAD(msg)); // Sequence
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_uint16_t_by_index(msg, 2, seq); // Sequence
 
-	return mavlink_finalize_message(msg, system_id, component_id, 4, 47);
+	return mavlink_finalize_message(msg, system_id, component_id, 4, 106);
 }
 
 /**
@@ -59,11 +59,11 @@ static inline uint16_t mavlink_msg_waypoint_set_current_pack_chan(uint8_t system
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_SET_CURRENT;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_uint16_t_by_index(seq, 2,  MAVLINK_PAYLOAD(msg)); // Sequence
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_uint16_t_by_index(msg, 2, seq); // Sequence
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 47);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 106);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -82,11 +82,11 @@ static inline void mavlink_msg_waypoint_set_current_pack_chan_send(mavlink_chann
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_SET_CURRENT;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_uint16_t_by_index(seq, 2,  MAVLINK_PAYLOAD(msg)); // Sequence
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_uint16_t_by_index(msg, 2, seq); // Sequence
 
-	mavlink_finalize_message_chan_send(msg, chan, 4, 47);
+	mavlink_finalize_message_chan_send(msg, chan, 4, 106);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

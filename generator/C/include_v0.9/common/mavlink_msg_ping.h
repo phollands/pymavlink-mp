@@ -38,12 +38,12 @@ static inline uint16_t mavlink_msg_ping_pack(uint8_t system_id, uint8_t componen
 {
 	msg->msgid = MAVLINK_MSG_ID_PING;
 
-	put_uint32_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // PING sequence
-	put_uint8_t_by_index(target_system, 4,  MAVLINK_PAYLOAD(msg)); // 0: request ping from all receiving systems, if greater than 0: message is a ping response and number is the system id of the requesting system
-	put_uint8_t_by_index(target_component, 5,  MAVLINK_PAYLOAD(msg)); // 0: request ping from all receiving components, if greater than 0: message is a ping response and number is the system id of the requesting system
-	put_uint64_t_by_index(time, 6,  MAVLINK_PAYLOAD(msg)); // Unix timestamp in microseconds
+	put_uint32_t_by_index(msg, 0, seq); // PING sequence
+	put_uint8_t_by_index(msg, 4, target_system); // 0: request ping from all receiving systems, if greater than 0: message is a ping response and number is the system id of the requesting system
+	put_uint8_t_by_index(msg, 5, target_component); // 0: request ping from all receiving components, if greater than 0: message is a ping response and number is the system id of the requesting system
+	put_uint64_t_by_index(msg, 6, time); // Unix timestamp in microseconds
 
-	return mavlink_finalize_message(msg, system_id, component_id, 14, 242);
+	return mavlink_finalize_message(msg, system_id, component_id, 14, 92);
 }
 
 /**
@@ -64,12 +64,12 @@ static inline uint16_t mavlink_msg_ping_pack_chan(uint8_t system_id, uint8_t com
 {
 	msg->msgid = MAVLINK_MSG_ID_PING;
 
-	put_uint32_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // PING sequence
-	put_uint8_t_by_index(target_system, 4,  MAVLINK_PAYLOAD(msg)); // 0: request ping from all receiving systems, if greater than 0: message is a ping response and number is the system id of the requesting system
-	put_uint8_t_by_index(target_component, 5,  MAVLINK_PAYLOAD(msg)); // 0: request ping from all receiving components, if greater than 0: message is a ping response and number is the system id of the requesting system
-	put_uint64_t_by_index(time, 6,  MAVLINK_PAYLOAD(msg)); // Unix timestamp in microseconds
+	put_uint32_t_by_index(msg, 0, seq); // PING sequence
+	put_uint8_t_by_index(msg, 4, target_system); // 0: request ping from all receiving systems, if greater than 0: message is a ping response and number is the system id of the requesting system
+	put_uint8_t_by_index(msg, 5, target_component); // 0: request ping from all receiving components, if greater than 0: message is a ping response and number is the system id of the requesting system
+	put_uint64_t_by_index(msg, 6, time); // Unix timestamp in microseconds
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 242);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 92);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -89,12 +89,12 @@ static inline void mavlink_msg_ping_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_PING;
 
-	put_uint32_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // PING sequence
-	put_uint8_t_by_index(target_system, 4,  MAVLINK_PAYLOAD(msg)); // 0: request ping from all receiving systems, if greater than 0: message is a ping response and number is the system id of the requesting system
-	put_uint8_t_by_index(target_component, 5,  MAVLINK_PAYLOAD(msg)); // 0: request ping from all receiving components, if greater than 0: message is a ping response and number is the system id of the requesting system
-	put_uint64_t_by_index(time, 6,  MAVLINK_PAYLOAD(msg)); // Unix timestamp in microseconds
+	put_uint32_t_by_index(msg, 0, seq); // PING sequence
+	put_uint8_t_by_index(msg, 4, target_system); // 0: request ping from all receiving systems, if greater than 0: message is a ping response and number is the system id of the requesting system
+	put_uint8_t_by_index(msg, 5, target_component); // 0: request ping from all receiving components, if greater than 0: message is a ping response and number is the system id of the requesting system
+	put_uint64_t_by_index(msg, 6, time); // Unix timestamp in microseconds
 
-	mavlink_finalize_message_chan_send(msg, chan, 14, 242);
+	mavlink_finalize_message_chan_send(msg, chan, 14, 92);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

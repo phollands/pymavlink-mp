@@ -41,13 +41,13 @@ static inline uint16_t mavlink_msg_request_data_stream_pack(uint8_t system_id, u
 {
 	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
 
-	put_uint16_t_by_index(req_message_rate, 0,  MAVLINK_PAYLOAD(msg)); // The requested interval between two messages of this type
-	put_uint8_t_by_index(target_system, 2,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(target_component, 3,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(req_stream_id, 4,  MAVLINK_PAYLOAD(msg)); // The ID of the requested data stream
-	put_uint8_t_by_index(start_stop, 5,  MAVLINK_PAYLOAD(msg)); // 1 to start sending, 0 to stop sending.
+	put_uint16_t_by_index(msg, 0, req_message_rate); // The requested interval between two messages of this type
+	put_uint8_t_by_index(msg, 2, target_system); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 3, target_component); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 4, req_stream_id); // The ID of the requested data stream
+	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
 
-	return mavlink_finalize_message(msg, system_id, component_id, 6, 169);
+	return mavlink_finalize_message(msg, system_id, component_id, 6, 148);
 }
 
 /**
@@ -69,13 +69,13 @@ static inline uint16_t mavlink_msg_request_data_stream_pack_chan(uint8_t system_
 {
 	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
 
-	put_uint16_t_by_index(req_message_rate, 0,  MAVLINK_PAYLOAD(msg)); // The requested interval between two messages of this type
-	put_uint8_t_by_index(target_system, 2,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(target_component, 3,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(req_stream_id, 4,  MAVLINK_PAYLOAD(msg)); // The ID of the requested data stream
-	put_uint8_t_by_index(start_stop, 5,  MAVLINK_PAYLOAD(msg)); // 1 to start sending, 0 to stop sending.
+	put_uint16_t_by_index(msg, 0, req_message_rate); // The requested interval between two messages of this type
+	put_uint8_t_by_index(msg, 2, target_system); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 3, target_component); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 4, req_stream_id); // The ID of the requested data stream
+	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6, 169);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6, 148);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -96,13 +96,13 @@ static inline void mavlink_msg_request_data_stream_pack_chan_send(mavlink_channe
 {
 	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
 
-	put_uint16_t_by_index(req_message_rate, 0,  MAVLINK_PAYLOAD(msg)); // The requested interval between two messages of this type
-	put_uint8_t_by_index(target_system, 2,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(target_component, 3,  MAVLINK_PAYLOAD(msg)); // The target requested to send the message stream.
-	put_uint8_t_by_index(req_stream_id, 4,  MAVLINK_PAYLOAD(msg)); // The ID of the requested data stream
-	put_uint8_t_by_index(start_stop, 5,  MAVLINK_PAYLOAD(msg)); // 1 to start sending, 0 to stop sending.
+	put_uint16_t_by_index(msg, 0, req_message_rate); // The requested interval between two messages of this type
+	put_uint8_t_by_index(msg, 2, target_system); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 3, target_component); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 4, req_stream_id); // The ID of the requested data stream
+	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
 
-	mavlink_finalize_message_chan_send(msg, chan, 6, 169);
+	mavlink_finalize_message_chan_send(msg, chan, 6, 148);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -29,9 +29,9 @@ static inline uint16_t mavlink_msg_waypoint_current_pack(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_CURRENT;
 
-	put_uint16_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // Sequence
+	put_uint16_t_by_index(msg, 0, seq); // Sequence
 
-	return mavlink_finalize_message(msg, system_id, component_id, 2, 241);
+	return mavlink_finalize_message(msg, system_id, component_id, 2, 101);
 }
 
 /**
@@ -49,9 +49,9 @@ static inline uint16_t mavlink_msg_waypoint_current_pack_chan(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_CURRENT;
 
-	put_uint16_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // Sequence
+	put_uint16_t_by_index(msg, 0, seq); // Sequence
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 241);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 101);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -68,9 +68,9 @@ static inline void mavlink_msg_waypoint_current_pack_chan_send(mavlink_channel_t
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_CURRENT;
 
-	put_uint16_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // Sequence
+	put_uint16_t_by_index(msg, 0, seq); // Sequence
 
-	mavlink_finalize_message_chan_send(msg, chan, 2, 241);
+	mavlink_finalize_message_chan_send(msg, chan, 2, 101);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

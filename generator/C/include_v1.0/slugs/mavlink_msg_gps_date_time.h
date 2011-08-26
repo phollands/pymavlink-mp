@@ -47,15 +47,15 @@ static inline uint16_t mavlink_msg_gps_date_time_pack(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_DATE_TIME;
 
-	put_uint8_t_by_index(year, 0,  MAVLINK_PAYLOAD(msg)); // Year reported by Gps 
-	put_uint8_t_by_index(month, 1,  MAVLINK_PAYLOAD(msg)); // Month reported by Gps 
-	put_uint8_t_by_index(day, 2,  MAVLINK_PAYLOAD(msg)); // Day reported by Gps 
-	put_uint8_t_by_index(hour, 3,  MAVLINK_PAYLOAD(msg)); // Hour reported by Gps 
-	put_uint8_t_by_index(min, 4,  MAVLINK_PAYLOAD(msg)); // Min reported by Gps 
-	put_uint8_t_by_index(sec, 5,  MAVLINK_PAYLOAD(msg)); // Sec reported by Gps  
-	put_uint8_t_by_index(visSat, 6,  MAVLINK_PAYLOAD(msg)); // Visible sattelites reported by Gps  
+	put_uint8_t_by_index(msg, 0, year); // Year reported by Gps 
+	put_uint8_t_by_index(msg, 1, month); // Month reported by Gps 
+	put_uint8_t_by_index(msg, 2, day); // Day reported by Gps 
+	put_uint8_t_by_index(msg, 3, hour); // Hour reported by Gps 
+	put_uint8_t_by_index(msg, 4, min); // Min reported by Gps 
+	put_uint8_t_by_index(msg, 5, sec); // Sec reported by Gps  
+	put_uint8_t_by_index(msg, 6, visSat); // Visible sattelites reported by Gps  
 
-	return mavlink_finalize_message(msg, system_id, component_id, 7, 66);
+	return mavlink_finalize_message(msg, system_id, component_id, 7, 16);
 }
 
 /**
@@ -79,15 +79,15 @@ static inline uint16_t mavlink_msg_gps_date_time_pack_chan(uint8_t system_id, ui
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_DATE_TIME;
 
-	put_uint8_t_by_index(year, 0,  MAVLINK_PAYLOAD(msg)); // Year reported by Gps 
-	put_uint8_t_by_index(month, 1,  MAVLINK_PAYLOAD(msg)); // Month reported by Gps 
-	put_uint8_t_by_index(day, 2,  MAVLINK_PAYLOAD(msg)); // Day reported by Gps 
-	put_uint8_t_by_index(hour, 3,  MAVLINK_PAYLOAD(msg)); // Hour reported by Gps 
-	put_uint8_t_by_index(min, 4,  MAVLINK_PAYLOAD(msg)); // Min reported by Gps 
-	put_uint8_t_by_index(sec, 5,  MAVLINK_PAYLOAD(msg)); // Sec reported by Gps  
-	put_uint8_t_by_index(visSat, 6,  MAVLINK_PAYLOAD(msg)); // Visible sattelites reported by Gps  
+	put_uint8_t_by_index(msg, 0, year); // Year reported by Gps 
+	put_uint8_t_by_index(msg, 1, month); // Month reported by Gps 
+	put_uint8_t_by_index(msg, 2, day); // Day reported by Gps 
+	put_uint8_t_by_index(msg, 3, hour); // Hour reported by Gps 
+	put_uint8_t_by_index(msg, 4, min); // Min reported by Gps 
+	put_uint8_t_by_index(msg, 5, sec); // Sec reported by Gps  
+	put_uint8_t_by_index(msg, 6, visSat); // Visible sattelites reported by Gps  
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 7, 66);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 7, 16);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -110,15 +110,15 @@ static inline void mavlink_msg_gps_date_time_pack_chan_send(mavlink_channel_t ch
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_DATE_TIME;
 
-	put_uint8_t_by_index(year, 0,  MAVLINK_PAYLOAD(msg)); // Year reported by Gps 
-	put_uint8_t_by_index(month, 1,  MAVLINK_PAYLOAD(msg)); // Month reported by Gps 
-	put_uint8_t_by_index(day, 2,  MAVLINK_PAYLOAD(msg)); // Day reported by Gps 
-	put_uint8_t_by_index(hour, 3,  MAVLINK_PAYLOAD(msg)); // Hour reported by Gps 
-	put_uint8_t_by_index(min, 4,  MAVLINK_PAYLOAD(msg)); // Min reported by Gps 
-	put_uint8_t_by_index(sec, 5,  MAVLINK_PAYLOAD(msg)); // Sec reported by Gps  
-	put_uint8_t_by_index(visSat, 6,  MAVLINK_PAYLOAD(msg)); // Visible sattelites reported by Gps  
+	put_uint8_t_by_index(msg, 0, year); // Year reported by Gps 
+	put_uint8_t_by_index(msg, 1, month); // Month reported by Gps 
+	put_uint8_t_by_index(msg, 2, day); // Day reported by Gps 
+	put_uint8_t_by_index(msg, 3, hour); // Hour reported by Gps 
+	put_uint8_t_by_index(msg, 4, min); // Min reported by Gps 
+	put_uint8_t_by_index(msg, 5, sec); // Sec reported by Gps  
+	put_uint8_t_by_index(msg, 6, visSat); // Visible sattelites reported by Gps  
 
-	mavlink_finalize_message_chan_send(msg, chan, 7, 66);
+	mavlink_finalize_message_chan_send(msg, chan, 7, 16);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

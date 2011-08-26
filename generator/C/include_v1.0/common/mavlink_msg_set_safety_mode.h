@@ -32,10 +32,10 @@ static inline uint16_t mavlink_msg_set_safety_mode_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_SAFETY_MODE;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
-	put_uint8_t_by_index(safety_mode, 1,  MAVLINK_PAYLOAD(msg)); // The new safety mode. The MAV will reject some mode changes during flight.
+	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
+	put_uint8_t_by_index(msg, 1, safety_mode); // The new safety mode. The MAV will reject some mode changes during flight.
 
-	return mavlink_finalize_message(msg, system_id, component_id, 2, 0);
+	return mavlink_finalize_message(msg, system_id, component_id, 2, 8);
 }
 
 /**
@@ -54,10 +54,10 @@ static inline uint16_t mavlink_msg_set_safety_mode_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_SAFETY_MODE;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
-	put_uint8_t_by_index(safety_mode, 1,  MAVLINK_PAYLOAD(msg)); // The new safety mode. The MAV will reject some mode changes during flight.
+	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
+	put_uint8_t_by_index(msg, 1, safety_mode); // The new safety mode. The MAV will reject some mode changes during flight.
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 0);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 8);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -75,10 +75,10 @@ static inline void mavlink_msg_set_safety_mode_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_SAFETY_MODE;
 
-	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
-	put_uint8_t_by_index(safety_mode, 1,  MAVLINK_PAYLOAD(msg)); // The new safety mode. The MAV will reject some mode changes during flight.
+	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
+	put_uint8_t_by_index(msg, 1, safety_mode); // The new safety mode. The MAV will reject some mode changes during flight.
 
-	mavlink_finalize_message_chan_send(msg, chan, 2, 0);
+	mavlink_finalize_message_chan_send(msg, chan, 2, 8);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

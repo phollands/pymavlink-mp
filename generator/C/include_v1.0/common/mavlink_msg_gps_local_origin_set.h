@@ -35,11 +35,11 @@ static inline uint16_t mavlink_msg_gps_local_origin_set_pack(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET;
 
-	put_int32_t_by_index(latitude, 0,  MAVLINK_PAYLOAD(msg)); // Latitude (WGS84), expressed as * 1E7
-	put_int32_t_by_index(longitude, 4,  MAVLINK_PAYLOAD(msg)); // Longitude (WGS84), expressed as * 1E7
-	put_int32_t_by_index(altitude, 8,  MAVLINK_PAYLOAD(msg)); // Altitude(WGS84), expressed as * 1000
+	put_int32_t_by_index(msg, 0, latitude); // Latitude (WGS84), expressed as * 1E7
+	put_int32_t_by_index(msg, 4, longitude); // Longitude (WGS84), expressed as * 1E7
+	put_int32_t_by_index(msg, 8, altitude); // Altitude(WGS84), expressed as * 1000
 
-	return mavlink_finalize_message(msg, system_id, component_id, 12, 180);
+	return mavlink_finalize_message(msg, system_id, component_id, 12, 14);
 }
 
 /**
@@ -59,11 +59,11 @@ static inline uint16_t mavlink_msg_gps_local_origin_set_pack_chan(uint8_t system
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET;
 
-	put_int32_t_by_index(latitude, 0,  MAVLINK_PAYLOAD(msg)); // Latitude (WGS84), expressed as * 1E7
-	put_int32_t_by_index(longitude, 4,  MAVLINK_PAYLOAD(msg)); // Longitude (WGS84), expressed as * 1E7
-	put_int32_t_by_index(altitude, 8,  MAVLINK_PAYLOAD(msg)); // Altitude(WGS84), expressed as * 1000
+	put_int32_t_by_index(msg, 0, latitude); // Latitude (WGS84), expressed as * 1E7
+	put_int32_t_by_index(msg, 4, longitude); // Longitude (WGS84), expressed as * 1E7
+	put_int32_t_by_index(msg, 8, altitude); // Altitude(WGS84), expressed as * 1000
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 12, 180);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 12, 14);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -82,11 +82,11 @@ static inline void mavlink_msg_gps_local_origin_set_pack_chan_send(mavlink_chann
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET;
 
-	put_int32_t_by_index(latitude, 0,  MAVLINK_PAYLOAD(msg)); // Latitude (WGS84), expressed as * 1E7
-	put_int32_t_by_index(longitude, 4,  MAVLINK_PAYLOAD(msg)); // Longitude (WGS84), expressed as * 1E7
-	put_int32_t_by_index(altitude, 8,  MAVLINK_PAYLOAD(msg)); // Altitude(WGS84), expressed as * 1000
+	put_int32_t_by_index(msg, 0, latitude); // Latitude (WGS84), expressed as * 1E7
+	put_int32_t_by_index(msg, 4, longitude); // Longitude (WGS84), expressed as * 1E7
+	put_int32_t_by_index(msg, 8, altitude); // Altitude(WGS84), expressed as * 1000
 
-	mavlink_finalize_message_chan_send(msg, chan, 12, 180);
+	mavlink_finalize_message_chan_send(msg, chan, 12, 14);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

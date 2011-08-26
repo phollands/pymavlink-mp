@@ -47,15 +47,15 @@ static inline uint16_t mavlink_msg_position_control_setpoint_set_pack(uint8_t sy
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_CONTROL_SETPOINT_SET;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // yaw orientation in radians, 0 = NORTH
-	put_uint16_t_by_index(id, 16,  MAVLINK_PAYLOAD(msg)); // ID of waypoint, 0 for plain position
-	put_uint8_t_by_index(target_system, 18,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 19,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_float_by_index(msg, 0, x); // x position
+	put_float_by_index(msg, 4, y); // y position
+	put_float_by_index(msg, 8, z); // z position
+	put_float_by_index(msg, 12, yaw); // yaw orientation in radians, 0 = NORTH
+	put_uint16_t_by_index(msg, 16, id); // ID of waypoint, 0 for plain position
+	put_uint8_t_by_index(msg, 18, target_system); // System ID
+	put_uint8_t_by_index(msg, 19, target_component); // Component ID
 
-	return mavlink_finalize_message(msg, system_id, component_id, 20, 39);
+	return mavlink_finalize_message(msg, system_id, component_id, 20, 11);
 }
 
 /**
@@ -79,15 +79,15 @@ static inline uint16_t mavlink_msg_position_control_setpoint_set_pack_chan(uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_CONTROL_SETPOINT_SET;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // yaw orientation in radians, 0 = NORTH
-	put_uint16_t_by_index(id, 16,  MAVLINK_PAYLOAD(msg)); // ID of waypoint, 0 for plain position
-	put_uint8_t_by_index(target_system, 18,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 19,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_float_by_index(msg, 0, x); // x position
+	put_float_by_index(msg, 4, y); // y position
+	put_float_by_index(msg, 8, z); // z position
+	put_float_by_index(msg, 12, yaw); // yaw orientation in radians, 0 = NORTH
+	put_uint16_t_by_index(msg, 16, id); // ID of waypoint, 0 for plain position
+	put_uint8_t_by_index(msg, 18, target_system); // System ID
+	put_uint8_t_by_index(msg, 19, target_component); // Component ID
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 39);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 11);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -110,15 +110,15 @@ static inline void mavlink_msg_position_control_setpoint_set_pack_chan_send(mavl
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_CONTROL_SETPOINT_SET;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // yaw orientation in radians, 0 = NORTH
-	put_uint16_t_by_index(id, 16,  MAVLINK_PAYLOAD(msg)); // ID of waypoint, 0 for plain position
-	put_uint8_t_by_index(target_system, 18,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 19,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_float_by_index(msg, 0, x); // x position
+	put_float_by_index(msg, 4, y); // y position
+	put_float_by_index(msg, 8, z); // z position
+	put_float_by_index(msg, 12, yaw); // yaw orientation in radians, 0 = NORTH
+	put_uint16_t_by_index(msg, 16, id); // ID of waypoint, 0 for plain position
+	put_uint8_t_by_index(msg, 18, target_system); // System ID
+	put_uint8_t_by_index(msg, 19, target_component); // Component ID
 
-	mavlink_finalize_message_chan_send(msg, chan, 20, 39);
+	mavlink_finalize_message_chan_send(msg, chan, 20, 11);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

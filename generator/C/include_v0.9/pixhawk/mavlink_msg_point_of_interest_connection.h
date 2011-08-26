@@ -59,19 +59,19 @@ static inline uint16_t mavlink_msg_point_of_interest_connection_pack(uint8_t sys
 {
 	msg->msgid = MAVLINK_MSG_ID_POINT_OF_INTEREST_CONNECTION;
 
-	put_uint8_t_by_index(type, 0,  MAVLINK_PAYLOAD(msg)); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
-	put_uint8_t_by_index(color, 1,  MAVLINK_PAYLOAD(msg)); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
-	put_uint8_t_by_index(coordinate_system, 2,  MAVLINK_PAYLOAD(msg)); // 0: global, 1:local
-	put_uint16_t_by_index(timeout, 3,  MAVLINK_PAYLOAD(msg)); // 0: no timeout, >1: timeout in seconds
-	put_float_by_index(xp1, 5,  MAVLINK_PAYLOAD(msg)); // X1 Position
-	put_float_by_index(yp1, 9,  MAVLINK_PAYLOAD(msg)); // Y1 Position
-	put_float_by_index(zp1, 13,  MAVLINK_PAYLOAD(msg)); // Z1 Position
-	put_float_by_index(xp2, 17,  MAVLINK_PAYLOAD(msg)); // X2 Position
-	put_float_by_index(yp2, 21,  MAVLINK_PAYLOAD(msg)); // Y2 Position
-	put_float_by_index(zp2, 25,  MAVLINK_PAYLOAD(msg)); // Z2 Position
-	put_char_array_by_index(name, 29, 26,  MAVLINK_PAYLOAD(msg)); // POI connection name
+	put_uint8_t_by_index(msg, 0, type); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
+	put_uint8_t_by_index(msg, 1, color); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
+	put_uint8_t_by_index(msg, 2, coordinate_system); // 0: global, 1:local
+	put_uint16_t_by_index(msg, 3, timeout); // 0: no timeout, >1: timeout in seconds
+	put_float_by_index(msg, 5, xp1); // X1 Position
+	put_float_by_index(msg, 9, yp1); // Y1 Position
+	put_float_by_index(msg, 13, zp1); // Z1 Position
+	put_float_by_index(msg, 17, xp2); // X2 Position
+	put_float_by_index(msg, 21, yp2); // Y2 Position
+	put_float_by_index(msg, 25, zp2); // Z2 Position
+	put_char_array_by_index(msg, 29, name, 26); // POI connection name
 
-	return mavlink_finalize_message(msg, system_id, component_id, 55, 52);
+	return mavlink_finalize_message(msg, system_id, component_id, 55, 83);
 }
 
 /**
@@ -99,19 +99,19 @@ static inline uint16_t mavlink_msg_point_of_interest_connection_pack_chan(uint8_
 {
 	msg->msgid = MAVLINK_MSG_ID_POINT_OF_INTEREST_CONNECTION;
 
-	put_uint8_t_by_index(type, 0,  MAVLINK_PAYLOAD(msg)); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
-	put_uint8_t_by_index(color, 1,  MAVLINK_PAYLOAD(msg)); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
-	put_uint8_t_by_index(coordinate_system, 2,  MAVLINK_PAYLOAD(msg)); // 0: global, 1:local
-	put_uint16_t_by_index(timeout, 3,  MAVLINK_PAYLOAD(msg)); // 0: no timeout, >1: timeout in seconds
-	put_float_by_index(xp1, 5,  MAVLINK_PAYLOAD(msg)); // X1 Position
-	put_float_by_index(yp1, 9,  MAVLINK_PAYLOAD(msg)); // Y1 Position
-	put_float_by_index(zp1, 13,  MAVLINK_PAYLOAD(msg)); // Z1 Position
-	put_float_by_index(xp2, 17,  MAVLINK_PAYLOAD(msg)); // X2 Position
-	put_float_by_index(yp2, 21,  MAVLINK_PAYLOAD(msg)); // Y2 Position
-	put_float_by_index(zp2, 25,  MAVLINK_PAYLOAD(msg)); // Z2 Position
-	put_char_array_by_index(name, 29, 26,  MAVLINK_PAYLOAD(msg)); // POI connection name
+	put_uint8_t_by_index(msg, 0, type); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
+	put_uint8_t_by_index(msg, 1, color); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
+	put_uint8_t_by_index(msg, 2, coordinate_system); // 0: global, 1:local
+	put_uint16_t_by_index(msg, 3, timeout); // 0: no timeout, >1: timeout in seconds
+	put_float_by_index(msg, 5, xp1); // X1 Position
+	put_float_by_index(msg, 9, yp1); // Y1 Position
+	put_float_by_index(msg, 13, zp1); // Z1 Position
+	put_float_by_index(msg, 17, xp2); // X2 Position
+	put_float_by_index(msg, 21, yp2); // Y2 Position
+	put_float_by_index(msg, 25, zp2); // Z2 Position
+	put_char_array_by_index(msg, 29, name, 26); // POI connection name
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 55, 52);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 55, 83);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -138,19 +138,19 @@ static inline void mavlink_msg_point_of_interest_connection_pack_chan_send(mavli
 {
 	msg->msgid = MAVLINK_MSG_ID_POINT_OF_INTEREST_CONNECTION;
 
-	put_uint8_t_by_index(type, 0,  MAVLINK_PAYLOAD(msg)); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
-	put_uint8_t_by_index(color, 1,  MAVLINK_PAYLOAD(msg)); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
-	put_uint8_t_by_index(coordinate_system, 2,  MAVLINK_PAYLOAD(msg)); // 0: global, 1:local
-	put_uint16_t_by_index(timeout, 3,  MAVLINK_PAYLOAD(msg)); // 0: no timeout, >1: timeout in seconds
-	put_float_by_index(xp1, 5,  MAVLINK_PAYLOAD(msg)); // X1 Position
-	put_float_by_index(yp1, 9,  MAVLINK_PAYLOAD(msg)); // Y1 Position
-	put_float_by_index(zp1, 13,  MAVLINK_PAYLOAD(msg)); // Z1 Position
-	put_float_by_index(xp2, 17,  MAVLINK_PAYLOAD(msg)); // X2 Position
-	put_float_by_index(yp2, 21,  MAVLINK_PAYLOAD(msg)); // Y2 Position
-	put_float_by_index(zp2, 25,  MAVLINK_PAYLOAD(msg)); // Z2 Position
-	put_char_array_by_index(name, 29, 26,  MAVLINK_PAYLOAD(msg)); // POI connection name
+	put_uint8_t_by_index(msg, 0, type); // 0: Notice, 1: Warning, 2: Critical, 3: Emergency, 4: Debug
+	put_uint8_t_by_index(msg, 1, color); // 0: blue, 1: yellow, 2: red, 3: orange, 4: green, 5: magenta
+	put_uint8_t_by_index(msg, 2, coordinate_system); // 0: global, 1:local
+	put_uint16_t_by_index(msg, 3, timeout); // 0: no timeout, >1: timeout in seconds
+	put_float_by_index(msg, 5, xp1); // X1 Position
+	put_float_by_index(msg, 9, yp1); // Y1 Position
+	put_float_by_index(msg, 13, zp1); // Z1 Position
+	put_float_by_index(msg, 17, xp2); // X2 Position
+	put_float_by_index(msg, 21, yp2); // Y2 Position
+	put_float_by_index(msg, 25, zp2); // Z2 Position
+	put_char_array_by_index(msg, 29, name, 26); // POI connection name
 
-	mavlink_finalize_message_chan_send(msg, chan, 55, 52);
+	mavlink_finalize_message_chan_send(msg, chan, 55, 83);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -50,16 +50,16 @@ static inline uint16_t mavlink_msg_control_status_pack(uint8_t system_id, uint8_
 {
 	msg->msgid = MAVLINK_MSG_ID_CONTROL_STATUS;
 
-	put_uint8_t_by_index(position_fix, 0,  MAVLINK_PAYLOAD(msg)); // Position fix: 0: lost, 2: 2D position fix, 3: 3D position fix 
-	put_uint8_t_by_index(vision_fix, 1,  MAVLINK_PAYLOAD(msg)); // Vision position fix: 0: lost, 1: 2D local position hold, 2: 2D global position fix, 3: 3D global position fix 
-	put_uint8_t_by_index(gps_fix, 2,  MAVLINK_PAYLOAD(msg)); // GPS position fix: 0: no reception, 1: Minimum 1 satellite, but no position fix, 2: 2D position fix, 3: 3D position fix 
-	put_uint8_t_by_index(ahrs_health, 3,  MAVLINK_PAYLOAD(msg)); // Attitude estimation health: 0: poor, 255: excellent
-	put_uint8_t_by_index(control_att, 4,  MAVLINK_PAYLOAD(msg)); // 0: Attitude control disabled, 1: enabled
-	put_uint8_t_by_index(control_pos_xy, 5,  MAVLINK_PAYLOAD(msg)); // 0: X, Y position control disabled, 1: enabled
-	put_uint8_t_by_index(control_pos_z, 6,  MAVLINK_PAYLOAD(msg)); // 0: Z position control disabled, 1: enabled
-	put_uint8_t_by_index(control_pos_yaw, 7,  MAVLINK_PAYLOAD(msg)); // 0: Yaw angle control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 0, position_fix); // Position fix: 0: lost, 2: 2D position fix, 3: 3D position fix 
+	put_uint8_t_by_index(msg, 1, vision_fix); // Vision position fix: 0: lost, 1: 2D local position hold, 2: 2D global position fix, 3: 3D global position fix 
+	put_uint8_t_by_index(msg, 2, gps_fix); // GPS position fix: 0: no reception, 1: Minimum 1 satellite, but no position fix, 2: 2D position fix, 3: 3D position fix 
+	put_uint8_t_by_index(msg, 3, ahrs_health); // Attitude estimation health: 0: poor, 255: excellent
+	put_uint8_t_by_index(msg, 4, control_att); // 0: Attitude control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 5, control_pos_xy); // 0: X, Y position control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 6, control_pos_z); // 0: Z position control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 7, control_pos_yaw); // 0: Yaw angle control disabled, 1: enabled
 
-	return mavlink_finalize_message(msg, system_id, component_id, 8, 102);
+	return mavlink_finalize_message(msg, system_id, component_id, 8, 157);
 }
 
 /**
@@ -84,16 +84,16 @@ static inline uint16_t mavlink_msg_control_status_pack_chan(uint8_t system_id, u
 {
 	msg->msgid = MAVLINK_MSG_ID_CONTROL_STATUS;
 
-	put_uint8_t_by_index(position_fix, 0,  MAVLINK_PAYLOAD(msg)); // Position fix: 0: lost, 2: 2D position fix, 3: 3D position fix 
-	put_uint8_t_by_index(vision_fix, 1,  MAVLINK_PAYLOAD(msg)); // Vision position fix: 0: lost, 1: 2D local position hold, 2: 2D global position fix, 3: 3D global position fix 
-	put_uint8_t_by_index(gps_fix, 2,  MAVLINK_PAYLOAD(msg)); // GPS position fix: 0: no reception, 1: Minimum 1 satellite, but no position fix, 2: 2D position fix, 3: 3D position fix 
-	put_uint8_t_by_index(ahrs_health, 3,  MAVLINK_PAYLOAD(msg)); // Attitude estimation health: 0: poor, 255: excellent
-	put_uint8_t_by_index(control_att, 4,  MAVLINK_PAYLOAD(msg)); // 0: Attitude control disabled, 1: enabled
-	put_uint8_t_by_index(control_pos_xy, 5,  MAVLINK_PAYLOAD(msg)); // 0: X, Y position control disabled, 1: enabled
-	put_uint8_t_by_index(control_pos_z, 6,  MAVLINK_PAYLOAD(msg)); // 0: Z position control disabled, 1: enabled
-	put_uint8_t_by_index(control_pos_yaw, 7,  MAVLINK_PAYLOAD(msg)); // 0: Yaw angle control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 0, position_fix); // Position fix: 0: lost, 2: 2D position fix, 3: 3D position fix 
+	put_uint8_t_by_index(msg, 1, vision_fix); // Vision position fix: 0: lost, 1: 2D local position hold, 2: 2D global position fix, 3: 3D global position fix 
+	put_uint8_t_by_index(msg, 2, gps_fix); // GPS position fix: 0: no reception, 1: Minimum 1 satellite, but no position fix, 2: 2D position fix, 3: 3D position fix 
+	put_uint8_t_by_index(msg, 3, ahrs_health); // Attitude estimation health: 0: poor, 255: excellent
+	put_uint8_t_by_index(msg, 4, control_att); // 0: Attitude control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 5, control_pos_xy); // 0: X, Y position control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 6, control_pos_z); // 0: Z position control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 7, control_pos_yaw); // 0: Yaw angle control disabled, 1: enabled
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8, 102);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8, 157);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -117,16 +117,16 @@ static inline void mavlink_msg_control_status_pack_chan_send(mavlink_channel_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_CONTROL_STATUS;
 
-	put_uint8_t_by_index(position_fix, 0,  MAVLINK_PAYLOAD(msg)); // Position fix: 0: lost, 2: 2D position fix, 3: 3D position fix 
-	put_uint8_t_by_index(vision_fix, 1,  MAVLINK_PAYLOAD(msg)); // Vision position fix: 0: lost, 1: 2D local position hold, 2: 2D global position fix, 3: 3D global position fix 
-	put_uint8_t_by_index(gps_fix, 2,  MAVLINK_PAYLOAD(msg)); // GPS position fix: 0: no reception, 1: Minimum 1 satellite, but no position fix, 2: 2D position fix, 3: 3D position fix 
-	put_uint8_t_by_index(ahrs_health, 3,  MAVLINK_PAYLOAD(msg)); // Attitude estimation health: 0: poor, 255: excellent
-	put_uint8_t_by_index(control_att, 4,  MAVLINK_PAYLOAD(msg)); // 0: Attitude control disabled, 1: enabled
-	put_uint8_t_by_index(control_pos_xy, 5,  MAVLINK_PAYLOAD(msg)); // 0: X, Y position control disabled, 1: enabled
-	put_uint8_t_by_index(control_pos_z, 6,  MAVLINK_PAYLOAD(msg)); // 0: Z position control disabled, 1: enabled
-	put_uint8_t_by_index(control_pos_yaw, 7,  MAVLINK_PAYLOAD(msg)); // 0: Yaw angle control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 0, position_fix); // Position fix: 0: lost, 2: 2D position fix, 3: 3D position fix 
+	put_uint8_t_by_index(msg, 1, vision_fix); // Vision position fix: 0: lost, 1: 2D local position hold, 2: 2D global position fix, 3: 3D global position fix 
+	put_uint8_t_by_index(msg, 2, gps_fix); // GPS position fix: 0: no reception, 1: Minimum 1 satellite, but no position fix, 2: 2D position fix, 3: 3D position fix 
+	put_uint8_t_by_index(msg, 3, ahrs_health); // Attitude estimation health: 0: poor, 255: excellent
+	put_uint8_t_by_index(msg, 4, control_att); // 0: Attitude control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 5, control_pos_xy); // 0: X, Y position control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 6, control_pos_z); // 0: Z position control disabled, 1: enabled
+	put_uint8_t_by_index(msg, 7, control_pos_yaw); // 0: Yaw angle control disabled, 1: enabled
 
-	mavlink_finalize_message_chan_send(msg, chan, 8, 102);
+	mavlink_finalize_message_chan_send(msg, chan, 8, 157);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -44,14 +44,14 @@ static inline uint16_t mavlink_msg_local_position_setpoint_set_pack(uint8_t syst
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_SET;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle
-	put_uint8_t_by_index(target_system, 16,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 17,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_float_by_index(msg, 0, x); // x position
+	put_float_by_index(msg, 4, y); // y position
+	put_float_by_index(msg, 8, z); // z position
+	put_float_by_index(msg, 12, yaw); // Desired yaw angle
+	put_uint8_t_by_index(msg, 16, target_system); // System ID
+	put_uint8_t_by_index(msg, 17, target_component); // Component ID
 
-	return mavlink_finalize_message(msg, system_id, component_id, 18, 149);
+	return mavlink_finalize_message(msg, system_id, component_id, 18, 73);
 }
 
 /**
@@ -74,14 +74,14 @@ static inline uint16_t mavlink_msg_local_position_setpoint_set_pack_chan(uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_SET;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle
-	put_uint8_t_by_index(target_system, 16,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 17,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_float_by_index(msg, 0, x); // x position
+	put_float_by_index(msg, 4, y); // y position
+	put_float_by_index(msg, 8, z); // z position
+	put_float_by_index(msg, 12, yaw); // Desired yaw angle
+	put_uint8_t_by_index(msg, 16, target_system); // System ID
+	put_uint8_t_by_index(msg, 17, target_component); // Component ID
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 149);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 73);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -103,14 +103,14 @@ static inline void mavlink_msg_local_position_setpoint_set_pack_chan_send(mavlin
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_SET;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle
-	put_uint8_t_by_index(target_system, 16,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 17,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_float_by_index(msg, 0, x); // x position
+	put_float_by_index(msg, 4, y); // y position
+	put_float_by_index(msg, 8, z); // z position
+	put_float_by_index(msg, 12, yaw); // Desired yaw angle
+	put_uint8_t_by_index(msg, 16, target_system); // System ID
+	put_uint8_t_by_index(msg, 17, target_component); // Component ID
 
-	mavlink_finalize_message_chan_send(msg, chan, 18, 149);
+	mavlink_finalize_message_chan_send(msg, chan, 18, 73);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

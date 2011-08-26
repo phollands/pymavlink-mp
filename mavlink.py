@@ -253,7 +253,7 @@ class MAVLink_sensor_offsets_message(MAVLink_message):
                 self.accel_cal_z = accel_cal_z
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 240, struct.pack('>hhhfiiffffff', self.mag_ofs_x, self.mag_ofs_y, self.mag_ofs_z, self.mag_declination, self.raw_press, self.raw_temp, self.gyro_cal_x, self.gyro_cal_y, self.gyro_cal_z, self.accel_cal_x, self.accel_cal_y, self.accel_cal_z))
+                return MAVLink_message.pack(self, mav, 143, struct.pack('>hhhfiiffffff', self.mag_ofs_x, self.mag_ofs_y, self.mag_ofs_z, self.mag_declination, self.raw_press, self.raw_temp, self.gyro_cal_x, self.gyro_cal_y, self.gyro_cal_z, self.accel_cal_x, self.accel_cal_y, self.accel_cal_z))
 
 class MAVLink_set_mag_offsets_message(MAVLink_message):
         '''
@@ -269,7 +269,7 @@ class MAVLink_set_mag_offsets_message(MAVLink_message):
                 self.mag_ofs_z = mag_ofs_z
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 247, struct.pack('>BBhhh', self.target_system, self.target_component, self.mag_ofs_x, self.mag_ofs_y, self.mag_ofs_z))
+                return MAVLink_message.pack(self, mav, 29, struct.pack('>BBhhh', self.target_system, self.target_component, self.mag_ofs_x, self.mag_ofs_y, self.mag_ofs_z))
 
 class MAVLink_heartbeat_message(MAVLink_message):
         '''
@@ -287,7 +287,7 @@ class MAVLink_heartbeat_message(MAVLink_message):
                 self.mavlink_version = mavlink_version
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 133, struct.pack('>BBB', self.type, self.autopilot, self.mavlink_version))
+                return MAVLink_message.pack(self, mav, 72, struct.pack('>BBB', self.type, self.autopilot, self.mavlink_version))
 
 class MAVLink_boot_message(MAVLink_message):
         '''
@@ -301,7 +301,7 @@ class MAVLink_boot_message(MAVLink_message):
                 self.version = version
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 61, struct.pack('>I', self.version))
+                return MAVLink_message.pack(self, mav, 39, struct.pack('>I', self.version))
 
 class MAVLink_system_time_message(MAVLink_message):
         '''
@@ -314,7 +314,7 @@ class MAVLink_system_time_message(MAVLink_message):
                 self.time_usec = time_usec
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 13, struct.pack('>Q', self.time_usec))
+                return MAVLink_message.pack(self, mav, 190, struct.pack('>Q', self.time_usec))
 
 class MAVLink_ping_message(MAVLink_message):
         '''
@@ -331,7 +331,7 @@ class MAVLink_ping_message(MAVLink_message):
                 self.time = time
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 242, struct.pack('>IBBQ', self.seq, self.target_system, self.target_component, self.time))
+                return MAVLink_message.pack(self, mav, 92, struct.pack('>IBBQ', self.seq, self.target_system, self.target_component, self.time))
 
 class MAVLink_system_time_utc_message(MAVLink_message):
         '''
@@ -344,7 +344,7 @@ class MAVLink_system_time_utc_message(MAVLink_message):
                 self.utc_time = utc_time
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 160, struct.pack('>II', self.utc_date, self.utc_time))
+                return MAVLink_message.pack(self, mav, 191, struct.pack('>II', self.utc_date, self.utc_time))
 
 class MAVLink_change_operator_control_message(MAVLink_message):
         '''
@@ -359,7 +359,7 @@ class MAVLink_change_operator_control_message(MAVLink_message):
                 self.passkey = passkey
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 5, struct.pack('>BBB25s', self.target_system, self.control_request, self.version, self.passkey))
+                return MAVLink_message.pack(self, mav, 217, struct.pack('>BBB25s', self.target_system, self.control_request, self.version, self.passkey))
 
 class MAVLink_change_operator_control_ack_message(MAVLink_message):
         '''
@@ -373,7 +373,7 @@ class MAVLink_change_operator_control_ack_message(MAVLink_message):
                 self.ack = ack
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 129, struct.pack('>BBB', self.gcs_system_id, self.control_request, self.ack))
+                return MAVLink_message.pack(self, mav, 104, struct.pack('>BBB', self.gcs_system_id, self.control_request, self.ack))
 
 class MAVLink_auth_key_message(MAVLink_message):
         '''
@@ -388,7 +388,7 @@ class MAVLink_auth_key_message(MAVLink_message):
                 self.key = key
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 181, struct.pack('>32s', self.key))
+                return MAVLink_message.pack(self, mav, 119, struct.pack('>32s', self.key))
 
 class MAVLink_action_ack_message(MAVLink_message):
         '''
@@ -404,7 +404,7 @@ class MAVLink_action_ack_message(MAVLink_message):
                 self.result = result
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 8, struct.pack('>BB', self.action, self.result))
+                return MAVLink_message.pack(self, mav, 219, struct.pack('>BB', self.action, self.result))
 
 class MAVLink_action_message(MAVLink_message):
         '''
@@ -421,7 +421,7 @@ class MAVLink_action_message(MAVLink_message):
                 self.action = action
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 181, struct.pack('>BBB', self.target, self.target_component, self.action))
+                return MAVLink_message.pack(self, mav, 60, struct.pack('>BBB', self.target, self.target_component, self.action))
 
 class MAVLink_set_mode_message(MAVLink_message):
         '''
@@ -437,7 +437,7 @@ class MAVLink_set_mode_message(MAVLink_message):
                 self.mode = mode
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 204, struct.pack('>BB', self.target, self.mode))
+                return MAVLink_message.pack(self, mav, 186, struct.pack('>BB', self.target, self.mode))
 
 class MAVLink_set_nav_mode_message(MAVLink_message):
         '''
@@ -453,7 +453,7 @@ class MAVLink_set_nav_mode_message(MAVLink_message):
                 self.nav_mode = nav_mode
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 134, struct.pack('>BB', self.target, self.nav_mode))
+                return MAVLink_message.pack(self, mav, 10, struct.pack('>BB', self.target, self.nav_mode))
 
 class MAVLink_param_request_read_message(MAVLink_message):
         '''
@@ -475,7 +475,7 @@ class MAVLink_param_request_read_message(MAVLink_message):
                 self.param_index = param_index
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 61, struct.pack('>BB15sh', self.target_system, self.target_component, self.param_id, self.param_index))
+                return MAVLink_message.pack(self, mav, 89, struct.pack('>BB15sh', self.target_system, self.target_component, self.param_id, self.param_index))
 
 class MAVLink_param_request_list_message(MAVLink_message):
         '''
@@ -489,7 +489,7 @@ class MAVLink_param_request_list_message(MAVLink_message):
                 self.target_component = target_component
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 16, struct.pack('>BB', self.target_system, self.target_component))
+                return MAVLink_message.pack(self, mav, 159, struct.pack('>BB', self.target_system, self.target_component))
 
 class MAVLink_param_value_message(MAVLink_message):
         '''
@@ -507,7 +507,7 @@ class MAVLink_param_value_message(MAVLink_message):
                 self.param_index = param_index
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 3, struct.pack('>15sfHH', self.param_id, self.param_value, self.param_count, self.param_index))
+                return MAVLink_message.pack(self, mav, 162, struct.pack('>15sfHH', self.param_id, self.param_value, self.param_count, self.param_index))
 
 class MAVLink_param_set_message(MAVLink_message):
         '''
@@ -531,7 +531,7 @@ class MAVLink_param_set_message(MAVLink_message):
                 self.param_value = param_value
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 142, struct.pack('>BB15sf', self.target_system, self.target_component, self.param_id, self.param_value))
+                return MAVLink_message.pack(self, mav, 121, struct.pack('>BB15sf', self.target_system, self.target_component, self.param_id, self.param_value))
 
 class MAVLink_gps_raw_int_message(MAVLink_message):
         '''
@@ -555,7 +555,7 @@ class MAVLink_gps_raw_int_message(MAVLink_message):
                 self.hdg = hdg
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 206, struct.pack('>QBiiiffff', self.usec, self.fix_type, self.lat, self.lon, self.alt, self.eph, self.epv, self.v, self.hdg))
+                return MAVLink_message.pack(self, mav, 149, struct.pack('>QBiiiffff', self.usec, self.fix_type, self.lat, self.lon, self.alt, self.eph, self.epv, self.v, self.hdg))
 
 class MAVLink_scaled_imu_message(MAVLink_message):
         '''
@@ -578,7 +578,7 @@ class MAVLink_scaled_imu_message(MAVLink_message):
                 self.zmag = zmag
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 140, struct.pack('>Qhhhhhhhhh', self.usec, self.xacc, self.yacc, self.zacc, self.xgyro, self.ygyro, self.zgyro, self.xmag, self.ymag, self.zmag))
+                return MAVLink_message.pack(self, mav, 222, struct.pack('>Qhhhhhhhhh', self.usec, self.xacc, self.yacc, self.zacc, self.xgyro, self.ygyro, self.zgyro, self.xmag, self.ymag, self.zmag))
 
 class MAVLink_gps_status_message(MAVLink_message):
         '''
@@ -599,7 +599,7 @@ class MAVLink_gps_status_message(MAVLink_message):
                 self.satellite_snr = satellite_snr
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 101, struct.pack('>B20s20s20s20s20s', self.satellites_visible, self.satellite_prn, self.satellite_used, self.satellite_elevation, self.satellite_azimuth, self.satellite_snr))
+                return MAVLink_message.pack(self, mav, 110, struct.pack('>B20s20s20s20s20s', self.satellites_visible, self.satellite_prn, self.satellite_used, self.satellite_elevation, self.satellite_azimuth, self.satellite_snr))
 
 class MAVLink_raw_imu_message(MAVLink_message):
         '''
@@ -622,7 +622,7 @@ class MAVLink_raw_imu_message(MAVLink_message):
                 self.zmag = zmag
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 120, struct.pack('>Qhhhhhhhhh', self.usec, self.xacc, self.yacc, self.zacc, self.xgyro, self.ygyro, self.zgyro, self.xmag, self.ymag, self.zmag))
+                return MAVLink_message.pack(self, mav, 179, struct.pack('>Qhhhhhhhhh', self.usec, self.xacc, self.yacc, self.zacc, self.xgyro, self.ygyro, self.zgyro, self.xmag, self.ymag, self.zmag))
 
 class MAVLink_raw_pressure_message(MAVLink_message):
         '''
@@ -640,7 +640,7 @@ class MAVLink_raw_pressure_message(MAVLink_message):
                 self.temperature = temperature
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 233, struct.pack('>Qhhhh', self.usec, self.press_abs, self.press_diff1, self.press_diff2, self.temperature))
+                return MAVLink_message.pack(self, mav, 136, struct.pack('>Qhhhh', self.usec, self.press_abs, self.press_diff1, self.press_diff2, self.temperature))
 
 class MAVLink_scaled_pressure_message(MAVLink_message):
         '''
@@ -657,7 +657,7 @@ class MAVLink_scaled_pressure_message(MAVLink_message):
                 self.temperature = temperature
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 153, struct.pack('>Qffh', self.usec, self.press_abs, self.press_diff, self.temperature))
+                return MAVLink_message.pack(self, mav, 229, struct.pack('>Qffh', self.usec, self.press_abs, self.press_diff, self.temperature))
 
 class MAVLink_attitude_message(MAVLink_message):
         '''
@@ -676,7 +676,7 @@ class MAVLink_attitude_message(MAVLink_message):
                 self.yawspeed = yawspeed
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 79, struct.pack('>Qffffff', self.usec, self.roll, self.pitch, self.yaw, self.rollspeed, self.pitchspeed, self.yawspeed))
+                return MAVLink_message.pack(self, mav, 66, struct.pack('>Qffffff', self.usec, self.roll, self.pitch, self.yaw, self.rollspeed, self.pitchspeed, self.yawspeed))
 
 class MAVLink_local_position_message(MAVLink_message):
         '''
@@ -696,7 +696,7 @@ class MAVLink_local_position_message(MAVLink_message):
                 self.vz = vz
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 2, struct.pack('>Qffffff', self.usec, self.x, self.y, self.z, self.vx, self.vy, self.vz))
+                return MAVLink_message.pack(self, mav, 126, struct.pack('>Qffffff', self.usec, self.x, self.y, self.z, self.vx, self.vy, self.vz))
 
 class MAVLink_global_position_message(MAVLink_message):
         '''
@@ -716,7 +716,7 @@ class MAVLink_global_position_message(MAVLink_message):
                 self.vz = vz
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 220, struct.pack('>Qffffff', self.usec, self.lat, self.lon, self.alt, self.vx, self.vy, self.vz))
+                return MAVLink_message.pack(self, mav, 147, struct.pack('>Qffffff', self.usec, self.lat, self.lon, self.alt, self.vx, self.vy, self.vz))
 
 class MAVLink_gps_raw_message(MAVLink_message):
         '''
@@ -740,7 +740,7 @@ class MAVLink_gps_raw_message(MAVLink_message):
                 self.hdg = hdg
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 215, struct.pack('>QBfffffff', self.usec, self.fix_type, self.lat, self.lon, self.alt, self.eph, self.epv, self.v, self.hdg))
+                return MAVLink_message.pack(self, mav, 185, struct.pack('>QBfffffff', self.usec, self.fix_type, self.lat, self.lon, self.alt, self.eph, self.epv, self.v, self.hdg))
 
 class MAVLink_sys_status_message(MAVLink_message):
         '''
@@ -773,7 +773,7 @@ class MAVLink_sys_status_message(MAVLink_message):
                 self.packet_drop = packet_drop
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 90, struct.pack('>BBBHHHH', self.mode, self.nav_mode, self.status, self.load, self.vbat, self.battery_remaining, self.packet_drop))
+                return MAVLink_message.pack(self, mav, 112, struct.pack('>BBBHHHH', self.mode, self.nav_mode, self.status, self.load, self.vbat, self.battery_remaining, self.packet_drop))
 
 class MAVLink_rc_channels_raw_message(MAVLink_message):
         '''
@@ -796,7 +796,7 @@ class MAVLink_rc_channels_raw_message(MAVLink_message):
                 self.rssi = rssi
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 1, struct.pack('>HHHHHHHHB', self.chan1_raw, self.chan2_raw, self.chan3_raw, self.chan4_raw, self.chan5_raw, self.chan6_raw, self.chan7_raw, self.chan8_raw, self.rssi))
+                return MAVLink_message.pack(self, mav, 252, struct.pack('>HHHHHHHHB', self.chan1_raw, self.chan2_raw, self.chan3_raw, self.chan4_raw, self.chan5_raw, self.chan6_raw, self.chan7_raw, self.chan8_raw, self.rssi))
 
 class MAVLink_rc_channels_scaled_message(MAVLink_message):
         '''
@@ -817,7 +817,7 @@ class MAVLink_rc_channels_scaled_message(MAVLink_message):
                 self.rssi = rssi
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 92, struct.pack('>hhhhhhhhB', self.chan1_scaled, self.chan2_scaled, self.chan3_scaled, self.chan4_scaled, self.chan5_scaled, self.chan6_scaled, self.chan7_scaled, self.chan8_scaled, self.rssi))
+                return MAVLink_message.pack(self, mav, 162, struct.pack('>hhhhhhhhB', self.chan1_scaled, self.chan2_scaled, self.chan3_scaled, self.chan4_scaled, self.chan5_scaled, self.chan6_scaled, self.chan7_scaled, self.chan8_scaled, self.rssi))
 
 class MAVLink_servo_output_raw_message(MAVLink_message):
         '''
@@ -839,7 +839,7 @@ class MAVLink_servo_output_raw_message(MAVLink_message):
                 self.servo8_raw = servo8_raw
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 223, struct.pack('>HHHHHHHH', self.servo1_raw, self.servo2_raw, self.servo3_raw, self.servo4_raw, self.servo5_raw, self.servo6_raw, self.servo7_raw, self.servo8_raw))
+                return MAVLink_message.pack(self, mav, 215, struct.pack('>HHHHHHHH', self.servo1_raw, self.servo2_raw, self.servo3_raw, self.servo4_raw, self.servo5_raw, self.servo6_raw, self.servo7_raw, self.servo8_raw))
 
 class MAVLink_waypoint_message(MAVLink_message):
         '''
@@ -868,7 +868,7 @@ class MAVLink_waypoint_message(MAVLink_message):
                 self.z = z
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 195, struct.pack('>BBHBBBBfffffff', self.target_system, self.target_component, self.seq, self.frame, self.command, self.current, self.autocontinue, self.param1, self.param2, self.param3, self.param4, self.x, self.y, self.z))
+                return MAVLink_message.pack(self, mav, 128, struct.pack('>BBHBBBBfffffff', self.target_system, self.target_component, self.seq, self.frame, self.command, self.current, self.autocontinue, self.param1, self.param2, self.param3, self.param4, self.x, self.y, self.z))
 
 class MAVLink_waypoint_request_message(MAVLink_message):
         '''
@@ -884,7 +884,7 @@ class MAVLink_waypoint_request_message(MAVLink_message):
                 self.seq = seq
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 138, struct.pack('>BBH', self.target_system, self.target_component, self.seq))
+                return MAVLink_message.pack(self, mav, 9, struct.pack('>BBH', self.target_system, self.target_component, self.seq))
 
 class MAVLink_waypoint_set_current_message(MAVLink_message):
         '''
@@ -900,7 +900,7 @@ class MAVLink_waypoint_set_current_message(MAVLink_message):
                 self.seq = seq
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 47, struct.pack('>BBH', self.target_system, self.target_component, self.seq))
+                return MAVLink_message.pack(self, mav, 106, struct.pack('>BBH', self.target_system, self.target_component, self.seq))
 
 class MAVLink_waypoint_current_message(MAVLink_message):
         '''
@@ -913,7 +913,7 @@ class MAVLink_waypoint_current_message(MAVLink_message):
                 self.seq = seq
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 241, struct.pack('>H', self.seq))
+                return MAVLink_message.pack(self, mav, 101, struct.pack('>H', self.seq))
 
 class MAVLink_waypoint_request_list_message(MAVLink_message):
         '''
@@ -927,7 +927,7 @@ class MAVLink_waypoint_request_list_message(MAVLink_message):
                 self.target_component = target_component
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 68, struct.pack('>BB', self.target_system, self.target_component))
+                return MAVLink_message.pack(self, mav, 213, struct.pack('>BB', self.target_system, self.target_component))
 
 class MAVLink_waypoint_count_message(MAVLink_message):
         '''
@@ -943,7 +943,7 @@ class MAVLink_waypoint_count_message(MAVLink_message):
                 self.count = count
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 5, struct.pack('>BBH', self.target_system, self.target_component, self.count))
+                return MAVLink_message.pack(self, mav, 4, struct.pack('>BBH', self.target_system, self.target_component, self.count))
 
 class MAVLink_waypoint_clear_all_message(MAVLink_message):
         '''
@@ -956,7 +956,7 @@ class MAVLink_waypoint_clear_all_message(MAVLink_message):
                 self.target_component = target_component
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 232, struct.pack('>BB', self.target_system, self.target_component))
+                return MAVLink_message.pack(self, mav, 229, struct.pack('>BB', self.target_system, self.target_component))
 
 class MAVLink_waypoint_reached_message(MAVLink_message):
         '''
@@ -970,7 +970,7 @@ class MAVLink_waypoint_reached_message(MAVLink_message):
                 self.seq = seq
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 235, struct.pack('>H', self.seq))
+                return MAVLink_message.pack(self, mav, 21, struct.pack('>H', self.seq))
 
 class MAVLink_waypoint_ack_message(MAVLink_message):
         '''
@@ -986,7 +986,7 @@ class MAVLink_waypoint_ack_message(MAVLink_message):
                 self.type = type
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 46, struct.pack('>BBB', self.target_system, self.target_component, self.type))
+                return MAVLink_message.pack(self, mav, 214, struct.pack('>BBB', self.target_system, self.target_component, self.type))
 
 class MAVLink_gps_set_global_origin_message(MAVLink_message):
         '''
@@ -1006,7 +1006,7 @@ class MAVLink_gps_set_global_origin_message(MAVLink_message):
                 self.altitude = altitude
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 13, struct.pack('>BBiii', self.target_system, self.target_component, self.latitude, self.longitude, self.altitude))
+                return MAVLink_message.pack(self, mav, 215, struct.pack('>BBiii', self.target_system, self.target_component, self.latitude, self.longitude, self.altitude))
 
 class MAVLink_gps_local_origin_set_message(MAVLink_message):
         '''
@@ -1021,7 +1021,7 @@ class MAVLink_gps_local_origin_set_message(MAVLink_message):
                 self.altitude = altitude
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 180, struct.pack('>iii', self.latitude, self.longitude, self.altitude))
+                return MAVLink_message.pack(self, mav, 14, struct.pack('>iii', self.latitude, self.longitude, self.altitude))
 
 class MAVLink_local_position_setpoint_set_message(MAVLink_message):
         '''
@@ -1043,7 +1043,7 @@ class MAVLink_local_position_setpoint_set_message(MAVLink_message):
                 self.yaw = yaw
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 114, struct.pack('>BBffff', self.target_system, self.target_component, self.x, self.y, self.z, self.yaw))
+                return MAVLink_message.pack(self, mav, 206, struct.pack('>BBffff', self.target_system, self.target_component, self.x, self.y, self.z, self.yaw))
 
 class MAVLink_local_position_setpoint_message(MAVLink_message):
         '''
@@ -1059,7 +1059,7 @@ class MAVLink_local_position_setpoint_message(MAVLink_message):
                 self.yaw = yaw
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 40, struct.pack('>ffff', self.x, self.y, self.z, self.yaw))
+                return MAVLink_message.pack(self, mav, 50, struct.pack('>ffff', self.x, self.y, self.z, self.yaw))
 
 class MAVLink_control_status_message(MAVLink_message):
         '''
@@ -1078,7 +1078,7 @@ class MAVLink_control_status_message(MAVLink_message):
                 self.control_pos_yaw = control_pos_yaw
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 102, struct.pack('>BBBBBBBB', self.position_fix, self.vision_fix, self.gps_fix, self.ahrs_health, self.control_att, self.control_pos_xy, self.control_pos_z, self.control_pos_yaw))
+                return MAVLink_message.pack(self, mav, 157, struct.pack('>BBBBBBBB', self.position_fix, self.vision_fix, self.gps_fix, self.ahrs_health, self.control_att, self.control_pos_xy, self.control_pos_z, self.control_pos_yaw))
 
 class MAVLink_safety_set_allowed_area_message(MAVLink_message):
         '''
@@ -1102,7 +1102,7 @@ class MAVLink_safety_set_allowed_area_message(MAVLink_message):
                 self.p2z = p2z
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 208, struct.pack('>BBBffffff', self.target_system, self.target_component, self.frame, self.p1x, self.p1y, self.p1z, self.p2x, self.p2y, self.p2z))
+                return MAVLink_message.pack(self, mav, 126, struct.pack('>BBBffffff', self.target_system, self.target_component, self.frame, self.p1x, self.p1y, self.p1z, self.p2x, self.p2y, self.p2z))
 
 class MAVLink_safety_allowed_area_message(MAVLink_message):
         '''
@@ -1120,7 +1120,7 @@ class MAVLink_safety_allowed_area_message(MAVLink_message):
                 self.p2z = p2z
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 162, struct.pack('>Bffffff', self.frame, self.p1x, self.p1y, self.p1z, self.p2x, self.p2y, self.p2z))
+                return MAVLink_message.pack(self, mav, 108, struct.pack('>Bffffff', self.frame, self.p1x, self.p1y, self.p1z, self.p2x, self.p2y, self.p2z))
 
 class MAVLink_set_roll_pitch_yaw_thrust_message(MAVLink_message):
         '''
@@ -1137,7 +1137,7 @@ class MAVLink_set_roll_pitch_yaw_thrust_message(MAVLink_message):
                 self.thrust = thrust
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 9, struct.pack('>BBffff', self.target_system, self.target_component, self.roll, self.pitch, self.yaw, self.thrust))
+                return MAVLink_message.pack(self, mav, 213, struct.pack('>BBffff', self.target_system, self.target_component, self.roll, self.pitch, self.yaw, self.thrust))
 
 class MAVLink_set_roll_pitch_yaw_speed_thrust_message(MAVLink_message):
         '''
@@ -1154,7 +1154,7 @@ class MAVLink_set_roll_pitch_yaw_speed_thrust_message(MAVLink_message):
                 self.thrust = thrust
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 49, struct.pack('>BBffff', self.target_system, self.target_component, self.roll_speed, self.pitch_speed, self.yaw_speed, self.thrust))
+                return MAVLink_message.pack(self, mav, 95, struct.pack('>BBffff', self.target_system, self.target_component, self.roll_speed, self.pitch_speed, self.yaw_speed, self.thrust))
 
 class MAVLink_roll_pitch_yaw_thrust_setpoint_message(MAVLink_message):
         '''
@@ -1170,7 +1170,7 @@ class MAVLink_roll_pitch_yaw_thrust_setpoint_message(MAVLink_message):
                 self.thrust = thrust
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 28, struct.pack('>Qffff', self.time_us, self.roll, self.pitch, self.yaw, self.thrust))
+                return MAVLink_message.pack(self, mav, 5, struct.pack('>Qffff', self.time_us, self.roll, self.pitch, self.yaw, self.thrust))
 
 class MAVLink_roll_pitch_yaw_speed_thrust_setpoint_message(MAVLink_message):
         '''
@@ -1187,7 +1187,7 @@ class MAVLink_roll_pitch_yaw_speed_thrust_setpoint_message(MAVLink_message):
                 self.thrust = thrust
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 95, struct.pack('>Qffff', self.time_us, self.roll_speed, self.pitch_speed, self.yaw_speed, self.thrust))
+                return MAVLink_message.pack(self, mav, 127, struct.pack('>Qffff', self.time_us, self.roll_speed, self.pitch_speed, self.yaw_speed, self.thrust))
 
 class MAVLink_nav_controller_output_message(MAVLink_message):
         '''
@@ -1209,7 +1209,7 @@ class MAVLink_nav_controller_output_message(MAVLink_message):
                 self.xtrack_error = xtrack_error
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 100, struct.pack('>ffhhHfff', self.nav_roll, self.nav_pitch, self.nav_bearing, self.target_bearing, self.wp_dist, self.alt_error, self.aspd_error, self.xtrack_error))
+                return MAVLink_message.pack(self, mav, 57, struct.pack('>ffhhHfff', self.nav_roll, self.nav_pitch, self.nav_bearing, self.target_bearing, self.wp_dist, self.alt_error, self.aspd_error, self.xtrack_error))
 
 class MAVLink_position_target_message(MAVLink_message):
         '''
@@ -1226,7 +1226,7 @@ class MAVLink_position_target_message(MAVLink_message):
                 self.yaw = yaw
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 67, struct.pack('>ffff', self.x, self.y, self.z, self.yaw))
+                return MAVLink_message.pack(self, mav, 126, struct.pack('>ffff', self.x, self.y, self.z, self.yaw))
 
 class MAVLink_state_correction_message(MAVLink_message):
         '''
@@ -1248,7 +1248,7 @@ class MAVLink_state_correction_message(MAVLink_message):
                 self.vzErr = vzErr
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 227, struct.pack('>fffffffff', self.xErr, self.yErr, self.zErr, self.rollErr, self.pitchErr, self.yawErr, self.vxErr, self.vyErr, self.vzErr))
+                return MAVLink_message.pack(self, mav, 130, struct.pack('>fffffffff', self.xErr, self.yErr, self.zErr, self.rollErr, self.pitchErr, self.yawErr, self.vxErr, self.vyErr, self.vzErr))
 
 class MAVLink_set_altitude_message(MAVLink_message):
         '''
@@ -1261,7 +1261,7 @@ class MAVLink_set_altitude_message(MAVLink_message):
                 self.mode = mode
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 223, struct.pack('>BI', self.target, self.mode))
+                return MAVLink_message.pack(self, mav, 119, struct.pack('>BI', self.target, self.mode))
 
 class MAVLink_request_data_stream_message(MAVLink_message):
         '''
@@ -1277,7 +1277,7 @@ class MAVLink_request_data_stream_message(MAVLink_message):
                 self.start_stop = start_stop
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 95, struct.pack('>BBBHB', self.target_system, self.target_component, self.req_stream_id, self.req_message_rate, self.start_stop))
+                return MAVLink_message.pack(self, mav, 193, struct.pack('>BBBHB', self.target_system, self.target_component, self.req_stream_id, self.req_message_rate, self.start_stop))
 
 class MAVLink_hil_state_message(MAVLink_message):
         '''
@@ -1305,7 +1305,7 @@ class MAVLink_hil_state_message(MAVLink_message):
                 self.zacc = zacc
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 180, struct.pack('>Qffffffiiihhhhhh', self.usec, self.roll, self.pitch, self.yaw, self.rollspeed, self.pitchspeed, self.yawspeed, self.lat, self.lon, self.alt, self.vx, self.vy, self.vz, self.xacc, self.yacc, self.zacc))
+                return MAVLink_message.pack(self, mav, 191, struct.pack('>Qffffffiiihhhhhh', self.usec, self.roll, self.pitch, self.yaw, self.rollspeed, self.pitchspeed, self.yawspeed, self.lat, self.lon, self.alt, self.vx, self.vy, self.vz, self.xacc, self.yacc, self.zacc))
 
 class MAVLink_hil_controls_message(MAVLink_message):
         '''
@@ -1323,7 +1323,7 @@ class MAVLink_hil_controls_message(MAVLink_message):
                 self.nav_mode = nav_mode
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 113, struct.pack('>QffffBB', self.time_us, self.roll_ailerons, self.pitch_elevator, self.yaw_rudder, self.throttle, self.mode, self.nav_mode))
+                return MAVLink_message.pack(self, mav, 236, struct.pack('>QffffBB', self.time_us, self.roll_ailerons, self.pitch_elevator, self.yaw_rudder, self.throttle, self.mode, self.nav_mode))
 
 class MAVLink_manual_control_message(MAVLink_message):
         '''
@@ -1343,7 +1343,7 @@ class MAVLink_manual_control_message(MAVLink_message):
                 self.thrust_manual = thrust_manual
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 72, struct.pack('>BffffBBBB', self.target, self.roll, self.pitch, self.yaw, self.thrust, self.roll_manual, self.pitch_manual, self.yaw_manual, self.thrust_manual))
+                return MAVLink_message.pack(self, mav, 158, struct.pack('>BffffBBBB', self.target, self.roll, self.pitch, self.yaw, self.thrust, self.roll_manual, self.pitch_manual, self.yaw_manual, self.thrust_manual))
 
 class MAVLink_rc_channels_override_message(MAVLink_message):
         '''
@@ -1370,7 +1370,7 @@ class MAVLink_rc_channels_override_message(MAVLink_message):
                 self.chan8_raw = chan8_raw
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 51, struct.pack('>BBHHHHHHHH', self.target_system, self.target_component, self.chan1_raw, self.chan2_raw, self.chan3_raw, self.chan4_raw, self.chan5_raw, self.chan6_raw, self.chan7_raw, self.chan8_raw))
+                return MAVLink_message.pack(self, mav, 143, struct.pack('>BBHHHHHHHH', self.target_system, self.target_component, self.chan1_raw, self.chan2_raw, self.chan3_raw, self.chan4_raw, self.chan5_raw, self.chan6_raw, self.chan7_raw, self.chan8_raw))
 
 class MAVLink_global_position_int_message(MAVLink_message):
         '''
@@ -1389,7 +1389,7 @@ class MAVLink_global_position_int_message(MAVLink_message):
                 self.vz = vz
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 147, struct.pack('>iiihhh', self.lat, self.lon, self.alt, self.vx, self.vy, self.vz))
+                return MAVLink_message.pack(self, mav, 104, struct.pack('>iiihhh', self.lat, self.lon, self.alt, self.vx, self.vy, self.vz))
 
 class MAVLink_vfr_hud_message(MAVLink_message):
         '''
@@ -1406,7 +1406,7 @@ class MAVLink_vfr_hud_message(MAVLink_message):
                 self.climb = climb
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 103, struct.pack('>ffhHff', self.airspeed, self.groundspeed, self.heading, self.throttle, self.alt, self.climb))
+                return MAVLink_message.pack(self, mav, 123, struct.pack('>ffhHff', self.airspeed, self.groundspeed, self.heading, self.throttle, self.alt, self.climb))
 
 class MAVLink_command_message(MAVLink_message):
         '''
@@ -1425,7 +1425,7 @@ class MAVLink_command_message(MAVLink_message):
                 self.param4 = param4
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 130, struct.pack('>BBBBffff', self.target_system, self.target_component, self.command, self.confirmation, self.param1, self.param2, self.param3, self.param4))
+                return MAVLink_message.pack(self, mav, 131, struct.pack('>BBBBffff', self.target_system, self.target_component, self.command, self.confirmation, self.param1, self.param2, self.param3, self.param4))
 
 class MAVLink_command_ack_message(MAVLink_message):
         '''
@@ -1439,7 +1439,7 @@ class MAVLink_command_ack_message(MAVLink_message):
                 self.result = result
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 228, struct.pack('>ff', self.command, self.result))
+                return MAVLink_message.pack(self, mav, 8, struct.pack('>ff', self.command, self.result))
 
 class MAVLink_optical_flow_message(MAVLink_message):
         '''
@@ -1456,7 +1456,7 @@ class MAVLink_optical_flow_message(MAVLink_message):
                 self.ground_distance = ground_distance
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 184, struct.pack('>QBhhBf', self.time, self.sensor_id, self.flow_x, self.flow_y, self.quality, self.ground_distance))
+                return MAVLink_message.pack(self, mav, 174, struct.pack('>QBhhBf', self.time, self.sensor_id, self.flow_x, self.flow_y, self.quality, self.ground_distance))
 
 class MAVLink_debug_vect_message(MAVLink_message):
         '''
@@ -1472,7 +1472,7 @@ class MAVLink_debug_vect_message(MAVLink_message):
                 self.z = z
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 239, struct.pack('>10sQfff', self.name, self.usec, self.x, self.y, self.z))
+                return MAVLink_message.pack(self, mav, 178, struct.pack('>10sQfff', self.name, self.usec, self.x, self.y, self.z))
 
 class MAVLink_named_value_float_message(MAVLink_message):
         '''
@@ -1487,7 +1487,7 @@ class MAVLink_named_value_float_message(MAVLink_message):
                 self.value = value
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 6, struct.pack('>10sf', self.name, self.value))
+                return MAVLink_message.pack(self, mav, 224, struct.pack('>10sf', self.name, self.value))
 
 class MAVLink_named_value_int_message(MAVLink_message):
         '''
@@ -1502,7 +1502,7 @@ class MAVLink_named_value_int_message(MAVLink_message):
                 self.value = value
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 103, struct.pack('>10si', self.name, self.value))
+                return MAVLink_message.pack(self, mav, 60, struct.pack('>10si', self.name, self.value))
 
 class MAVLink_statustext_message(MAVLink_message):
         '''
@@ -1520,7 +1520,7 @@ class MAVLink_statustext_message(MAVLink_message):
                 self.text = text
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 88, struct.pack('>B50s', self.severity, self.text))
+                return MAVLink_message.pack(self, mav, 106, struct.pack('>B50s', self.severity, self.text))
 
 class MAVLink_debug_message(MAVLink_message):
         '''
@@ -1535,81 +1535,81 @@ class MAVLink_debug_message(MAVLink_message):
                 self.value = value
 
         def pack(self, mav):
-                return MAVLink_message.pack(self, mav, 197, struct.pack('>Bf', self.ind, self.value))
+                return MAVLink_message.pack(self, mav, 7, struct.pack('>Bf', self.ind, self.value))
 
 
 mavlink_map = {
-        MAVLINK_MSG_ID_SENSOR_OFFSETS : ( '>hhhfiiffffff', MAVLink_sensor_offsets_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 240 ),
-        MAVLINK_MSG_ID_SET_MAG_OFFSETS : ( '>BBhhh', MAVLink_set_mag_offsets_message, [0, 1, 2, 3, 4], 247 ),
-        MAVLINK_MSG_ID_HEARTBEAT : ( '>BBB', MAVLink_heartbeat_message, [0, 1, 2], 133 ),
-        MAVLINK_MSG_ID_BOOT : ( '>I', MAVLink_boot_message, [0], 61 ),
-        MAVLINK_MSG_ID_SYSTEM_TIME : ( '>Q', MAVLink_system_time_message, [0], 13 ),
-        MAVLINK_MSG_ID_PING : ( '>IBBQ', MAVLink_ping_message, [0, 1, 2, 3], 242 ),
-        MAVLINK_MSG_ID_SYSTEM_TIME_UTC : ( '>II', MAVLink_system_time_utc_message, [0, 1], 160 ),
-        MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL : ( '>BBB25s', MAVLink_change_operator_control_message, [0, 1, 2, 3], 5 ),
-        MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK : ( '>BBB', MAVLink_change_operator_control_ack_message, [0, 1, 2], 129 ),
-        MAVLINK_MSG_ID_AUTH_KEY : ( '>32s', MAVLink_auth_key_message, [0], 181 ),
-        MAVLINK_MSG_ID_ACTION_ACK : ( '>BB', MAVLink_action_ack_message, [0, 1], 8 ),
-        MAVLINK_MSG_ID_ACTION : ( '>BBB', MAVLink_action_message, [0, 1, 2], 181 ),
-        MAVLINK_MSG_ID_SET_MODE : ( '>BB', MAVLink_set_mode_message, [0, 1], 204 ),
-        MAVLINK_MSG_ID_SET_NAV_MODE : ( '>BB', MAVLink_set_nav_mode_message, [0, 1], 134 ),
-        MAVLINK_MSG_ID_PARAM_REQUEST_READ : ( '>BB15sh', MAVLink_param_request_read_message, [0, 1, 2, 3], 61 ),
-        MAVLINK_MSG_ID_PARAM_REQUEST_LIST : ( '>BB', MAVLink_param_request_list_message, [0, 1], 16 ),
-        MAVLINK_MSG_ID_PARAM_VALUE : ( '>15sfHH', MAVLink_param_value_message, [0, 1, 2, 3], 3 ),
-        MAVLINK_MSG_ID_PARAM_SET : ( '>BB15sf', MAVLink_param_set_message, [0, 1, 2, 3], 142 ),
-        MAVLINK_MSG_ID_GPS_RAW_INT : ( '>QBiiiffff', MAVLink_gps_raw_int_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 206 ),
-        MAVLINK_MSG_ID_SCALED_IMU : ( '>Qhhhhhhhhh', MAVLink_scaled_imu_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 140 ),
-        MAVLINK_MSG_ID_GPS_STATUS : ( '>B20s20s20s20s20s', MAVLink_gps_status_message, [0, 1, 2, 3, 4, 5], 101 ),
-        MAVLINK_MSG_ID_RAW_IMU : ( '>Qhhhhhhhhh', MAVLink_raw_imu_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 120 ),
-        MAVLINK_MSG_ID_RAW_PRESSURE : ( '>Qhhhh', MAVLink_raw_pressure_message, [0, 1, 2, 3, 4], 233 ),
-        MAVLINK_MSG_ID_SCALED_PRESSURE : ( '>Qffh', MAVLink_scaled_pressure_message, [0, 1, 2, 3], 153 ),
-        MAVLINK_MSG_ID_ATTITUDE : ( '>Qffffff', MAVLink_attitude_message, [0, 1, 2, 3, 4, 5, 6], 79 ),
-        MAVLINK_MSG_ID_LOCAL_POSITION : ( '>Qffffff', MAVLink_local_position_message, [0, 1, 2, 3, 4, 5, 6], 2 ),
-        MAVLINK_MSG_ID_GLOBAL_POSITION : ( '>Qffffff', MAVLink_global_position_message, [0, 1, 2, 3, 4, 5, 6], 220 ),
-        MAVLINK_MSG_ID_GPS_RAW : ( '>QBfffffff', MAVLink_gps_raw_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 215 ),
-        MAVLINK_MSG_ID_SYS_STATUS : ( '>BBBHHHH', MAVLink_sys_status_message, [0, 1, 2, 3, 4, 5, 6], 90 ),
-        MAVLINK_MSG_ID_RC_CHANNELS_RAW : ( '>HHHHHHHHB', MAVLink_rc_channels_raw_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 1 ),
-        MAVLINK_MSG_ID_RC_CHANNELS_SCALED : ( '>hhhhhhhhB', MAVLink_rc_channels_scaled_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 92 ),
-        MAVLINK_MSG_ID_SERVO_OUTPUT_RAW : ( '>HHHHHHHH', MAVLink_servo_output_raw_message, [0, 1, 2, 3, 4, 5, 6, 7], 223 ),
-        MAVLINK_MSG_ID_WAYPOINT : ( '>BBHBBBBfffffff', MAVLink_waypoint_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 195 ),
-        MAVLINK_MSG_ID_WAYPOINT_REQUEST : ( '>BBH', MAVLink_waypoint_request_message, [0, 1, 2], 138 ),
-        MAVLINK_MSG_ID_WAYPOINT_SET_CURRENT : ( '>BBH', MAVLink_waypoint_set_current_message, [0, 1, 2], 47 ),
-        MAVLINK_MSG_ID_WAYPOINT_CURRENT : ( '>H', MAVLink_waypoint_current_message, [0], 241 ),
-        MAVLINK_MSG_ID_WAYPOINT_REQUEST_LIST : ( '>BB', MAVLink_waypoint_request_list_message, [0, 1], 68 ),
-        MAVLINK_MSG_ID_WAYPOINT_COUNT : ( '>BBH', MAVLink_waypoint_count_message, [0, 1, 2], 5 ),
-        MAVLINK_MSG_ID_WAYPOINT_CLEAR_ALL : ( '>BB', MAVLink_waypoint_clear_all_message, [0, 1], 232 ),
-        MAVLINK_MSG_ID_WAYPOINT_REACHED : ( '>H', MAVLink_waypoint_reached_message, [0], 235 ),
-        MAVLINK_MSG_ID_WAYPOINT_ACK : ( '>BBB', MAVLink_waypoint_ack_message, [0, 1, 2], 46 ),
-        MAVLINK_MSG_ID_GPS_SET_GLOBAL_ORIGIN : ( '>BBiii', MAVLink_gps_set_global_origin_message, [0, 1, 2, 3, 4], 13 ),
-        MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET : ( '>iii', MAVLink_gps_local_origin_set_message, [0, 1, 2], 180 ),
-        MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_SET : ( '>BBffff', MAVLink_local_position_setpoint_set_message, [0, 1, 2, 3, 4, 5], 114 ),
-        MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT : ( '>ffff', MAVLink_local_position_setpoint_message, [0, 1, 2, 3], 40 ),
-        MAVLINK_MSG_ID_CONTROL_STATUS : ( '>BBBBBBBB', MAVLink_control_status_message, [0, 1, 2, 3, 4, 5, 6, 7], 102 ),
-        MAVLINK_MSG_ID_SAFETY_SET_ALLOWED_AREA : ( '>BBBffffff', MAVLink_safety_set_allowed_area_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 208 ),
-        MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA : ( '>Bffffff', MAVLink_safety_allowed_area_message, [0, 1, 2, 3, 4, 5, 6], 162 ),
-        MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_THRUST : ( '>BBffff', MAVLink_set_roll_pitch_yaw_thrust_message, [0, 1, 2, 3, 4, 5], 9 ),
-        MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_SPEED_THRUST : ( '>BBffff', MAVLink_set_roll_pitch_yaw_speed_thrust_message, [0, 1, 2, 3, 4, 5], 49 ),
-        MAVLINK_MSG_ID_ROLL_PITCH_YAW_THRUST_SETPOINT : ( '>Qffff', MAVLink_roll_pitch_yaw_thrust_setpoint_message, [0, 1, 2, 3, 4], 28 ),
-        MAVLINK_MSG_ID_ROLL_PITCH_YAW_SPEED_THRUST_SETPOINT : ( '>Qffff', MAVLink_roll_pitch_yaw_speed_thrust_setpoint_message, [0, 1, 2, 3, 4], 95 ),
-        MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT : ( '>ffhhHfff', MAVLink_nav_controller_output_message, [0, 1, 2, 3, 4, 5, 6, 7], 100 ),
-        MAVLINK_MSG_ID_POSITION_TARGET : ( '>ffff', MAVLink_position_target_message, [0, 1, 2, 3], 67 ),
-        MAVLINK_MSG_ID_STATE_CORRECTION : ( '>fffffffff', MAVLink_state_correction_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 227 ),
-        MAVLINK_MSG_ID_SET_ALTITUDE : ( '>BI', MAVLink_set_altitude_message, [0, 1], 223 ),
-        MAVLINK_MSG_ID_REQUEST_DATA_STREAM : ( '>BBBHB', MAVLink_request_data_stream_message, [0, 1, 2, 3, 4], 95 ),
-        MAVLINK_MSG_ID_HIL_STATE : ( '>Qffffffiiihhhhhh', MAVLink_hil_state_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 180 ),
-        MAVLINK_MSG_ID_HIL_CONTROLS : ( '>QffffBB', MAVLink_hil_controls_message, [0, 1, 2, 3, 4, 5, 6], 113 ),
-        MAVLINK_MSG_ID_MANUAL_CONTROL : ( '>BffffBBBB', MAVLink_manual_control_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 72 ),
-        MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE : ( '>BBHHHHHHHH', MAVLink_rc_channels_override_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 51 ),
-        MAVLINK_MSG_ID_GLOBAL_POSITION_INT : ( '>iiihhh', MAVLink_global_position_int_message, [0, 1, 2, 3, 4, 5], 147 ),
-        MAVLINK_MSG_ID_VFR_HUD : ( '>ffhHff', MAVLink_vfr_hud_message, [0, 1, 2, 3, 4, 5], 103 ),
-        MAVLINK_MSG_ID_COMMAND : ( '>BBBBffff', MAVLink_command_message, [0, 1, 2, 3, 4, 5, 6, 7], 130 ),
-        MAVLINK_MSG_ID_COMMAND_ACK : ( '>ff', MAVLink_command_ack_message, [0, 1], 228 ),
-        MAVLINK_MSG_ID_OPTICAL_FLOW : ( '>QBhhBf', MAVLink_optical_flow_message, [0, 1, 2, 3, 4, 5], 184 ),
-        MAVLINK_MSG_ID_DEBUG_VECT : ( '>10sQfff', MAVLink_debug_vect_message, [0, 1, 2, 3, 4], 239 ),
-        MAVLINK_MSG_ID_NAMED_VALUE_FLOAT : ( '>10sf', MAVLink_named_value_float_message, [0, 1], 6 ),
-        MAVLINK_MSG_ID_NAMED_VALUE_INT : ( '>10si', MAVLink_named_value_int_message, [0, 1], 103 ),
-        MAVLINK_MSG_ID_STATUSTEXT : ( '>B50s', MAVLink_statustext_message, [0, 1], 88 ),
-        MAVLINK_MSG_ID_DEBUG : ( '>Bf', MAVLink_debug_message, [0, 1], 197 ),
+        MAVLINK_MSG_ID_SENSOR_OFFSETS : ( '>hhhfiiffffff', MAVLink_sensor_offsets_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 143 ),
+        MAVLINK_MSG_ID_SET_MAG_OFFSETS : ( '>BBhhh', MAVLink_set_mag_offsets_message, [0, 1, 2, 3, 4], 29 ),
+        MAVLINK_MSG_ID_HEARTBEAT : ( '>BBB', MAVLink_heartbeat_message, [0, 1, 2], 72 ),
+        MAVLINK_MSG_ID_BOOT : ( '>I', MAVLink_boot_message, [0], 39 ),
+        MAVLINK_MSG_ID_SYSTEM_TIME : ( '>Q', MAVLink_system_time_message, [0], 190 ),
+        MAVLINK_MSG_ID_PING : ( '>IBBQ', MAVLink_ping_message, [0, 1, 2, 3], 92 ),
+        MAVLINK_MSG_ID_SYSTEM_TIME_UTC : ( '>II', MAVLink_system_time_utc_message, [0, 1], 191 ),
+        MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL : ( '>BBB25s', MAVLink_change_operator_control_message, [0, 1, 2, 3], 217 ),
+        MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK : ( '>BBB', MAVLink_change_operator_control_ack_message, [0, 1, 2], 104 ),
+        MAVLINK_MSG_ID_AUTH_KEY : ( '>32s', MAVLink_auth_key_message, [0], 119 ),
+        MAVLINK_MSG_ID_ACTION_ACK : ( '>BB', MAVLink_action_ack_message, [0, 1], 219 ),
+        MAVLINK_MSG_ID_ACTION : ( '>BBB', MAVLink_action_message, [0, 1, 2], 60 ),
+        MAVLINK_MSG_ID_SET_MODE : ( '>BB', MAVLink_set_mode_message, [0, 1], 186 ),
+        MAVLINK_MSG_ID_SET_NAV_MODE : ( '>BB', MAVLink_set_nav_mode_message, [0, 1], 10 ),
+        MAVLINK_MSG_ID_PARAM_REQUEST_READ : ( '>BB15sh', MAVLink_param_request_read_message, [0, 1, 2, 3], 89 ),
+        MAVLINK_MSG_ID_PARAM_REQUEST_LIST : ( '>BB', MAVLink_param_request_list_message, [0, 1], 159 ),
+        MAVLINK_MSG_ID_PARAM_VALUE : ( '>15sfHH', MAVLink_param_value_message, [0, 1, 2, 3], 162 ),
+        MAVLINK_MSG_ID_PARAM_SET : ( '>BB15sf', MAVLink_param_set_message, [0, 1, 2, 3], 121 ),
+        MAVLINK_MSG_ID_GPS_RAW_INT : ( '>QBiiiffff', MAVLink_gps_raw_int_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 149 ),
+        MAVLINK_MSG_ID_SCALED_IMU : ( '>Qhhhhhhhhh', MAVLink_scaled_imu_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 222 ),
+        MAVLINK_MSG_ID_GPS_STATUS : ( '>B20s20s20s20s20s', MAVLink_gps_status_message, [0, 1, 2, 3, 4, 5], 110 ),
+        MAVLINK_MSG_ID_RAW_IMU : ( '>Qhhhhhhhhh', MAVLink_raw_imu_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 179 ),
+        MAVLINK_MSG_ID_RAW_PRESSURE : ( '>Qhhhh', MAVLink_raw_pressure_message, [0, 1, 2, 3, 4], 136 ),
+        MAVLINK_MSG_ID_SCALED_PRESSURE : ( '>Qffh', MAVLink_scaled_pressure_message, [0, 1, 2, 3], 229 ),
+        MAVLINK_MSG_ID_ATTITUDE : ( '>Qffffff', MAVLink_attitude_message, [0, 1, 2, 3, 4, 5, 6], 66 ),
+        MAVLINK_MSG_ID_LOCAL_POSITION : ( '>Qffffff', MAVLink_local_position_message, [0, 1, 2, 3, 4, 5, 6], 126 ),
+        MAVLINK_MSG_ID_GLOBAL_POSITION : ( '>Qffffff', MAVLink_global_position_message, [0, 1, 2, 3, 4, 5, 6], 147 ),
+        MAVLINK_MSG_ID_GPS_RAW : ( '>QBfffffff', MAVLink_gps_raw_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 185 ),
+        MAVLINK_MSG_ID_SYS_STATUS : ( '>BBBHHHH', MAVLink_sys_status_message, [0, 1, 2, 3, 4, 5, 6], 112 ),
+        MAVLINK_MSG_ID_RC_CHANNELS_RAW : ( '>HHHHHHHHB', MAVLink_rc_channels_raw_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 252 ),
+        MAVLINK_MSG_ID_RC_CHANNELS_SCALED : ( '>hhhhhhhhB', MAVLink_rc_channels_scaled_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 162 ),
+        MAVLINK_MSG_ID_SERVO_OUTPUT_RAW : ( '>HHHHHHHH', MAVLink_servo_output_raw_message, [0, 1, 2, 3, 4, 5, 6, 7], 215 ),
+        MAVLINK_MSG_ID_WAYPOINT : ( '>BBHBBBBfffffff', MAVLink_waypoint_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 128 ),
+        MAVLINK_MSG_ID_WAYPOINT_REQUEST : ( '>BBH', MAVLink_waypoint_request_message, [0, 1, 2], 9 ),
+        MAVLINK_MSG_ID_WAYPOINT_SET_CURRENT : ( '>BBH', MAVLink_waypoint_set_current_message, [0, 1, 2], 106 ),
+        MAVLINK_MSG_ID_WAYPOINT_CURRENT : ( '>H', MAVLink_waypoint_current_message, [0], 101 ),
+        MAVLINK_MSG_ID_WAYPOINT_REQUEST_LIST : ( '>BB', MAVLink_waypoint_request_list_message, [0, 1], 213 ),
+        MAVLINK_MSG_ID_WAYPOINT_COUNT : ( '>BBH', MAVLink_waypoint_count_message, [0, 1, 2], 4 ),
+        MAVLINK_MSG_ID_WAYPOINT_CLEAR_ALL : ( '>BB', MAVLink_waypoint_clear_all_message, [0, 1], 229 ),
+        MAVLINK_MSG_ID_WAYPOINT_REACHED : ( '>H', MAVLink_waypoint_reached_message, [0], 21 ),
+        MAVLINK_MSG_ID_WAYPOINT_ACK : ( '>BBB', MAVLink_waypoint_ack_message, [0, 1, 2], 214 ),
+        MAVLINK_MSG_ID_GPS_SET_GLOBAL_ORIGIN : ( '>BBiii', MAVLink_gps_set_global_origin_message, [0, 1, 2, 3, 4], 215 ),
+        MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET : ( '>iii', MAVLink_gps_local_origin_set_message, [0, 1, 2], 14 ),
+        MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_SET : ( '>BBffff', MAVLink_local_position_setpoint_set_message, [0, 1, 2, 3, 4, 5], 206 ),
+        MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT : ( '>ffff', MAVLink_local_position_setpoint_message, [0, 1, 2, 3], 50 ),
+        MAVLINK_MSG_ID_CONTROL_STATUS : ( '>BBBBBBBB', MAVLink_control_status_message, [0, 1, 2, 3, 4, 5, 6, 7], 157 ),
+        MAVLINK_MSG_ID_SAFETY_SET_ALLOWED_AREA : ( '>BBBffffff', MAVLink_safety_set_allowed_area_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 126 ),
+        MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA : ( '>Bffffff', MAVLink_safety_allowed_area_message, [0, 1, 2, 3, 4, 5, 6], 108 ),
+        MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_THRUST : ( '>BBffff', MAVLink_set_roll_pitch_yaw_thrust_message, [0, 1, 2, 3, 4, 5], 213 ),
+        MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_SPEED_THRUST : ( '>BBffff', MAVLink_set_roll_pitch_yaw_speed_thrust_message, [0, 1, 2, 3, 4, 5], 95 ),
+        MAVLINK_MSG_ID_ROLL_PITCH_YAW_THRUST_SETPOINT : ( '>Qffff', MAVLink_roll_pitch_yaw_thrust_setpoint_message, [0, 1, 2, 3, 4], 5 ),
+        MAVLINK_MSG_ID_ROLL_PITCH_YAW_SPEED_THRUST_SETPOINT : ( '>Qffff', MAVLink_roll_pitch_yaw_speed_thrust_setpoint_message, [0, 1, 2, 3, 4], 127 ),
+        MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT : ( '>ffhhHfff', MAVLink_nav_controller_output_message, [0, 1, 2, 3, 4, 5, 6, 7], 57 ),
+        MAVLINK_MSG_ID_POSITION_TARGET : ( '>ffff', MAVLink_position_target_message, [0, 1, 2, 3], 126 ),
+        MAVLINK_MSG_ID_STATE_CORRECTION : ( '>fffffffff', MAVLink_state_correction_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 130 ),
+        MAVLINK_MSG_ID_SET_ALTITUDE : ( '>BI', MAVLink_set_altitude_message, [0, 1], 119 ),
+        MAVLINK_MSG_ID_REQUEST_DATA_STREAM : ( '>BBBHB', MAVLink_request_data_stream_message, [0, 1, 2, 3, 4], 193 ),
+        MAVLINK_MSG_ID_HIL_STATE : ( '>Qffffffiiihhhhhh', MAVLink_hil_state_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 191 ),
+        MAVLINK_MSG_ID_HIL_CONTROLS : ( '>QffffBB', MAVLink_hil_controls_message, [0, 1, 2, 3, 4, 5, 6], 236 ),
+        MAVLINK_MSG_ID_MANUAL_CONTROL : ( '>BffffBBBB', MAVLink_manual_control_message, [0, 1, 2, 3, 4, 5, 6, 7, 8], 158 ),
+        MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE : ( '>BBHHHHHHHH', MAVLink_rc_channels_override_message, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 143 ),
+        MAVLINK_MSG_ID_GLOBAL_POSITION_INT : ( '>iiihhh', MAVLink_global_position_int_message, [0, 1, 2, 3, 4, 5], 104 ),
+        MAVLINK_MSG_ID_VFR_HUD : ( '>ffhHff', MAVLink_vfr_hud_message, [0, 1, 2, 3, 4, 5], 123 ),
+        MAVLINK_MSG_ID_COMMAND : ( '>BBBBffff', MAVLink_command_message, [0, 1, 2, 3, 4, 5, 6, 7], 131 ),
+        MAVLINK_MSG_ID_COMMAND_ACK : ( '>ff', MAVLink_command_ack_message, [0, 1], 8 ),
+        MAVLINK_MSG_ID_OPTICAL_FLOW : ( '>QBhhBf', MAVLink_optical_flow_message, [0, 1, 2, 3, 4, 5], 174 ),
+        MAVLINK_MSG_ID_DEBUG_VECT : ( '>10sQfff', MAVLink_debug_vect_message, [0, 1, 2, 3, 4], 178 ),
+        MAVLINK_MSG_ID_NAMED_VALUE_FLOAT : ( '>10sf', MAVLink_named_value_float_message, [0, 1], 224 ),
+        MAVLINK_MSG_ID_NAMED_VALUE_INT : ( '>10si', MAVLink_named_value_int_message, [0, 1], 60 ),
+        MAVLINK_MSG_ID_STATUSTEXT : ( '>B50s', MAVLink_statustext_message, [0, 1], 106 ),
+        MAVLINK_MSG_ID_DEBUG : ( '>Bf', MAVLink_debug_message, [0, 1], 7 ),
 }
 
 class MAVError(Exception):

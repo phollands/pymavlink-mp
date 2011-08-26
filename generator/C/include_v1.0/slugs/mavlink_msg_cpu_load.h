@@ -35,11 +35,11 @@ static inline uint16_t mavlink_msg_cpu_load_pack(uint8_t system_id, uint8_t comp
 {
 	msg->msgid = MAVLINK_MSG_ID_CPU_LOAD;
 
-	put_uint16_t_by_index(batVolt, 0,  MAVLINK_PAYLOAD(msg)); // Battery Voltage in millivolts
-	put_uint8_t_by_index(sensLoad, 2,  MAVLINK_PAYLOAD(msg)); // Sensor DSC Load
-	put_uint8_t_by_index(ctrlLoad, 3,  MAVLINK_PAYLOAD(msg)); // Control DSC Load
+	put_uint16_t_by_index(msg, 0, batVolt); // Battery Voltage in millivolts
+	put_uint8_t_by_index(msg, 2, sensLoad); // Sensor DSC Load
+	put_uint8_t_by_index(msg, 3, ctrlLoad); // Control DSC Load
 
-	return mavlink_finalize_message(msg, system_id, component_id, 4, 242);
+	return mavlink_finalize_message(msg, system_id, component_id, 4, 75);
 }
 
 /**
@@ -59,11 +59,11 @@ static inline uint16_t mavlink_msg_cpu_load_pack_chan(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_CPU_LOAD;
 
-	put_uint16_t_by_index(batVolt, 0,  MAVLINK_PAYLOAD(msg)); // Battery Voltage in millivolts
-	put_uint8_t_by_index(sensLoad, 2,  MAVLINK_PAYLOAD(msg)); // Sensor DSC Load
-	put_uint8_t_by_index(ctrlLoad, 3,  MAVLINK_PAYLOAD(msg)); // Control DSC Load
+	put_uint16_t_by_index(msg, 0, batVolt); // Battery Voltage in millivolts
+	put_uint8_t_by_index(msg, 2, sensLoad); // Sensor DSC Load
+	put_uint8_t_by_index(msg, 3, ctrlLoad); // Control DSC Load
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 242);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 75);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -82,11 +82,11 @@ static inline void mavlink_msg_cpu_load_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_CPU_LOAD;
 
-	put_uint16_t_by_index(batVolt, 0,  MAVLINK_PAYLOAD(msg)); // Battery Voltage in millivolts
-	put_uint8_t_by_index(sensLoad, 2,  MAVLINK_PAYLOAD(msg)); // Sensor DSC Load
-	put_uint8_t_by_index(ctrlLoad, 3,  MAVLINK_PAYLOAD(msg)); // Control DSC Load
+	put_uint16_t_by_index(msg, 0, batVolt); // Battery Voltage in millivolts
+	put_uint8_t_by_index(msg, 2, sensLoad); // Sensor DSC Load
+	put_uint8_t_by_index(msg, 3, ctrlLoad); // Control DSC Load
 
-	mavlink_finalize_message_chan_send(msg, chan, 4, 242);
+	mavlink_finalize_message_chan_send(msg, chan, 4, 75);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

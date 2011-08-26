@@ -41,13 +41,13 @@ static inline uint16_t mavlink_msg_param_set_pack(uint8_t system_id, uint8_t com
 {
 	msg->msgid = MAVLINK_MSG_ID_PARAM_SET;
 
-	put_float_by_index(param_value, 0,  MAVLINK_PAYLOAD(msg)); // Onboard parameter value
-	put_uint8_t_by_index(target_system, 4,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 5,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_char_array_by_index(param_id, 6, 16,  MAVLINK_PAYLOAD(msg)); // Onboard parameter id
-	put_uint8_t_by_index(param_type, 22,  MAVLINK_PAYLOAD(msg)); // Onboard parameter type: 0: float, 1: uint8_t, 2: int8_t, 3: uint16_t, 4: int16_t, 5: uint32_t, 6: int32_t
+	put_float_by_index(msg, 0, param_value); // Onboard parameter value
+	put_uint8_t_by_index(msg, 4, target_system); // System ID
+	put_uint8_t_by_index(msg, 5, target_component); // Component ID
+	put_char_array_by_index(msg, 6, param_id, 16); // Onboard parameter id
+	put_uint8_t_by_index(msg, 22, param_type); // Onboard parameter type: 0: float, 1: uint8_t, 2: int8_t, 3: uint16_t, 4: int16_t, 5: uint32_t, 6: int32_t
 
-	return mavlink_finalize_message(msg, system_id, component_id, 23, 27);
+	return mavlink_finalize_message(msg, system_id, component_id, 23, 168);
 }
 
 /**
@@ -69,13 +69,13 @@ static inline uint16_t mavlink_msg_param_set_pack_chan(uint8_t system_id, uint8_
 {
 	msg->msgid = MAVLINK_MSG_ID_PARAM_SET;
 
-	put_float_by_index(param_value, 0,  MAVLINK_PAYLOAD(msg)); // Onboard parameter value
-	put_uint8_t_by_index(target_system, 4,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 5,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_char_array_by_index(param_id, 6, 16,  MAVLINK_PAYLOAD(msg)); // Onboard parameter id
-	put_uint8_t_by_index(param_type, 22,  MAVLINK_PAYLOAD(msg)); // Onboard parameter type: 0: float, 1: uint8_t, 2: int8_t, 3: uint16_t, 4: int16_t, 5: uint32_t, 6: int32_t
+	put_float_by_index(msg, 0, param_value); // Onboard parameter value
+	put_uint8_t_by_index(msg, 4, target_system); // System ID
+	put_uint8_t_by_index(msg, 5, target_component); // Component ID
+	put_char_array_by_index(msg, 6, param_id, 16); // Onboard parameter id
+	put_uint8_t_by_index(msg, 22, param_type); // Onboard parameter type: 0: float, 1: uint8_t, 2: int8_t, 3: uint16_t, 4: int16_t, 5: uint32_t, 6: int32_t
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 23, 27);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 23, 168);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -96,13 +96,13 @@ static inline void mavlink_msg_param_set_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_PARAM_SET;
 
-	put_float_by_index(param_value, 0,  MAVLINK_PAYLOAD(msg)); // Onboard parameter value
-	put_uint8_t_by_index(target_system, 4,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 5,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_char_array_by_index(param_id, 6, 16,  MAVLINK_PAYLOAD(msg)); // Onboard parameter id
-	put_uint8_t_by_index(param_type, 22,  MAVLINK_PAYLOAD(msg)); // Onboard parameter type: 0: float, 1: uint8_t, 2: int8_t, 3: uint16_t, 4: int16_t, 5: uint32_t, 6: int32_t
+	put_float_by_index(msg, 0, param_value); // Onboard parameter value
+	put_uint8_t_by_index(msg, 4, target_system); // System ID
+	put_uint8_t_by_index(msg, 5, target_component); // Component ID
+	put_char_array_by_index(msg, 6, param_id, 16); // Onboard parameter id
+	put_uint8_t_by_index(msg, 22, param_type); // Onboard parameter type: 0: float, 1: uint8_t, 2: int8_t, 3: uint16_t, 4: int16_t, 5: uint32_t, 6: int32_t
 
-	mavlink_finalize_message_chan_send(msg, chan, 23, 27);
+	mavlink_finalize_message_chan_send(msg, chan, 23, 168);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

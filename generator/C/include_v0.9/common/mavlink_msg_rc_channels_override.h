@@ -56,18 +56,18 @@ static inline uint16_t mavlink_msg_rc_channels_override_pack(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_uint16_t_by_index(chan1_raw, 2,  MAVLINK_PAYLOAD(msg)); // RC channel 1 value, in microseconds
-	put_uint16_t_by_index(chan2_raw, 4,  MAVLINK_PAYLOAD(msg)); // RC channel 2 value, in microseconds
-	put_uint16_t_by_index(chan3_raw, 6,  MAVLINK_PAYLOAD(msg)); // RC channel 3 value, in microseconds
-	put_uint16_t_by_index(chan4_raw, 8,  MAVLINK_PAYLOAD(msg)); // RC channel 4 value, in microseconds
-	put_uint16_t_by_index(chan5_raw, 10,  MAVLINK_PAYLOAD(msg)); // RC channel 5 value, in microseconds
-	put_uint16_t_by_index(chan6_raw, 12,  MAVLINK_PAYLOAD(msg)); // RC channel 6 value, in microseconds
-	put_uint16_t_by_index(chan7_raw, 14,  MAVLINK_PAYLOAD(msg)); // RC channel 7 value, in microseconds
-	put_uint16_t_by_index(chan8_raw, 16,  MAVLINK_PAYLOAD(msg)); // RC channel 8 value, in microseconds
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_uint16_t_by_index(msg, 2, chan1_raw); // RC channel 1 value, in microseconds
+	put_uint16_t_by_index(msg, 4, chan2_raw); // RC channel 2 value, in microseconds
+	put_uint16_t_by_index(msg, 6, chan3_raw); // RC channel 3 value, in microseconds
+	put_uint16_t_by_index(msg, 8, chan4_raw); // RC channel 4 value, in microseconds
+	put_uint16_t_by_index(msg, 10, chan5_raw); // RC channel 5 value, in microseconds
+	put_uint16_t_by_index(msg, 12, chan6_raw); // RC channel 6 value, in microseconds
+	put_uint16_t_by_index(msg, 14, chan7_raw); // RC channel 7 value, in microseconds
+	put_uint16_t_by_index(msg, 16, chan8_raw); // RC channel 8 value, in microseconds
 
-	return mavlink_finalize_message(msg, system_id, component_id, 18, 51);
+	return mavlink_finalize_message(msg, system_id, component_id, 18, 143);
 }
 
 /**
@@ -94,18 +94,18 @@ static inline uint16_t mavlink_msg_rc_channels_override_pack_chan(uint8_t system
 {
 	msg->msgid = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_uint16_t_by_index(chan1_raw, 2,  MAVLINK_PAYLOAD(msg)); // RC channel 1 value, in microseconds
-	put_uint16_t_by_index(chan2_raw, 4,  MAVLINK_PAYLOAD(msg)); // RC channel 2 value, in microseconds
-	put_uint16_t_by_index(chan3_raw, 6,  MAVLINK_PAYLOAD(msg)); // RC channel 3 value, in microseconds
-	put_uint16_t_by_index(chan4_raw, 8,  MAVLINK_PAYLOAD(msg)); // RC channel 4 value, in microseconds
-	put_uint16_t_by_index(chan5_raw, 10,  MAVLINK_PAYLOAD(msg)); // RC channel 5 value, in microseconds
-	put_uint16_t_by_index(chan6_raw, 12,  MAVLINK_PAYLOAD(msg)); // RC channel 6 value, in microseconds
-	put_uint16_t_by_index(chan7_raw, 14,  MAVLINK_PAYLOAD(msg)); // RC channel 7 value, in microseconds
-	put_uint16_t_by_index(chan8_raw, 16,  MAVLINK_PAYLOAD(msg)); // RC channel 8 value, in microseconds
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_uint16_t_by_index(msg, 2, chan1_raw); // RC channel 1 value, in microseconds
+	put_uint16_t_by_index(msg, 4, chan2_raw); // RC channel 2 value, in microseconds
+	put_uint16_t_by_index(msg, 6, chan3_raw); // RC channel 3 value, in microseconds
+	put_uint16_t_by_index(msg, 8, chan4_raw); // RC channel 4 value, in microseconds
+	put_uint16_t_by_index(msg, 10, chan5_raw); // RC channel 5 value, in microseconds
+	put_uint16_t_by_index(msg, 12, chan6_raw); // RC channel 6 value, in microseconds
+	put_uint16_t_by_index(msg, 14, chan7_raw); // RC channel 7 value, in microseconds
+	put_uint16_t_by_index(msg, 16, chan8_raw); // RC channel 8 value, in microseconds
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 51);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 143);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -131,18 +131,18 @@ static inline void mavlink_msg_rc_channels_override_pack_chan_send(mavlink_chann
 {
 	msg->msgid = MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE;
 
-	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
-	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
-	put_uint16_t_by_index(chan1_raw, 2,  MAVLINK_PAYLOAD(msg)); // RC channel 1 value, in microseconds
-	put_uint16_t_by_index(chan2_raw, 4,  MAVLINK_PAYLOAD(msg)); // RC channel 2 value, in microseconds
-	put_uint16_t_by_index(chan3_raw, 6,  MAVLINK_PAYLOAD(msg)); // RC channel 3 value, in microseconds
-	put_uint16_t_by_index(chan4_raw, 8,  MAVLINK_PAYLOAD(msg)); // RC channel 4 value, in microseconds
-	put_uint16_t_by_index(chan5_raw, 10,  MAVLINK_PAYLOAD(msg)); // RC channel 5 value, in microseconds
-	put_uint16_t_by_index(chan6_raw, 12,  MAVLINK_PAYLOAD(msg)); // RC channel 6 value, in microseconds
-	put_uint16_t_by_index(chan7_raw, 14,  MAVLINK_PAYLOAD(msg)); // RC channel 7 value, in microseconds
-	put_uint16_t_by_index(chan8_raw, 16,  MAVLINK_PAYLOAD(msg)); // RC channel 8 value, in microseconds
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_uint16_t_by_index(msg, 2, chan1_raw); // RC channel 1 value, in microseconds
+	put_uint16_t_by_index(msg, 4, chan2_raw); // RC channel 2 value, in microseconds
+	put_uint16_t_by_index(msg, 6, chan3_raw); // RC channel 3 value, in microseconds
+	put_uint16_t_by_index(msg, 8, chan4_raw); // RC channel 4 value, in microseconds
+	put_uint16_t_by_index(msg, 10, chan5_raw); // RC channel 5 value, in microseconds
+	put_uint16_t_by_index(msg, 12, chan6_raw); // RC channel 6 value, in microseconds
+	put_uint16_t_by_index(msg, 14, chan7_raw); // RC channel 7 value, in microseconds
+	put_uint16_t_by_index(msg, 16, chan8_raw); // RC channel 8 value, in microseconds
 
-	mavlink_finalize_message_chan_send(msg, chan, 18, 51);
+	mavlink_finalize_message_chan_send(msg, chan, 18, 143);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

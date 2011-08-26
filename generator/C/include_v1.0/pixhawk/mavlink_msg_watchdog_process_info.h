@@ -41,13 +41,13 @@ static inline uint16_t mavlink_msg_watchdog_process_info_pack(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_PROCESS_INFO;
 
-	put_int32_t_by_index(timeout, 0,  MAVLINK_PAYLOAD(msg)); // Timeout (seconds)
-	put_uint16_t_by_index(watchdog_id, 4,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
-	put_uint16_t_by_index(process_id, 6,  MAVLINK_PAYLOAD(msg)); // Process ID
-	put_char_array_by_index(name, 8, 100,  MAVLINK_PAYLOAD(msg)); // Process name
-	put_char_array_by_index(arguments, 108, 147,  MAVLINK_PAYLOAD(msg)); // Process arguments
+	put_int32_t_by_index(msg, 0, timeout); // Timeout (seconds)
+	put_uint16_t_by_index(msg, 4, watchdog_id); // Watchdog ID
+	put_uint16_t_by_index(msg, 6, process_id); // Process ID
+	put_char_array_by_index(msg, 8, name, 100); // Process name
+	put_char_array_by_index(msg, 108, arguments, 147); // Process arguments
 
-	return mavlink_finalize_message(msg, system_id, component_id, 255, 225);
+	return mavlink_finalize_message(msg, system_id, component_id, 255, 16);
 }
 
 /**
@@ -69,13 +69,13 @@ static inline uint16_t mavlink_msg_watchdog_process_info_pack_chan(uint8_t syste
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_PROCESS_INFO;
 
-	put_int32_t_by_index(timeout, 0,  MAVLINK_PAYLOAD(msg)); // Timeout (seconds)
-	put_uint16_t_by_index(watchdog_id, 4,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
-	put_uint16_t_by_index(process_id, 6,  MAVLINK_PAYLOAD(msg)); // Process ID
-	put_char_array_by_index(name, 8, 100,  MAVLINK_PAYLOAD(msg)); // Process name
-	put_char_array_by_index(arguments, 108, 147,  MAVLINK_PAYLOAD(msg)); // Process arguments
+	put_int32_t_by_index(msg, 0, timeout); // Timeout (seconds)
+	put_uint16_t_by_index(msg, 4, watchdog_id); // Watchdog ID
+	put_uint16_t_by_index(msg, 6, process_id); // Process ID
+	put_char_array_by_index(msg, 8, name, 100); // Process name
+	put_char_array_by_index(msg, 108, arguments, 147); // Process arguments
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 255, 225);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 255, 16);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -96,13 +96,13 @@ static inline void mavlink_msg_watchdog_process_info_pack_chan_send(mavlink_chan
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_PROCESS_INFO;
 
-	put_int32_t_by_index(timeout, 0,  MAVLINK_PAYLOAD(msg)); // Timeout (seconds)
-	put_uint16_t_by_index(watchdog_id, 4,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
-	put_uint16_t_by_index(process_id, 6,  MAVLINK_PAYLOAD(msg)); // Process ID
-	put_char_array_by_index(name, 8, 100,  MAVLINK_PAYLOAD(msg)); // Process name
-	put_char_array_by_index(arguments, 108, 147,  MAVLINK_PAYLOAD(msg)); // Process arguments
+	put_int32_t_by_index(msg, 0, timeout); // Timeout (seconds)
+	put_uint16_t_by_index(msg, 4, watchdog_id); // Watchdog ID
+	put_uint16_t_by_index(msg, 6, process_id); // Process ID
+	put_char_array_by_index(msg, 8, name, 100); // Process name
+	put_char_array_by_index(msg, 108, arguments, 147); // Process arguments
 
-	mavlink_finalize_message_chan_send(msg, chan, 255, 225);
+	mavlink_finalize_message_chan_send(msg, chan, 255, 16);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

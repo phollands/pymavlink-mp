@@ -29,9 +29,9 @@ static inline uint16_t mavlink_msg_auth_key_pack(uint8_t system_id, uint8_t comp
 {
 	msg->msgid = MAVLINK_MSG_ID_AUTH_KEY;
 
-	put_char_array_by_index(key, 0, 32,  MAVLINK_PAYLOAD(msg)); // key
+	put_char_array_by_index(msg, 0, key, 32); // key
 
-	return mavlink_finalize_message(msg, system_id, component_id, 32, 181);
+	return mavlink_finalize_message(msg, system_id, component_id, 32, 119);
 }
 
 /**
@@ -49,9 +49,9 @@ static inline uint16_t mavlink_msg_auth_key_pack_chan(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_AUTH_KEY;
 
-	put_char_array_by_index(key, 0, 32,  MAVLINK_PAYLOAD(msg)); // key
+	put_char_array_by_index(msg, 0, key, 32); // key
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 181);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 119);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -68,9 +68,9 @@ static inline void mavlink_msg_auth_key_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_AUTH_KEY;
 
-	put_char_array_by_index(key, 0, 32,  MAVLINK_PAYLOAD(msg)); // key
+	put_char_array_by_index(msg, 0, key, 32); // key
 
-	mavlink_finalize_message_chan_send(msg, chan, 32, 181);
+	mavlink_finalize_message_chan_send(msg, chan, 32, 119);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -44,14 +44,14 @@ static inline uint16_t mavlink_msg_data_log_pack(uint8_t system_id, uint8_t comp
 {
 	msg->msgid = MAVLINK_MSG_ID_DATA_LOG;
 
-	put_float_by_index(fl_1, 0,  MAVLINK_PAYLOAD(msg)); // Log value 1 
-	put_float_by_index(fl_2, 4,  MAVLINK_PAYLOAD(msg)); // Log value 2 
-	put_float_by_index(fl_3, 8,  MAVLINK_PAYLOAD(msg)); // Log value 3 
-	put_float_by_index(fl_4, 12,  MAVLINK_PAYLOAD(msg)); // Log value 4 
-	put_float_by_index(fl_5, 16,  MAVLINK_PAYLOAD(msg)); // Log value 5 
-	put_float_by_index(fl_6, 20,  MAVLINK_PAYLOAD(msg)); // Log value 6 
+	put_float_by_index(msg, 0, fl_1); // Log value 1 
+	put_float_by_index(msg, 4, fl_2); // Log value 2 
+	put_float_by_index(msg, 8, fl_3); // Log value 3 
+	put_float_by_index(msg, 12, fl_4); // Log value 4 
+	put_float_by_index(msg, 16, fl_5); // Log value 5 
+	put_float_by_index(msg, 20, fl_6); // Log value 6 
 
-	return mavlink_finalize_message(msg, system_id, component_id, 24, 126);
+	return mavlink_finalize_message(msg, system_id, component_id, 24, 167);
 }
 
 /**
@@ -74,14 +74,14 @@ static inline uint16_t mavlink_msg_data_log_pack_chan(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_DATA_LOG;
 
-	put_float_by_index(fl_1, 0,  MAVLINK_PAYLOAD(msg)); // Log value 1 
-	put_float_by_index(fl_2, 4,  MAVLINK_PAYLOAD(msg)); // Log value 2 
-	put_float_by_index(fl_3, 8,  MAVLINK_PAYLOAD(msg)); // Log value 3 
-	put_float_by_index(fl_4, 12,  MAVLINK_PAYLOAD(msg)); // Log value 4 
-	put_float_by_index(fl_5, 16,  MAVLINK_PAYLOAD(msg)); // Log value 5 
-	put_float_by_index(fl_6, 20,  MAVLINK_PAYLOAD(msg)); // Log value 6 
+	put_float_by_index(msg, 0, fl_1); // Log value 1 
+	put_float_by_index(msg, 4, fl_2); // Log value 2 
+	put_float_by_index(msg, 8, fl_3); // Log value 3 
+	put_float_by_index(msg, 12, fl_4); // Log value 4 
+	put_float_by_index(msg, 16, fl_5); // Log value 5 
+	put_float_by_index(msg, 20, fl_6); // Log value 6 
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24, 126);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24, 167);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -103,14 +103,14 @@ static inline void mavlink_msg_data_log_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_DATA_LOG;
 
-	put_float_by_index(fl_1, 0,  MAVLINK_PAYLOAD(msg)); // Log value 1 
-	put_float_by_index(fl_2, 4,  MAVLINK_PAYLOAD(msg)); // Log value 2 
-	put_float_by_index(fl_3, 8,  MAVLINK_PAYLOAD(msg)); // Log value 3 
-	put_float_by_index(fl_4, 12,  MAVLINK_PAYLOAD(msg)); // Log value 4 
-	put_float_by_index(fl_5, 16,  MAVLINK_PAYLOAD(msg)); // Log value 5 
-	put_float_by_index(fl_6, 20,  MAVLINK_PAYLOAD(msg)); // Log value 6 
+	put_float_by_index(msg, 0, fl_1); // Log value 1 
+	put_float_by_index(msg, 4, fl_2); // Log value 2 
+	put_float_by_index(msg, 8, fl_3); // Log value 3 
+	put_float_by_index(msg, 12, fl_4); // Log value 4 
+	put_float_by_index(msg, 16, fl_5); // Log value 5 
+	put_float_by_index(msg, 20, fl_6); // Log value 6 
 
-	mavlink_finalize_message_chan_send(msg, chan, 24, 126);
+	mavlink_finalize_message_chan_send(msg, chan, 24, 167);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

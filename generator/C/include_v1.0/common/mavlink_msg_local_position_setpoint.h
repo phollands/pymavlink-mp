@@ -38,12 +38,12 @@ static inline uint16_t mavlink_msg_local_position_setpoint_pack(uint8_t system_i
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle
+	put_float_by_index(msg, 0, x); // x position
+	put_float_by_index(msg, 4, y); // y position
+	put_float_by_index(msg, 8, z); // z position
+	put_float_by_index(msg, 12, yaw); // Desired yaw angle
 
-	return mavlink_finalize_message(msg, system_id, component_id, 16, 40);
+	return mavlink_finalize_message(msg, system_id, component_id, 16, 50);
 }
 
 /**
@@ -64,12 +64,12 @@ static inline uint16_t mavlink_msg_local_position_setpoint_pack_chan(uint8_t sys
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle
+	put_float_by_index(msg, 0, x); // x position
+	put_float_by_index(msg, 4, y); // y position
+	put_float_by_index(msg, 8, z); // z position
+	put_float_by_index(msg, 12, yaw); // Desired yaw angle
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16, 40);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16, 50);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -89,12 +89,12 @@ static inline void mavlink_msg_local_position_setpoint_pack_chan_send(mavlink_ch
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT;
 
-	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
-	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
-	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
-	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle
+	put_float_by_index(msg, 0, x); // x position
+	put_float_by_index(msg, 4, y); // y position
+	put_float_by_index(msg, 8, z); // z position
+	put_float_by_index(msg, 12, yaw); // Desired yaw angle
 
-	mavlink_finalize_message_chan_send(msg, chan, 16, 40);
+	mavlink_finalize_message_chan_send(msg, chan, 16, 50);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

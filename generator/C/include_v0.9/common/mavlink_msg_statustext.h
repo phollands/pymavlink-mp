@@ -32,10 +32,10 @@ static inline uint16_t mavlink_msg_statustext_pack(uint8_t system_id, uint8_t co
 {
 	msg->msgid = MAVLINK_MSG_ID_STATUSTEXT;
 
-	put_uint8_t_by_index(severity, 0,  MAVLINK_PAYLOAD(msg)); // Severity of status, 0 = info message, 255 = critical fault
-	put_int8_t_array_by_index(text, 1, 50,  MAVLINK_PAYLOAD(msg)); // Status text message, without null termination character
+	put_uint8_t_by_index(msg, 0, severity); // Severity of status, 0 = info message, 255 = critical fault
+	put_int8_t_array_by_index(msg, 1, text, 50); // Status text message, without null termination character
 
-	return mavlink_finalize_message(msg, system_id, component_id, 51, 88);
+	return mavlink_finalize_message(msg, system_id, component_id, 51, 106);
 }
 
 /**
@@ -54,10 +54,10 @@ static inline uint16_t mavlink_msg_statustext_pack_chan(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_STATUSTEXT;
 
-	put_uint8_t_by_index(severity, 0,  MAVLINK_PAYLOAD(msg)); // Severity of status, 0 = info message, 255 = critical fault
-	put_int8_t_array_by_index(text, 1, 50,  MAVLINK_PAYLOAD(msg)); // Status text message, without null termination character
+	put_uint8_t_by_index(msg, 0, severity); // Severity of status, 0 = info message, 255 = critical fault
+	put_int8_t_array_by_index(msg, 1, text, 50); // Status text message, without null termination character
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 51, 88);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 51, 106);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -75,10 +75,10 @@ static inline void mavlink_msg_statustext_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_STATUSTEXT;
 
-	put_uint8_t_by_index(severity, 0,  MAVLINK_PAYLOAD(msg)); // Severity of status, 0 = info message, 255 = critical fault
-	put_int8_t_array_by_index(text, 1, 50,  MAVLINK_PAYLOAD(msg)); // Status text message, without null termination character
+	put_uint8_t_by_index(msg, 0, severity); // Severity of status, 0 = info message, 255 = critical fault
+	put_int8_t_array_by_index(msg, 1, text, 50); // Status text message, without null termination character
 
-	mavlink_finalize_message_chan_send(msg, chan, 51, 88);
+	mavlink_finalize_message_chan_send(msg, chan, 51, 106);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

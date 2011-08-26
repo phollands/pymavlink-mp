@@ -18,6 +18,40 @@
 #define MAVLINK_STRICT_ALIASING 1
 #endif
 
+#ifndef MAVLINK_ALIGNED_FIELDS
+#define MAVLINK_ALIGNED_FIELDS (MAVLINK_ENDIAN == MAVLINK_LITTLE_ENDIAN)
+#endif
+
+/*
+  compilers are surprisingly bad at working out if a memcpy() will be
+  more space efficient than a type assignment. By defining these
+  macros you can tweak the code generation to suit your system
+ */
+
+#ifndef MAVLINK_PUT_MEMCPY_16
+#define MAVLINK_PUT_MEMCPY_16 MAVLINK_STRICT_ALIASING
+#endif
+
+#ifndef MAVLINK_PUT_MEMCPY_32
+#define MAVLINK_PUT_MEMCPY_32 MAVLINK_STRICT_ALIASING
+#endif
+
+#ifndef MAVLINK_PUT_MEMCPY_64
+#define MAVLINK_PUT_MEMCPY_64 MAVLINK_STRICT_ALIASING
+#endif
+
+#ifndef MAVLINK_GET_MEMCPY_16
+#define MAVLINK_GET_MEMCPY_16 MAVLINK_STRICT_ALIASING
+#endif
+
+#ifndef MAVLINK_GET_MEMCPY_32
+#define MAVLINK_GET_MEMCPY_32 MAVLINK_STRICT_ALIASING
+#endif
+
+#ifndef MAVLINK_GET_MEMCPY_64
+#define MAVLINK_GET_MEMCPY_64 MAVLINK_STRICT_ALIASING
+#endif
+
 #ifndef MAVLINK_ASSERT
 #define MAVLINK_ASSERT(x)
 #endif
@@ -78,56 +112,54 @@ typedef union {
  * @brief Place an unsigned byte into the buffer
  *
  * @param b the byte to add
- * @param bindex the position in the packet
+ * @param wire_offset the position in the packet
  * @param buffer the packet buffer
  */
-static inline void put_uint8_t_by_index(uint8_t b, uint8_t bindex, uint8_t* buffer)
+static inline void put_uint8_t_by_index(mavlink_message_t *msg, uint8_t wire_offset, uint8_t b)
 {
-	buffer[bindex] = b;
+	msg->payload.u8[wire_offset] = b;
 }
 
 /**
  * @brief Place a signed byte into the buffer
  *
  * @param b the byte to add
- * @param bindex the position in the packet
+ * @param wire_offset the position in the packet
  * @param buffer the packet buffer
  */
-static inline void put_int8_t_by_index(int8_t b, uint8_t bindex, uint8_t* buffer)
+static inline void put_int8_t_by_index(mavlink_message_t *msg, uint8_t wire_offset, int8_t b)
 {
-	buffer[bindex] = (uint8_t)b;
+	msg->payload.i8[wire_offset] = b;
 }
 
 /**
  * @brief Place a char into the buffer
  *
  * @param b the byte to add
- * @param bindex the position in the packet
+ * @param wire_offset the position in the packet
  * @param buffer the packet buffer
  */
-static inline void put_char_by_index(char b, uint8_t bindex, uint8_t* buffer)
+static inline void put_char_by_index(mavlink_message_t *msg, uint8_t wire_offset, char b)
 {
-	buffer[bindex] = (uint8_t)b;
+	msg->payload.c[wire_offset] = b;
 }
 
 /**
  * @brief Place two unsigned bytes into the buffer
  *
  * @param b the bytes to add
- * @param bindex the position in the packet
+ * @param wire_offset the position in the packet
  * @param buffer the packet buffer
  */
-static inline void put_uint16_t_by_index(uint16_t b, const uint8_t bindex, uint8_t* buffer)
+static inline void put_uint16_t_by_index(mavlink_message_t *msg, uint8_t wire_offset, uint16_t b)
 {
 #if MAVLINK_NEED_BYTE_SWAP
 	generic_16bit g;
 	g.i = b;
-	buffer[bindex+0] = g.b[1];
-	buffer[bindex+1] = g.b[0];
-#elif MAVLINK_STRICT_ALIASING
-	memcpy(&buffer[bindex], &b, sizeof(b));
+	msg->payload.u8[wire_offset+0] = g.b[1];
+	msg->payload.u8[wire_offset+1] = g.b[0];
 #else
-	*(uint16_t *)&buffer[bindex] = b;
+	msg->payload.u16[wire_offset/2] = b;
 #endif
 }
 
@@ -135,34 +167,36 @@ static inline void put_uint16_t_by_index(uint16_t b, const uint8_t bindex, uint8
  * @brief Place two signed bytes into the buffer
  *
  * @param b the bytes to add
- * @param bindex the position in the packet
+ * @param wire_offset the position in the packet
  * @param buffer the packet buffer
  */
-static inline void put_int16_t_by_index(int16_t b, uint8_t bindex, uint8_t* buffer)
+static inline void put_int16_t_by_index(mavlink_message_t *msg, uint8_t wire_offset, int16_t b)
 {
-	put_uint16_t_by_index(b, bindex, buffer);
+#if MAVLINK_NEED_BYTE_SWAP
+	put_uint16_t_by_index(msg, wire_offset, b);
+#else
+	msg->payload.i16[wire_offset/2] = b;
+#endif
 }
 
 /**
  * @brief Place four unsigned bytes into the buffer
  *
  * @param b the bytes to add
- * @param bindex the position in the packet
+ * @param wire_offset the position in the packet
  * @param buffer the packet buffer
  */
-static inline void put_uint32_t_by_index(uint32_t b, const uint8_t bindex, uint8_t* buffer)
+static inline void put_uint32_t_by_index(mavlink_message_t *msg, uint8_t wire_offset, uint32_t b)
 {
 #if MAVLINK_NEED_BYTE_SWAP
 	generic_32bit g;
 	g.i = b;
-	buffer[bindex+0] = g.b[3];
-	buffer[bindex+1] = g.b[2];
-	buffer[bindex+2] = g.b[1];
-	buffer[bindex+3] = g.b[0];
-#elif MAVLINK_STRICT_ALIASING
-	memcpy(&buffer[bindex], &b, sizeof(b));
+	msg->payload.u8[wire_offset+0] = g.b[3];
+	msg->payload.u8[wire_offset+1] = g.b[2];
+	msg->payload.u8[wire_offset+2] = g.b[1];
+	msg->payload.u8[wire_offset+3] = g.b[0];
 #else
-	*(uint32_t *)&buffer[bindex] = b;
+	msg->payload.u32[wire_offset/4] = b;
 #endif
 }
 
@@ -170,39 +204,40 @@ static inline void put_uint32_t_by_index(uint32_t b, const uint8_t bindex, uint8
  * @brief Place four signed bytes into the buffer
  *
  * @param b the bytes to add
- * @param bindex the position in the packet
+ * @param wire_offset the position in the packet
  * @param buffer the packet buffer
  */
-static inline void put_int32_t_by_index(int32_t b, uint8_t bindex, uint8_t* buffer)
+static inline void put_int32_t_by_index(mavlink_message_t *msg, uint8_t wire_offset, int32_t b)
 {
-	put_uint32_t_by_index(b, bindex, buffer);
+#if MAVLINK_NEED_BYTE_SWAP
+	put_uint32_t_by_index(msg, wire_offset, b);
+#else
+	msg->payload.i32[wire_offset/4] = b;
+#endif
 }
 
 /**
  * @brief Place four unsigned bytes into the buffer
  *
  * @param b the bytes to add
- * @param bindex the position in the packet
+ * @param wire_offset the position in the packet
  * @param buffer the packet buffer
  */
-static inline void put_uint64_t_by_index(uint64_t b, const uint8_t bindex, uint8_t* buffer)
+static inline void put_uint64_t_by_index(mavlink_message_t *msg, uint8_t wire_offset, uint64_t b)
 {
 #if MAVLINK_NEED_BYTE_SWAP
 	generic_64bit r;
 	r.i = b;
-	buffer[bindex+0] = r.b[7];
-	buffer[bindex+1] = r.b[6];
-	buffer[bindex+2] = r.b[5];
-	buffer[bindex+3] = r.b[4];
-	buffer[bindex+4] = r.b[3];
-	buffer[bindex+5] = r.b[2];
-	buffer[bindex+6] = r.b[1];
-	buffer[bindex+7] = r.b[0];
-#elif MAVLINK_STRICT_ALIASING
-	memcpy(&buffer[bindex], &b, sizeof(b));
+	msg->payload.u8[wire_offset+0] = r.b[7];
+	msg->payload.u8[wire_offset+1] = r.b[6];
+	msg->payload.u8[wire_offset+2] = r.b[5];
+	msg->payload.u8[wire_offset+3] = r.b[4];
+	msg->payload.u8[wire_offset+4] = r.b[3];
+	msg->payload.u8[wire_offset+5] = r.b[2];
+	msg->payload.u8[wire_offset+6] = r.b[1];
+	msg->payload.u8[wire_offset+7] = r.b[0];
 #else
-	MAVLINK_ASSERT((((intptr_t)(buffer+bindex))&7)==0);
-	*(uint64_t *)&buffer[bindex] = b;
+	msg->payload.u64[wire_offset/8] = b;
 #endif
 }
 
@@ -210,29 +245,33 @@ static inline void put_uint64_t_by_index(uint64_t b, const uint8_t bindex, uint8
  * @brief Place four signed bytes into the buffer
  *
  * @param b the bytes to add
- * @param bindex the position in the packet
+ * @param wire_offset the position in the packet
  * @param buffer the packet buffer
  */
-static inline void put_int64_t_by_index(int64_t b, uint8_t bindex, uint8_t* buffer)
+static inline void put_int64_t_by_index(mavlink_message_t *msg, uint8_t wire_offset, int64_t b)
 {
-	put_uint64_t_by_index(b, bindex, buffer);
+#if MAVLINK_NEED_BYTE_SWAP
+	put_uint64_t_by_index(msg, wire_offset, b);
+#else
+	msg->payload.i64[wire_offset/8] = b;
+#endif
 }
 
 /**
  * @brief Place a float into the buffer
  *
  * @param b the float to add
- * @param bindex the position in the packet
+ * @param wire_offset the position in the packet
  * @param buffer the packet buffer
  */
-static inline void put_float_by_index(float b, uint8_t bindex, uint8_t* buffer)
+static inline void put_float_by_index(mavlink_message_t *msg, uint8_t wire_offset, float b)
 {
-#if MAVLINK_NEED_BYTE_SWAP || MAVLINK_STRICT_ALIASING
+#if MAVLINK_NEED_BYTE_SWAP
 	generic_32bit g;
 	g.f = b;
-	put_uint32_t_by_index(g.i, bindex, buffer);
+	put_uint32_t_by_index(g.i, wire_offset, buffer);
 #else
-	memcpy(&buffer[bindex], &b, sizeof(b));
+	msg->payload.f[wire_offset/4] = b;
 #endif
 }
 
@@ -240,213 +279,196 @@ static inline void put_float_by_index(float b, uint8_t bindex, uint8_t* buffer)
  * @brief Place a double into the buffer
  *
  * @param b the double to add
- * @param bindex the position in the packet
+ * @param wire_offset the position in the packet
  * @param buffer the packet buffer
  */
-static inline void put_double_by_index(double b, uint8_t bindex, uint8_t* buffer)
+static inline void put_double_by_index(mavlink_message_t *msg, uint8_t wire_offset, double b)
 {
-#if MAVLINK_NEED_BYTE_SWAP || MAVLINK_STRICT_ALIASING
+#if MAVLINK_NEED_BYTE_SWAP
 	generic_64bit g;
 	g.d = b;
-	put_uint64_t_by_index(g.i, bindex, buffer);
+	put_uint64_t_by_index(g.i, wire_offset, buffer);
 #else
-	memcpy(&buffer[bindex], &b, sizeof(b));
+	msg->payload.d[wire_offset/8] = b;
 #endif
 }
 
 /*
  * Place a char array into a buffer
  */
-static inline void put_char_array_by_index(const char *b, uint8_t wire_offset, uint8_t array_length, uint8_t *buffer)
+static inline void put_char_array_by_index(mavlink_message_t *msg, uint8_t wire_offset, const char *b, uint8_t array_length)
 {
-	memcpy(&buffer[wire_offset], b, array_length);
+	memcpy(&msg->payload.c[wire_offset], b, array_length);
 }
 
 /*
  * Place a uint8_t array into a buffer
  */
-static inline void put_uint8_t_array_by_index(const uint8_t *b, uint8_t wire_offset, uint8_t array_length, uint8_t *buffer)
+static inline void put_uint8_t_array_by_index(mavlink_message_t *msg, uint8_t wire_offset, const uint8_t *b, uint8_t array_length)
 {
-	memcpy(&buffer[wire_offset], b, array_length);
+	memcpy(&msg->payload.u8[wire_offset], b, array_length);
 }
 
 /*
  * Place a int8_t array into a buffer
  */
-static inline void put_int8_t_array_by_index(const int8_t *b, uint8_t wire_offset, uint8_t array_length, uint8_t *buffer)
+static inline void put_int8_t_array_by_index(mavlink_message_t *msg, uint8_t wire_offset, const int8_t *b, uint8_t array_length)
 {
-	memcpy(&buffer[wire_offset], b, array_length);
+	memcpy(&msg->payload.i8[wire_offset], b, array_length);
 }
 
 #if MAVLINK_NEED_BYTE_SWAP
 #define PUT_ARRAY_BY_INDEX(TYPE) \
-static inline void put_ ## TYPE ##_array_by_index(const TYPE *b, uint8_t wire_offset, \
-						  uint8_t array_length, uint8_t *buffer) \
+static inline void put_ ## TYPE ##_array_by_index(mavlink_message_t *msg, uint8_t wire_offset, const TYPE *b, uint8_t array_length) \
 { \
 	uint16_t i; \
 	for (i=0; i<array_length; i++) { \
-		put_## TYPE ##_by_index(b[i], wire_offset+(i*sizeof(b[0])), buffer); \
+		put_## TYPE ##_by_index(msg, wire_offset+(i*sizeof(b[0])), b[i]); \
 	} \
 }
 #else
-#define PUT_ARRAY_BY_INDEX(TYPE) \
-static inline void put_ ## TYPE ##_array_by_index(const TYPE *b, uint8_t wire_offset, \
-						  uint8_t array_length, uint8_t *buffer) \
+#define PUT_ARRAY_BY_INDEX(TYPE, V)					\
+static inline void put_ ## TYPE ##_array_by_index(mavlink_message_t *msg, uint8_t wire_offset, const TYPE *b, uint8_t array_length) \
 { \
-	memcpy(&buffer[wire_offset], b, array_length*sizeof(b[0])); \
+	memcpy(&msg->payload.V[wire_offset/sizeof(TYPE)], b, array_length*sizeof(TYPE)); \
 }
 #endif
 
-PUT_ARRAY_BY_INDEX(uint16_t)
-PUT_ARRAY_BY_INDEX(uint32_t)
-PUT_ARRAY_BY_INDEX(uint64_t)
-PUT_ARRAY_BY_INDEX(int16_t)
-PUT_ARRAY_BY_INDEX(int32_t)
-PUT_ARRAY_BY_INDEX(int64_t)
-PUT_ARRAY_BY_INDEX(float)
-PUT_ARRAY_BY_INDEX(double)
+PUT_ARRAY_BY_INDEX(uint16_t, u16)
+PUT_ARRAY_BY_INDEX(uint32_t, u32)
+PUT_ARRAY_BY_INDEX(uint64_t, u64)
+PUT_ARRAY_BY_INDEX(int16_t,  i16)
+PUT_ARRAY_BY_INDEX(int32_t,  i32)
+PUT_ARRAY_BY_INDEX(int64_t,  i64)
+PUT_ARRAY_BY_INDEX(float,    f)
+PUT_ARRAY_BY_INDEX(double,   d)
 
-#define MAVLINK_MSG_RETURN_char(msg, wire_offset) (char)MAVLINK_PAYLOAD(msg)[wire_offset]
-#define MAVLINK_MSG_RETURN_int8_t(msg, wire_offset) (int8_t)MAVLINK_PAYLOAD(msg)[wire_offset]
-#define MAVLINK_MSG_RETURN_uint8_t(msg, wire_offset) (uint8_t)MAVLINK_PAYLOAD(msg)[wire_offset]
+#define MAVLINK_MSG_RETURN_char(msg, wire_offset) msg->payload.c[wire_offset]
+#define MAVLINK_MSG_RETURN_int8_t(msg, wire_offset) msg->payload.i8[wire_offset]
+#define MAVLINK_MSG_RETURN_uint8_t(msg, wire_offset) msg->payload.u8[wire_offset]
 
-#ifndef MAVLINK_MSG_RETURN_uint16_t
 static inline uint16_t MAVLINK_MSG_RETURN_uint16_t(const mavlink_message_t *msg, uint8_t wire_offset)
 {
 #if MAVLINK_NEED_BYTE_SWAP
 	generic_16bit r;
-	r.b[1] = MAVLINK_PAYLOAD(msg)[wire_offset+0];
-	r.b[0] = MAVLINK_PAYLOAD(msg)[wire_offset+1];
+	r.b[1] = msg->payload.u8[wire_offset+0];
+	r.b[0] = msg->payload.u8[wire_offset+1];
 	return r.i;
-#elif MAVLINK_STRICT_ALIASING
-	uint16_t r;
-	memcpy(&r, &MAVLINK_PAYLOAD(msg)[wire_offset], sizeof(r));
-	return r;
 #else
-	return *(uint16_t *)(&MAVLINK_PAYLOAD(msg)[wire_offset]);
+	return msg->payload.u16[wire_offset/2];
 #endif
 }
-#endif
 
-#ifndef MAVLINK_MSG_RETURN_int16_t
-#define MAVLINK_MSG_RETURN_int16_t(msg, wire_offset) (int16_t)MAVLINK_MSG_RETURN_uint16_t(msg, wire_offset)
+static inline int16_t MAVLINK_MSG_RETURN_int16_t(const mavlink_message_t *msg, uint8_t wire_offset)
+{
+#if MAVLINK_NEED_BYTE_SWAP
+	return (int16_t)MAVLINK_MSG_RETURN_uint16_t(msg, wire_offset);
+#else
+	return msg->payload.i16[wire_offset/2];
 #endif
+}
 
-#ifndef MAVLINK_MSG_RETURN_uint32_t
 static inline uint32_t MAVLINK_MSG_RETURN_uint32_t(const mavlink_message_t *msg, uint8_t wire_offset)
 {
 #if MAVLINK_NEED_BYTE_SWAP
 	generic_32bit r;
-	r.b[3] = MAVLINK_PAYLOAD(msg)[wire_offset+0];
-	r.b[2] = MAVLINK_PAYLOAD(msg)[wire_offset+1];
-	r.b[1] = MAVLINK_PAYLOAD(msg)[wire_offset+2];
-	r.b[0] = MAVLINK_PAYLOAD(msg)[wire_offset+3];
+	r.b[3] = msg->payload.u8[wire_offset+0];
+	r.b[2] = msg->payload.u8[wire_offset+1];
+	r.b[1] = msg->payload.u8[wire_offset+2];
+	r.b[0] = msg->payload.u8[wire_offset+3];
 	return r.i;
-#elif MAVLINK_STRICT_ALIASING
-	uint32_t r;
-	memcpy(&r, &MAVLINK_PAYLOAD(msg)[wire_offset], sizeof(r));
-	return r;
 #else
-	return *(uint32_t *)(&MAVLINK_PAYLOAD(msg)[wire_offset]);
+	return msg->payload.u32[wire_offset/4];
 #endif
 }
-#endif
 
-#ifndef MAVLINK_MSG_RETURN_int32_t
-#define MAVLINK_MSG_RETURN_int32_t(msg, wire_offset) (int32_t)MAVLINK_MSG_RETURN_uint32_t(msg, wire_offset)
+static inline int32_t MAVLINK_MSG_RETURN_int32_t(const mavlink_message_t *msg, uint8_t wire_offset)
+{
+#if MAVLINK_NEED_BYTE_SWAP
+	return (int32_t)MAVLINK_MSG_RETURN_uint32_t(msg, wire_offset);
+#else
+	return msg->payload.i32[wire_offset/4];
 #endif
+}
 
-#ifndef MAVLINK_MSG_RETURN_uint64_t
 static inline uint64_t MAVLINK_MSG_RETURN_uint64_t(const mavlink_message_t *msg, uint8_t wire_offset)
 {
 #if MAVLINK_NEED_BYTE_SWAP
 	generic_64bit r;
-	r.b[7] = MAVLINK_PAYLOAD(msg)[wire_offset+0];
-	r.b[6] = MAVLINK_PAYLOAD(msg)[wire_offset+1];
-	r.b[5] = MAVLINK_PAYLOAD(msg)[wire_offset+2];
-	r.b[4] = MAVLINK_PAYLOAD(msg)[wire_offset+3];
-	r.b[3] = MAVLINK_PAYLOAD(msg)[wire_offset+4];
-	r.b[2] = MAVLINK_PAYLOAD(msg)[wire_offset+5];
-	r.b[1] = MAVLINK_PAYLOAD(msg)[wire_offset+6];
-	r.b[0] = MAVLINK_PAYLOAD(msg)[wire_offset+7];
+	r.b[7] = msg->payload.u8[wire_offset+0];
+	r.b[6] = msg->payload.u8[wire_offset+1];
+	r.b[5] = msg->payload.u8[wire_offset+2];
+	r.b[4] = msg->payload.u8[wire_offset+3];
+	r.b[3] = msg->payload.u8[wire_offset+4];
+	r.b[2] = msg->payload.u8[wire_offset+5];
+	r.b[1] = msg->payload.u8[wire_offset+6];
+	r.b[0] = msg->payload.u8[wire_offset+7];
 	return r.i;
-#elif MAVLINK_STRICT_ALIASING
-	uint64_t r;
-	memcpy(&r, &MAVLINK_PAYLOAD(msg)[wire_offset], sizeof(r));
-	return r;
 #else
-	MAVLINK_ASSERT((((intptr_t)(&MAVLINK_PAYLOAD(msg)[wire_offset]))&7)==0);
-	return *(uint64_t *)(&MAVLINK_PAYLOAD(msg)[wire_offset]);
+	return msg->payload.u64[wire_offset/8];
 #endif
 }
-#endif
 
-#ifndef MAVLINK_MSG_RETURN_int64_t
-#define MAVLINK_MSG_RETURN_int64_t(msg, wire_offset) (int64_t)MAVLINK_MSG_RETURN_uint64_t(msg, wire_offset)
+static inline int64_t MAVLINK_MSG_RETURN_int64_t(const mavlink_message_t *msg, uint8_t wire_offset)
+{
+#if MAVLINK_NEED_BYTE_SWAP
+	return (int64_t)MAVLINK_MSG_RETURN_uint64_t(msg, wire_offset);
+#else
+	return msg->payload.i64[wire_offset/8];
 #endif
+}
 
-#ifndef MAVLINK_MSG_RETURN_float
 static inline float MAVLINK_MSG_RETURN_float(const mavlink_message_t *msg, uint8_t wire_offset)
 {
 #if MAVLINK_NEED_BYTE_SWAP
 	generic_32bit r;
-	r.b[3] = MAVLINK_PAYLOAD(msg)[wire_offset+0];
-	r.b[2] = MAVLINK_PAYLOAD(msg)[wire_offset+1];
-	r.b[1] = MAVLINK_PAYLOAD(msg)[wire_offset+2];
-	r.b[0] = MAVLINK_PAYLOAD(msg)[wire_offset+3];
+	r.b[3] = msg->payload.u8[wire_offset+0];
+	r.b[2] = msg->payload.u8[wire_offset+1];
+	r.b[1] = msg->payload.u8[wire_offset+2];
+	r.b[0] = msg->payload.u8[wire_offset+3];
 	return r.f;
-#elif MAVLINK_STRICT_ALIASING
-	float r;
-	memcpy(&r, &MAVLINK_PAYLOAD(msg)[wire_offset], sizeof(r));
-	return r;
 #else
-	return *(float *)(&MAVLINK_PAYLOAD(msg)[wire_offset]);
+	return msg->payload.f[wire_offset/4];
 #endif
 }
-#endif
 
-#ifndef MAVLINK_MSG_RETURN_double
-static inline float MAVLINK_MSG_RETURN_double(const mavlink_message_t *msg, uint8_t wire_offset)
+static inline double MAVLINK_MSG_RETURN_double(const mavlink_message_t *msg, uint8_t wire_offset)
 {
 #if MAVLINK_NEED_BYTE_SWAP
 	generic_64bit r;
-	r.b[7] = MAVLINK_PAYLOAD(msg)[wire_offset+0];
-	r.b[6] = MAVLINK_PAYLOAD(msg)[wire_offset+1];
-	r.b[5] = MAVLINK_PAYLOAD(msg)[wire_offset+2];
-	r.b[4] = MAVLINK_PAYLOAD(msg)[wire_offset+3];
-	r.b[3] = MAVLINK_PAYLOAD(msg)[wire_offset+4];
-	r.b[2] = MAVLINK_PAYLOAD(msg)[wire_offset+5];
-	r.b[1] = MAVLINK_PAYLOAD(msg)[wire_offset+6];
-	r.b[0] = MAVLINK_PAYLOAD(msg)[wire_offset+7];
+	r.b[7] = msg->payload.u8[wire_offset+0];
+	r.b[6] = msg->payload.u8[wire_offset+1];
+	r.b[5] = msg->payload.u8[wire_offset+2];
+	r.b[4] = msg->payload.u8[wire_offset+3];
+	r.b[3] = msg->payload.u8[wire_offset+4];
+	r.b[2] = msg->payload.u8[wire_offset+5];
+	r.b[1] = msg->payload.u8[wire_offset+6];
+	r.b[0] = msg->payload.u8[wire_offset+7];
 	return r.d;
-#elif MAVLINK_STRICT_ALIASING
-	double r;
-	memcpy(&r, &MAVLINK_PAYLOAD(msg)[wire_offset], sizeof(r));
-	return r;
 #else
-	return *(double *)(&MAVLINK_PAYLOAD(msg)[wire_offset]);
+	return msg->payload.d[wire_offset/8];
 #endif
 }
-#endif
+
 
 static inline uint16_t MAVLINK_MSG_RETURN_char_array(const mavlink_message_t *msg, char *value, 
 						     uint8_t array_length, uint8_t wire_offset)
 {
-	memcpy(value, &MAVLINK_PAYLOAD(msg)[wire_offset], array_length);
+	memcpy(value, &msg->payload.c[wire_offset], array_length);
 	return array_length;
 }
 
 static inline uint16_t MAVLINK_MSG_RETURN_uint8_t_array(const mavlink_message_t *msg, uint8_t *value, 
 							uint8_t array_length, uint8_t wire_offset)
 {
-	memcpy(value, &MAVLINK_PAYLOAD(msg)[wire_offset], array_length);
+	memcpy(value, &msg->payload.u8[wire_offset], array_length);
 	return array_length;
 }
 
 static inline uint16_t MAVLINK_MSG_RETURN_int8_t_array(const mavlink_message_t *msg, int8_t *value, 
 						       uint8_t array_length, uint8_t wire_offset)
 {
-	memcpy(value, &MAVLINK_PAYLOAD(msg)[wire_offset], array_length);
+	memcpy(value, &msg->payload.i8[wire_offset], array_length);
 	return array_length;
 }
 
@@ -462,36 +484,33 @@ static inline uint16_t MAVLINK_MSG_RETURN_## TYPE ##_array(const mavlink_message
 	return array_length*sizeof(value[0]); \
 }
 #else
-#define RETURN_ARRAY_BY_INDEX(TYPE) \
+#define RETURN_ARRAY_BY_INDEX(TYPE, V)					\
 static inline uint16_t MAVLINK_MSG_RETURN_## TYPE ##_array(const mavlink_message_t *msg, TYPE *value, \
 							 uint8_t array_length, uint8_t wire_offset) \
 { \
-	memcpy(value, &MAVLINK_PAYLOAD(msg)[wire_offset], array_length*sizeof(value[0])); \
+	memcpy(value, &msg->payload.V[wire_offset/sizeof(TYPE)], array_length*sizeof(TYPE)); \
 	return array_length*sizeof(value[0]); \
 }
 #endif
 
-RETURN_ARRAY_BY_INDEX(uint16_t)
-RETURN_ARRAY_BY_INDEX(uint32_t)
-RETURN_ARRAY_BY_INDEX(uint64_t)
-RETURN_ARRAY_BY_INDEX(int16_t)
-RETURN_ARRAY_BY_INDEX(int32_t)
-RETURN_ARRAY_BY_INDEX(int64_t)
-RETURN_ARRAY_BY_INDEX(float)
-RETURN_ARRAY_BY_INDEX(double)
+RETURN_ARRAY_BY_INDEX(uint16_t, u16)
+RETURN_ARRAY_BY_INDEX(uint32_t, u32)
+RETURN_ARRAY_BY_INDEX(uint64_t, u64)
+RETURN_ARRAY_BY_INDEX(int16_t,  i16)
+RETURN_ARRAY_BY_INDEX(int32_t,  i32)
+RETURN_ARRAY_BY_INDEX(int64_t,  i64)
+RETURN_ARRAY_BY_INDEX(float,    f)
+RETURN_ARRAY_BY_INDEX(double,   d)
 
+#if MAVLINK_STACK_BUFFER == 1
 /*
-  this rather strange macro creates a mavlink_message_t structure on
-  the stack, with the payload aligned on whatever boundary this
-  machine needs for accessing a uint64_t.
-
-  If you are on a microcontroller where you want to minimise stack
-  usage on send() then defining MAVLINK_STRICT_ALIASING to 0 will mean
-  that _send() functions use much less stack, but will violate the
-  strict aliasing rules of the C/C++ standard. This should be OK on
-  microcontrollers.
+  we need to be able to declare a mavlink_message_t on the stack for
+  _send() calls. This can either be done by declaring a whole message,
+  or by declaring a buffer of just the right size for this specific
+  message type, and casting a mavlink_message_t structure to it. Using
+  the cast is a violation of the strict aliasing rules for C, so only
+  use it if you know its OK for your architecture  
  */
-#if MAVLINK_STRICT_ALIASING == 0
 #define MAVLINK_ALIGNED_MESSAGE(msg, length) \
 union { \
        uint64_t _uint64; \
@@ -502,6 +521,6 @@ mavlink_message_t *msg = (mavlink_message_t *)&_buffer._buf[0]
 #define MAVLINK_ALIGNED_MESSAGE(msg, length) \
 	mavlink_message_t _msg;	\
 	mavlink_message_t *msg = &_msg
-#endif // MAVLINK_STRICT_ALIASING
+#endif // MAVLINK_STACK_BUFFER
 
 #endif // _MAVLINK_PROTOCOL_H_
