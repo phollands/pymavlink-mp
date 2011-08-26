@@ -25,9 +25,9 @@ static inline uint16_t mavlink_msg_ualberta_sys_status_pack(uint8_t system_id, u
 {
 	msg->msgid = MAVLINK_MSG_ID_UALBERTA_SYS_STATUS;
 
-	put_uint8_t_by_index(mode, 0,  msg->payload); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
-	put_uint8_t_by_index(nav_mode, 1,  msg->payload); // Navigation mode, see UALBERTA_NAV_MODE ENUM
-	put_uint8_t_by_index(pilot, 2,  msg->payload); // Pilot mode, see UALBERTA_PILOT_MODE
+	put_uint8_t_by_index(mode, 0,  MAVLINK_PAYLOAD(msg)); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
+	put_uint8_t_by_index(nav_mode, 1,  MAVLINK_PAYLOAD(msg)); // Navigation mode, see UALBERTA_NAV_MODE ENUM
+	put_uint8_t_by_index(pilot, 2,  MAVLINK_PAYLOAD(msg)); // Pilot mode, see UALBERTA_PILOT_MODE
 
 	return mavlink_finalize_message(msg, system_id, component_id, 3, 104);
 }
@@ -49,9 +49,9 @@ static inline uint16_t mavlink_msg_ualberta_sys_status_pack_chan(uint8_t system_
 {
 	msg->msgid = MAVLINK_MSG_ID_UALBERTA_SYS_STATUS;
 
-	put_uint8_t_by_index(mode, 0,  msg->payload); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
-	put_uint8_t_by_index(nav_mode, 1,  msg->payload); // Navigation mode, see UALBERTA_NAV_MODE ENUM
-	put_uint8_t_by_index(pilot, 2,  msg->payload); // Pilot mode, see UALBERTA_PILOT_MODE
+	put_uint8_t_by_index(mode, 0,  MAVLINK_PAYLOAD(msg)); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
+	put_uint8_t_by_index(nav_mode, 1,  MAVLINK_PAYLOAD(msg)); // Navigation mode, see UALBERTA_NAV_MODE ENUM
+	put_uint8_t_by_index(pilot, 2,  MAVLINK_PAYLOAD(msg)); // Pilot mode, see UALBERTA_PILOT_MODE
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 104);
 }
@@ -72,9 +72,9 @@ static inline void mavlink_msg_ualberta_sys_status_pack_chan_send(mavlink_channe
 {
 	msg->msgid = MAVLINK_MSG_ID_UALBERTA_SYS_STATUS;
 
-	put_uint8_t_by_index(mode, 0,  msg->payload); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
-	put_uint8_t_by_index(nav_mode, 1,  msg->payload); // Navigation mode, see UALBERTA_NAV_MODE ENUM
-	put_uint8_t_by_index(pilot, 2,  msg->payload); // Pilot mode, see UALBERTA_PILOT_MODE
+	put_uint8_t_by_index(mode, 0,  MAVLINK_PAYLOAD(msg)); // System mode, see UALBERTA_AUTOPILOT_MODE ENUM
+	put_uint8_t_by_index(nav_mode, 1,  MAVLINK_PAYLOAD(msg)); // Navigation mode, see UALBERTA_NAV_MODE ENUM
+	put_uint8_t_by_index(pilot, 2,  MAVLINK_PAYLOAD(msg)); // Pilot mode, see UALBERTA_PILOT_MODE
 
 	mavlink_finalize_message_chan_send(msg, chan, 3, 104);
 }
@@ -158,6 +158,6 @@ static inline void mavlink_msg_ualberta_sys_status_decode(const mavlink_message_
 	ualberta_sys_status->nav_mode = mavlink_msg_ualberta_sys_status_get_nav_mode(msg);
 	ualberta_sys_status->pilot = mavlink_msg_ualberta_sys_status_get_pilot(msg);
 #else
-	memcpy(ualberta_sys_status, msg->payload, 3);
+	memcpy(ualberta_sys_status, MAVLINK_PAYLOAD(msg), 3);
 #endif
 }

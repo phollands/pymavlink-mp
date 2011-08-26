@@ -27,10 +27,10 @@ static inline uint16_t mavlink_msg_watchdog_command_pack(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_COMMAND;
 
-	put_uint8_t_by_index(target_system_id, 0,  msg->payload); // Target system ID
-	put_uint16_t_by_index(watchdog_id, 1,  msg->payload); // Watchdog ID
-	put_uint16_t_by_index(process_id, 3,  msg->payload); // Process ID
-	put_uint8_t_by_index(command_id, 5,  msg->payload); // Command ID
+	put_uint8_t_by_index(target_system_id, 0,  MAVLINK_PAYLOAD(msg)); // Target system ID
+	put_uint16_t_by_index(watchdog_id, 1,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
+	put_uint16_t_by_index(process_id, 3,  MAVLINK_PAYLOAD(msg)); // Process ID
+	put_uint8_t_by_index(command_id, 5,  MAVLINK_PAYLOAD(msg)); // Command ID
 
 	return mavlink_finalize_message(msg, system_id, component_id, 6, 92);
 }
@@ -53,10 +53,10 @@ static inline uint16_t mavlink_msg_watchdog_command_pack_chan(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_COMMAND;
 
-	put_uint8_t_by_index(target_system_id, 0,  msg->payload); // Target system ID
-	put_uint16_t_by_index(watchdog_id, 1,  msg->payload); // Watchdog ID
-	put_uint16_t_by_index(process_id, 3,  msg->payload); // Process ID
-	put_uint8_t_by_index(command_id, 5,  msg->payload); // Command ID
+	put_uint8_t_by_index(target_system_id, 0,  MAVLINK_PAYLOAD(msg)); // Target system ID
+	put_uint16_t_by_index(watchdog_id, 1,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
+	put_uint16_t_by_index(process_id, 3,  MAVLINK_PAYLOAD(msg)); // Process ID
+	put_uint8_t_by_index(command_id, 5,  MAVLINK_PAYLOAD(msg)); // Command ID
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6, 92);
 }
@@ -78,10 +78,10 @@ static inline void mavlink_msg_watchdog_command_pack_chan_send(mavlink_channel_t
 {
 	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_COMMAND;
 
-	put_uint8_t_by_index(target_system_id, 0,  msg->payload); // Target system ID
-	put_uint16_t_by_index(watchdog_id, 1,  msg->payload); // Watchdog ID
-	put_uint16_t_by_index(process_id, 3,  msg->payload); // Process ID
-	put_uint8_t_by_index(command_id, 5,  msg->payload); // Command ID
+	put_uint8_t_by_index(target_system_id, 0,  MAVLINK_PAYLOAD(msg)); // Target system ID
+	put_uint16_t_by_index(watchdog_id, 1,  MAVLINK_PAYLOAD(msg)); // Watchdog ID
+	put_uint16_t_by_index(process_id, 3,  MAVLINK_PAYLOAD(msg)); // Process ID
+	put_uint8_t_by_index(command_id, 5,  MAVLINK_PAYLOAD(msg)); // Command ID
 
 	mavlink_finalize_message_chan_send(msg, chan, 6, 92);
 }
@@ -177,6 +177,6 @@ static inline void mavlink_msg_watchdog_command_decode(const mavlink_message_t* 
 	watchdog_command->process_id = mavlink_msg_watchdog_command_get_process_id(msg);
 	watchdog_command->command_id = mavlink_msg_watchdog_command_get_command_id(msg);
 #else
-	memcpy(watchdog_command, msg->payload, 6);
+	memcpy(watchdog_command, MAVLINK_PAYLOAD(msg), 6);
 #endif
 }

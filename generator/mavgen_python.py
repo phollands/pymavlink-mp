@@ -148,6 +148,7 @@ def mavfmt(field):
     '''work out the struct format for a type'''
     map = {
         'float'    : 'f',
+        'double'   : 'd',
         'char'     : 'c',
         'int8_t'   : 'b',
         'uint8_t'  : 'B',

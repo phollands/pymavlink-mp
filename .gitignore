@@ -7,7 +7,6 @@ generator/C/include/pixhawk
 generator/C/include/minimal
 generator/C/include/ualberta
 generator/C/include/slugs
-
-
-
+testmav0.9*
+testmav1.0*
 

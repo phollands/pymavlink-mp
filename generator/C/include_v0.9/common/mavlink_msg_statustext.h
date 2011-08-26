@@ -19,12 +19,12 @@ typedef struct __mavlink_statustext_t
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_statustext_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       uint8_t severity, const int8_t text[50])
+						       uint8_t severity, const int8_t *text)
 {
 	msg->msgid = MAVLINK_MSG_ID_STATUSTEXT;
 
-	put_uint8_t_by_index(severity, 0,  msg->payload); // Severity of status, 0 = info message, 255 = critical fault
-	put_int8_t_array_by_index(text, 1, 50,  msg->payload); // Status text message, without null termination character
+	put_uint8_t_by_index(severity, 0,  MAVLINK_PAYLOAD(msg)); // Severity of status, 0 = info message, 255 = critical fault
+	put_int8_t_array_by_index(text, 1, 50,  MAVLINK_PAYLOAD(msg)); // Status text message, without null termination character
 
 	return mavlink_finalize_message(msg, system_id, component_id, 51, 88);
 }
@@ -41,12 +41,12 @@ static inline uint16_t mavlink_msg_statustext_pack(uint8_t system_id, uint8_t co
  */
 static inline uint16_t mavlink_msg_statustext_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           uint8_t severity,const int8_t text[50])
+						           uint8_t severity,const int8_t *text)
 {
 	msg->msgid = MAVLINK_MSG_ID_STATUSTEXT;
 
-	put_uint8_t_by_index(severity, 0,  msg->payload); // Severity of status, 0 = info message, 255 = critical fault
-	put_int8_t_array_by_index(text, 1, 50,  msg->payload); // Status text message, without null termination character
+	put_uint8_t_by_index(severity, 0,  MAVLINK_PAYLOAD(msg)); // Severity of status, 0 = info message, 255 = critical fault
+	put_int8_t_array_by_index(text, 1, 50,  MAVLINK_PAYLOAD(msg)); // Status text message, without null termination character
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 51, 88);
 }
@@ -62,12 +62,12 @@ static inline uint16_t mavlink_msg_statustext_pack_chan(uint8_t system_id, uint8
  */
 static inline void mavlink_msg_statustext_pack_chan_send(mavlink_channel_t chan,
 							   mavlink_message_t* msg,
-						           uint8_t severity,const int8_t text[50])
+						           uint8_t severity,const int8_t *text)
 {
 	msg->msgid = MAVLINK_MSG_ID_STATUSTEXT;
 
-	put_uint8_t_by_index(severity, 0,  msg->payload); // Severity of status, 0 = info message, 255 = critical fault
-	put_int8_t_array_by_index(text, 1, 50,  msg->payload); // Status text message, without null termination character
+	put_uint8_t_by_index(severity, 0,  MAVLINK_PAYLOAD(msg)); // Severity of status, 0 = info message, 255 = critical fault
+	put_int8_t_array_by_index(text, 1, 50,  MAVLINK_PAYLOAD(msg)); // Status text message, without null termination character
 
 	mavlink_finalize_message_chan_send(msg, chan, 51, 88);
 }
@@ -96,7 +96,7 @@ static inline uint16_t mavlink_msg_statustext_encode(uint8_t system_id, uint8_t 
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_statustext_send(mavlink_channel_t chan, uint8_t severity, const int8_t text[50])
+static inline void mavlink_msg_statustext_send(mavlink_channel_t chan, uint8_t severity, const int8_t *text)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 51);
 	mavlink_msg_statustext_pack_chan_send(chan, msg, severity, text);
@@ -139,6 +139,6 @@ static inline void mavlink_msg_statustext_decode(const mavlink_message_t* msg, m
 	statustext->severity = mavlink_msg_statustext_get_severity(msg);
 	mavlink_msg_statustext_get_text(msg, statustext->text);
 #else
-	memcpy(statustext, msg->payload, 51);
+	memcpy(statustext, MAVLINK_PAYLOAD(msg), 51);
 #endif
 }

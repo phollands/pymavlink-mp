@@ -25,8 +25,10 @@ class MAVField(object):
         self.description = description
         self.array_length = None
         self.omit_arg = False
+        self.const_value = None
         lengths = {
         'float'    : 4,
+        'double'   : 8,
         'char'     : 1,
         'int8_t'   : 1,
         'uint8_t'  : 1,
@@ -64,28 +66,40 @@ class MAVField(object):
         else:
             self.wire_length = self.type_length
 
-    def set_test_value(self):
-        '''set a testsuite value for a MAVField'''
-        if self.type == 'float':
-            self.test_value = 17.0 + self.wire_offset*7
+    def gen_test_value(self, i):
+        '''generate a testsuite value for a MAVField'''
+        if self.const_value:
+            return self.const_value
+        elif self.type == 'float':
+            return 17.0 + self.wire_offset*7 + i
+        elif self.type == 'double':
+            return 123.0 + self.wire_offset*7 + i
         elif self.type == 'char':
-            if self.array_length:
-                self.test_value = ''
-                for i in range(self.array_length):
-                    self.test_value += chr(ord('A') + (i*17*(self.wire_offset+1)) % 26)
-            else:
-                self.test_value = chr(ord('A') + self.wire_offset)
+            return chr(ord('A') + (self.wire_offset + i)%26)
         elif self.type in [ 'int8_t', 'uint8_t' ]:
-            self.test_value = (5 + self.wire_offset*67) & 0xFF
+            return (5 + self.wire_offset*67 + i) & 0xFF
         elif self.type in ['int16_t', 'uint16_t']:
-            self.test_value = (17235 + self.wire_offset*52) & 0xFFFF
+            return (17235 + self.wire_offset*52 + i) & 0xFFFF
         elif self.type in ['int32_t', 'uint32_t']:
-            self.test_value = (963497464 + self.wire_offset*52)&0xFFFFFFFF
+            return (963497464 + self.wire_offset*52 + i)&0xFFFFFFFF
         elif self.type in ['int64_t', 'uint64_t']:
-            self.test_value = 9223372036854775807 + self.wire_offset*63
+            return 93372036854775807 + self.wire_offset*63 + i
         else:
             raise MAVError('unknown type %s' % self.type)
 
+    def set_test_value(self):
+        '''set a testsuite value for a MAVField'''
+        if self.array_length:
+            self.test_value = []
+            for i in range(self.array_length):
+                self.test_value.append(self.gen_test_value(i))
+        else:
+                self.test_value = self.gen_test_value(0)
+        if self.type == 'char' and self.array_length:
+            v = ""
+            for c in self.test_value:
+                v += c
+            self.test_value = v[:-1]
 
 
 class MAVType(object):

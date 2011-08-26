@@ -59,18 +59,20 @@ extern "C" {
 
 // MESSAGE LENGTHS AND CRCS
 
-#undef MAVLINK_MESSAGE_LENGTHS
+#ifndef MAVLINK_MESSAGE_LENGTHS
 #define MAVLINK_MESSAGE_LENGTHS {${message_lengths_array}}
+#endif
 
-#undef MAVLINK_MESSAGE_CRCS
+#ifndef MAVLINK_MESSAGE_CRCS
 #define MAVLINK_MESSAGE_CRCS {${message_crcs_array}}
-    
+#endif
 
 #include "../protocol.h"
 
 #define MAVLINK_ENABLED_${basename_upper}
 
-${include_headers}
+${{include_list:#include "../${base}/${base}.h"
+}}
 
 // MAVLINK VERSION
 
@@ -132,11 +134,11 @@ ${{arg_fields: * @param ${name} ${description}
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_${name_lower}_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						      ${{arg_fields: ${array_const}${type} ${name}${array_suffix},}})
+						      ${{arg_fields: ${array_const}${type} ${array_prefix}${name},}})
 {
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
+${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} MAVLINK_PAYLOAD(msg)); // ${description}
 }}
 
 	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length}, ${crc_extra});
@@ -154,11 +156,11 @@ ${{arg_fields: * @param ${name} ${description}
  */
 static inline uint16_t mavlink_msg_${name_lower}_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           ${{arg_fields:${array_const}${type} ${name}${array_suffix},}})
+						           ${{arg_fields:${array_const}${type} ${array_prefix}${name},}})
 {
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
+${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} MAVLINK_PAYLOAD(msg)); // ${description}
 }}
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length}, ${crc_extra});
@@ -175,11 +177,11 @@ ${{arg_fields: * @param ${name} ${description}
  */
 static inline void mavlink_msg_${name_lower}_pack_chan_send(mavlink_channel_t chan,
 							   mavlink_message_t* msg,
-						           ${{arg_fields:${array_const}${type} ${name}${array_suffix},}})
+						           ${{arg_fields:${array_const}${type} ${array_prefix}${name},}})
 {
 	msg->msgid = MAVLINK_MSG_ID_${name};
 
-${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} msg->payload); // ${description}
+${{ordered_fields:	put_${type}${array_tag}_by_index(${putname}, ${wire_offset}, ${array_arg} MAVLINK_PAYLOAD(msg)); // ${description}
 }}
 
 	mavlink_finalize_message_chan_send(msg, chan, ${wire_length}, ${crc_extra});
@@ -209,7 +211,7 @@ ${{arg_fields: * @param ${name} ${description}
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_${name_lower}_send(mavlink_channel_t chan,${{arg_fields: ${array_const}${type} ${name}${array_suffix},}})
+static inline void mavlink_msg_${name_lower}_send(mavlink_channel_t chan,${{arg_fields: ${array_const}${type} ${array_prefix}${name},}})
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, ${wire_length});
 	mavlink_msg_${name_lower}_pack_chan_send(chan, msg,${{arg_fields: ${name},}});
@@ -243,7 +245,7 @@ static inline void mavlink_msg_${name_lower}_decode(const mavlink_message_t* msg
 ${{ordered_fields:	${decode_left}mavlink_msg_${name_lower}_get_${name}(msg${decode_right});
 }}
 #else
-	memcpy(${name_lower}, msg->payload, ${wire_length});
+	memcpy(${name_lower}, MAVLINK_PAYLOAD(msg), ${wire_length});
 #endif
 }
 ''', m)
@@ -252,7 +254,7 @@ ${{ordered_fields:	${decode_left}mavlink_msg_${name_lower}_get_${name}(msg${deco
 
 def generate_testsuite_h(directory, xml):
     '''generate testsuite.h per XML file'''
-    f = open(os.path.join(directory, xml.basename + "_testsuite.h"), mode='w')
+    f = open(os.path.join(directory, "testsuite.h"), mode='w')
     t.write(f, '''
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ${basename}.xml
@@ -266,9 +268,52 @@ def generate_testsuite_h(directory, xml):
 extern "C" {
 #endif
 
-static void mavtest_generate_outputs(mavlink_channel_t chan)
+#ifndef MAVLINK_TEST_ALL
+#define MAVLINK_TEST_ALL
+${{include_list:static void mavlink_test_${base}(uint8_t, uint8_t);
+}}
+static void mavlink_test_${basename}(uint8_t, uint8_t);
+
+static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
 {
-${{message:	mavlink_msg_${name_lower}_send(chan ${{arg_fields:, ${c_test_value} }});
+${{include_list:	mavlink_test_${base}(system_id, component_id);
+}}
+	mavlink_test_${basename}(system_id, component_id);
+}
+#endif
+
+${{include_list:#include "../${base}/testsuite.h"
+}}
+
+${{message:
+static void mavlink_test_${name_lower}(uint8_t system_id, uint8_t component_id)
+{
+	mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t i;
+	mavlink_${name_lower}_t packet2, packet1 = {
+		${{ordered_fields:${c_test_value},
+	}}};
+	if (sizeof(packet2) != ${wire_length}) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
+	mavlink_msg_${name_lower}_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_${name_lower}_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+	mavlink_msg_${name_lower}_pack(system_id, component_id, &msg ${{arg_fields:, packet1.${name} }});
+	mavlink_msg_${name_lower}_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg ${{arg_fields:, packet1.${name} }});
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+        	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+	mavlink_msg_${name_lower}_pack_chan_send(MAVLINK_COMM_1, &msg ${{arg_fields:, packet1.${name} }});
+	mavlink_msg_${name_lower}_send(MAVLINK_COMM_2 ${{arg_fields:, packet1.${name} }});
+}
+}}
+
+static void mavlink_test_${basename}(uint8_t system_id, uint8_t component_id)
+{
+${{message:	mavlink_test_${name_lower}(system_id, component_id);
 }}
 }
 
@@ -280,6 +325,10 @@ ${{message:	mavlink_msg_${name_lower}_send(chan ${{arg_fields:, ${c_test_value} 
 
     f.close()
 
+
+class mav_include(object):
+    def __init__(self, base):
+        self.base = base
 
 def generate_one(basename, xml):
     '''generate headers for one XML file'''
@@ -300,10 +349,10 @@ def generate_one(basename, xml):
         xml.crc_extra_define = "0"
 
     # work out the included headers
-    xml.include_headers = ''
+    xml.include_list = []
     for i in xml.include:
         base = i[:-4]
-        xml.include_headers += '#include "../%s/%s.h"\n' % (base, base)
+        xml.include_list.append(mav_include(base))
 
     # form message lengths array
     xml.message_lengths_array = ''
@@ -322,6 +371,7 @@ def generate_one(basename, xml):
         for f in m.fields:
             if f.array_length is not None:
                 f.array_suffix = '[%u]' % f.array_length
+                f.array_prefix = '*'
                 f.array_tag = '_array'
                 f.array_arg = '%u, ' % f.array_length
                 f.array_return_arg = '%s, %u, ' % (f.name, f.array_length)
@@ -330,9 +380,16 @@ def generate_one(basename, xml):
                 f.decode_right = ', %s->%s' % (m.name_lower, f.name)
                 f.return_type = 'uint16_t'
                 f.get_arg = ', %s *%s' % (f.type, f.name)
-                f.c_test_value = '"%s"' % f.test_value
+                if f.type == 'char':
+                    f.c_test_value = '"%s"' % f.test_value
+                else:
+                    test_strings = []
+                    for v in f.test_value:
+                        test_strings.append(str(v))
+                    f.c_test_value = '{ %s }' % ', '.join(test_strings)
             else:
                 f.array_suffix = ''
+                f.array_prefix = ''
                 f.array_tag = ''
                 f.array_arg = ''
                 f.array_return_arg = ''
@@ -343,6 +400,10 @@ def generate_one(basename, xml):
                 f.return_type = f.type
                 if f.type == 'char':
                     f.c_test_value = "'%s'" % f.test_value
+                elif f.type == 'uint64_t':
+                    f.c_test_value = "%sULL" % f.test_value                    
+                elif f.type == 'int64_t':
+                    f.c_test_value = "%sLL" % f.test_value                    
                 else:
                     f.c_test_value = f.test_value
 

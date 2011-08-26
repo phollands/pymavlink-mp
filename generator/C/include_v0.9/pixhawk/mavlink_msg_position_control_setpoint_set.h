@@ -33,13 +33,13 @@ static inline uint16_t mavlink_msg_position_control_setpoint_set_pack(uint8_t sy
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_CONTROL_SETPOINT_SET;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_uint16_t_by_index(id, 2,  msg->payload); // ID of waypoint, 0 for plain position
-	put_float_by_index(x, 4,  msg->payload); // x position
-	put_float_by_index(y, 8,  msg->payload); // y position
-	put_float_by_index(z, 12,  msg->payload); // z position
-	put_float_by_index(yaw, 16,  msg->payload); // yaw orientation in radians, 0 = NORTH
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_uint16_t_by_index(id, 2,  MAVLINK_PAYLOAD(msg)); // ID of waypoint, 0 for plain position
+	put_float_by_index(x, 4,  MAVLINK_PAYLOAD(msg)); // x position
+	put_float_by_index(y, 8,  MAVLINK_PAYLOAD(msg)); // y position
+	put_float_by_index(z, 12,  MAVLINK_PAYLOAD(msg)); // z position
+	put_float_by_index(yaw, 16,  MAVLINK_PAYLOAD(msg)); // yaw orientation in radians, 0 = NORTH
 
 	return mavlink_finalize_message(msg, system_id, component_id, 20, 166);
 }
@@ -65,13 +65,13 @@ static inline uint16_t mavlink_msg_position_control_setpoint_set_pack_chan(uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_CONTROL_SETPOINT_SET;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_uint16_t_by_index(id, 2,  msg->payload); // ID of waypoint, 0 for plain position
-	put_float_by_index(x, 4,  msg->payload); // x position
-	put_float_by_index(y, 8,  msg->payload); // y position
-	put_float_by_index(z, 12,  msg->payload); // z position
-	put_float_by_index(yaw, 16,  msg->payload); // yaw orientation in radians, 0 = NORTH
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_uint16_t_by_index(id, 2,  MAVLINK_PAYLOAD(msg)); // ID of waypoint, 0 for plain position
+	put_float_by_index(x, 4,  MAVLINK_PAYLOAD(msg)); // x position
+	put_float_by_index(y, 8,  MAVLINK_PAYLOAD(msg)); // y position
+	put_float_by_index(z, 12,  MAVLINK_PAYLOAD(msg)); // z position
+	put_float_by_index(yaw, 16,  MAVLINK_PAYLOAD(msg)); // yaw orientation in radians, 0 = NORTH
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 166);
 }
@@ -96,13 +96,13 @@ static inline void mavlink_msg_position_control_setpoint_set_pack_chan_send(mavl
 {
 	msg->msgid = MAVLINK_MSG_ID_POSITION_CONTROL_SETPOINT_SET;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_uint16_t_by_index(id, 2,  msg->payload); // ID of waypoint, 0 for plain position
-	put_float_by_index(x, 4,  msg->payload); // x position
-	put_float_by_index(y, 8,  msg->payload); // y position
-	put_float_by_index(z, 12,  msg->payload); // z position
-	put_float_by_index(yaw, 16,  msg->payload); // yaw orientation in radians, 0 = NORTH
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_uint16_t_by_index(id, 2,  MAVLINK_PAYLOAD(msg)); // ID of waypoint, 0 for plain position
+	put_float_by_index(x, 4,  MAVLINK_PAYLOAD(msg)); // x position
+	put_float_by_index(y, 8,  MAVLINK_PAYLOAD(msg)); // y position
+	put_float_by_index(z, 12,  MAVLINK_PAYLOAD(msg)); // z position
+	put_float_by_index(yaw, 16,  MAVLINK_PAYLOAD(msg)); // yaw orientation in radians, 0 = NORTH
 
 	mavlink_finalize_message_chan_send(msg, chan, 20, 166);
 }
@@ -234,6 +234,6 @@ static inline void mavlink_msg_position_control_setpoint_set_decode(const mavlin
 	position_control_setpoint_set->z = mavlink_msg_position_control_setpoint_set_get_z(msg);
 	position_control_setpoint_set->yaw = mavlink_msg_position_control_setpoint_set_get_yaw(msg);
 #else
-	memcpy(position_control_setpoint_set, msg->payload, 20);
+	memcpy(position_control_setpoint_set, MAVLINK_PAYLOAD(msg), 20);
 #endif
 }

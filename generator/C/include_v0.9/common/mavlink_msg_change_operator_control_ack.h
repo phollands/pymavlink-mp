@@ -25,9 +25,9 @@ static inline uint16_t mavlink_msg_change_operator_control_ack_pack(uint8_t syst
 {
 	msg->msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
 
-	put_uint8_t_by_index(gcs_system_id, 0,  msg->payload); // ID of the GCS this message 
-	put_uint8_t_by_index(control_request, 1,  msg->payload); // 0: request control of this MAV, 1: Release control of this MAV
-	put_uint8_t_by_index(ack, 2,  msg->payload); // 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK: Already under control
+	put_uint8_t_by_index(gcs_system_id, 0,  MAVLINK_PAYLOAD(msg)); // ID of the GCS this message 
+	put_uint8_t_by_index(control_request, 1,  MAVLINK_PAYLOAD(msg)); // 0: request control of this MAV, 1: Release control of this MAV
+	put_uint8_t_by_index(ack, 2,  MAVLINK_PAYLOAD(msg)); // 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK: Already under control
 
 	return mavlink_finalize_message(msg, system_id, component_id, 3, 129);
 }
@@ -49,9 +49,9 @@ static inline uint16_t mavlink_msg_change_operator_control_ack_pack_chan(uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
 
-	put_uint8_t_by_index(gcs_system_id, 0,  msg->payload); // ID of the GCS this message 
-	put_uint8_t_by_index(control_request, 1,  msg->payload); // 0: request control of this MAV, 1: Release control of this MAV
-	put_uint8_t_by_index(ack, 2,  msg->payload); // 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK: Already under control
+	put_uint8_t_by_index(gcs_system_id, 0,  MAVLINK_PAYLOAD(msg)); // ID of the GCS this message 
+	put_uint8_t_by_index(control_request, 1,  MAVLINK_PAYLOAD(msg)); // 0: request control of this MAV, 1: Release control of this MAV
+	put_uint8_t_by_index(ack, 2,  MAVLINK_PAYLOAD(msg)); // 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK: Already under control
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 129);
 }
@@ -72,9 +72,9 @@ static inline void mavlink_msg_change_operator_control_ack_pack_chan_send(mavlin
 {
 	msg->msgid = MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK;
 
-	put_uint8_t_by_index(gcs_system_id, 0,  msg->payload); // ID of the GCS this message 
-	put_uint8_t_by_index(control_request, 1,  msg->payload); // 0: request control of this MAV, 1: Release control of this MAV
-	put_uint8_t_by_index(ack, 2,  msg->payload); // 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK: Already under control
+	put_uint8_t_by_index(gcs_system_id, 0,  MAVLINK_PAYLOAD(msg)); // ID of the GCS this message 
+	put_uint8_t_by_index(control_request, 1,  MAVLINK_PAYLOAD(msg)); // 0: request control of this MAV, 1: Release control of this MAV
+	put_uint8_t_by_index(ack, 2,  MAVLINK_PAYLOAD(msg)); // 0: ACK, 1: NACK: Wrong passkey, 2: NACK: Unsupported passkey encryption method, 3: NACK: Already under control
 
 	mavlink_finalize_message_chan_send(msg, chan, 3, 129);
 }
@@ -158,6 +158,6 @@ static inline void mavlink_msg_change_operator_control_ack_decode(const mavlink_
 	change_operator_control_ack->control_request = mavlink_msg_change_operator_control_ack_get_control_request(msg);
 	change_operator_control_ack->ack = mavlink_msg_change_operator_control_ack_get_ack(msg);
 #else
-	memcpy(change_operator_control_ack, msg->payload, 3);
+	memcpy(change_operator_control_ack, MAVLINK_PAYLOAD(msg), 3);
 #endif
 }

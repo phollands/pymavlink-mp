@@ -17,11 +17,11 @@ typedef struct __mavlink_auth_key_t
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_auth_key_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       const char key[32])
+						       const char *key)
 {
 	msg->msgid = MAVLINK_MSG_ID_AUTH_KEY;
 
-	put_char_array_by_index(key, 0, 32,  msg->payload); // key
+	put_char_array_by_index(key, 0, 32,  MAVLINK_PAYLOAD(msg)); // key
 
 	return mavlink_finalize_message(msg, system_id, component_id, 32, 181);
 }
@@ -37,11 +37,11 @@ static inline uint16_t mavlink_msg_auth_key_pack(uint8_t system_id, uint8_t comp
  */
 static inline uint16_t mavlink_msg_auth_key_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           const char key[32])
+						           const char *key)
 {
 	msg->msgid = MAVLINK_MSG_ID_AUTH_KEY;
 
-	put_char_array_by_index(key, 0, 32,  msg->payload); // key
+	put_char_array_by_index(key, 0, 32,  MAVLINK_PAYLOAD(msg)); // key
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 181);
 }
@@ -56,11 +56,11 @@ static inline uint16_t mavlink_msg_auth_key_pack_chan(uint8_t system_id, uint8_t
  */
 static inline void mavlink_msg_auth_key_pack_chan_send(mavlink_channel_t chan,
 							   mavlink_message_t* msg,
-						           const char key[32])
+						           const char *key)
 {
 	msg->msgid = MAVLINK_MSG_ID_AUTH_KEY;
 
-	put_char_array_by_index(key, 0, 32,  msg->payload); // key
+	put_char_array_by_index(key, 0, 32,  MAVLINK_PAYLOAD(msg)); // key
 
 	mavlink_finalize_message_chan_send(msg, chan, 32, 181);
 }
@@ -88,7 +88,7 @@ static inline uint16_t mavlink_msg_auth_key_encode(uint8_t system_id, uint8_t co
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_auth_key_send(mavlink_channel_t chan, const char key[32])
+static inline void mavlink_msg_auth_key_send(mavlink_channel_t chan, const char *key)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 32);
 	mavlink_msg_auth_key_pack_chan_send(chan, msg, key);
@@ -120,6 +120,6 @@ static inline void mavlink_msg_auth_key_decode(const mavlink_message_t* msg, mav
 #if MAVLINK_NEED_BYTE_SWAP
 	mavlink_msg_auth_key_get_key(msg, auth_key->key);
 #else
-	memcpy(auth_key, msg->payload, 32);
+	memcpy(auth_key, MAVLINK_PAYLOAD(msg), 32);
 #endif
 }

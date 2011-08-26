@@ -31,12 +31,12 @@ static inline uint16_t mavlink_msg_diagnostic_pack(uint8_t system_id, uint8_t co
 {
 	msg->msgid = MAVLINK_MSG_ID_DIAGNOSTIC;
 
-	put_float_by_index(diagFl1, 0,  msg->payload); // Diagnostic float 1
-	put_float_by_index(diagFl2, 4,  msg->payload); // Diagnostic float 2
-	put_float_by_index(diagFl3, 8,  msg->payload); // Diagnostic float 3
-	put_int16_t_by_index(diagSh1, 12,  msg->payload); // Diagnostic short 1
-	put_int16_t_by_index(diagSh2, 14,  msg->payload); // Diagnostic short 2
-	put_int16_t_by_index(diagSh3, 16,  msg->payload); // Diagnostic short 3
+	put_float_by_index(diagFl1, 0,  MAVLINK_PAYLOAD(msg)); // Diagnostic float 1
+	put_float_by_index(diagFl2, 4,  MAVLINK_PAYLOAD(msg)); // Diagnostic float 2
+	put_float_by_index(diagFl3, 8,  MAVLINK_PAYLOAD(msg)); // Diagnostic float 3
+	put_int16_t_by_index(diagSh1, 12,  MAVLINK_PAYLOAD(msg)); // Diagnostic short 1
+	put_int16_t_by_index(diagSh2, 14,  MAVLINK_PAYLOAD(msg)); // Diagnostic short 2
+	put_int16_t_by_index(diagSh3, 16,  MAVLINK_PAYLOAD(msg)); // Diagnostic short 3
 
 	return mavlink_finalize_message(msg, system_id, component_id, 18, 204);
 }
@@ -61,12 +61,12 @@ static inline uint16_t mavlink_msg_diagnostic_pack_chan(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_DIAGNOSTIC;
 
-	put_float_by_index(diagFl1, 0,  msg->payload); // Diagnostic float 1
-	put_float_by_index(diagFl2, 4,  msg->payload); // Diagnostic float 2
-	put_float_by_index(diagFl3, 8,  msg->payload); // Diagnostic float 3
-	put_int16_t_by_index(diagSh1, 12,  msg->payload); // Diagnostic short 1
-	put_int16_t_by_index(diagSh2, 14,  msg->payload); // Diagnostic short 2
-	put_int16_t_by_index(diagSh3, 16,  msg->payload); // Diagnostic short 3
+	put_float_by_index(diagFl1, 0,  MAVLINK_PAYLOAD(msg)); // Diagnostic float 1
+	put_float_by_index(diagFl2, 4,  MAVLINK_PAYLOAD(msg)); // Diagnostic float 2
+	put_float_by_index(diagFl3, 8,  MAVLINK_PAYLOAD(msg)); // Diagnostic float 3
+	put_int16_t_by_index(diagSh1, 12,  MAVLINK_PAYLOAD(msg)); // Diagnostic short 1
+	put_int16_t_by_index(diagSh2, 14,  MAVLINK_PAYLOAD(msg)); // Diagnostic short 2
+	put_int16_t_by_index(diagSh3, 16,  MAVLINK_PAYLOAD(msg)); // Diagnostic short 3
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 204);
 }
@@ -90,12 +90,12 @@ static inline void mavlink_msg_diagnostic_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_DIAGNOSTIC;
 
-	put_float_by_index(diagFl1, 0,  msg->payload); // Diagnostic float 1
-	put_float_by_index(diagFl2, 4,  msg->payload); // Diagnostic float 2
-	put_float_by_index(diagFl3, 8,  msg->payload); // Diagnostic float 3
-	put_int16_t_by_index(diagSh1, 12,  msg->payload); // Diagnostic short 1
-	put_int16_t_by_index(diagSh2, 14,  msg->payload); // Diagnostic short 2
-	put_int16_t_by_index(diagSh3, 16,  msg->payload); // Diagnostic short 3
+	put_float_by_index(diagFl1, 0,  MAVLINK_PAYLOAD(msg)); // Diagnostic float 1
+	put_float_by_index(diagFl2, 4,  MAVLINK_PAYLOAD(msg)); // Diagnostic float 2
+	put_float_by_index(diagFl3, 8,  MAVLINK_PAYLOAD(msg)); // Diagnostic float 3
+	put_int16_t_by_index(diagSh1, 12,  MAVLINK_PAYLOAD(msg)); // Diagnostic short 1
+	put_int16_t_by_index(diagSh2, 14,  MAVLINK_PAYLOAD(msg)); // Diagnostic short 2
+	put_int16_t_by_index(diagSh3, 16,  MAVLINK_PAYLOAD(msg)); // Diagnostic short 3
 
 	mavlink_finalize_message_chan_send(msg, chan, 18, 204);
 }
@@ -215,6 +215,6 @@ static inline void mavlink_msg_diagnostic_decode(const mavlink_message_t* msg, m
 	diagnostic->diagSh2 = mavlink_msg_diagnostic_get_diagSh2(msg);
 	diagnostic->diagSh3 = mavlink_msg_diagnostic_get_diagSh3(msg);
 #else
-	memcpy(diagnostic, msg->payload, 18);
+	memcpy(diagnostic, MAVLINK_PAYLOAD(msg), 18);
 #endif
 }

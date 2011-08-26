@@ -31,12 +31,12 @@ static inline uint16_t mavlink_msg_global_position_int_pack(uint8_t system_id, u
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
 
-	put_int32_t_by_index(lat, 0,  msg->payload); // Latitude, expressed as * 1E7
-	put_int32_t_by_index(lon, 4,  msg->payload); // Longitude, expressed as * 1E7
-	put_int32_t_by_index(alt, 8,  msg->payload); // Altitude in meters, expressed as * 1000 (millimeters)
-	put_int16_t_by_index(vx, 12,  msg->payload); // Ground X Speed (Latitude), expressed as m/s * 100
-	put_int16_t_by_index(vy, 14,  msg->payload); // Ground Y Speed (Longitude), expressed as m/s * 100
-	put_int16_t_by_index(vz, 16,  msg->payload); // Ground Z Speed (Altitude), expressed as m/s * 100
+	put_int32_t_by_index(lat, 0,  MAVLINK_PAYLOAD(msg)); // Latitude, expressed as * 1E7
+	put_int32_t_by_index(lon, 4,  MAVLINK_PAYLOAD(msg)); // Longitude, expressed as * 1E7
+	put_int32_t_by_index(alt, 8,  MAVLINK_PAYLOAD(msg)); // Altitude in meters, expressed as * 1000 (millimeters)
+	put_int16_t_by_index(vx, 12,  MAVLINK_PAYLOAD(msg)); // Ground X Speed (Latitude), expressed as m/s * 100
+	put_int16_t_by_index(vy, 14,  MAVLINK_PAYLOAD(msg)); // Ground Y Speed (Longitude), expressed as m/s * 100
+	put_int16_t_by_index(vz, 16,  MAVLINK_PAYLOAD(msg)); // Ground Z Speed (Altitude), expressed as m/s * 100
 
 	return mavlink_finalize_message(msg, system_id, component_id, 18, 147);
 }
@@ -61,12 +61,12 @@ static inline uint16_t mavlink_msg_global_position_int_pack_chan(uint8_t system_
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
 
-	put_int32_t_by_index(lat, 0,  msg->payload); // Latitude, expressed as * 1E7
-	put_int32_t_by_index(lon, 4,  msg->payload); // Longitude, expressed as * 1E7
-	put_int32_t_by_index(alt, 8,  msg->payload); // Altitude in meters, expressed as * 1000 (millimeters)
-	put_int16_t_by_index(vx, 12,  msg->payload); // Ground X Speed (Latitude), expressed as m/s * 100
-	put_int16_t_by_index(vy, 14,  msg->payload); // Ground Y Speed (Longitude), expressed as m/s * 100
-	put_int16_t_by_index(vz, 16,  msg->payload); // Ground Z Speed (Altitude), expressed as m/s * 100
+	put_int32_t_by_index(lat, 0,  MAVLINK_PAYLOAD(msg)); // Latitude, expressed as * 1E7
+	put_int32_t_by_index(lon, 4,  MAVLINK_PAYLOAD(msg)); // Longitude, expressed as * 1E7
+	put_int32_t_by_index(alt, 8,  MAVLINK_PAYLOAD(msg)); // Altitude in meters, expressed as * 1000 (millimeters)
+	put_int16_t_by_index(vx, 12,  MAVLINK_PAYLOAD(msg)); // Ground X Speed (Latitude), expressed as m/s * 100
+	put_int16_t_by_index(vy, 14,  MAVLINK_PAYLOAD(msg)); // Ground Y Speed (Longitude), expressed as m/s * 100
+	put_int16_t_by_index(vz, 16,  MAVLINK_PAYLOAD(msg)); // Ground Z Speed (Altitude), expressed as m/s * 100
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 147);
 }
@@ -90,12 +90,12 @@ static inline void mavlink_msg_global_position_int_pack_chan_send(mavlink_channe
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_INT;
 
-	put_int32_t_by_index(lat, 0,  msg->payload); // Latitude, expressed as * 1E7
-	put_int32_t_by_index(lon, 4,  msg->payload); // Longitude, expressed as * 1E7
-	put_int32_t_by_index(alt, 8,  msg->payload); // Altitude in meters, expressed as * 1000 (millimeters)
-	put_int16_t_by_index(vx, 12,  msg->payload); // Ground X Speed (Latitude), expressed as m/s * 100
-	put_int16_t_by_index(vy, 14,  msg->payload); // Ground Y Speed (Longitude), expressed as m/s * 100
-	put_int16_t_by_index(vz, 16,  msg->payload); // Ground Z Speed (Altitude), expressed as m/s * 100
+	put_int32_t_by_index(lat, 0,  MAVLINK_PAYLOAD(msg)); // Latitude, expressed as * 1E7
+	put_int32_t_by_index(lon, 4,  MAVLINK_PAYLOAD(msg)); // Longitude, expressed as * 1E7
+	put_int32_t_by_index(alt, 8,  MAVLINK_PAYLOAD(msg)); // Altitude in meters, expressed as * 1000 (millimeters)
+	put_int16_t_by_index(vx, 12,  MAVLINK_PAYLOAD(msg)); // Ground X Speed (Latitude), expressed as m/s * 100
+	put_int16_t_by_index(vy, 14,  MAVLINK_PAYLOAD(msg)); // Ground Y Speed (Longitude), expressed as m/s * 100
+	put_int16_t_by_index(vz, 16,  MAVLINK_PAYLOAD(msg)); // Ground Z Speed (Altitude), expressed as m/s * 100
 
 	mavlink_finalize_message_chan_send(msg, chan, 18, 147);
 }
@@ -215,6 +215,6 @@ static inline void mavlink_msg_global_position_int_decode(const mavlink_message_
 	global_position_int->vy = mavlink_msg_global_position_int_get_vy(msg);
 	global_position_int->vz = mavlink_msg_global_position_int_get_vz(msg);
 #else
-	memcpy(global_position_int, msg->payload, 18);
+	memcpy(global_position_int, MAVLINK_PAYLOAD(msg), 18);
 #endif
 }

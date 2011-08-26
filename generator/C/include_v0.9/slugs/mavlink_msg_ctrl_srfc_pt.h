@@ -23,8 +23,8 @@ static inline uint16_t mavlink_msg_ctrl_srfc_pt_pack(uint8_t system_id, uint8_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_CTRL_SRFC_PT;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the commands
-	put_uint16_t_by_index(bitfieldPt, 1,  msg->payload); // Bitfield containing the PT configuration
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the commands
+	put_uint16_t_by_index(bitfieldPt, 1,  MAVLINK_PAYLOAD(msg)); // Bitfield containing the PT configuration
 
 	return mavlink_finalize_message(msg, system_id, component_id, 3, 142);
 }
@@ -45,8 +45,8 @@ static inline uint16_t mavlink_msg_ctrl_srfc_pt_pack_chan(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_CTRL_SRFC_PT;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the commands
-	put_uint16_t_by_index(bitfieldPt, 1,  msg->payload); // Bitfield containing the PT configuration
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the commands
+	put_uint16_t_by_index(bitfieldPt, 1,  MAVLINK_PAYLOAD(msg)); // Bitfield containing the PT configuration
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 142);
 }
@@ -66,8 +66,8 @@ static inline void mavlink_msg_ctrl_srfc_pt_pack_chan_send(mavlink_channel_t cha
 {
 	msg->msgid = MAVLINK_MSG_ID_CTRL_SRFC_PT;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the commands
-	put_uint16_t_by_index(bitfieldPt, 1,  msg->payload); // Bitfield containing the PT configuration
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the commands
+	put_uint16_t_by_index(bitfieldPt, 1,  MAVLINK_PAYLOAD(msg)); // Bitfield containing the PT configuration
 
 	mavlink_finalize_message_chan_send(msg, chan, 3, 142);
 }
@@ -139,6 +139,6 @@ static inline void mavlink_msg_ctrl_srfc_pt_decode(const mavlink_message_t* msg,
 	ctrl_srfc_pt->target = mavlink_msg_ctrl_srfc_pt_get_target(msg);
 	ctrl_srfc_pt->bitfieldPt = mavlink_msg_ctrl_srfc_pt_get_bitfieldPt(msg);
 #else
-	memcpy(ctrl_srfc_pt, msg->payload, 3);
+	memcpy(ctrl_srfc_pt, MAVLINK_PAYLOAD(msg), 3);
 #endif
 }

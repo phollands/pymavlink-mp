@@ -31,12 +31,12 @@ static inline uint16_t mavlink_msg_optical_flow_pack(uint8_t system_id, uint8_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_OPTICAL_FLOW;
 
-	put_uint64_t_by_index(time, 0,  msg->payload); // Timestamp (UNIX)
-	put_uint8_t_by_index(sensor_id, 8,  msg->payload); // Sensor ID
-	put_int16_t_by_index(flow_x, 9,  msg->payload); // Flow in pixels in x-sensor direction
-	put_int16_t_by_index(flow_y, 11,  msg->payload); // Flow in pixels in y-sensor direction
-	put_uint8_t_by_index(quality, 13,  msg->payload); // Optical flow quality / confidence. 0: bad, 255: maximum quality
-	put_float_by_index(ground_distance, 14,  msg->payload); // Ground distance in meters
+	put_uint64_t_by_index(time, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (UNIX)
+	put_uint8_t_by_index(sensor_id, 8,  MAVLINK_PAYLOAD(msg)); // Sensor ID
+	put_int16_t_by_index(flow_x, 9,  MAVLINK_PAYLOAD(msg)); // Flow in pixels in x-sensor direction
+	put_int16_t_by_index(flow_y, 11,  MAVLINK_PAYLOAD(msg)); // Flow in pixels in y-sensor direction
+	put_uint8_t_by_index(quality, 13,  MAVLINK_PAYLOAD(msg)); // Optical flow quality / confidence. 0: bad, 255: maximum quality
+	put_float_by_index(ground_distance, 14,  MAVLINK_PAYLOAD(msg)); // Ground distance in meters
 
 	return mavlink_finalize_message(msg, system_id, component_id, 18, 184);
 }
@@ -61,12 +61,12 @@ static inline uint16_t mavlink_msg_optical_flow_pack_chan(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_OPTICAL_FLOW;
 
-	put_uint64_t_by_index(time, 0,  msg->payload); // Timestamp (UNIX)
-	put_uint8_t_by_index(sensor_id, 8,  msg->payload); // Sensor ID
-	put_int16_t_by_index(flow_x, 9,  msg->payload); // Flow in pixels in x-sensor direction
-	put_int16_t_by_index(flow_y, 11,  msg->payload); // Flow in pixels in y-sensor direction
-	put_uint8_t_by_index(quality, 13,  msg->payload); // Optical flow quality / confidence. 0: bad, 255: maximum quality
-	put_float_by_index(ground_distance, 14,  msg->payload); // Ground distance in meters
+	put_uint64_t_by_index(time, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (UNIX)
+	put_uint8_t_by_index(sensor_id, 8,  MAVLINK_PAYLOAD(msg)); // Sensor ID
+	put_int16_t_by_index(flow_x, 9,  MAVLINK_PAYLOAD(msg)); // Flow in pixels in x-sensor direction
+	put_int16_t_by_index(flow_y, 11,  MAVLINK_PAYLOAD(msg)); // Flow in pixels in y-sensor direction
+	put_uint8_t_by_index(quality, 13,  MAVLINK_PAYLOAD(msg)); // Optical flow quality / confidence. 0: bad, 255: maximum quality
+	put_float_by_index(ground_distance, 14,  MAVLINK_PAYLOAD(msg)); // Ground distance in meters
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 184);
 }
@@ -90,12 +90,12 @@ static inline void mavlink_msg_optical_flow_pack_chan_send(mavlink_channel_t cha
 {
 	msg->msgid = MAVLINK_MSG_ID_OPTICAL_FLOW;
 
-	put_uint64_t_by_index(time, 0,  msg->payload); // Timestamp (UNIX)
-	put_uint8_t_by_index(sensor_id, 8,  msg->payload); // Sensor ID
-	put_int16_t_by_index(flow_x, 9,  msg->payload); // Flow in pixels in x-sensor direction
-	put_int16_t_by_index(flow_y, 11,  msg->payload); // Flow in pixels in y-sensor direction
-	put_uint8_t_by_index(quality, 13,  msg->payload); // Optical flow quality / confidence. 0: bad, 255: maximum quality
-	put_float_by_index(ground_distance, 14,  msg->payload); // Ground distance in meters
+	put_uint64_t_by_index(time, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (UNIX)
+	put_uint8_t_by_index(sensor_id, 8,  MAVLINK_PAYLOAD(msg)); // Sensor ID
+	put_int16_t_by_index(flow_x, 9,  MAVLINK_PAYLOAD(msg)); // Flow in pixels in x-sensor direction
+	put_int16_t_by_index(flow_y, 11,  MAVLINK_PAYLOAD(msg)); // Flow in pixels in y-sensor direction
+	put_uint8_t_by_index(quality, 13,  MAVLINK_PAYLOAD(msg)); // Optical flow quality / confidence. 0: bad, 255: maximum quality
+	put_float_by_index(ground_distance, 14,  MAVLINK_PAYLOAD(msg)); // Ground distance in meters
 
 	mavlink_finalize_message_chan_send(msg, chan, 18, 184);
 }
@@ -215,6 +215,6 @@ static inline void mavlink_msg_optical_flow_decode(const mavlink_message_t* msg,
 	optical_flow->quality = mavlink_msg_optical_flow_get_quality(msg);
 	optical_flow->ground_distance = mavlink_msg_optical_flow_get_ground_distance(msg);
 #else
-	memcpy(optical_flow, msg->payload, 18);
+	memcpy(optical_flow, MAVLINK_PAYLOAD(msg), 18);
 #endif
 }

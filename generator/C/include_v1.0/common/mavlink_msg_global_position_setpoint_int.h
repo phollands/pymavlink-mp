@@ -27,10 +27,10 @@ static inline uint16_t mavlink_msg_global_position_setpoint_int_pack(uint8_t sys
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_SETPOINT_INT;
 
-	put_int32_t_by_index(latitude, 0,  msg->payload); // WGS84 Latitude position in degrees * 1E7
-	put_int32_t_by_index(longitude, 4,  msg->payload); // WGS84 Longitude position in degrees * 1E7
-	put_int32_t_by_index(altitude, 8,  msg->payload); // WGS84 Altitude in meters * 1000 (positive for up)
-	put_int16_t_by_index(yaw, 12,  msg->payload); // Desired yaw angle in degrees * 100
+	put_int32_t_by_index(latitude, 0,  MAVLINK_PAYLOAD(msg)); // WGS84 Latitude position in degrees * 1E7
+	put_int32_t_by_index(longitude, 4,  MAVLINK_PAYLOAD(msg)); // WGS84 Longitude position in degrees * 1E7
+	put_int32_t_by_index(altitude, 8,  MAVLINK_PAYLOAD(msg)); // WGS84 Altitude in meters * 1000 (positive for up)
+	put_int16_t_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in degrees * 100
 
 	return mavlink_finalize_message(msg, system_id, component_id, 14, 181);
 }
@@ -53,10 +53,10 @@ static inline uint16_t mavlink_msg_global_position_setpoint_int_pack_chan(uint8_
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_SETPOINT_INT;
 
-	put_int32_t_by_index(latitude, 0,  msg->payload); // WGS84 Latitude position in degrees * 1E7
-	put_int32_t_by_index(longitude, 4,  msg->payload); // WGS84 Longitude position in degrees * 1E7
-	put_int32_t_by_index(altitude, 8,  msg->payload); // WGS84 Altitude in meters * 1000 (positive for up)
-	put_int16_t_by_index(yaw, 12,  msg->payload); // Desired yaw angle in degrees * 100
+	put_int32_t_by_index(latitude, 0,  MAVLINK_PAYLOAD(msg)); // WGS84 Latitude position in degrees * 1E7
+	put_int32_t_by_index(longitude, 4,  MAVLINK_PAYLOAD(msg)); // WGS84 Longitude position in degrees * 1E7
+	put_int32_t_by_index(altitude, 8,  MAVLINK_PAYLOAD(msg)); // WGS84 Altitude in meters * 1000 (positive for up)
+	put_int16_t_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in degrees * 100
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 181);
 }
@@ -78,10 +78,10 @@ static inline void mavlink_msg_global_position_setpoint_int_pack_chan_send(mavli
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION_SETPOINT_INT;
 
-	put_int32_t_by_index(latitude, 0,  msg->payload); // WGS84 Latitude position in degrees * 1E7
-	put_int32_t_by_index(longitude, 4,  msg->payload); // WGS84 Longitude position in degrees * 1E7
-	put_int32_t_by_index(altitude, 8,  msg->payload); // WGS84 Altitude in meters * 1000 (positive for up)
-	put_int16_t_by_index(yaw, 12,  msg->payload); // Desired yaw angle in degrees * 100
+	put_int32_t_by_index(latitude, 0,  MAVLINK_PAYLOAD(msg)); // WGS84 Latitude position in degrees * 1E7
+	put_int32_t_by_index(longitude, 4,  MAVLINK_PAYLOAD(msg)); // WGS84 Longitude position in degrees * 1E7
+	put_int32_t_by_index(altitude, 8,  MAVLINK_PAYLOAD(msg)); // WGS84 Altitude in meters * 1000 (positive for up)
+	put_int16_t_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in degrees * 100
 
 	mavlink_finalize_message_chan_send(msg, chan, 14, 181);
 }
@@ -177,6 +177,6 @@ static inline void mavlink_msg_global_position_setpoint_int_decode(const mavlink
 	global_position_setpoint_int->altitude = mavlink_msg_global_position_setpoint_int_get_altitude(msg);
 	global_position_setpoint_int->yaw = mavlink_msg_global_position_setpoint_int_get_yaw(msg);
 #else
-	memcpy(global_position_setpoint_int, msg->payload, 14);
+	memcpy(global_position_setpoint_int, MAVLINK_PAYLOAD(msg), 14);
 #endif
 }

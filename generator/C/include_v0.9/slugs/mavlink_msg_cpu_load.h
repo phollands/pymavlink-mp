@@ -25,9 +25,9 @@ static inline uint16_t mavlink_msg_cpu_load_pack(uint8_t system_id, uint8_t comp
 {
 	msg->msgid = MAVLINK_MSG_ID_CPU_LOAD;
 
-	put_uint8_t_by_index(sensLoad, 0,  msg->payload); // Sensor DSC Load
-	put_uint8_t_by_index(ctrlLoad, 1,  msg->payload); // Control DSC Load
-	put_uint16_t_by_index(batVolt, 2,  msg->payload); // Battery Voltage in millivolts
+	put_uint8_t_by_index(sensLoad, 0,  MAVLINK_PAYLOAD(msg)); // Sensor DSC Load
+	put_uint8_t_by_index(ctrlLoad, 1,  MAVLINK_PAYLOAD(msg)); // Control DSC Load
+	put_uint16_t_by_index(batVolt, 2,  MAVLINK_PAYLOAD(msg)); // Battery Voltage in millivolts
 
 	return mavlink_finalize_message(msg, system_id, component_id, 4, 127);
 }
@@ -49,9 +49,9 @@ static inline uint16_t mavlink_msg_cpu_load_pack_chan(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_CPU_LOAD;
 
-	put_uint8_t_by_index(sensLoad, 0,  msg->payload); // Sensor DSC Load
-	put_uint8_t_by_index(ctrlLoad, 1,  msg->payload); // Control DSC Load
-	put_uint16_t_by_index(batVolt, 2,  msg->payload); // Battery Voltage in millivolts
+	put_uint8_t_by_index(sensLoad, 0,  MAVLINK_PAYLOAD(msg)); // Sensor DSC Load
+	put_uint8_t_by_index(ctrlLoad, 1,  MAVLINK_PAYLOAD(msg)); // Control DSC Load
+	put_uint16_t_by_index(batVolt, 2,  MAVLINK_PAYLOAD(msg)); // Battery Voltage in millivolts
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 127);
 }
@@ -72,9 +72,9 @@ static inline void mavlink_msg_cpu_load_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_CPU_LOAD;
 
-	put_uint8_t_by_index(sensLoad, 0,  msg->payload); // Sensor DSC Load
-	put_uint8_t_by_index(ctrlLoad, 1,  msg->payload); // Control DSC Load
-	put_uint16_t_by_index(batVolt, 2,  msg->payload); // Battery Voltage in millivolts
+	put_uint8_t_by_index(sensLoad, 0,  MAVLINK_PAYLOAD(msg)); // Sensor DSC Load
+	put_uint8_t_by_index(ctrlLoad, 1,  MAVLINK_PAYLOAD(msg)); // Control DSC Load
+	put_uint16_t_by_index(batVolt, 2,  MAVLINK_PAYLOAD(msg)); // Battery Voltage in millivolts
 
 	mavlink_finalize_message_chan_send(msg, chan, 4, 127);
 }
@@ -158,6 +158,6 @@ static inline void mavlink_msg_cpu_load_decode(const mavlink_message_t* msg, mav
 	cpu_load->ctrlLoad = mavlink_msg_cpu_load_get_ctrlLoad(msg);
 	cpu_load->batVolt = mavlink_msg_cpu_load_get_batVolt(msg);
 #else
-	memcpy(cpu_load, msg->payload, 4);
+	memcpy(cpu_load, MAVLINK_PAYLOAD(msg), 4);
 #endif
 }

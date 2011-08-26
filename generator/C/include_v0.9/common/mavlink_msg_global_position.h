@@ -33,13 +33,13 @@ static inline uint16_t mavlink_msg_global_position_pack(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since unix epoch)
-	put_float_by_index(lat, 8,  msg->payload); // Latitude, in degrees
-	put_float_by_index(lon, 12,  msg->payload); // Longitude, in degrees
-	put_float_by_index(alt, 16,  msg->payload); // Absolute altitude, in meters
-	put_float_by_index(vx, 20,  msg->payload); // X Speed (in Latitude direction, positive: going north)
-	put_float_by_index(vy, 24,  msg->payload); // Y Speed (in Longitude direction, positive: going east)
-	put_float_by_index(vz, 28,  msg->payload); // Z Speed (in Altitude direction, positive: going up)
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since unix epoch)
+	put_float_by_index(lat, 8,  MAVLINK_PAYLOAD(msg)); // Latitude, in degrees
+	put_float_by_index(lon, 12,  MAVLINK_PAYLOAD(msg)); // Longitude, in degrees
+	put_float_by_index(alt, 16,  MAVLINK_PAYLOAD(msg)); // Absolute altitude, in meters
+	put_float_by_index(vx, 20,  MAVLINK_PAYLOAD(msg)); // X Speed (in Latitude direction, positive: going north)
+	put_float_by_index(vy, 24,  MAVLINK_PAYLOAD(msg)); // Y Speed (in Longitude direction, positive: going east)
+	put_float_by_index(vz, 28,  MAVLINK_PAYLOAD(msg)); // Z Speed (in Altitude direction, positive: going up)
 
 	return mavlink_finalize_message(msg, system_id, component_id, 32, 220);
 }
@@ -65,13 +65,13 @@ static inline uint16_t mavlink_msg_global_position_pack_chan(uint8_t system_id, 
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since unix epoch)
-	put_float_by_index(lat, 8,  msg->payload); // Latitude, in degrees
-	put_float_by_index(lon, 12,  msg->payload); // Longitude, in degrees
-	put_float_by_index(alt, 16,  msg->payload); // Absolute altitude, in meters
-	put_float_by_index(vx, 20,  msg->payload); // X Speed (in Latitude direction, positive: going north)
-	put_float_by_index(vy, 24,  msg->payload); // Y Speed (in Longitude direction, positive: going east)
-	put_float_by_index(vz, 28,  msg->payload); // Z Speed (in Altitude direction, positive: going up)
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since unix epoch)
+	put_float_by_index(lat, 8,  MAVLINK_PAYLOAD(msg)); // Latitude, in degrees
+	put_float_by_index(lon, 12,  MAVLINK_PAYLOAD(msg)); // Longitude, in degrees
+	put_float_by_index(alt, 16,  MAVLINK_PAYLOAD(msg)); // Absolute altitude, in meters
+	put_float_by_index(vx, 20,  MAVLINK_PAYLOAD(msg)); // X Speed (in Latitude direction, positive: going north)
+	put_float_by_index(vy, 24,  MAVLINK_PAYLOAD(msg)); // Y Speed (in Longitude direction, positive: going east)
+	put_float_by_index(vz, 28,  MAVLINK_PAYLOAD(msg)); // Z Speed (in Altitude direction, positive: going up)
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 220);
 }
@@ -96,13 +96,13 @@ static inline void mavlink_msg_global_position_pack_chan_send(mavlink_channel_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_GLOBAL_POSITION;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since unix epoch)
-	put_float_by_index(lat, 8,  msg->payload); // Latitude, in degrees
-	put_float_by_index(lon, 12,  msg->payload); // Longitude, in degrees
-	put_float_by_index(alt, 16,  msg->payload); // Absolute altitude, in meters
-	put_float_by_index(vx, 20,  msg->payload); // X Speed (in Latitude direction, positive: going north)
-	put_float_by_index(vy, 24,  msg->payload); // Y Speed (in Longitude direction, positive: going east)
-	put_float_by_index(vz, 28,  msg->payload); // Z Speed (in Altitude direction, positive: going up)
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since unix epoch)
+	put_float_by_index(lat, 8,  MAVLINK_PAYLOAD(msg)); // Latitude, in degrees
+	put_float_by_index(lon, 12,  MAVLINK_PAYLOAD(msg)); // Longitude, in degrees
+	put_float_by_index(alt, 16,  MAVLINK_PAYLOAD(msg)); // Absolute altitude, in meters
+	put_float_by_index(vx, 20,  MAVLINK_PAYLOAD(msg)); // X Speed (in Latitude direction, positive: going north)
+	put_float_by_index(vy, 24,  MAVLINK_PAYLOAD(msg)); // Y Speed (in Longitude direction, positive: going east)
+	put_float_by_index(vz, 28,  MAVLINK_PAYLOAD(msg)); // Z Speed (in Altitude direction, positive: going up)
 
 	mavlink_finalize_message_chan_send(msg, chan, 32, 220);
 }
@@ -234,6 +234,6 @@ static inline void mavlink_msg_global_position_decode(const mavlink_message_t* m
 	global_position->vy = mavlink_msg_global_position_get_vy(msg);
 	global_position->vz = mavlink_msg_global_position_get_vz(msg);
 #else
-	memcpy(global_position, msg->payload, 32);
+	memcpy(global_position, MAVLINK_PAYLOAD(msg), 32);
 #endif
 }

@@ -19,12 +19,12 @@ typedef struct __mavlink_named_value_int_t
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_named_value_int_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       const char name[10], int32_t value)
+						       const char *name, int32_t value)
 {
 	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
 
-	put_int32_t_by_index(value, 0,  msg->payload); // Signed integer value
-	put_char_array_by_index(name, 4, 10,  msg->payload); // Name of the debug variable
+	put_int32_t_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // Signed integer value
+	put_char_array_by_index(name, 4, 10,  MAVLINK_PAYLOAD(msg)); // Name of the debug variable
 
 	return mavlink_finalize_message(msg, system_id, component_id, 14, 22);
 }
@@ -41,12 +41,12 @@ static inline uint16_t mavlink_msg_named_value_int_pack(uint8_t system_id, uint8
  */
 static inline uint16_t mavlink_msg_named_value_int_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           const char name[10],int32_t value)
+						           const char *name,int32_t value)
 {
 	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
 
-	put_int32_t_by_index(value, 0,  msg->payload); // Signed integer value
-	put_char_array_by_index(name, 4, 10,  msg->payload); // Name of the debug variable
+	put_int32_t_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // Signed integer value
+	put_char_array_by_index(name, 4, 10,  MAVLINK_PAYLOAD(msg)); // Name of the debug variable
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 22);
 }
@@ -62,12 +62,12 @@ static inline uint16_t mavlink_msg_named_value_int_pack_chan(uint8_t system_id, 
  */
 static inline void mavlink_msg_named_value_int_pack_chan_send(mavlink_channel_t chan,
 							   mavlink_message_t* msg,
-						           const char name[10],int32_t value)
+						           const char *name,int32_t value)
 {
 	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
 
-	put_int32_t_by_index(value, 0,  msg->payload); // Signed integer value
-	put_char_array_by_index(name, 4, 10,  msg->payload); // Name of the debug variable
+	put_int32_t_by_index(value, 0,  MAVLINK_PAYLOAD(msg)); // Signed integer value
+	put_char_array_by_index(name, 4, 10,  MAVLINK_PAYLOAD(msg)); // Name of the debug variable
 
 	mavlink_finalize_message_chan_send(msg, chan, 14, 22);
 }
@@ -96,7 +96,7 @@ static inline uint16_t mavlink_msg_named_value_int_encode(uint8_t system_id, uin
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_named_value_int_send(mavlink_channel_t chan, const char name[10], int32_t value)
+static inline void mavlink_msg_named_value_int_send(mavlink_channel_t chan, const char *name, int32_t value)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 14);
 	mavlink_msg_named_value_int_pack_chan_send(chan, msg, name, value);
@@ -139,6 +139,6 @@ static inline void mavlink_msg_named_value_int_decode(const mavlink_message_t* m
 	named_value_int->value = mavlink_msg_named_value_int_get_value(msg);
 	mavlink_msg_named_value_int_get_name(msg, named_value_int->name);
 #else
-	memcpy(named_value_int, msg->payload, 14);
+	memcpy(named_value_int, MAVLINK_PAYLOAD(msg), 14);
 #endif
 }

@@ -41,17 +41,17 @@ static inline uint16_t mavlink_msg_command_long_pack(uint8_t system_id, uint8_t 
 {
 	msg->msgid = MAVLINK_MSG_ID_COMMAND_LONG;
 
-	put_float_by_index(param1, 0,  msg->payload); // Parameter 1, as defined by MAV_CMD enum.
-	put_float_by_index(param2, 4,  msg->payload); // Parameter 2, as defined by MAV_CMD enum.
-	put_float_by_index(param3, 8,  msg->payload); // Parameter 3, as defined by MAV_CMD enum.
-	put_float_by_index(param4, 12,  msg->payload); // Parameter 4, as defined by MAV_CMD enum.
-	put_float_by_index(param5, 16,  msg->payload); // Parameter 5, as defined by MAV_CMD enum.
-	put_float_by_index(param6, 20,  msg->payload); // Parameter 6, as defined by MAV_CMD enum.
-	put_float_by_index(param7, 24,  msg->payload); // Parameter 7, as defined by MAV_CMD enum.
-	put_uint8_t_by_index(target_system, 28,  msg->payload); // System which should execute the command
-	put_uint8_t_by_index(target_component, 29,  msg->payload); // Component which should execute the command, 0 for all components
-	put_uint8_t_by_index(command, 30,  msg->payload); // Command ID, as defined by MAV_CMD enum.
-	put_uint8_t_by_index(confirmation, 31,  msg->payload); // 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
+	put_float_by_index(param1, 0,  MAVLINK_PAYLOAD(msg)); // Parameter 1, as defined by MAV_CMD enum.
+	put_float_by_index(param2, 4,  MAVLINK_PAYLOAD(msg)); // Parameter 2, as defined by MAV_CMD enum.
+	put_float_by_index(param3, 8,  MAVLINK_PAYLOAD(msg)); // Parameter 3, as defined by MAV_CMD enum.
+	put_float_by_index(param4, 12,  MAVLINK_PAYLOAD(msg)); // Parameter 4, as defined by MAV_CMD enum.
+	put_float_by_index(param5, 16,  MAVLINK_PAYLOAD(msg)); // Parameter 5, as defined by MAV_CMD enum.
+	put_float_by_index(param6, 20,  MAVLINK_PAYLOAD(msg)); // Parameter 6, as defined by MAV_CMD enum.
+	put_float_by_index(param7, 24,  MAVLINK_PAYLOAD(msg)); // Parameter 7, as defined by MAV_CMD enum.
+	put_uint8_t_by_index(target_system, 28,  MAVLINK_PAYLOAD(msg)); // System which should execute the command
+	put_uint8_t_by_index(target_component, 29,  MAVLINK_PAYLOAD(msg)); // Component which should execute the command, 0 for all components
+	put_uint8_t_by_index(command, 30,  MAVLINK_PAYLOAD(msg)); // Command ID, as defined by MAV_CMD enum.
+	put_uint8_t_by_index(confirmation, 31,  MAVLINK_PAYLOAD(msg)); // 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
 
 	return mavlink_finalize_message(msg, system_id, component_id, 32, 77);
 }
@@ -81,17 +81,17 @@ static inline uint16_t mavlink_msg_command_long_pack_chan(uint8_t system_id, uin
 {
 	msg->msgid = MAVLINK_MSG_ID_COMMAND_LONG;
 
-	put_float_by_index(param1, 0,  msg->payload); // Parameter 1, as defined by MAV_CMD enum.
-	put_float_by_index(param2, 4,  msg->payload); // Parameter 2, as defined by MAV_CMD enum.
-	put_float_by_index(param3, 8,  msg->payload); // Parameter 3, as defined by MAV_CMD enum.
-	put_float_by_index(param4, 12,  msg->payload); // Parameter 4, as defined by MAV_CMD enum.
-	put_float_by_index(param5, 16,  msg->payload); // Parameter 5, as defined by MAV_CMD enum.
-	put_float_by_index(param6, 20,  msg->payload); // Parameter 6, as defined by MAV_CMD enum.
-	put_float_by_index(param7, 24,  msg->payload); // Parameter 7, as defined by MAV_CMD enum.
-	put_uint8_t_by_index(target_system, 28,  msg->payload); // System which should execute the command
-	put_uint8_t_by_index(target_component, 29,  msg->payload); // Component which should execute the command, 0 for all components
-	put_uint8_t_by_index(command, 30,  msg->payload); // Command ID, as defined by MAV_CMD enum.
-	put_uint8_t_by_index(confirmation, 31,  msg->payload); // 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
+	put_float_by_index(param1, 0,  MAVLINK_PAYLOAD(msg)); // Parameter 1, as defined by MAV_CMD enum.
+	put_float_by_index(param2, 4,  MAVLINK_PAYLOAD(msg)); // Parameter 2, as defined by MAV_CMD enum.
+	put_float_by_index(param3, 8,  MAVLINK_PAYLOAD(msg)); // Parameter 3, as defined by MAV_CMD enum.
+	put_float_by_index(param4, 12,  MAVLINK_PAYLOAD(msg)); // Parameter 4, as defined by MAV_CMD enum.
+	put_float_by_index(param5, 16,  MAVLINK_PAYLOAD(msg)); // Parameter 5, as defined by MAV_CMD enum.
+	put_float_by_index(param6, 20,  MAVLINK_PAYLOAD(msg)); // Parameter 6, as defined by MAV_CMD enum.
+	put_float_by_index(param7, 24,  MAVLINK_PAYLOAD(msg)); // Parameter 7, as defined by MAV_CMD enum.
+	put_uint8_t_by_index(target_system, 28,  MAVLINK_PAYLOAD(msg)); // System which should execute the command
+	put_uint8_t_by_index(target_component, 29,  MAVLINK_PAYLOAD(msg)); // Component which should execute the command, 0 for all components
+	put_uint8_t_by_index(command, 30,  MAVLINK_PAYLOAD(msg)); // Command ID, as defined by MAV_CMD enum.
+	put_uint8_t_by_index(confirmation, 31,  MAVLINK_PAYLOAD(msg)); // 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 77);
 }
@@ -120,17 +120,17 @@ static inline void mavlink_msg_command_long_pack_chan_send(mavlink_channel_t cha
 {
 	msg->msgid = MAVLINK_MSG_ID_COMMAND_LONG;
 
-	put_float_by_index(param1, 0,  msg->payload); // Parameter 1, as defined by MAV_CMD enum.
-	put_float_by_index(param2, 4,  msg->payload); // Parameter 2, as defined by MAV_CMD enum.
-	put_float_by_index(param3, 8,  msg->payload); // Parameter 3, as defined by MAV_CMD enum.
-	put_float_by_index(param4, 12,  msg->payload); // Parameter 4, as defined by MAV_CMD enum.
-	put_float_by_index(param5, 16,  msg->payload); // Parameter 5, as defined by MAV_CMD enum.
-	put_float_by_index(param6, 20,  msg->payload); // Parameter 6, as defined by MAV_CMD enum.
-	put_float_by_index(param7, 24,  msg->payload); // Parameter 7, as defined by MAV_CMD enum.
-	put_uint8_t_by_index(target_system, 28,  msg->payload); // System which should execute the command
-	put_uint8_t_by_index(target_component, 29,  msg->payload); // Component which should execute the command, 0 for all components
-	put_uint8_t_by_index(command, 30,  msg->payload); // Command ID, as defined by MAV_CMD enum.
-	put_uint8_t_by_index(confirmation, 31,  msg->payload); // 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
+	put_float_by_index(param1, 0,  MAVLINK_PAYLOAD(msg)); // Parameter 1, as defined by MAV_CMD enum.
+	put_float_by_index(param2, 4,  MAVLINK_PAYLOAD(msg)); // Parameter 2, as defined by MAV_CMD enum.
+	put_float_by_index(param3, 8,  MAVLINK_PAYLOAD(msg)); // Parameter 3, as defined by MAV_CMD enum.
+	put_float_by_index(param4, 12,  MAVLINK_PAYLOAD(msg)); // Parameter 4, as defined by MAV_CMD enum.
+	put_float_by_index(param5, 16,  MAVLINK_PAYLOAD(msg)); // Parameter 5, as defined by MAV_CMD enum.
+	put_float_by_index(param6, 20,  MAVLINK_PAYLOAD(msg)); // Parameter 6, as defined by MAV_CMD enum.
+	put_float_by_index(param7, 24,  MAVLINK_PAYLOAD(msg)); // Parameter 7, as defined by MAV_CMD enum.
+	put_uint8_t_by_index(target_system, 28,  MAVLINK_PAYLOAD(msg)); // System which should execute the command
+	put_uint8_t_by_index(target_component, 29,  MAVLINK_PAYLOAD(msg)); // Component which should execute the command, 0 for all components
+	put_uint8_t_by_index(command, 30,  MAVLINK_PAYLOAD(msg)); // Command ID, as defined by MAV_CMD enum.
+	put_uint8_t_by_index(confirmation, 31,  MAVLINK_PAYLOAD(msg)); // 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
 
 	mavlink_finalize_message_chan_send(msg, chan, 32, 77);
 }
@@ -310,6 +310,6 @@ static inline void mavlink_msg_command_long_decode(const mavlink_message_t* msg,
 	command_long->command = mavlink_msg_command_long_get_command(msg);
 	command_long->confirmation = mavlink_msg_command_long_get_confirmation(msg);
 #else
-	memcpy(command_long, msg->payload, 32);
+	memcpy(command_long, MAVLINK_PAYLOAD(msg), 32);
 #endif
 }

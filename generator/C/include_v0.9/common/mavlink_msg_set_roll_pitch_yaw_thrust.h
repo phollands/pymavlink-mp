@@ -31,12 +31,12 @@ static inline uint16_t mavlink_msg_set_roll_pitch_yaw_thrust_pack(uint8_t system
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_THRUST;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_float_by_index(roll, 2,  msg->payload); // Desired roll angle in radians
-	put_float_by_index(pitch, 6,  msg->payload); // Desired pitch angle in radians
-	put_float_by_index(yaw, 10,  msg->payload); // Desired yaw angle in radians
-	put_float_by_index(thrust, 14,  msg->payload); // Collective thrust, normalized to 0 .. 1
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_float_by_index(roll, 2,  MAVLINK_PAYLOAD(msg)); // Desired roll angle in radians
+	put_float_by_index(pitch, 6,  MAVLINK_PAYLOAD(msg)); // Desired pitch angle in radians
+	put_float_by_index(yaw, 10,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in radians
+	put_float_by_index(thrust, 14,  MAVLINK_PAYLOAD(msg)); // Collective thrust, normalized to 0 .. 1
 
 	return mavlink_finalize_message(msg, system_id, component_id, 18, 9);
 }
@@ -61,12 +61,12 @@ static inline uint16_t mavlink_msg_set_roll_pitch_yaw_thrust_pack_chan(uint8_t s
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_THRUST;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_float_by_index(roll, 2,  msg->payload); // Desired roll angle in radians
-	put_float_by_index(pitch, 6,  msg->payload); // Desired pitch angle in radians
-	put_float_by_index(yaw, 10,  msg->payload); // Desired yaw angle in radians
-	put_float_by_index(thrust, 14,  msg->payload); // Collective thrust, normalized to 0 .. 1
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_float_by_index(roll, 2,  MAVLINK_PAYLOAD(msg)); // Desired roll angle in radians
+	put_float_by_index(pitch, 6,  MAVLINK_PAYLOAD(msg)); // Desired pitch angle in radians
+	put_float_by_index(yaw, 10,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in radians
+	put_float_by_index(thrust, 14,  MAVLINK_PAYLOAD(msg)); // Collective thrust, normalized to 0 .. 1
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 9);
 }
@@ -90,12 +90,12 @@ static inline void mavlink_msg_set_roll_pitch_yaw_thrust_pack_chan_send(mavlink_
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_ROLL_PITCH_YAW_THRUST;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_float_by_index(roll, 2,  msg->payload); // Desired roll angle in radians
-	put_float_by_index(pitch, 6,  msg->payload); // Desired pitch angle in radians
-	put_float_by_index(yaw, 10,  msg->payload); // Desired yaw angle in radians
-	put_float_by_index(thrust, 14,  msg->payload); // Collective thrust, normalized to 0 .. 1
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_float_by_index(roll, 2,  MAVLINK_PAYLOAD(msg)); // Desired roll angle in radians
+	put_float_by_index(pitch, 6,  MAVLINK_PAYLOAD(msg)); // Desired pitch angle in radians
+	put_float_by_index(yaw, 10,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle in radians
+	put_float_by_index(thrust, 14,  MAVLINK_PAYLOAD(msg)); // Collective thrust, normalized to 0 .. 1
 
 	mavlink_finalize_message_chan_send(msg, chan, 18, 9);
 }
@@ -215,6 +215,6 @@ static inline void mavlink_msg_set_roll_pitch_yaw_thrust_decode(const mavlink_me
 	set_roll_pitch_yaw_thrust->yaw = mavlink_msg_set_roll_pitch_yaw_thrust_get_yaw(msg);
 	set_roll_pitch_yaw_thrust->thrust = mavlink_msg_set_roll_pitch_yaw_thrust_get_thrust(msg);
 #else
-	memcpy(set_roll_pitch_yaw_thrust, msg->payload, 18);
+	memcpy(set_roll_pitch_yaw_thrust, MAVLINK_PAYLOAD(msg), 18);
 #endif
 }

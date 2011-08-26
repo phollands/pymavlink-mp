@@ -25,9 +25,9 @@ static inline uint16_t mavlink_msg_waypoint_request_pack(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_REQUEST;
 
-	put_uint16_t_by_index(seq, 0,  msg->payload); // Sequence
-	put_uint8_t_by_index(target_system, 2,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 3,  msg->payload); // Component ID
+	put_uint16_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // Sequence
+	put_uint8_t_by_index(target_system, 2,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 3,  MAVLINK_PAYLOAD(msg)); // Component ID
 
 	return mavlink_finalize_message(msg, system_id, component_id, 4, 203);
 }
@@ -49,9 +49,9 @@ static inline uint16_t mavlink_msg_waypoint_request_pack_chan(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_REQUEST;
 
-	put_uint16_t_by_index(seq, 0,  msg->payload); // Sequence
-	put_uint8_t_by_index(target_system, 2,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 3,  msg->payload); // Component ID
+	put_uint16_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // Sequence
+	put_uint8_t_by_index(target_system, 2,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 3,  MAVLINK_PAYLOAD(msg)); // Component ID
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 203);
 }
@@ -72,9 +72,9 @@ static inline void mavlink_msg_waypoint_request_pack_chan_send(mavlink_channel_t
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_REQUEST;
 
-	put_uint16_t_by_index(seq, 0,  msg->payload); // Sequence
-	put_uint8_t_by_index(target_system, 2,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 3,  msg->payload); // Component ID
+	put_uint16_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // Sequence
+	put_uint8_t_by_index(target_system, 2,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 3,  MAVLINK_PAYLOAD(msg)); // Component ID
 
 	mavlink_finalize_message_chan_send(msg, chan, 4, 203);
 }
@@ -158,6 +158,6 @@ static inline void mavlink_msg_waypoint_request_decode(const mavlink_message_t* 
 	waypoint_request->target_system = mavlink_msg_waypoint_request_get_target_system(msg);
 	waypoint_request->target_component = mavlink_msg_waypoint_request_get_target_component(msg);
 #else
-	memcpy(waypoint_request, msg->payload, 4);
+	memcpy(waypoint_request, MAVLINK_PAYLOAD(msg), 4);
 #endif
 }

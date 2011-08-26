@@ -21,7 +21,7 @@ static inline uint16_t mavlink_msg_waypoint_reached_pack(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_REACHED;
 
-	put_uint16_t_by_index(seq, 0,  msg->payload); // Sequence
+	put_uint16_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // Sequence
 
 	return mavlink_finalize_message(msg, system_id, component_id, 2, 235);
 }
@@ -41,7 +41,7 @@ static inline uint16_t mavlink_msg_waypoint_reached_pack_chan(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_REACHED;
 
-	put_uint16_t_by_index(seq, 0,  msg->payload); // Sequence
+	put_uint16_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // Sequence
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 235);
 }
@@ -60,7 +60,7 @@ static inline void mavlink_msg_waypoint_reached_pack_chan_send(mavlink_channel_t
 {
 	msg->msgid = MAVLINK_MSG_ID_WAYPOINT_REACHED;
 
-	put_uint16_t_by_index(seq, 0,  msg->payload); // Sequence
+	put_uint16_t_by_index(seq, 0,  MAVLINK_PAYLOAD(msg)); // Sequence
 
 	mavlink_finalize_message_chan_send(msg, chan, 2, 235);
 }
@@ -120,6 +120,6 @@ static inline void mavlink_msg_waypoint_reached_decode(const mavlink_message_t* 
 #if MAVLINK_NEED_BYTE_SWAP
 	waypoint_reached->seq = mavlink_msg_waypoint_reached_get_seq(msg);
 #else
-	memcpy(waypoint_reached, msg->payload, 2);
+	memcpy(waypoint_reached, MAVLINK_PAYLOAD(msg), 2);
 #endif
 }

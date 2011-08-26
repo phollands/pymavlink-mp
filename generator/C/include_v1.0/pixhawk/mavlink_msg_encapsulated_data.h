@@ -19,12 +19,12 @@ typedef struct __mavlink_encapsulated_data_t
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_encapsulated_data_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       uint16_t seqnr, const uint8_t data[253])
+						       uint16_t seqnr, const uint8_t *data)
 {
 	msg->msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
 
-	put_uint16_t_by_index(seqnr, 0,  msg->payload); // sequence number (starting with 0 on every transmission)
-	put_uint8_t_array_by_index(data, 2, 253,  msg->payload); // image data bytes
+	put_uint16_t_by_index(seqnr, 0,  MAVLINK_PAYLOAD(msg)); // sequence number (starting with 0 on every transmission)
+	put_uint8_t_array_by_index(data, 2, 253,  MAVLINK_PAYLOAD(msg)); // image data bytes
 
 	return mavlink_finalize_message(msg, system_id, component_id, 255, 184);
 }
@@ -41,12 +41,12 @@ static inline uint16_t mavlink_msg_encapsulated_data_pack(uint8_t system_id, uin
  */
 static inline uint16_t mavlink_msg_encapsulated_data_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           uint16_t seqnr,const uint8_t data[253])
+						           uint16_t seqnr,const uint8_t *data)
 {
 	msg->msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
 
-	put_uint16_t_by_index(seqnr, 0,  msg->payload); // sequence number (starting with 0 on every transmission)
-	put_uint8_t_array_by_index(data, 2, 253,  msg->payload); // image data bytes
+	put_uint16_t_by_index(seqnr, 0,  MAVLINK_PAYLOAD(msg)); // sequence number (starting with 0 on every transmission)
+	put_uint8_t_array_by_index(data, 2, 253,  MAVLINK_PAYLOAD(msg)); // image data bytes
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 255, 184);
 }
@@ -62,12 +62,12 @@ static inline uint16_t mavlink_msg_encapsulated_data_pack_chan(uint8_t system_id
  */
 static inline void mavlink_msg_encapsulated_data_pack_chan_send(mavlink_channel_t chan,
 							   mavlink_message_t* msg,
-						           uint16_t seqnr,const uint8_t data[253])
+						           uint16_t seqnr,const uint8_t *data)
 {
 	msg->msgid = MAVLINK_MSG_ID_ENCAPSULATED_DATA;
 
-	put_uint16_t_by_index(seqnr, 0,  msg->payload); // sequence number (starting with 0 on every transmission)
-	put_uint8_t_array_by_index(data, 2, 253,  msg->payload); // image data bytes
+	put_uint16_t_by_index(seqnr, 0,  MAVLINK_PAYLOAD(msg)); // sequence number (starting with 0 on every transmission)
+	put_uint8_t_array_by_index(data, 2, 253,  MAVLINK_PAYLOAD(msg)); // image data bytes
 
 	mavlink_finalize_message_chan_send(msg, chan, 255, 184);
 }
@@ -96,7 +96,7 @@ static inline uint16_t mavlink_msg_encapsulated_data_encode(uint8_t system_id, u
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_encapsulated_data_send(mavlink_channel_t chan, uint16_t seqnr, const uint8_t data[253])
+static inline void mavlink_msg_encapsulated_data_send(mavlink_channel_t chan, uint16_t seqnr, const uint8_t *data)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 255);
 	mavlink_msg_encapsulated_data_pack_chan_send(chan, msg, seqnr, data);
@@ -139,6 +139,6 @@ static inline void mavlink_msg_encapsulated_data_decode(const mavlink_message_t*
 	encapsulated_data->seqnr = mavlink_msg_encapsulated_data_get_seqnr(msg);
 	mavlink_msg_encapsulated_data_get_data(msg, encapsulated_data->data);
 #else
-	memcpy(encapsulated_data, msg->payload, 255);
+	memcpy(encapsulated_data, MAVLINK_PAYLOAD(msg), 255);
 #endif
 }

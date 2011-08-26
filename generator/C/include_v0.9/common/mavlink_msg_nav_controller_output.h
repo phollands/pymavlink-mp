@@ -35,14 +35,14 @@ static inline uint16_t mavlink_msg_nav_controller_output_pack(uint8_t system_id,
 {
 	msg->msgid = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
 
-	put_float_by_index(nav_roll, 0,  msg->payload); // Current desired roll in degrees
-	put_float_by_index(nav_pitch, 4,  msg->payload); // Current desired pitch in degrees
-	put_int16_t_by_index(nav_bearing, 8,  msg->payload); // Current desired heading in degrees
-	put_int16_t_by_index(target_bearing, 10,  msg->payload); // Bearing to current waypoint/target in degrees
-	put_uint16_t_by_index(wp_dist, 12,  msg->payload); // Distance to active waypoint in meters
-	put_float_by_index(alt_error, 14,  msg->payload); // Current altitude error in meters
-	put_float_by_index(aspd_error, 18,  msg->payload); // Current airspeed error in meters/second
-	put_float_by_index(xtrack_error, 22,  msg->payload); // Current crosstrack error on x-y plane in meters
+	put_float_by_index(nav_roll, 0,  MAVLINK_PAYLOAD(msg)); // Current desired roll in degrees
+	put_float_by_index(nav_pitch, 4,  MAVLINK_PAYLOAD(msg)); // Current desired pitch in degrees
+	put_int16_t_by_index(nav_bearing, 8,  MAVLINK_PAYLOAD(msg)); // Current desired heading in degrees
+	put_int16_t_by_index(target_bearing, 10,  MAVLINK_PAYLOAD(msg)); // Bearing to current waypoint/target in degrees
+	put_uint16_t_by_index(wp_dist, 12,  MAVLINK_PAYLOAD(msg)); // Distance to active waypoint in meters
+	put_float_by_index(alt_error, 14,  MAVLINK_PAYLOAD(msg)); // Current altitude error in meters
+	put_float_by_index(aspd_error, 18,  MAVLINK_PAYLOAD(msg)); // Current airspeed error in meters/second
+	put_float_by_index(xtrack_error, 22,  MAVLINK_PAYLOAD(msg)); // Current crosstrack error on x-y plane in meters
 
 	return mavlink_finalize_message(msg, system_id, component_id, 26, 100);
 }
@@ -69,14 +69,14 @@ static inline uint16_t mavlink_msg_nav_controller_output_pack_chan(uint8_t syste
 {
 	msg->msgid = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
 
-	put_float_by_index(nav_roll, 0,  msg->payload); // Current desired roll in degrees
-	put_float_by_index(nav_pitch, 4,  msg->payload); // Current desired pitch in degrees
-	put_int16_t_by_index(nav_bearing, 8,  msg->payload); // Current desired heading in degrees
-	put_int16_t_by_index(target_bearing, 10,  msg->payload); // Bearing to current waypoint/target in degrees
-	put_uint16_t_by_index(wp_dist, 12,  msg->payload); // Distance to active waypoint in meters
-	put_float_by_index(alt_error, 14,  msg->payload); // Current altitude error in meters
-	put_float_by_index(aspd_error, 18,  msg->payload); // Current airspeed error in meters/second
-	put_float_by_index(xtrack_error, 22,  msg->payload); // Current crosstrack error on x-y plane in meters
+	put_float_by_index(nav_roll, 0,  MAVLINK_PAYLOAD(msg)); // Current desired roll in degrees
+	put_float_by_index(nav_pitch, 4,  MAVLINK_PAYLOAD(msg)); // Current desired pitch in degrees
+	put_int16_t_by_index(nav_bearing, 8,  MAVLINK_PAYLOAD(msg)); // Current desired heading in degrees
+	put_int16_t_by_index(target_bearing, 10,  MAVLINK_PAYLOAD(msg)); // Bearing to current waypoint/target in degrees
+	put_uint16_t_by_index(wp_dist, 12,  MAVLINK_PAYLOAD(msg)); // Distance to active waypoint in meters
+	put_float_by_index(alt_error, 14,  MAVLINK_PAYLOAD(msg)); // Current altitude error in meters
+	put_float_by_index(aspd_error, 18,  MAVLINK_PAYLOAD(msg)); // Current airspeed error in meters/second
+	put_float_by_index(xtrack_error, 22,  MAVLINK_PAYLOAD(msg)); // Current crosstrack error on x-y plane in meters
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26, 100);
 }
@@ -102,14 +102,14 @@ static inline void mavlink_msg_nav_controller_output_pack_chan_send(mavlink_chan
 {
 	msg->msgid = MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT;
 
-	put_float_by_index(nav_roll, 0,  msg->payload); // Current desired roll in degrees
-	put_float_by_index(nav_pitch, 4,  msg->payload); // Current desired pitch in degrees
-	put_int16_t_by_index(nav_bearing, 8,  msg->payload); // Current desired heading in degrees
-	put_int16_t_by_index(target_bearing, 10,  msg->payload); // Bearing to current waypoint/target in degrees
-	put_uint16_t_by_index(wp_dist, 12,  msg->payload); // Distance to active waypoint in meters
-	put_float_by_index(alt_error, 14,  msg->payload); // Current altitude error in meters
-	put_float_by_index(aspd_error, 18,  msg->payload); // Current airspeed error in meters/second
-	put_float_by_index(xtrack_error, 22,  msg->payload); // Current crosstrack error on x-y plane in meters
+	put_float_by_index(nav_roll, 0,  MAVLINK_PAYLOAD(msg)); // Current desired roll in degrees
+	put_float_by_index(nav_pitch, 4,  MAVLINK_PAYLOAD(msg)); // Current desired pitch in degrees
+	put_int16_t_by_index(nav_bearing, 8,  MAVLINK_PAYLOAD(msg)); // Current desired heading in degrees
+	put_int16_t_by_index(target_bearing, 10,  MAVLINK_PAYLOAD(msg)); // Bearing to current waypoint/target in degrees
+	put_uint16_t_by_index(wp_dist, 12,  MAVLINK_PAYLOAD(msg)); // Distance to active waypoint in meters
+	put_float_by_index(alt_error, 14,  MAVLINK_PAYLOAD(msg)); // Current altitude error in meters
+	put_float_by_index(aspd_error, 18,  MAVLINK_PAYLOAD(msg)); // Current airspeed error in meters/second
+	put_float_by_index(xtrack_error, 22,  MAVLINK_PAYLOAD(msg)); // Current crosstrack error on x-y plane in meters
 
 	mavlink_finalize_message_chan_send(msg, chan, 26, 100);
 }
@@ -253,6 +253,6 @@ static inline void mavlink_msg_nav_controller_output_decode(const mavlink_messag
 	nav_controller_output->aspd_error = mavlink_msg_nav_controller_output_get_aspd_error(msg);
 	nav_controller_output->xtrack_error = mavlink_msg_nav_controller_output_get_xtrack_error(msg);
 #else
-	memcpy(nav_controller_output, msg->payload, 26);
+	memcpy(nav_controller_output, MAVLINK_PAYLOAD(msg), 26);
 #endif
 }

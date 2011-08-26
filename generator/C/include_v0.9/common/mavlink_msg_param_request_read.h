@@ -23,14 +23,14 @@ typedef struct __mavlink_param_request_read_t
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_param_request_read_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       uint8_t target_system, uint8_t target_component, const int8_t param_id[15], int16_t param_index)
+						       uint8_t target_system, uint8_t target_component, const int8_t *param_id, int16_t param_index)
 {
 	msg->msgid = MAVLINK_MSG_ID_PARAM_REQUEST_READ;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_int8_t_array_by_index(param_id, 2, 15,  msg->payload); // Onboard parameter id
-	put_int16_t_by_index(param_index, 17,  msg->payload); // Parameter index. Send -1 to use the param ID field as identifier
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_int8_t_array_by_index(param_id, 2, 15,  MAVLINK_PAYLOAD(msg)); // Onboard parameter id
+	put_int16_t_by_index(param_index, 17,  MAVLINK_PAYLOAD(msg)); // Parameter index. Send -1 to use the param ID field as identifier
 
 	return mavlink_finalize_message(msg, system_id, component_id, 19, 61);
 }
@@ -49,14 +49,14 @@ static inline uint16_t mavlink_msg_param_request_read_pack(uint8_t system_id, ui
  */
 static inline uint16_t mavlink_msg_param_request_read_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           uint8_t target_system,uint8_t target_component,const int8_t param_id[15],int16_t param_index)
+						           uint8_t target_system,uint8_t target_component,const int8_t *param_id,int16_t param_index)
 {
 	msg->msgid = MAVLINK_MSG_ID_PARAM_REQUEST_READ;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_int8_t_array_by_index(param_id, 2, 15,  msg->payload); // Onboard parameter id
-	put_int16_t_by_index(param_index, 17,  msg->payload); // Parameter index. Send -1 to use the param ID field as identifier
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_int8_t_array_by_index(param_id, 2, 15,  MAVLINK_PAYLOAD(msg)); // Onboard parameter id
+	put_int16_t_by_index(param_index, 17,  MAVLINK_PAYLOAD(msg)); // Parameter index. Send -1 to use the param ID field as identifier
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 19, 61);
 }
@@ -74,14 +74,14 @@ static inline uint16_t mavlink_msg_param_request_read_pack_chan(uint8_t system_i
  */
 static inline void mavlink_msg_param_request_read_pack_chan_send(mavlink_channel_t chan,
 							   mavlink_message_t* msg,
-						           uint8_t target_system,uint8_t target_component,const int8_t param_id[15],int16_t param_index)
+						           uint8_t target_system,uint8_t target_component,const int8_t *param_id,int16_t param_index)
 {
 	msg->msgid = MAVLINK_MSG_ID_PARAM_REQUEST_READ;
 
-	put_uint8_t_by_index(target_system, 0,  msg->payload); // System ID
-	put_uint8_t_by_index(target_component, 1,  msg->payload); // Component ID
-	put_int8_t_array_by_index(param_id, 2, 15,  msg->payload); // Onboard parameter id
-	put_int16_t_by_index(param_index, 17,  msg->payload); // Parameter index. Send -1 to use the param ID field as identifier
+	put_uint8_t_by_index(target_system, 0,  MAVLINK_PAYLOAD(msg)); // System ID
+	put_uint8_t_by_index(target_component, 1,  MAVLINK_PAYLOAD(msg)); // Component ID
+	put_int8_t_array_by_index(param_id, 2, 15,  MAVLINK_PAYLOAD(msg)); // Onboard parameter id
+	put_int16_t_by_index(param_index, 17,  MAVLINK_PAYLOAD(msg)); // Parameter index. Send -1 to use the param ID field as identifier
 
 	mavlink_finalize_message_chan_send(msg, chan, 19, 61);
 }
@@ -112,7 +112,7 @@ static inline uint16_t mavlink_msg_param_request_read_encode(uint8_t system_id, 
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_param_request_read_send(mavlink_channel_t chan, uint8_t target_system, uint8_t target_component, const int8_t param_id[15], int16_t param_index)
+static inline void mavlink_msg_param_request_read_send(mavlink_channel_t chan, uint8_t target_system, uint8_t target_component, const int8_t *param_id, int16_t param_index)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 19);
 	mavlink_msg_param_request_read_pack_chan_send(chan, msg, target_system, target_component, param_id, param_index);
@@ -177,6 +177,6 @@ static inline void mavlink_msg_param_request_read_decode(const mavlink_message_t
 	mavlink_msg_param_request_read_get_param_id(msg, param_request_read->param_id);
 	param_request_read->param_index = mavlink_msg_param_request_read_get_param_index(msg);
 #else
-	memcpy(param_request_read, msg->payload, 19);
+	memcpy(param_request_read, MAVLINK_PAYLOAD(msg), 19);
 #endif
 }

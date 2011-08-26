@@ -37,15 +37,15 @@ static inline uint16_t mavlink_msg_gps_raw_int_pack(uint8_t system_id, uint8_t c
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_uint8_t_by_index(fix_type, 8,  msg->payload); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
-	put_int32_t_by_index(lat, 9,  msg->payload); // Latitude in 1E7 degrees
-	put_int32_t_by_index(lon, 13,  msg->payload); // Longitude in 1E7 degrees
-	put_int32_t_by_index(alt, 17,  msg->payload); // Altitude in 1E3 meters (millimeters)
-	put_float_by_index(eph, 21,  msg->payload); // GPS HDOP
-	put_float_by_index(epv, 25,  msg->payload); // GPS VDOP
-	put_float_by_index(v, 29,  msg->payload); // GPS ground speed (m/s)
-	put_float_by_index(hdg, 33,  msg->payload); // Compass heading in degrees, 0..360 degrees
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_uint8_t_by_index(fix_type, 8,  MAVLINK_PAYLOAD(msg)); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
+	put_int32_t_by_index(lat, 9,  MAVLINK_PAYLOAD(msg)); // Latitude in 1E7 degrees
+	put_int32_t_by_index(lon, 13,  MAVLINK_PAYLOAD(msg)); // Longitude in 1E7 degrees
+	put_int32_t_by_index(alt, 17,  MAVLINK_PAYLOAD(msg)); // Altitude in 1E3 meters (millimeters)
+	put_float_by_index(eph, 21,  MAVLINK_PAYLOAD(msg)); // GPS HDOP
+	put_float_by_index(epv, 25,  MAVLINK_PAYLOAD(msg)); // GPS VDOP
+	put_float_by_index(v, 29,  MAVLINK_PAYLOAD(msg)); // GPS ground speed (m/s)
+	put_float_by_index(hdg, 33,  MAVLINK_PAYLOAD(msg)); // Compass heading in degrees, 0..360 degrees
 
 	return mavlink_finalize_message(msg, system_id, component_id, 37, 206);
 }
@@ -73,15 +73,15 @@ static inline uint16_t mavlink_msg_gps_raw_int_pack_chan(uint8_t system_id, uint
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_uint8_t_by_index(fix_type, 8,  msg->payload); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
-	put_int32_t_by_index(lat, 9,  msg->payload); // Latitude in 1E7 degrees
-	put_int32_t_by_index(lon, 13,  msg->payload); // Longitude in 1E7 degrees
-	put_int32_t_by_index(alt, 17,  msg->payload); // Altitude in 1E3 meters (millimeters)
-	put_float_by_index(eph, 21,  msg->payload); // GPS HDOP
-	put_float_by_index(epv, 25,  msg->payload); // GPS VDOP
-	put_float_by_index(v, 29,  msg->payload); // GPS ground speed (m/s)
-	put_float_by_index(hdg, 33,  msg->payload); // Compass heading in degrees, 0..360 degrees
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_uint8_t_by_index(fix_type, 8,  MAVLINK_PAYLOAD(msg)); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
+	put_int32_t_by_index(lat, 9,  MAVLINK_PAYLOAD(msg)); // Latitude in 1E7 degrees
+	put_int32_t_by_index(lon, 13,  MAVLINK_PAYLOAD(msg)); // Longitude in 1E7 degrees
+	put_int32_t_by_index(alt, 17,  MAVLINK_PAYLOAD(msg)); // Altitude in 1E3 meters (millimeters)
+	put_float_by_index(eph, 21,  MAVLINK_PAYLOAD(msg)); // GPS HDOP
+	put_float_by_index(epv, 25,  MAVLINK_PAYLOAD(msg)); // GPS VDOP
+	put_float_by_index(v, 29,  MAVLINK_PAYLOAD(msg)); // GPS ground speed (m/s)
+	put_float_by_index(hdg, 33,  MAVLINK_PAYLOAD(msg)); // Compass heading in degrees, 0..360 degrees
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 37, 206);
 }
@@ -108,15 +108,15 @@ static inline void mavlink_msg_gps_raw_int_pack_chan_send(mavlink_channel_t chan
 {
 	msg->msgid = MAVLINK_MSG_ID_GPS_RAW_INT;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_uint8_t_by_index(fix_type, 8,  msg->payload); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
-	put_int32_t_by_index(lat, 9,  msg->payload); // Latitude in 1E7 degrees
-	put_int32_t_by_index(lon, 13,  msg->payload); // Longitude in 1E7 degrees
-	put_int32_t_by_index(alt, 17,  msg->payload); // Altitude in 1E3 meters (millimeters)
-	put_float_by_index(eph, 21,  msg->payload); // GPS HDOP
-	put_float_by_index(epv, 25,  msg->payload); // GPS VDOP
-	put_float_by_index(v, 29,  msg->payload); // GPS ground speed (m/s)
-	put_float_by_index(hdg, 33,  msg->payload); // Compass heading in degrees, 0..360 degrees
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_uint8_t_by_index(fix_type, 8,  MAVLINK_PAYLOAD(msg)); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
+	put_int32_t_by_index(lat, 9,  MAVLINK_PAYLOAD(msg)); // Latitude in 1E7 degrees
+	put_int32_t_by_index(lon, 13,  MAVLINK_PAYLOAD(msg)); // Longitude in 1E7 degrees
+	put_int32_t_by_index(alt, 17,  MAVLINK_PAYLOAD(msg)); // Altitude in 1E3 meters (millimeters)
+	put_float_by_index(eph, 21,  MAVLINK_PAYLOAD(msg)); // GPS HDOP
+	put_float_by_index(epv, 25,  MAVLINK_PAYLOAD(msg)); // GPS VDOP
+	put_float_by_index(v, 29,  MAVLINK_PAYLOAD(msg)); // GPS ground speed (m/s)
+	put_float_by_index(hdg, 33,  MAVLINK_PAYLOAD(msg)); // Compass heading in degrees, 0..360 degrees
 
 	mavlink_finalize_message_chan_send(msg, chan, 37, 206);
 }
@@ -272,6 +272,6 @@ static inline void mavlink_msg_gps_raw_int_decode(const mavlink_message_t* msg, 
 	gps_raw_int->v = mavlink_msg_gps_raw_int_get_v(msg);
 	gps_raw_int->hdg = mavlink_msg_gps_raw_int_get_hdg(msg);
 #else
-	memcpy(gps_raw_int, msg->payload, 37);
+	memcpy(gps_raw_int, MAVLINK_PAYLOAD(msg), 37);
 #endif
 }

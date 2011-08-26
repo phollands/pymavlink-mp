@@ -23,8 +23,8 @@ static inline uint16_t mavlink_msg_set_mode_pack(uint8_t system_id, uint8_t comp
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MODE;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the mode
-	put_uint8_t_by_index(mode, 1,  msg->payload); // The new mode
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
+	put_uint8_t_by_index(mode, 1,  MAVLINK_PAYLOAD(msg)); // The new mode
 
 	return mavlink_finalize_message(msg, system_id, component_id, 2, 204);
 }
@@ -45,8 +45,8 @@ static inline uint16_t mavlink_msg_set_mode_pack_chan(uint8_t system_id, uint8_t
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MODE;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the mode
-	put_uint8_t_by_index(mode, 1,  msg->payload); // The new mode
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
+	put_uint8_t_by_index(mode, 1,  MAVLINK_PAYLOAD(msg)); // The new mode
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 204);
 }
@@ -66,8 +66,8 @@ static inline void mavlink_msg_set_mode_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_SET_MODE;
 
-	put_uint8_t_by_index(target, 0,  msg->payload); // The system setting the mode
-	put_uint8_t_by_index(mode, 1,  msg->payload); // The new mode
+	put_uint8_t_by_index(target, 0,  MAVLINK_PAYLOAD(msg)); // The system setting the mode
+	put_uint8_t_by_index(mode, 1,  MAVLINK_PAYLOAD(msg)); // The new mode
 
 	mavlink_finalize_message_chan_send(msg, chan, 2, 204);
 }
@@ -139,6 +139,6 @@ static inline void mavlink_msg_set_mode_decode(const mavlink_message_t* msg, mav
 	set_mode->target = mavlink_msg_set_mode_get_target(msg);
 	set_mode->mode = mavlink_msg_set_mode_get_mode(msg);
 #else
-	memcpy(set_mode, msg->payload, 2);
+	memcpy(set_mode, MAVLINK_PAYLOAD(msg), 2);
 #endif
 }

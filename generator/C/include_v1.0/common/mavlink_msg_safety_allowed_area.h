@@ -33,13 +33,13 @@ static inline uint16_t mavlink_msg_safety_allowed_area_pack(uint8_t system_id, u
 {
 	msg->msgid = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
 
-	put_float_by_index(p1x, 0,  msg->payload); // x position 1 / Latitude 1
-	put_float_by_index(p1y, 4,  msg->payload); // y position 1 / Longitude 1
-	put_float_by_index(p1z, 8,  msg->payload); // z position 1 / Altitude 1
-	put_float_by_index(p2x, 12,  msg->payload); // x position 2 / Latitude 2
-	put_float_by_index(p2y, 16,  msg->payload); // y position 2 / Longitude 2
-	put_float_by_index(p2z, 20,  msg->payload); // z position 2 / Altitude 2
-	put_uint8_t_by_index(frame, 24,  msg->payload); // Coordinate frame, as defined by MAV_FRAME enum in mavlink_types.h. Can be either global, GPS, right-handed with Z axis up or local, right handed, Z axis down.
+	put_float_by_index(p1x, 0,  MAVLINK_PAYLOAD(msg)); // x position 1 / Latitude 1
+	put_float_by_index(p1y, 4,  MAVLINK_PAYLOAD(msg)); // y position 1 / Longitude 1
+	put_float_by_index(p1z, 8,  MAVLINK_PAYLOAD(msg)); // z position 1 / Altitude 1
+	put_float_by_index(p2x, 12,  MAVLINK_PAYLOAD(msg)); // x position 2 / Latitude 2
+	put_float_by_index(p2y, 16,  MAVLINK_PAYLOAD(msg)); // y position 2 / Longitude 2
+	put_float_by_index(p2z, 20,  MAVLINK_PAYLOAD(msg)); // z position 2 / Altitude 2
+	put_uint8_t_by_index(frame, 24,  MAVLINK_PAYLOAD(msg)); // Coordinate frame, as defined by MAV_FRAME enum in mavlink_types.h. Can be either global, GPS, right-handed with Z axis up or local, right handed, Z axis down.
 
 	return mavlink_finalize_message(msg, system_id, component_id, 25, 50);
 }
@@ -65,13 +65,13 @@ static inline uint16_t mavlink_msg_safety_allowed_area_pack_chan(uint8_t system_
 {
 	msg->msgid = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
 
-	put_float_by_index(p1x, 0,  msg->payload); // x position 1 / Latitude 1
-	put_float_by_index(p1y, 4,  msg->payload); // y position 1 / Longitude 1
-	put_float_by_index(p1z, 8,  msg->payload); // z position 1 / Altitude 1
-	put_float_by_index(p2x, 12,  msg->payload); // x position 2 / Latitude 2
-	put_float_by_index(p2y, 16,  msg->payload); // y position 2 / Longitude 2
-	put_float_by_index(p2z, 20,  msg->payload); // z position 2 / Altitude 2
-	put_uint8_t_by_index(frame, 24,  msg->payload); // Coordinate frame, as defined by MAV_FRAME enum in mavlink_types.h. Can be either global, GPS, right-handed with Z axis up or local, right handed, Z axis down.
+	put_float_by_index(p1x, 0,  MAVLINK_PAYLOAD(msg)); // x position 1 / Latitude 1
+	put_float_by_index(p1y, 4,  MAVLINK_PAYLOAD(msg)); // y position 1 / Longitude 1
+	put_float_by_index(p1z, 8,  MAVLINK_PAYLOAD(msg)); // z position 1 / Altitude 1
+	put_float_by_index(p2x, 12,  MAVLINK_PAYLOAD(msg)); // x position 2 / Latitude 2
+	put_float_by_index(p2y, 16,  MAVLINK_PAYLOAD(msg)); // y position 2 / Longitude 2
+	put_float_by_index(p2z, 20,  MAVLINK_PAYLOAD(msg)); // z position 2 / Altitude 2
+	put_uint8_t_by_index(frame, 24,  MAVLINK_PAYLOAD(msg)); // Coordinate frame, as defined by MAV_FRAME enum in mavlink_types.h. Can be either global, GPS, right-handed with Z axis up or local, right handed, Z axis down.
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 25, 50);
 }
@@ -96,13 +96,13 @@ static inline void mavlink_msg_safety_allowed_area_pack_chan_send(mavlink_channe
 {
 	msg->msgid = MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA;
 
-	put_float_by_index(p1x, 0,  msg->payload); // x position 1 / Latitude 1
-	put_float_by_index(p1y, 4,  msg->payload); // y position 1 / Longitude 1
-	put_float_by_index(p1z, 8,  msg->payload); // z position 1 / Altitude 1
-	put_float_by_index(p2x, 12,  msg->payload); // x position 2 / Latitude 2
-	put_float_by_index(p2y, 16,  msg->payload); // y position 2 / Longitude 2
-	put_float_by_index(p2z, 20,  msg->payload); // z position 2 / Altitude 2
-	put_uint8_t_by_index(frame, 24,  msg->payload); // Coordinate frame, as defined by MAV_FRAME enum in mavlink_types.h. Can be either global, GPS, right-handed with Z axis up or local, right handed, Z axis down.
+	put_float_by_index(p1x, 0,  MAVLINK_PAYLOAD(msg)); // x position 1 / Latitude 1
+	put_float_by_index(p1y, 4,  MAVLINK_PAYLOAD(msg)); // y position 1 / Longitude 1
+	put_float_by_index(p1z, 8,  MAVLINK_PAYLOAD(msg)); // z position 1 / Altitude 1
+	put_float_by_index(p2x, 12,  MAVLINK_PAYLOAD(msg)); // x position 2 / Latitude 2
+	put_float_by_index(p2y, 16,  MAVLINK_PAYLOAD(msg)); // y position 2 / Longitude 2
+	put_float_by_index(p2z, 20,  MAVLINK_PAYLOAD(msg)); // z position 2 / Altitude 2
+	put_uint8_t_by_index(frame, 24,  MAVLINK_PAYLOAD(msg)); // Coordinate frame, as defined by MAV_FRAME enum in mavlink_types.h. Can be either global, GPS, right-handed with Z axis up or local, right handed, Z axis down.
 
 	mavlink_finalize_message_chan_send(msg, chan, 25, 50);
 }
@@ -234,6 +234,6 @@ static inline void mavlink_msg_safety_allowed_area_decode(const mavlink_message_
 	safety_allowed_area->p2z = mavlink_msg_safety_allowed_area_get_p2z(msg);
 	safety_allowed_area->frame = mavlink_msg_safety_allowed_area_get_frame(msg);
 #else
-	memcpy(safety_allowed_area, msg->payload, 25);
+	memcpy(safety_allowed_area, MAVLINK_PAYLOAD(msg), 25);
 #endif
 }

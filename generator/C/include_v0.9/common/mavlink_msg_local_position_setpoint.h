@@ -27,10 +27,10 @@ static inline uint16_t mavlink_msg_local_position_setpoint_pack(uint8_t system_i
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT;
 
-	put_float_by_index(x, 0,  msg->payload); // x position
-	put_float_by_index(y, 4,  msg->payload); // y position
-	put_float_by_index(z, 8,  msg->payload); // z position
-	put_float_by_index(yaw, 12,  msg->payload); // Desired yaw angle
+	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
+	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
+	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
+	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle
 
 	return mavlink_finalize_message(msg, system_id, component_id, 16, 40);
 }
@@ -53,10 +53,10 @@ static inline uint16_t mavlink_msg_local_position_setpoint_pack_chan(uint8_t sys
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT;
 
-	put_float_by_index(x, 0,  msg->payload); // x position
-	put_float_by_index(y, 4,  msg->payload); // y position
-	put_float_by_index(z, 8,  msg->payload); // z position
-	put_float_by_index(yaw, 12,  msg->payload); // Desired yaw angle
+	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
+	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
+	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
+	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16, 40);
 }
@@ -78,10 +78,10 @@ static inline void mavlink_msg_local_position_setpoint_pack_chan_send(mavlink_ch
 {
 	msg->msgid = MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT;
 
-	put_float_by_index(x, 0,  msg->payload); // x position
-	put_float_by_index(y, 4,  msg->payload); // y position
-	put_float_by_index(z, 8,  msg->payload); // z position
-	put_float_by_index(yaw, 12,  msg->payload); // Desired yaw angle
+	put_float_by_index(x, 0,  MAVLINK_PAYLOAD(msg)); // x position
+	put_float_by_index(y, 4,  MAVLINK_PAYLOAD(msg)); // y position
+	put_float_by_index(z, 8,  MAVLINK_PAYLOAD(msg)); // z position
+	put_float_by_index(yaw, 12,  MAVLINK_PAYLOAD(msg)); // Desired yaw angle
 
 	mavlink_finalize_message_chan_send(msg, chan, 16, 40);
 }
@@ -177,6 +177,6 @@ static inline void mavlink_msg_local_position_setpoint_decode(const mavlink_mess
 	local_position_setpoint->z = mavlink_msg_local_position_setpoint_get_z(msg);
 	local_position_setpoint->yaw = mavlink_msg_local_position_setpoint_get_yaw(msg);
 #else
-	memcpy(local_position_setpoint, msg->payload, 16);
+	memcpy(local_position_setpoint, MAVLINK_PAYLOAD(msg), 16);
 #endif
 }

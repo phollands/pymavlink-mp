@@ -39,16 +39,16 @@ static inline uint16_t mavlink_msg_scaled_imu_pack(uint8_t system_id, uint8_t co
 {
 	msg->msgid = MAVLINK_MSG_ID_SCALED_IMU;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_int16_t_by_index(xacc, 8,  msg->payload); // X acceleration (mg)
-	put_int16_t_by_index(yacc, 10,  msg->payload); // Y acceleration (mg)
-	put_int16_t_by_index(zacc, 12,  msg->payload); // Z acceleration (mg)
-	put_int16_t_by_index(xgyro, 14,  msg->payload); // Angular speed around X axis (millirad /sec)
-	put_int16_t_by_index(ygyro, 16,  msg->payload); // Angular speed around Y axis (millirad /sec)
-	put_int16_t_by_index(zgyro, 18,  msg->payload); // Angular speed around Z axis (millirad /sec)
-	put_int16_t_by_index(xmag, 20,  msg->payload); // X Magnetic field (milli tesla)
-	put_int16_t_by_index(ymag, 22,  msg->payload); // Y Magnetic field (milli tesla)
-	put_int16_t_by_index(zmag, 24,  msg->payload); // Z Magnetic field (milli tesla)
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_int16_t_by_index(xacc, 8,  MAVLINK_PAYLOAD(msg)); // X acceleration (mg)
+	put_int16_t_by_index(yacc, 10,  MAVLINK_PAYLOAD(msg)); // Y acceleration (mg)
+	put_int16_t_by_index(zacc, 12,  MAVLINK_PAYLOAD(msg)); // Z acceleration (mg)
+	put_int16_t_by_index(xgyro, 14,  MAVLINK_PAYLOAD(msg)); // Angular speed around X axis (millirad /sec)
+	put_int16_t_by_index(ygyro, 16,  MAVLINK_PAYLOAD(msg)); // Angular speed around Y axis (millirad /sec)
+	put_int16_t_by_index(zgyro, 18,  MAVLINK_PAYLOAD(msg)); // Angular speed around Z axis (millirad /sec)
+	put_int16_t_by_index(xmag, 20,  MAVLINK_PAYLOAD(msg)); // X Magnetic field (milli tesla)
+	put_int16_t_by_index(ymag, 22,  MAVLINK_PAYLOAD(msg)); // Y Magnetic field (milli tesla)
+	put_int16_t_by_index(zmag, 24,  MAVLINK_PAYLOAD(msg)); // Z Magnetic field (milli tesla)
 
 	return mavlink_finalize_message(msg, system_id, component_id, 26, 140);
 }
@@ -77,16 +77,16 @@ static inline uint16_t mavlink_msg_scaled_imu_pack_chan(uint8_t system_id, uint8
 {
 	msg->msgid = MAVLINK_MSG_ID_SCALED_IMU;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_int16_t_by_index(xacc, 8,  msg->payload); // X acceleration (mg)
-	put_int16_t_by_index(yacc, 10,  msg->payload); // Y acceleration (mg)
-	put_int16_t_by_index(zacc, 12,  msg->payload); // Z acceleration (mg)
-	put_int16_t_by_index(xgyro, 14,  msg->payload); // Angular speed around X axis (millirad /sec)
-	put_int16_t_by_index(ygyro, 16,  msg->payload); // Angular speed around Y axis (millirad /sec)
-	put_int16_t_by_index(zgyro, 18,  msg->payload); // Angular speed around Z axis (millirad /sec)
-	put_int16_t_by_index(xmag, 20,  msg->payload); // X Magnetic field (milli tesla)
-	put_int16_t_by_index(ymag, 22,  msg->payload); // Y Magnetic field (milli tesla)
-	put_int16_t_by_index(zmag, 24,  msg->payload); // Z Magnetic field (milli tesla)
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_int16_t_by_index(xacc, 8,  MAVLINK_PAYLOAD(msg)); // X acceleration (mg)
+	put_int16_t_by_index(yacc, 10,  MAVLINK_PAYLOAD(msg)); // Y acceleration (mg)
+	put_int16_t_by_index(zacc, 12,  MAVLINK_PAYLOAD(msg)); // Z acceleration (mg)
+	put_int16_t_by_index(xgyro, 14,  MAVLINK_PAYLOAD(msg)); // Angular speed around X axis (millirad /sec)
+	put_int16_t_by_index(ygyro, 16,  MAVLINK_PAYLOAD(msg)); // Angular speed around Y axis (millirad /sec)
+	put_int16_t_by_index(zgyro, 18,  MAVLINK_PAYLOAD(msg)); // Angular speed around Z axis (millirad /sec)
+	put_int16_t_by_index(xmag, 20,  MAVLINK_PAYLOAD(msg)); // X Magnetic field (milli tesla)
+	put_int16_t_by_index(ymag, 22,  MAVLINK_PAYLOAD(msg)); // Y Magnetic field (milli tesla)
+	put_int16_t_by_index(zmag, 24,  MAVLINK_PAYLOAD(msg)); // Z Magnetic field (milli tesla)
 
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26, 140);
 }
@@ -114,16 +114,16 @@ static inline void mavlink_msg_scaled_imu_pack_chan_send(mavlink_channel_t chan,
 {
 	msg->msgid = MAVLINK_MSG_ID_SCALED_IMU;
 
-	put_uint64_t_by_index(usec, 0,  msg->payload); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_int16_t_by_index(xacc, 8,  msg->payload); // X acceleration (mg)
-	put_int16_t_by_index(yacc, 10,  msg->payload); // Y acceleration (mg)
-	put_int16_t_by_index(zacc, 12,  msg->payload); // Z acceleration (mg)
-	put_int16_t_by_index(xgyro, 14,  msg->payload); // Angular speed around X axis (millirad /sec)
-	put_int16_t_by_index(ygyro, 16,  msg->payload); // Angular speed around Y axis (millirad /sec)
-	put_int16_t_by_index(zgyro, 18,  msg->payload); // Angular speed around Z axis (millirad /sec)
-	put_int16_t_by_index(xmag, 20,  msg->payload); // X Magnetic field (milli tesla)
-	put_int16_t_by_index(ymag, 22,  msg->payload); // Y Magnetic field (milli tesla)
-	put_int16_t_by_index(zmag, 24,  msg->payload); // Z Magnetic field (milli tesla)
+	put_uint64_t_by_index(usec, 0,  MAVLINK_PAYLOAD(msg)); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_int16_t_by_index(xacc, 8,  MAVLINK_PAYLOAD(msg)); // X acceleration (mg)
+	put_int16_t_by_index(yacc, 10,  MAVLINK_PAYLOAD(msg)); // Y acceleration (mg)
+	put_int16_t_by_index(zacc, 12,  MAVLINK_PAYLOAD(msg)); // Z acceleration (mg)
+	put_int16_t_by_index(xgyro, 14,  MAVLINK_PAYLOAD(msg)); // Angular speed around X axis (millirad /sec)
+	put_int16_t_by_index(ygyro, 16,  MAVLINK_PAYLOAD(msg)); // Angular speed around Y axis (millirad /sec)
+	put_int16_t_by_index(zgyro, 18,  MAVLINK_PAYLOAD(msg)); // Angular speed around Z axis (millirad /sec)
+	put_int16_t_by_index(xmag, 20,  MAVLINK_PAYLOAD(msg)); // X Magnetic field (milli tesla)
+	put_int16_t_by_index(ymag, 22,  MAVLINK_PAYLOAD(msg)); // Y Magnetic field (milli tesla)
+	put_int16_t_by_index(zmag, 24,  MAVLINK_PAYLOAD(msg)); // Z Magnetic field (milli tesla)
 
 	mavlink_finalize_message_chan_send(msg, chan, 26, 140);
 }
@@ -291,6 +291,6 @@ static inline void mavlink_msg_scaled_imu_decode(const mavlink_message_t* msg, m
 	scaled_imu->ymag = mavlink_msg_scaled_imu_get_ymag(msg);
 	scaled_imu->zmag = mavlink_msg_scaled_imu_get_zmag(msg);
 #else
-	memcpy(scaled_imu, msg->payload, 26);
+	memcpy(scaled_imu, MAVLINK_PAYLOAD(msg), 26);
 #endif
 }

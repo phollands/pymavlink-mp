@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol built from common.xml
  *	@see http://pixhawk.ethz.ch/software/mavlink
- *	Generated on Wed Aug 24 10:57:17 2011
+ *	Generated on Fri Aug 26 14:04:06 2011
  */
 #ifndef MAVLINK_H
 #define MAVLINK_H
