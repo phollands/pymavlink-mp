@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol generated from pixhawk.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 09:46:52 2011
+ *	Generated on Fri Aug 26 10:31:45 2011
  */
 #ifndef PIXHAWK_H
 #define PIXHAWK_H

@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ualberta.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 09:46:52 2011
+ *	Generated on Fri Aug 26 10:31:45 2011
  */
 #ifndef UALBERTA_TESTSUITE_H
 #define UALBERTA_TESTSUITE_H
@@ -15,15 +15,15 @@ static void mavlink_test_nav_filter_bias(uint8_t system_id, uint8_t component_id
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        int i;
+        uint16_t i;
 	mavlink_nav_filter_bias_t packet2, packet1 = {
-		.usec = 9223372036854775807LL,
-	.accel_0 = 73.0,
-	.accel_1 = 101.0,
-	.accel_2 = 129.0,
-	.gyro_0 = 157.0,
-	.gyro_1 = 185.0,
-	.gyro_2 = 213.0,
+		9223372036854775807ULL,
+	73.0,
+	101.0,
+	129.0,
+	157.0,
+	185.0,
+	213.0,
 	};
 	mavlink_msg_nav_filter_bias_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_nav_filter_bias_decode(&msg, &packet2);
@@ -41,14 +41,14 @@ static void mavlink_test_radio_calibration(uint8_t system_id, uint8_t component_
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        int i;
+        uint16_t i;
 	mavlink_radio_calibration_t packet2, packet1 = {
-		.aileron = "17235",
-	.elevator = "17547",
-	.rudder = "17859",
-	.gyro = "18171",
-	.pitch = "18379",
-	.throttle = "18899",
+		{ 17235, 17236, 17237 },
+	{ 17547, 17548, 17549 },
+	{ 17859, 17860, 17861 },
+	{ 18171, 18172 },
+	{ 18379, 18380, 18381, 18382, 18383 },
+	{ 18899, 18900, 18901, 18902, 18903 },
 	};
 	mavlink_msg_radio_calibration_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_radio_calibration_decode(&msg, &packet2);
@@ -66,11 +66,11 @@ static void mavlink_test_ualberta_sys_status(uint8_t system_id, uint8_t componen
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        int i;
+        uint16_t i;
 	mavlink_ualberta_sys_status_t packet2, packet1 = {
-		.mode = 5,
-	.nav_mode = 72,
-	.pilot = 139,
+		5,
+	72,
+	139,
 	};
 	mavlink_msg_ualberta_sys_status_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_ualberta_sys_status_decode(&msg, &packet2);

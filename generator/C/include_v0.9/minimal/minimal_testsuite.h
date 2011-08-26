@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from minimal.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 09:46:50 2011
+ *	Generated on Fri Aug 26 10:31:43 2011
  */
 #ifndef MINIMAL_TESTSUITE_H
 #define MINIMAL_TESTSUITE_H
@@ -15,10 +15,11 @@ static void mavlink_test_heartbeat(uint8_t system_id, uint8_t component_id)
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        int i;
+        uint16_t i;
 	mavlink_heartbeat_t packet2, packet1 = {
-		.type = 5,
-	.autopilot = 72,
+		5,
+	72,
+	139,
 	};
 	mavlink_msg_heartbeat_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_heartbeat_decode(&msg, &packet2);

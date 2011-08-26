@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol generated from minimal.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 09:46:52 2011
+ *	Generated on Fri Aug 26 10:31:45 2011
  */
 #ifndef MINIMAL_H
 #define MINIMAL_H

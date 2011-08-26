@@ -271,9 +271,9 @@ static void mavlink_test_${name_lower}(uint8_t system_id, uint8_t component_id)
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        int i;
+        uint16_t i;
 	mavlink_${name_lower}_t packet2, packet1 = {
-		${{arg_fields:.${name} = ${c_test_value},
+		${{ordered_fields:${c_test_value},
 	}}};
 	mavlink_msg_${name_lower}_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_${name_lower}_decode(&msg, &packet2);
@@ -353,10 +353,10 @@ def generate_one(basename, xml):
                 f.decode_right = ', %s->%s' % (m.name_lower, f.name)
                 f.return_type = 'uint16_t'
                 f.get_arg = ', %s *%s' % (f.type, f.name)
-                if f.type == 'int8_t':
-                    f.c_test_value = '(int8_t *)"%s"' % f.test_value
-                else:
+                if f.type == 'char':
                     f.c_test_value = '"%s"' % f.test_value
+                else:
+                    f.c_test_value = '{ %s }' % ', '.join(f.test_value)
             else:
                 f.array_suffix = ''
                 f.array_prefix = ''
@@ -371,6 +371,8 @@ def generate_one(basename, xml):
                 if f.type == 'char':
                     f.c_test_value = "'%s'" % f.test_value
                 elif f.type == 'uint64_t':
+                    f.c_test_value = "%sULL" % f.test_value                    
+                elif f.type == 'int64_t':
                     f.c_test_value = "%sLL" % f.test_value                    
                 else:
                     f.c_test_value = f.test_value

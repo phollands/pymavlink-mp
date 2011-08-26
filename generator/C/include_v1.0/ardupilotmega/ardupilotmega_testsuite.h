@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ardupilotmega.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 09:46:51 2011
+ *	Generated on Fri Aug 26 10:31:44 2011
  */
 #ifndef ARDUPILOTMEGA_TESTSUITE_H
 #define ARDUPILOTMEGA_TESTSUITE_H
@@ -15,20 +15,20 @@ static void mavlink_test_sensor_offsets(uint8_t system_id, uint8_t component_id)
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        int i;
+        uint16_t i;
 	mavlink_sensor_offsets_t packet2, packet1 = {
-		.mag_ofs_x = 19107,
-	.mag_ofs_y = 19211,
-	.mag_ofs_z = 19315,
-	.mag_declination = 17.0,
-	.raw_press = 963497672,
-	.raw_temp = 963497880,
-	.gyro_cal_x = 101.0,
-	.gyro_cal_y = 129.0,
-	.gyro_cal_z = 157.0,
-	.accel_cal_x = 185.0,
-	.accel_cal_y = 213.0,
-	.accel_cal_z = 241.0,
+		17.0,
+	963497672,
+	963497880,
+	101.0,
+	129.0,
+	157.0,
+	185.0,
+	213.0,
+	241.0,
+	19107,
+	19211,
+	19315,
 	};
 	mavlink_msg_sensor_offsets_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_sensor_offsets_decode(&msg, &packet2);
@@ -46,13 +46,13 @@ static void mavlink_test_set_mag_offsets(uint8_t system_id, uint8_t component_id
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        int i;
+        uint16_t i;
 	mavlink_set_mag_offsets_t packet2, packet1 = {
-		.target_system = 151,
-	.target_component = 218,
-	.mag_ofs_x = 17235,
-	.mag_ofs_y = 17339,
-	.mag_ofs_z = 17443,
+		17235,
+	17339,
+	17443,
+	151,
+	218,
 	};
 	mavlink_msg_set_mag_offsets_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_set_mag_offsets_decode(&msg, &packet2);
