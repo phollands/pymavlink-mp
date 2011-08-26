@@ -1,7 +1,6 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ualberta.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 14:04:06 2011
  */
 #ifndef UALBERTA_TESTSUITE_H
 #define UALBERTA_TESTSUITE_H

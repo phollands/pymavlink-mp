@@ -1,7 +1,6 @@
 /** @file
  *	@brief MAVLink comm protocol built from test.xml
  *	@see http://pixhawk.ethz.ch/software/mavlink
- *	Generated on Fri Aug 26 14:04:06 2011
  */
 #ifndef MAVLINK_H
 #define MAVLINK_H
@@ -18,6 +17,7 @@
 #define MAVLINK_CRC_EXTRA 0
 #endif
 
+#include "version.h"
 #include "test.h"
 
 #endif // MAVLINK_H
