@@ -296,6 +296,7 @@ static void mavlink_test_${name_lower}(uint8_t system_id, uint8_t component_id)
 	}}};
 	mavlink_msg_${name_lower}_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_${name_lower}_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 	mavlink_msg_${name_lower}_pack(system_id, component_id, &msg ${{arg_fields:, packet1.${name} }});
 	mavlink_msg_${name_lower}_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg ${{arg_fields:, packet1.${name} }});
         mavlink_msg_to_send_buffer(buffer, &msg);
