@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ardupilotmega.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on Fri Aug 26 11:31:01 2011
+ *	Generated on Fri Aug 26 13:23:45 2011
  */
 #ifndef ARDUPILOTMEGA_TESTSUITE_H
 #define ARDUPILOTMEGA_TESTSUITE_H
@@ -46,6 +46,7 @@ static void mavlink_test_sensor_offsets(uint8_t system_id, uint8_t component_id)
 	};
 	mavlink_msg_sensor_offsets_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_sensor_offsets_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 	mavlink_msg_sensor_offsets_pack(system_id, component_id, &msg , packet1.mag_ofs_x , packet1.mag_ofs_y , packet1.mag_ofs_z , packet1.mag_declination , packet1.raw_press , packet1.raw_temp , packet1.gyro_cal_x , packet1.gyro_cal_y , packet1.gyro_cal_z , packet1.accel_cal_x , packet1.accel_cal_y , packet1.accel_cal_z );
 	mavlink_msg_sensor_offsets_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.mag_ofs_x , packet1.mag_ofs_y , packet1.mag_ofs_z , packet1.mag_declination , packet1.raw_press , packet1.raw_temp , packet1.gyro_cal_x , packet1.gyro_cal_y , packet1.gyro_cal_z , packet1.accel_cal_x , packet1.accel_cal_y , packet1.accel_cal_z );
         mavlink_msg_to_send_buffer(buffer, &msg);
@@ -70,6 +71,7 @@ static void mavlink_test_set_mag_offsets(uint8_t system_id, uint8_t component_id
 	};
 	mavlink_msg_set_mag_offsets_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_set_mag_offsets_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 	mavlink_msg_set_mag_offsets_pack(system_id, component_id, &msg , packet1.target_system , packet1.target_component , packet1.mag_ofs_x , packet1.mag_ofs_y , packet1.mag_ofs_z );
 	mavlink_msg_set_mag_offsets_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.target_component , packet1.mag_ofs_x , packet1.mag_ofs_y , packet1.mag_ofs_z );
         mavlink_msg_to_send_buffer(buffer, &msg);

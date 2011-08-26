@@ -1,6 +1,6 @@
-CFLAGS = -g -Wall -Os
+CFLAGS = -g -Wall 
 TESTPROTOCOL = common
-ALLPROTOCOLS = minimal common pixhawk ardupilotmega slugs ualberta
+ALLPROTOCOLS = minimal test common pixhawk ardupilotmega slugs ualberta
 
 all: 
 	for p in ${ALLPROTOCOLS}; do make -f Makefile build TESTPROTOCOL=$$p; done

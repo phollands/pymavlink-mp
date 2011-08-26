@@ -1,7 +1,7 @@
 /** @file
  *	@brief MAVLink comm protocol built from ualberta.xml
  *	@see http://pixhawk.ethz.ch/software/mavlink
- *	Generated on Fri Aug 26 11:31:01 2011
+ *	Generated on Fri Aug 26 13:23:45 2011
  */
 #ifndef MAVLINK_H
 #define MAVLINK_H
