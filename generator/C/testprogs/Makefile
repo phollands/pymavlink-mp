@@ -1,4 +1,4 @@
-CFLAGS = -g -Wall 
+CFLAGS = -g -Wall -Os
 TESTPROTOCOL = common
 ALLPROTOCOLS = minimal test common pixhawk ardupilotmega slugs ualberta
 
