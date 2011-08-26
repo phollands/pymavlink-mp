@@ -253,6 +253,21 @@ static inline void put_int8_t_array_by_index(const int8_t *b, uint8_t wire_offse
 	memcpy(&buffer[wire_offset], b, array_length);
 }
 
+/*
+ * Place a uint16_t array into a buffer
+ */
+static inline void put_uint16_t_array_by_index(const uint16_t *b, uint8_t wire_offset, uint8_t array_length, uint8_t *buffer)
+{
+#if MAVLINK_NEED_BYTE_SWAP
+	uint16_t i;
+	for (i=0; i<array_length; i++) {
+		put_uint16_t_by_index(b[i], wire_offset+i*sizeof(b[0]), buffer+i*sizeof(b[0]));
+	}
+#else
+	memcpy(&buffer[wire_offset], b, array_length*sizeof(b[0]));
+#endif
+}
+
 #define MAVLINK_MSG_RETURN_int8_t(msg, wire_offset) (uint8_t)MAVLINK_PAYLOAD(msg)[wire_offset]
 #define MAVLINK_MSG_RETURN_uint8_t(msg, wire_offset) (uint8_t)MAVLINK_PAYLOAD(msg)[wire_offset]
 
@@ -370,6 +385,20 @@ static inline uint16_t MAVLINK_MSG_RETURN_int8_t_array(const mavlink_message_t *
 {
 	memcpy(value, &MAVLINK_PAYLOAD(msg)[wire_offset], array_length);
 	return array_length;
+}
+
+static inline uint16_t MAVLINK_MSG_RETURN_uint16_t_array(const mavlink_message_t *msg, uint16_t *value, 
+							 uint8_t array_length, uint8_t wire_offset)
+{
+#if MAVLINK_NEED_BYTE_SWAP
+	uint16_t i;
+	for (i=0; i<array_length; i++) {
+		value[i] = MAVLINK_MSG_RETURN_uint16_t(msg, wire_offset+i*sizeof(value[0]));
+	}
+#else
+	memcpy(value, &MAVLINK_PAYLOAD(msg)[wire_offset], array_length);
+#endif
+	return array_length*sizeof(value[0]);
 }
 
 /*
