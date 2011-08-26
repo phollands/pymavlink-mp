@@ -11,6 +11,26 @@ import mavparse, mavtemplate
 
 t = mavtemplate.MAVTemplate()
 
+def generate_version_h(directory, xml):
+    '''generate version.h'''
+    f = open(os.path.join(directory, "version.h"), mode='w')
+    t.write(f,'''
+/** @file
+ *	@brief MAVLink comm protocol built from ${basename}.xml
+ *	@see http://pixhawk.ethz.ch/software/mavlink
+ */
+#ifndef MAVLINK_VERSION_H
+#define MAVLINK_VERSION_H
+
+#define MAVLINK_BUILD_DATE "${parse_time}"
+#define MAVLINK_WIRE_PROTOCOL_VERSION "${wire_protocol_version}"
+
+#include "mavlink.h"
+
+#endif // MAVLINK_VERSION_H
+''', xml)
+    f.close()
+
 def generate_mavlink_h(directory, xml):
     '''generate mavlink.h'''
     f = open(os.path.join(directory, "mavlink.h"), mode='w')
@@ -18,7 +38,6 @@ def generate_mavlink_h(directory, xml):
 /** @file
  *	@brief MAVLink comm protocol built from ${basename}.xml
  *	@see http://pixhawk.ethz.ch/software/mavlink
- *	Generated on ${parse_time}
  */
 #ifndef MAVLINK_H
 #define MAVLINK_H
@@ -35,6 +54,7 @@ def generate_mavlink_h(directory, xml):
 #define MAVLINK_CRC_EXTRA ${crc_extra_define}
 #endif
 
+#include "version.h"
 #include "${basename}.h"
 
 #endif // MAVLINK_H
@@ -48,7 +68,6 @@ def generate_main_h(directory, xml):
 /** @file
  *	@brief MAVLink comm protocol generated from ${basename}.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on ${parse_time}
  */
 #ifndef ${basename_upper}_H
 #define ${basename_upper}_H
@@ -259,7 +278,6 @@ def generate_testsuite_h(directory, xml):
 /** @file
  *	@brief MAVLink comm protocol testsuite generated from ${basename}.xml
  *	@see http://qgroundcontrol.org/mavlink/
- *	Generated on ${parse_time}
  */
 #ifndef ${basename_upper}_TESTSUITE_H
 #define ${basename_upper}_TESTSUITE_H
@@ -418,6 +436,7 @@ def generate_one(basename, xml):
                 f.putname = f.const_value
 
     generate_mavlink_h(directory, xml)
+    generate_version_h(directory, xml)
     generate_main_h(directory, xml)
     for m in xml.message:
         generate_message_h(directory, m)
