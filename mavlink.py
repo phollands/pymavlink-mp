@@ -137,6 +137,7 @@ MAV_CMD_PREFLIGHT_CALIBRATION = 241 # Trigger calibration. This command will be 
                         # flight mode.
 MAV_CMD_PREFLIGHT_STORAGE = 245 # Request storage of different parameter values and logs. This command
                         # will be only accepted if in pre-flight mode.
+MAV_CMD_ENUM_END = 246 # 
 
 # MAV_DATA_STREAM
 MAV_DATA_STREAM_ALL = 0 # Enable all data streams
@@ -149,6 +150,7 @@ MAV_DATA_STREAM_POSITION = 6 # Enable LOCAL_POSITION, GLOBAL_POSITION/GLOBAL_POS
 MAV_DATA_STREAM_EXTRA1 = 10 # Dependent on the autopilot
 MAV_DATA_STREAM_EXTRA2 = 11 # Dependent on the autopilot
 MAV_DATA_STREAM_EXTRA3 = 12 # Dependent on the autopilot
+MAV_DATA_STREAM_ENUM_END = 13 # 
 
 # MAV_ROI
 MAV_ROI_NONE = 0 # No region of interest.
@@ -156,6 +158,7 @@ MAV_ROI_WPNEXT = 1 # Point toward next waypoint.
 MAV_ROI_WPINDEX = 2 # Point toward given waypoint.
 MAV_ROI_LOCATION = 3 # Point toward fixed location.
 MAV_ROI_TARGET = 4 # Point toward of given id.
+MAV_ROI_ENUM_END = 5 # 
 
 # message IDs
 MAVLINK_MSG_ID_BAD_DATA = -1
