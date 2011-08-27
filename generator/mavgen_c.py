@@ -485,7 +485,6 @@ def generate_one(basename, xml):
     for m in xml.message:
         generate_message_h(directory, m)
     generate_testsuite_h(directory, xml)
-    copy_fixed_headers(basename, xml)
 
 
 def generate(basename, xml_list):
@@ -493,3 +492,4 @@ def generate(basename, xml_list):
 
     for xml in xml_list:
         generate_one(basename, xml)
+    copy_fixed_headers(basename, xml_list[0])
