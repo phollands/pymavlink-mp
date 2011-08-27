@@ -60,7 +60,7 @@ static inline uint16_t mavlink_msg_gps_date_time_pack(uint8_t system_id, uint8_t
 	put_uint8_t_by_index(msg, 5, sec); // Sec reported by Gps  
 	put_uint8_t_by_index(msg, 6, visSat); // Visible sattelites reported by Gps  
 
-	return mavlink_finalize_message(msg, system_id, component_id, 7, 16);
+	return mavlink_finalize_message(msg, system_id, component_id, 7);
 }
 
 /**
@@ -92,7 +92,7 @@ static inline uint16_t mavlink_msg_gps_date_time_pack_chan(uint8_t system_id, ui
 	put_uint8_t_by_index(msg, 5, sec); // Sec reported by Gps  
 	put_uint8_t_by_index(msg, 6, visSat); // Visible sattelites reported by Gps  
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 7, 16);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 7);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -123,7 +123,7 @@ static inline void mavlink_msg_gps_date_time_pack_chan_send(mavlink_channel_t ch
 	put_uint8_t_by_index(msg, 5, sec); // Sec reported by Gps  
 	put_uint8_t_by_index(msg, 6, visSat); // Visible sattelites reported by Gps  
 
-	mavlink_finalize_message_chan_send(msg, chan, 7, 16);
+	mavlink_finalize_message_chan_send(msg, chan, 7);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -52,7 +52,7 @@ static inline uint16_t mavlink_msg_request_data_stream_pack(uint8_t system_id, u
 	put_uint16_t_by_index(msg, 3, req_message_rate); // Update rate in Hertz
 	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
 
-	return mavlink_finalize_message(msg, system_id, component_id, 6, 193);
+	return mavlink_finalize_message(msg, system_id, component_id, 6);
 }
 
 /**
@@ -80,7 +80,7 @@ static inline uint16_t mavlink_msg_request_data_stream_pack_chan(uint8_t system_
 	put_uint16_t_by_index(msg, 3, req_message_rate); // Update rate in Hertz
 	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6, 193);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -107,7 +107,7 @@ static inline void mavlink_msg_request_data_stream_pack_chan_send(mavlink_channe
 	put_uint16_t_by_index(msg, 3, req_message_rate); // Update rate in Hertz
 	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
 
-	mavlink_finalize_message_chan_send(msg, chan, 6, 193);
+	mavlink_finalize_message_chan_send(msg, chan, 6);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

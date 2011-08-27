@@ -1839,6 +1839,36 @@ static void mavlink_test_optical_flow(uint8_t system_id, uint8_t component_id)
 	mavlink_msg_optical_flow_send(MAVLINK_COMM_2 , packet1.time , packet1.sensor_id , packet1.flow_x , packet1.flow_y , packet1.quality , packet1.ground_distance );
 }
 
+static void mavlink_test_object_detection_event(uint8_t system_id, uint8_t component_id)
+{
+	mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t i;
+	mavlink_object_detection_event_t packet2, packet1 = {
+		963497464,
+	17443,
+	151,
+	"HIJKLMNOPQRSTUVWXYZ",
+	22,
+	213.0,
+	241.0,
+	};
+	if (sizeof(packet2) != 36) {
+		packet2 = packet1; // cope with alignment within the packet
+	}
+	mavlink_msg_object_detection_event_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_object_detection_event_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+	mavlink_msg_object_detection_event_pack(system_id, component_id, &msg , packet1.time , packet1.object_id , packet1.type , packet1.name , packet1.quality , packet1.bearing , packet1.distance );
+	mavlink_msg_object_detection_event_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.time , packet1.object_id , packet1.type , packet1.name , packet1.quality , packet1.bearing , packet1.distance );
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+        	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+	mavlink_msg_object_detection_event_pack_chan_send(MAVLINK_COMM_1, &msg , packet1.time , packet1.object_id , packet1.type , packet1.name , packet1.quality , packet1.bearing , packet1.distance );
+	mavlink_msg_object_detection_event_send(MAVLINK_COMM_2 , packet1.time , packet1.object_id , packet1.type , packet1.name , packet1.quality , packet1.bearing , packet1.distance );
+}
+
 static void mavlink_test_debug_vect(uint8_t system_id, uint8_t component_id)
 {
 	mavlink_message_t msg;
@@ -2033,6 +2063,7 @@ static void mavlink_test_common(uint8_t system_id, uint8_t component_id)
 	mavlink_test_command(system_id, component_id);
 	mavlink_test_command_ack(system_id, component_id);
 	mavlink_test_optical_flow(system_id, component_id);
+	mavlink_test_object_detection_event(system_id, component_id);
 	mavlink_test_debug_vect(system_id, component_id);
 	mavlink_test_named_value_float(system_id, component_id);
 	mavlink_test_named_value_int(system_id, component_id);

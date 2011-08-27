@@ -61,7 +61,7 @@ static inline uint16_t mavlink_msg_radio_calibration_pack(uint8_t system_id, uin
 	put_uint16_t_array_by_index(msg, 22, pitch, 5); // Pitch curve setpoints (every 25%)
 	put_uint16_t_array_by_index(msg, 32, throttle, 5); // Throttle curve setpoints (every 25%)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 42, 71);
+	return mavlink_finalize_message(msg, system_id, component_id, 42);
 }
 
 /**
@@ -91,7 +91,7 @@ static inline uint16_t mavlink_msg_radio_calibration_pack_chan(uint8_t system_id
 	put_uint16_t_array_by_index(msg, 22, pitch, 5); // Pitch curve setpoints (every 25%)
 	put_uint16_t_array_by_index(msg, 32, throttle, 5); // Throttle curve setpoints (every 25%)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 42, 71);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 42);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -120,7 +120,7 @@ static inline void mavlink_msg_radio_calibration_pack_chan_send(mavlink_channel_
 	put_uint16_t_array_by_index(msg, 22, pitch, 5); // Pitch curve setpoints (every 25%)
 	put_uint16_t_array_by_index(msg, 32, throttle, 5); // Throttle curve setpoints (every 25%)
 
-	mavlink_finalize_message_chan_send(msg, chan, 42, 71);
+	mavlink_finalize_message_chan_send(msg, chan, 42);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

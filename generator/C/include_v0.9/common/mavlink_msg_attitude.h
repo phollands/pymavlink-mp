@@ -60,7 +60,7 @@ static inline uint16_t mavlink_msg_attitude_pack(uint8_t system_id, uint8_t comp
 	put_float_by_index(msg, 24, pitchspeed); // Pitch angular speed (rad/s)
 	put_float_by_index(msg, 28, yawspeed); // Yaw angular speed (rad/s)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 32, 66);
+	return mavlink_finalize_message(msg, system_id, component_id, 32);
 }
 
 /**
@@ -92,7 +92,7 @@ static inline uint16_t mavlink_msg_attitude_pack_chan(uint8_t system_id, uint8_t
 	put_float_by_index(msg, 24, pitchspeed); // Pitch angular speed (rad/s)
 	put_float_by_index(msg, 28, yawspeed); // Yaw angular speed (rad/s)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 66);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -123,7 +123,7 @@ static inline void mavlink_msg_attitude_pack_chan_send(mavlink_channel_t chan,
 	put_float_by_index(msg, 24, pitchspeed); // Pitch angular speed (rad/s)
 	put_float_by_index(msg, 28, yawspeed); // Yaw angular speed (rad/s)
 
-	mavlink_finalize_message_chan_send(msg, chan, 32, 66);
+	mavlink_finalize_message_chan_send(msg, chan, 32);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

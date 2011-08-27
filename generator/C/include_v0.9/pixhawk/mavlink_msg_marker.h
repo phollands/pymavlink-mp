@@ -60,7 +60,7 @@ static inline uint16_t mavlink_msg_marker_pack(uint8_t system_id, uint8_t compon
 	put_float_by_index(msg, 18, pitch); // pitch orientation
 	put_float_by_index(msg, 22, yaw); // yaw orientation
 
-	return mavlink_finalize_message(msg, system_id, component_id, 26, 136);
+	return mavlink_finalize_message(msg, system_id, component_id, 26);
 }
 
 /**
@@ -92,7 +92,7 @@ static inline uint16_t mavlink_msg_marker_pack_chan(uint8_t system_id, uint8_t c
 	put_float_by_index(msg, 18, pitch); // pitch orientation
 	put_float_by_index(msg, 22, yaw); // yaw orientation
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26, 136);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -123,7 +123,7 @@ static inline void mavlink_msg_marker_pack_chan_send(mavlink_channel_t chan,
 	put_float_by_index(msg, 18, pitch); // pitch orientation
 	put_float_by_index(msg, 22, yaw); // yaw orientation
 
-	mavlink_finalize_message_chan_send(msg, chan, 26, 136);
+	mavlink_finalize_message_chan_send(msg, chan, 26);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

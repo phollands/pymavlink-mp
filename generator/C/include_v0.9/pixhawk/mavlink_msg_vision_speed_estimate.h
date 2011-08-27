@@ -48,7 +48,7 @@ static inline uint16_t mavlink_msg_vision_speed_estimate_pack(uint8_t system_id,
 	put_float_by_index(msg, 12, y); // Global Y speed
 	put_float_by_index(msg, 16, z); // Global Z speed
 
-	return mavlink_finalize_message(msg, system_id, component_id, 20, 208);
+	return mavlink_finalize_message(msg, system_id, component_id, 20);
 }
 
 /**
@@ -74,7 +74,7 @@ static inline uint16_t mavlink_msg_vision_speed_estimate_pack_chan(uint8_t syste
 	put_float_by_index(msg, 12, y); // Global Y speed
 	put_float_by_index(msg, 16, z); // Global Z speed
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 208);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -99,7 +99,7 @@ static inline void mavlink_msg_vision_speed_estimate_pack_chan_send(mavlink_chan
 	put_float_by_index(msg, 12, y); // Global Y speed
 	put_float_by_index(msg, 16, z); // Global Z speed
 
-	mavlink_finalize_message_chan_send(msg, chan, 20, 208);
+	mavlink_finalize_message_chan_send(msg, chan, 20);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

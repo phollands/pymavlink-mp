@@ -64,7 +64,7 @@ static inline uint16_t mavlink_msg_control_status_pack(uint8_t system_id, uint8_
 	put_uint8_t_by_index(msg, 6, control_pos_z); // 0: Z position control disabled, 1: enabled
 	put_uint8_t_by_index(msg, 7, control_pos_yaw); // 0: Yaw angle control disabled, 1: enabled
 
-	return mavlink_finalize_message(msg, system_id, component_id, 8, 157);
+	return mavlink_finalize_message(msg, system_id, component_id, 8);
 }
 
 /**
@@ -98,7 +98,7 @@ static inline uint16_t mavlink_msg_control_status_pack_chan(uint8_t system_id, u
 	put_uint8_t_by_index(msg, 6, control_pos_z); // 0: Z position control disabled, 1: enabled
 	put_uint8_t_by_index(msg, 7, control_pos_yaw); // 0: Yaw angle control disabled, 1: enabled
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8, 157);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -131,7 +131,7 @@ static inline void mavlink_msg_control_status_pack_chan_send(mavlink_channel_t c
 	put_uint8_t_by_index(msg, 6, control_pos_z); // 0: Z position control disabled, 1: enabled
 	put_uint8_t_by_index(msg, 7, control_pos_yaw); // 0: Yaw angle control disabled, 1: enabled
 
-	mavlink_finalize_message_chan_send(msg, chan, 8, 157);
+	mavlink_finalize_message_chan_send(msg, chan, 8);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

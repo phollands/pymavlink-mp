@@ -56,7 +56,7 @@ static inline uint16_t mavlink_msg_watchdog_process_status_pack(uint8_t system_i
 	put_int32_t_by_index(msg, 6, pid); // PID
 	put_uint16_t_by_index(msg, 10, crashes); // Number of crashes
 
-	return mavlink_finalize_message(msg, system_id, component_id, 12, 92);
+	return mavlink_finalize_message(msg, system_id, component_id, 12);
 }
 
 /**
@@ -86,7 +86,7 @@ static inline uint16_t mavlink_msg_watchdog_process_status_pack_chan(uint8_t sys
 	put_int32_t_by_index(msg, 6, pid); // PID
 	put_uint16_t_by_index(msg, 10, crashes); // Number of crashes
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 12, 92);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 12);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -115,7 +115,7 @@ static inline void mavlink_msg_watchdog_process_status_pack_chan_send(mavlink_ch
 	put_int32_t_by_index(msg, 6, pid); // PID
 	put_uint16_t_by_index(msg, 10, crashes); // Number of crashes
 
-	mavlink_finalize_message_chan_send(msg, chan, 12, 92);
+	mavlink_finalize_message_chan_send(msg, chan, 12);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

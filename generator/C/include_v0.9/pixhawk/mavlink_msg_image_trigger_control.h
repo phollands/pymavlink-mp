@@ -36,7 +36,7 @@ static inline uint16_t mavlink_msg_image_trigger_control_pack(uint8_t system_id,
 
 	put_uint8_t_by_index(msg, 0, enable); // 0 to disable, 1 to enable
 
-	return mavlink_finalize_message(msg, system_id, component_id, 1, 95);
+	return mavlink_finalize_message(msg, system_id, component_id, 1);
 }
 
 /**
@@ -56,7 +56,7 @@ static inline uint16_t mavlink_msg_image_trigger_control_pack_chan(uint8_t syste
 
 	put_uint8_t_by_index(msg, 0, enable); // 0 to disable, 1 to enable
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 1, 95);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 1);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -75,7 +75,7 @@ static inline void mavlink_msg_image_trigger_control_pack_chan_send(mavlink_chan
 
 	put_uint8_t_by_index(msg, 0, enable); // 0 to disable, 1 to enable
 
-	mavlink_finalize_message_chan_send(msg, chan, 1, 95);
+	mavlink_finalize_message_chan_send(msg, chan, 1);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

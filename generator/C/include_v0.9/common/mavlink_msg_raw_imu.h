@@ -72,7 +72,7 @@ static inline uint16_t mavlink_msg_raw_imu_pack(uint8_t system_id, uint8_t compo
 	put_int16_t_by_index(msg, 22, ymag); // Y Magnetic field (raw)
 	put_int16_t_by_index(msg, 24, zmag); // Z Magnetic field (raw)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 26, 179);
+	return mavlink_finalize_message(msg, system_id, component_id, 26);
 }
 
 /**
@@ -110,7 +110,7 @@ static inline uint16_t mavlink_msg_raw_imu_pack_chan(uint8_t system_id, uint8_t 
 	put_int16_t_by_index(msg, 22, ymag); // Y Magnetic field (raw)
 	put_int16_t_by_index(msg, 24, zmag); // Z Magnetic field (raw)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26, 179);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -147,7 +147,7 @@ static inline void mavlink_msg_raw_imu_pack_chan_send(mavlink_channel_t chan,
 	put_int16_t_by_index(msg, 22, ymag); // Y Magnetic field (raw)
 	put_int16_t_by_index(msg, 24, zmag); // Z Magnetic field (raw)
 
-	mavlink_finalize_message_chan_send(msg, chan, 26, 179);
+	mavlink_finalize_message_chan_send(msg, chan, 26);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

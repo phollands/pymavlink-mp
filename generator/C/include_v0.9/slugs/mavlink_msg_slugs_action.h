@@ -44,7 +44,7 @@ static inline uint16_t mavlink_msg_slugs_action_pack(uint8_t system_id, uint8_t 
 	put_uint8_t_by_index(msg, 1, actionId); // Action ID. See apDefinitions.h in the SLUGS /clib directory for the ID names
 	put_uint16_t_by_index(msg, 2, actionVal); // Value associated with the action
 
-	return mavlink_finalize_message(msg, system_id, component_id, 4, 202);
+	return mavlink_finalize_message(msg, system_id, component_id, 4);
 }
 
 /**
@@ -68,7 +68,7 @@ static inline uint16_t mavlink_msg_slugs_action_pack_chan(uint8_t system_id, uin
 	put_uint8_t_by_index(msg, 1, actionId); // Action ID. See apDefinitions.h in the SLUGS /clib directory for the ID names
 	put_uint16_t_by_index(msg, 2, actionVal); // Value associated with the action
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 202);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -91,7 +91,7 @@ static inline void mavlink_msg_slugs_action_pack_chan_send(mavlink_channel_t cha
 	put_uint8_t_by_index(msg, 1, actionId); // Action ID. See apDefinitions.h in the SLUGS /clib directory for the ID names
 	put_uint16_t_by_index(msg, 2, actionVal); // Value associated with the action
 
-	mavlink_finalize_message_chan_send(msg, chan, 4, 202);
+	mavlink_finalize_message_chan_send(msg, chan, 4);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

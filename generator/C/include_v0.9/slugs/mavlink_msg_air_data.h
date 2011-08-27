@@ -44,7 +44,7 @@ static inline uint16_t mavlink_msg_air_data_pack(uint8_t system_id, uint8_t comp
 	put_float_by_index(msg, 4, staticPressure); // Static pressure (Pa)
 	put_uint16_t_by_index(msg, 8, temperature); // Board temperature
 
-	return mavlink_finalize_message(msg, system_id, component_id, 10, 232);
+	return mavlink_finalize_message(msg, system_id, component_id, 10);
 }
 
 /**
@@ -68,7 +68,7 @@ static inline uint16_t mavlink_msg_air_data_pack_chan(uint8_t system_id, uint8_t
 	put_float_by_index(msg, 4, staticPressure); // Static pressure (Pa)
 	put_uint16_t_by_index(msg, 8, temperature); // Board temperature
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 10, 232);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 10);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -91,7 +91,7 @@ static inline void mavlink_msg_air_data_pack_chan_send(mavlink_channel_t chan,
 	put_float_by_index(msg, 4, staticPressure); // Static pressure (Pa)
 	put_uint16_t_by_index(msg, 8, temperature); // Board temperature
 
-	mavlink_finalize_message_chan_send(msg, chan, 10, 232);
+	mavlink_finalize_message_chan_send(msg, chan, 10);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

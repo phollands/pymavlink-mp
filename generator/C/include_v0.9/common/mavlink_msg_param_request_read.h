@@ -48,7 +48,7 @@ static inline uint16_t mavlink_msg_param_request_read_pack(uint8_t system_id, ui
 	put_int8_t_array_by_index(msg, 2, param_id, 15); // Onboard parameter id
 	put_int16_t_by_index(msg, 17, param_index); // Parameter index. Send -1 to use the param ID field as identifier
 
-	return mavlink_finalize_message(msg, system_id, component_id, 19, 89);
+	return mavlink_finalize_message(msg, system_id, component_id, 19);
 }
 
 /**
@@ -74,7 +74,7 @@ static inline uint16_t mavlink_msg_param_request_read_pack_chan(uint8_t system_i
 	put_int8_t_array_by_index(msg, 2, param_id, 15); // Onboard parameter id
 	put_int16_t_by_index(msg, 17, param_index); // Parameter index. Send -1 to use the param ID field as identifier
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 19, 89);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 19);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -99,7 +99,7 @@ static inline void mavlink_msg_param_request_read_pack_chan_send(mavlink_channel
 	put_int8_t_array_by_index(msg, 2, param_id, 15); // Onboard parameter id
 	put_int16_t_by_index(msg, 17, param_index); // Parameter index. Send -1 to use the param ID field as identifier
 
-	mavlink_finalize_message_chan_send(msg, chan, 19, 89);
+	mavlink_finalize_message_chan_send(msg, chan, 19);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

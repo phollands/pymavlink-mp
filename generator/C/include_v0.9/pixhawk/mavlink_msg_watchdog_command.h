@@ -48,7 +48,7 @@ static inline uint16_t mavlink_msg_watchdog_command_pack(uint8_t system_id, uint
 	put_uint16_t_by_index(msg, 3, process_id); // Process ID
 	put_uint8_t_by_index(msg, 5, command_id); // Command ID
 
-	return mavlink_finalize_message(msg, system_id, component_id, 6, 188);
+	return mavlink_finalize_message(msg, system_id, component_id, 6);
 }
 
 /**
@@ -74,7 +74,7 @@ static inline uint16_t mavlink_msg_watchdog_command_pack_chan(uint8_t system_id,
 	put_uint16_t_by_index(msg, 3, process_id); // Process ID
 	put_uint8_t_by_index(msg, 5, command_id); // Command ID
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6, 188);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -99,7 +99,7 @@ static inline void mavlink_msg_watchdog_command_pack_chan_send(mavlink_channel_t
 	put_uint16_t_by_index(msg, 3, process_id); // Process ID
 	put_uint8_t_by_index(msg, 5, command_id); // Command ID
 
-	mavlink_finalize_message_chan_send(msg, chan, 6, 188);
+	mavlink_finalize_message_chan_send(msg, chan, 6);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

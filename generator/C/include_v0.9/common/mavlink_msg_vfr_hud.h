@@ -56,7 +56,7 @@ static inline uint16_t mavlink_msg_vfr_hud_pack(uint8_t system_id, uint8_t compo
 	put_float_by_index(msg, 12, alt); // Current altitude (MSL), in meters
 	put_float_by_index(msg, 16, climb); // Current climb rate in meters/second
 
-	return mavlink_finalize_message(msg, system_id, component_id, 20, 123);
+	return mavlink_finalize_message(msg, system_id, component_id, 20);
 }
 
 /**
@@ -86,7 +86,7 @@ static inline uint16_t mavlink_msg_vfr_hud_pack_chan(uint8_t system_id, uint8_t 
 	put_float_by_index(msg, 12, alt); // Current altitude (MSL), in meters
 	put_float_by_index(msg, 16, climb); // Current climb rate in meters/second
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 123);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -115,7 +115,7 @@ static inline void mavlink_msg_vfr_hud_pack_chan_send(mavlink_channel_t chan,
 	put_float_by_index(msg, 12, alt); // Current altitude (MSL), in meters
 	put_float_by_index(msg, 16, climb); // Current climb rate in meters/second
 
-	mavlink_finalize_message_chan_send(msg, chan, 20, 123);
+	mavlink_finalize_message_chan_send(msg, chan, 20);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

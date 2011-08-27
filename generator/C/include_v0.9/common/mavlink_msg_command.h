@@ -64,7 +64,7 @@ static inline uint16_t mavlink_msg_command_pack(uint8_t system_id, uint8_t compo
 	put_float_by_index(msg, 12, param3); // Parameter 3, as defined by MAV_CMD enum.
 	put_float_by_index(msg, 16, param4); // Parameter 4, as defined by MAV_CMD enum.
 
-	return mavlink_finalize_message(msg, system_id, component_id, 20, 131);
+	return mavlink_finalize_message(msg, system_id, component_id, 20);
 }
 
 /**
@@ -98,7 +98,7 @@ static inline uint16_t mavlink_msg_command_pack_chan(uint8_t system_id, uint8_t 
 	put_float_by_index(msg, 12, param3); // Parameter 3, as defined by MAV_CMD enum.
 	put_float_by_index(msg, 16, param4); // Parameter 4, as defined by MAV_CMD enum.
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 131);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -131,7 +131,7 @@ static inline void mavlink_msg_command_pack_chan_send(mavlink_channel_t chan,
 	put_float_by_index(msg, 12, param3); // Parameter 3, as defined by MAV_CMD enum.
 	put_float_by_index(msg, 16, param4); // Parameter 4, as defined by MAV_CMD enum.
 
-	mavlink_finalize_message_chan_send(msg, chan, 20, 131);
+	mavlink_finalize_message_chan_send(msg, chan, 20);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

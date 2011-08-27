@@ -40,7 +40,7 @@ static inline uint16_t mavlink_msg_watchdog_heartbeat_pack(uint8_t system_id, ui
 	put_uint16_t_by_index(msg, 0, watchdog_id); // Watchdog ID
 	put_uint16_t_by_index(msg, 2, process_count); // Number of processes
 
-	return mavlink_finalize_message(msg, system_id, component_id, 4, 153);
+	return mavlink_finalize_message(msg, system_id, component_id, 4);
 }
 
 /**
@@ -62,7 +62,7 @@ static inline uint16_t mavlink_msg_watchdog_heartbeat_pack_chan(uint8_t system_i
 	put_uint16_t_by_index(msg, 0, watchdog_id); // Watchdog ID
 	put_uint16_t_by_index(msg, 2, process_count); // Number of processes
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 153);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -83,7 +83,7 @@ static inline void mavlink_msg_watchdog_heartbeat_pack_chan_send(mavlink_channel
 	put_uint16_t_by_index(msg, 0, watchdog_id); // Watchdog ID
 	put_uint16_t_by_index(msg, 2, process_count); // Number of processes
 
-	mavlink_finalize_message_chan_send(msg, chan, 4, 153);
+	mavlink_finalize_message_chan_send(msg, chan, 4);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

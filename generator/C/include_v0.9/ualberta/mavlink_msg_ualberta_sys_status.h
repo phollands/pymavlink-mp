@@ -44,7 +44,7 @@ static inline uint16_t mavlink_msg_ualberta_sys_status_pack(uint8_t system_id, u
 	put_uint8_t_by_index(msg, 1, nav_mode); // Navigation mode, see UALBERTA_NAV_MODE ENUM
 	put_uint8_t_by_index(msg, 2, pilot); // Pilot mode, see UALBERTA_PILOT_MODE
 
-	return mavlink_finalize_message(msg, system_id, component_id, 3, 15);
+	return mavlink_finalize_message(msg, system_id, component_id, 3);
 }
 
 /**
@@ -68,7 +68,7 @@ static inline uint16_t mavlink_msg_ualberta_sys_status_pack_chan(uint8_t system_
 	put_uint8_t_by_index(msg, 1, nav_mode); // Navigation mode, see UALBERTA_NAV_MODE ENUM
 	put_uint8_t_by_index(msg, 2, pilot); // Pilot mode, see UALBERTA_PILOT_MODE
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 15);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -91,7 +91,7 @@ static inline void mavlink_msg_ualberta_sys_status_pack_chan_send(mavlink_channe
 	put_uint8_t_by_index(msg, 1, nav_mode); // Navigation mode, see UALBERTA_NAV_MODE ENUM
 	put_uint8_t_by_index(msg, 2, pilot); // Pilot mode, see UALBERTA_PILOT_MODE
 
-	mavlink_finalize_message_chan_send(msg, chan, 3, 15);
+	mavlink_finalize_message_chan_send(msg, chan, 3);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

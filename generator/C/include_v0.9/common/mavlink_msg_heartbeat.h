@@ -43,7 +43,7 @@ static inline uint16_t mavlink_msg_heartbeat_pack(uint8_t system_id, uint8_t com
 	put_uint8_t_by_index(msg, 1, autopilot); // Type of the Autopilot: 0: Generic, 1: PIXHAWK, 2: SLUGS, 3: Ardupilot (up to 15 types), defined in MAV_AUTOPILOT_TYPE ENUM
 	put_uint8_t_by_index(msg, 2, 2); // MAVLink version
 
-	return mavlink_finalize_message(msg, system_id, component_id, 3, 72);
+	return mavlink_finalize_message(msg, system_id, component_id, 3);
 }
 
 /**
@@ -66,7 +66,7 @@ static inline uint16_t mavlink_msg_heartbeat_pack_chan(uint8_t system_id, uint8_
 	put_uint8_t_by_index(msg, 1, autopilot); // Type of the Autopilot: 0: Generic, 1: PIXHAWK, 2: SLUGS, 3: Ardupilot (up to 15 types), defined in MAV_AUTOPILOT_TYPE ENUM
 	put_uint8_t_by_index(msg, 2, 2); // MAVLink version
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 72);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -88,7 +88,7 @@ static inline void mavlink_msg_heartbeat_pack_chan_send(mavlink_channel_t chan,
 	put_uint8_t_by_index(msg, 1, autopilot); // Type of the Autopilot: 0: Generic, 1: PIXHAWK, 2: SLUGS, 3: Ardupilot (up to 15 types), defined in MAV_AUTOPILOT_TYPE ENUM
 	put_uint8_t_by_index(msg, 2, 2); // MAVLink version
 
-	mavlink_finalize_message_chan_send(msg, chan, 3, 72);
+	mavlink_finalize_message_chan_send(msg, chan, 3);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

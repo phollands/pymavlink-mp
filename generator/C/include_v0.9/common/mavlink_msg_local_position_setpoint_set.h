@@ -56,7 +56,7 @@ static inline uint16_t mavlink_msg_local_position_setpoint_set_pack(uint8_t syst
 	put_float_by_index(msg, 10, z); // z position
 	put_float_by_index(msg, 14, yaw); // Desired yaw angle
 
-	return mavlink_finalize_message(msg, system_id, component_id, 18, 206);
+	return mavlink_finalize_message(msg, system_id, component_id, 18);
 }
 
 /**
@@ -86,7 +86,7 @@ static inline uint16_t mavlink_msg_local_position_setpoint_set_pack_chan(uint8_t
 	put_float_by_index(msg, 10, z); // z position
 	put_float_by_index(msg, 14, yaw); // Desired yaw angle
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 206);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -115,7 +115,7 @@ static inline void mavlink_msg_local_position_setpoint_set_pack_chan_send(mavlin
 	put_float_by_index(msg, 10, z); // z position
 	put_float_by_index(msg, 14, yaw); // Desired yaw angle
 
-	mavlink_finalize_message_chan_send(msg, chan, 18, 206);
+	mavlink_finalize_message_chan_send(msg, chan, 18);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

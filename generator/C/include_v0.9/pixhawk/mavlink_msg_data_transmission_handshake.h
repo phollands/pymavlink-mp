@@ -52,7 +52,7 @@ static inline uint16_t mavlink_msg_data_transmission_handshake_pack(uint8_t syst
 	put_uint8_t_by_index(msg, 6, payload); // payload size per packet (normally 253 byte, see DATA field size in message ENCAPSULATED_DATA) (set on ACK only)
 	put_uint8_t_by_index(msg, 7, jpg_quality); // JPEG quality out of [1,100]
 
-	return mavlink_finalize_message(msg, system_id, component_id, 8, 98);
+	return mavlink_finalize_message(msg, system_id, component_id, 8);
 }
 
 /**
@@ -80,7 +80,7 @@ static inline uint16_t mavlink_msg_data_transmission_handshake_pack_chan(uint8_t
 	put_uint8_t_by_index(msg, 6, payload); // payload size per packet (normally 253 byte, see DATA field size in message ENCAPSULATED_DATA) (set on ACK only)
 	put_uint8_t_by_index(msg, 7, jpg_quality); // JPEG quality out of [1,100]
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8, 98);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -107,7 +107,7 @@ static inline void mavlink_msg_data_transmission_handshake_pack_chan_send(mavlin
 	put_uint8_t_by_index(msg, 6, payload); // payload size per packet (normally 253 byte, see DATA field size in message ENCAPSULATED_DATA) (set on ACK only)
 	put_uint8_t_by_index(msg, 7, jpg_quality); // JPEG quality out of [1,100]
 
-	mavlink_finalize_message_chan_send(msg, chan, 8, 98);
+	mavlink_finalize_message_chan_send(msg, chan, 8);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

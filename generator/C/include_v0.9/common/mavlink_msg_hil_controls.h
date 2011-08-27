@@ -60,7 +60,7 @@ static inline uint16_t mavlink_msg_hil_controls_pack(uint8_t system_id, uint8_t 
 	put_uint8_t_by_index(msg, 24, mode); // System mode (MAV_MODE)
 	put_uint8_t_by_index(msg, 25, nav_mode); // Navigation mode (MAV_NAV_MODE)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 26, 236);
+	return mavlink_finalize_message(msg, system_id, component_id, 26);
 }
 
 /**
@@ -92,7 +92,7 @@ static inline uint16_t mavlink_msg_hil_controls_pack_chan(uint8_t system_id, uin
 	put_uint8_t_by_index(msg, 24, mode); // System mode (MAV_MODE)
 	put_uint8_t_by_index(msg, 25, nav_mode); // Navigation mode (MAV_NAV_MODE)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26, 236);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -123,7 +123,7 @@ static inline void mavlink_msg_hil_controls_pack_chan_send(mavlink_channel_t cha
 	put_uint8_t_by_index(msg, 24, mode); // System mode (MAV_MODE)
 	put_uint8_t_by_index(msg, 25, nav_mode); // Navigation mode (MAV_NAV_MODE)
 
-	mavlink_finalize_message_chan_send(msg, chan, 26, 236);
+	mavlink_finalize_message_chan_send(msg, chan, 26);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -68,7 +68,7 @@ static inline uint16_t mavlink_msg_attitude_control_pack(uint8_t system_id, uint
 	put_uint8_t_by_index(msg, 19, yaw_manual); // yaw auto:0, manual:1
 	put_uint8_t_by_index(msg, 20, thrust_manual); // thrust auto:0, manual:1
 
-	return mavlink_finalize_message(msg, system_id, component_id, 21, 84);
+	return mavlink_finalize_message(msg, system_id, component_id, 21);
 }
 
 /**
@@ -104,7 +104,7 @@ static inline uint16_t mavlink_msg_attitude_control_pack_chan(uint8_t system_id,
 	put_uint8_t_by_index(msg, 19, yaw_manual); // yaw auto:0, manual:1
 	put_uint8_t_by_index(msg, 20, thrust_manual); // thrust auto:0, manual:1
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 21, 84);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 21);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -139,7 +139,7 @@ static inline void mavlink_msg_attitude_control_pack_chan_send(mavlink_channel_t
 	put_uint8_t_by_index(msg, 19, yaw_manual); // yaw auto:0, manual:1
 	put_uint8_t_by_index(msg, 20, thrust_manual); // thrust auto:0, manual:1
 
-	mavlink_finalize_message_chan_send(msg, chan, 21, 84);
+	mavlink_finalize_message_chan_send(msg, chan, 21);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

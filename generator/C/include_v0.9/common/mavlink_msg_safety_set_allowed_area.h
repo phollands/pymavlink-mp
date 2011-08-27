@@ -68,7 +68,7 @@ static inline uint16_t mavlink_msg_safety_set_allowed_area_pack(uint8_t system_i
 	put_float_by_index(msg, 19, p2y); // y position 2 / Longitude 2
 	put_float_by_index(msg, 23, p2z); // z position 2 / Altitude 2
 
-	return mavlink_finalize_message(msg, system_id, component_id, 27, 126);
+	return mavlink_finalize_message(msg, system_id, component_id, 27);
 }
 
 /**
@@ -104,7 +104,7 @@ static inline uint16_t mavlink_msg_safety_set_allowed_area_pack_chan(uint8_t sys
 	put_float_by_index(msg, 19, p2y); // y position 2 / Longitude 2
 	put_float_by_index(msg, 23, p2z); // z position 2 / Altitude 2
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 27, 126);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 27);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -139,7 +139,7 @@ static inline void mavlink_msg_safety_set_allowed_area_pack_chan_send(mavlink_ch
 	put_float_by_index(msg, 19, p2y); // y position 2 / Longitude 2
 	put_float_by_index(msg, 23, p2z); // z position 2 / Altitude 2
 
-	mavlink_finalize_message_chan_send(msg, chan, 27, 126);
+	mavlink_finalize_message_chan_send(msg, chan, 27);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

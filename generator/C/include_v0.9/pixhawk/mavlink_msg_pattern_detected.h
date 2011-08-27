@@ -48,7 +48,7 @@ static inline uint16_t mavlink_msg_pattern_detected_pack(uint8_t system_id, uint
 	put_char_array_by_index(msg, 5, file, 100); // Pattern file name
 	put_uint8_t_by_index(msg, 105, detected); // Accepted as true detection, 0 no, 1 yes
 
-	return mavlink_finalize_message(msg, system_id, component_id, 106, 106);
+	return mavlink_finalize_message(msg, system_id, component_id, 106);
 }
 
 /**
@@ -74,7 +74,7 @@ static inline uint16_t mavlink_msg_pattern_detected_pack_chan(uint8_t system_id,
 	put_char_array_by_index(msg, 5, file, 100); // Pattern file name
 	put_uint8_t_by_index(msg, 105, detected); // Accepted as true detection, 0 no, 1 yes
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 106, 106);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 106);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -99,7 +99,7 @@ static inline void mavlink_msg_pattern_detected_pack_chan_send(mavlink_channel_t
 	put_char_array_by_index(msg, 5, file, 100); // Pattern file name
 	put_uint8_t_by_index(msg, 105, detected); // Accepted as true detection, 0 no, 1 yes
 
-	mavlink_finalize_message_chan_send(msg, chan, 106, 106);
+	mavlink_finalize_message_chan_send(msg, chan, 106);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

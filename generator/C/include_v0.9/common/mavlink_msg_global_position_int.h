@@ -56,7 +56,7 @@ static inline uint16_t mavlink_msg_global_position_int_pack(uint8_t system_id, u
 	put_int16_t_by_index(msg, 14, vy); // Ground Y Speed (Longitude), expressed as m/s * 100
 	put_int16_t_by_index(msg, 16, vz); // Ground Z Speed (Altitude), expressed as m/s * 100
 
-	return mavlink_finalize_message(msg, system_id, component_id, 18, 104);
+	return mavlink_finalize_message(msg, system_id, component_id, 18);
 }
 
 /**
@@ -86,7 +86,7 @@ static inline uint16_t mavlink_msg_global_position_int_pack_chan(uint8_t system_
 	put_int16_t_by_index(msg, 14, vy); // Ground Y Speed (Longitude), expressed as m/s * 100
 	put_int16_t_by_index(msg, 16, vz); // Ground Z Speed (Altitude), expressed as m/s * 100
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 104);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -115,7 +115,7 @@ static inline void mavlink_msg_global_position_int_pack_chan_send(mavlink_channe
 	put_int16_t_by_index(msg, 14, vy); // Ground Y Speed (Longitude), expressed as m/s * 100
 	put_int16_t_by_index(msg, 16, vz); // Ground Z Speed (Altitude), expressed as m/s * 100
 
-	mavlink_finalize_message_chan_send(msg, chan, 18, 104);
+	mavlink_finalize_message_chan_send(msg, chan, 18);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

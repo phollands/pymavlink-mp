@@ -40,7 +40,7 @@ static inline uint16_t mavlink_msg_action_ack_pack(uint8_t system_id, uint8_t co
 	put_uint8_t_by_index(msg, 0, action); // The action id
 	put_uint8_t_by_index(msg, 1, result); // 0: Action DENIED, 1: Action executed
 
-	return mavlink_finalize_message(msg, system_id, component_id, 2, 219);
+	return mavlink_finalize_message(msg, system_id, component_id, 2);
 }
 
 /**
@@ -62,7 +62,7 @@ static inline uint16_t mavlink_msg_action_ack_pack_chan(uint8_t system_id, uint8
 	put_uint8_t_by_index(msg, 0, action); // The action id
 	put_uint8_t_by_index(msg, 1, result); // 0: Action DENIED, 1: Action executed
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 219);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -83,7 +83,7 @@ static inline void mavlink_msg_action_ack_pack_chan_send(mavlink_channel_t chan,
 	put_uint8_t_by_index(msg, 0, action); // The action id
 	put_uint8_t_by_index(msg, 1, result); // 0: Action DENIED, 1: Action executed
 
-	mavlink_finalize_message_chan_send(msg, chan, 2, 219);
+	mavlink_finalize_message_chan_send(msg, chan, 2);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

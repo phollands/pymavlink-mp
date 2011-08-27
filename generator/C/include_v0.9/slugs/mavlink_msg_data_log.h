@@ -56,7 +56,7 @@ static inline uint16_t mavlink_msg_data_log_pack(uint8_t system_id, uint8_t comp
 	put_float_by_index(msg, 16, fl_5); // Log value 5 
 	put_float_by_index(msg, 20, fl_6); // Log value 6 
 
-	return mavlink_finalize_message(msg, system_id, component_id, 24, 167);
+	return mavlink_finalize_message(msg, system_id, component_id, 24);
 }
 
 /**
@@ -86,7 +86,7 @@ static inline uint16_t mavlink_msg_data_log_pack_chan(uint8_t system_id, uint8_t
 	put_float_by_index(msg, 16, fl_5); // Log value 5 
 	put_float_by_index(msg, 20, fl_6); // Log value 6 
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24, 167);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -115,7 +115,7 @@ static inline void mavlink_msg_data_log_pack_chan_send(mavlink_channel_t chan,
 	put_float_by_index(msg, 16, fl_5); // Log value 5 
 	put_float_by_index(msg, 20, fl_6); // Log value 6 
 
-	mavlink_finalize_message_chan_send(msg, chan, 24, 167);
+	mavlink_finalize_message_chan_send(msg, chan, 24);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

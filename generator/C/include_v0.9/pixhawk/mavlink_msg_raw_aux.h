@@ -60,7 +60,7 @@ static inline uint16_t mavlink_msg_raw_aux_pack(uint8_t system_id, uint8_t compo
 	put_int16_t_by_index(msg, 10, temp); // Temperature (degrees celcius)
 	put_int32_t_by_index(msg, 12, baro); // Barometric pressure (hecto Pascal)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 16, 140);
+	return mavlink_finalize_message(msg, system_id, component_id, 16);
 }
 
 /**
@@ -92,7 +92,7 @@ static inline uint16_t mavlink_msg_raw_aux_pack_chan(uint8_t system_id, uint8_t 
 	put_int16_t_by_index(msg, 10, temp); // Temperature (degrees celcius)
 	put_int32_t_by_index(msg, 12, baro); // Barometric pressure (hecto Pascal)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16, 140);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -123,7 +123,7 @@ static inline void mavlink_msg_raw_aux_pack_chan_send(mavlink_channel_t chan,
 	put_int16_t_by_index(msg, 10, temp); // Temperature (degrees celcius)
 	put_int32_t_by_index(msg, 12, baro); // Barometric pressure (hecto Pascal)
 
-	mavlink_finalize_message_chan_send(msg, chan, 16, 140);
+	mavlink_finalize_message_chan_send(msg, chan, 16);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

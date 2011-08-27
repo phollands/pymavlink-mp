@@ -64,7 +64,7 @@ static inline uint16_t mavlink_msg_point_of_interest_pack(uint8_t system_id, uin
 	put_float_by_index(msg, 13, z); // Z Position
 	put_char_array_by_index(msg, 17, name, 26); // POI name
 
-	return mavlink_finalize_message(msg, system_id, component_id, 43, 154);
+	return mavlink_finalize_message(msg, system_id, component_id, 43);
 }
 
 /**
@@ -98,7 +98,7 @@ static inline uint16_t mavlink_msg_point_of_interest_pack_chan(uint8_t system_id
 	put_float_by_index(msg, 13, z); // Z Position
 	put_char_array_by_index(msg, 17, name, 26); // POI name
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 43, 154);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 43);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -131,7 +131,7 @@ static inline void mavlink_msg_point_of_interest_pack_chan_send(mavlink_channel_
 	put_float_by_index(msg, 13, z); // Z Position
 	put_char_array_by_index(msg, 17, name, 26); // POI name
 
-	mavlink_finalize_message_chan_send(msg, chan, 43, 154);
+	mavlink_finalize_message_chan_send(msg, chan, 43);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

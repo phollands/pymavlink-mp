@@ -48,7 +48,7 @@ static inline uint16_t mavlink_msg_param_set_pack(uint8_t system_id, uint8_t com
 	put_int8_t_array_by_index(msg, 2, param_id, 15); // Onboard parameter id
 	put_float_by_index(msg, 17, param_value); // Onboard parameter value
 
-	return mavlink_finalize_message(msg, system_id, component_id, 21, 121);
+	return mavlink_finalize_message(msg, system_id, component_id, 21);
 }
 
 /**
@@ -74,7 +74,7 @@ static inline uint16_t mavlink_msg_param_set_pack_chan(uint8_t system_id, uint8_
 	put_int8_t_array_by_index(msg, 2, param_id, 15); // Onboard parameter id
 	put_float_by_index(msg, 17, param_value); // Onboard parameter value
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 21, 121);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 21);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -99,7 +99,7 @@ static inline void mavlink_msg_param_set_pack_chan_send(mavlink_channel_t chan,
 	put_int8_t_array_by_index(msg, 2, param_id, 15); // Onboard parameter id
 	put_float_by_index(msg, 17, param_value); // Onboard parameter value
 
-	mavlink_finalize_message_chan_send(msg, chan, 21, 121);
+	mavlink_finalize_message_chan_send(msg, chan, 21);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

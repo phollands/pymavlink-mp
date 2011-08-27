@@ -40,7 +40,7 @@ static inline uint16_t mavlink_msg_set_altitude_pack(uint8_t system_id, uint8_t 
 	put_uint8_t_by_index(msg, 0, target); // The system setting the altitude
 	put_uint32_t_by_index(msg, 1, mode); // The new altitude in meters
 
-	return mavlink_finalize_message(msg, system_id, component_id, 5, 119);
+	return mavlink_finalize_message(msg, system_id, component_id, 5);
 }
 
 /**
@@ -62,7 +62,7 @@ static inline uint16_t mavlink_msg_set_altitude_pack_chan(uint8_t system_id, uin
 	put_uint8_t_by_index(msg, 0, target); // The system setting the altitude
 	put_uint32_t_by_index(msg, 1, mode); // The new altitude in meters
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 5, 119);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 5);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -83,7 +83,7 @@ static inline void mavlink_msg_set_altitude_pack_chan_send(mavlink_channel_t cha
 	put_uint8_t_by_index(msg, 0, target); // The system setting the altitude
 	put_uint32_t_by_index(msg, 1, mode); // The new altitude in meters
 
-	mavlink_finalize_message_chan_send(msg, chan, 5, 119);
+	mavlink_finalize_message_chan_send(msg, chan, 5);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

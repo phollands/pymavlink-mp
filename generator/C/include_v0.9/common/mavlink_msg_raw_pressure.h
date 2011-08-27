@@ -52,7 +52,7 @@ static inline uint16_t mavlink_msg_raw_pressure_pack(uint8_t system_id, uint8_t 
 	put_int16_t_by_index(msg, 12, press_diff2); // Differential pressure 2 (raw)
 	put_int16_t_by_index(msg, 14, temperature); // Raw Temperature measurement (raw)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 16, 136);
+	return mavlink_finalize_message(msg, system_id, component_id, 16);
 }
 
 /**
@@ -80,7 +80,7 @@ static inline uint16_t mavlink_msg_raw_pressure_pack_chan(uint8_t system_id, uin
 	put_int16_t_by_index(msg, 12, press_diff2); // Differential pressure 2 (raw)
 	put_int16_t_by_index(msg, 14, temperature); // Raw Temperature measurement (raw)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16, 136);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -107,7 +107,7 @@ static inline void mavlink_msg_raw_pressure_pack_chan_send(mavlink_channel_t cha
 	put_int16_t_by_index(msg, 12, press_diff2); // Differential pressure 2 (raw)
 	put_int16_t_by_index(msg, 14, temperature); // Raw Temperature measurement (raw)
 
-	mavlink_finalize_message_chan_send(msg, chan, 16, 136);
+	mavlink_finalize_message_chan_send(msg, chan, 16);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

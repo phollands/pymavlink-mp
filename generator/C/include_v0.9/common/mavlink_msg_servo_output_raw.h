@@ -64,7 +64,7 @@ static inline uint16_t mavlink_msg_servo_output_raw_pack(uint8_t system_id, uint
 	put_uint16_t_by_index(msg, 12, servo7_raw); // Servo output 7 value, in microseconds
 	put_uint16_t_by_index(msg, 14, servo8_raw); // Servo output 8 value, in microseconds
 
-	return mavlink_finalize_message(msg, system_id, component_id, 16, 215);
+	return mavlink_finalize_message(msg, system_id, component_id, 16);
 }
 
 /**
@@ -98,7 +98,7 @@ static inline uint16_t mavlink_msg_servo_output_raw_pack_chan(uint8_t system_id,
 	put_uint16_t_by_index(msg, 12, servo7_raw); // Servo output 7 value, in microseconds
 	put_uint16_t_by_index(msg, 14, servo8_raw); // Servo output 8 value, in microseconds
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16, 215);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -131,7 +131,7 @@ static inline void mavlink_msg_servo_output_raw_pack_chan_send(mavlink_channel_t
 	put_uint16_t_by_index(msg, 12, servo7_raw); // Servo output 7 value, in microseconds
 	put_uint16_t_by_index(msg, 14, servo8_raw); // Servo output 8 value, in microseconds
 
-	mavlink_finalize_message_chan_send(msg, chan, 16, 215);
+	mavlink_finalize_message_chan_send(msg, chan, 16);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

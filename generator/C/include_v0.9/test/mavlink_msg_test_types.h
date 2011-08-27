@@ -130,7 +130,7 @@ static inline uint16_t mavlink_msg_test_types_pack(uint8_t system_id, uint8_t co
 	put_float_array_by_index(msg, 143, f_array, 3); // float_array
 	put_double_array_by_index(msg, 155, d_array, 3); // double_array
 
-	return mavlink_finalize_message(msg, system_id, component_id, 179, 91);
+	return mavlink_finalize_message(msg, system_id, component_id, 179);
 }
 
 /**
@@ -192,7 +192,7 @@ static inline uint16_t mavlink_msg_test_types_pack_chan(uint8_t system_id, uint8
 	put_float_array_by_index(msg, 143, f_array, 3); // float_array
 	put_double_array_by_index(msg, 155, d_array, 3); // double_array
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 179, 91);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 179);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -253,7 +253,7 @@ static inline void mavlink_msg_test_types_pack_chan_send(mavlink_channel_t chan,
 	put_float_array_by_index(msg, 143, f_array, 3); // float_array
 	put_double_array_by_index(msg, 155, d_array, 3); // double_array
 
-	mavlink_finalize_message_chan_send(msg, chan, 179, 91);
+	mavlink_finalize_message_chan_send(msg, chan, 179);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -40,7 +40,7 @@ static inline uint16_t mavlink_msg_named_value_float_pack(uint8_t system_id, uin
 	put_char_array_by_index(msg, 0, name, 10); // Name of the debug variable
 	put_float_by_index(msg, 10, value); // Floating point value
 
-	return mavlink_finalize_message(msg, system_id, component_id, 14, 224);
+	return mavlink_finalize_message(msg, system_id, component_id, 14);
 }
 
 /**
@@ -62,7 +62,7 @@ static inline uint16_t mavlink_msg_named_value_float_pack_chan(uint8_t system_id
 	put_char_array_by_index(msg, 0, name, 10); // Name of the debug variable
 	put_float_by_index(msg, 10, value); // Floating point value
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 224);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -83,7 +83,7 @@ static inline void mavlink_msg_named_value_float_pack_chan_send(mavlink_channel_
 	put_char_array_by_index(msg, 0, name, 10); // Name of the debug variable
 	put_float_by_index(msg, 10, value); // Floating point value
 
-	mavlink_finalize_message_chan_send(msg, chan, 14, 224);
+	mavlink_finalize_message_chan_send(msg, chan, 14);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -40,7 +40,7 @@ static inline uint16_t mavlink_msg_encapsulated_data_pack(uint8_t system_id, uin
 	put_uint16_t_by_index(msg, 0, seqnr); // sequence number (starting with 0 on every transmission)
 	put_uint8_t_array_by_index(msg, 2, data, 253); // image data bytes
 
-	return mavlink_finalize_message(msg, system_id, component_id, 255, 223);
+	return mavlink_finalize_message(msg, system_id, component_id, 255);
 }
 
 /**
@@ -62,7 +62,7 @@ static inline uint16_t mavlink_msg_encapsulated_data_pack_chan(uint8_t system_id
 	put_uint16_t_by_index(msg, 0, seqnr); // sequence number (starting with 0 on every transmission)
 	put_uint8_t_array_by_index(msg, 2, data, 253); // image data bytes
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 255, 223);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 255);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -83,7 +83,7 @@ static inline void mavlink_msg_encapsulated_data_pack_chan_send(mavlink_channel_
 	put_uint16_t_by_index(msg, 0, seqnr); // sequence number (starting with 0 on every transmission)
 	put_uint8_t_array_by_index(msg, 2, data, 253); // image data bytes
 
-	mavlink_finalize_message_chan_send(msg, chan, 255, 223);
+	mavlink_finalize_message_chan_send(msg, chan, 255);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -40,7 +40,7 @@ static inline uint16_t mavlink_msg_waypoint_clear_all_pack(uint8_t system_id, ui
 	put_uint8_t_by_index(msg, 0, target_system); // System ID
 	put_uint8_t_by_index(msg, 1, target_component); // Component ID
 
-	return mavlink_finalize_message(msg, system_id, component_id, 2, 229);
+	return mavlink_finalize_message(msg, system_id, component_id, 2);
 }
 
 /**
@@ -62,7 +62,7 @@ static inline uint16_t mavlink_msg_waypoint_clear_all_pack_chan(uint8_t system_i
 	put_uint8_t_by_index(msg, 0, target_system); // System ID
 	put_uint8_t_by_index(msg, 1, target_component); // Component ID
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 229);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -83,7 +83,7 @@ static inline void mavlink_msg_waypoint_clear_all_pack_chan_send(mavlink_channel
 	put_uint8_t_by_index(msg, 0, target_system); // System ID
 	put_uint8_t_by_index(msg, 1, target_component); // Component ID
 
-	mavlink_finalize_message_chan_send(msg, chan, 2, 229);
+	mavlink_finalize_message_chan_send(msg, chan, 2);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -96,7 +96,7 @@ static inline uint16_t mavlink_msg_hil_state_pack(uint8_t system_id, uint8_t com
 	put_int16_t_by_index(msg, 52, yacc); // Y acceleration (mg)
 	put_int16_t_by_index(msg, 54, zacc); // Z acceleration (mg)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 56, 191);
+	return mavlink_finalize_message(msg, system_id, component_id, 56);
 }
 
 /**
@@ -146,7 +146,7 @@ static inline uint16_t mavlink_msg_hil_state_pack_chan(uint8_t system_id, uint8_
 	put_int16_t_by_index(msg, 52, yacc); // Y acceleration (mg)
 	put_int16_t_by_index(msg, 54, zacc); // Z acceleration (mg)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 56, 191);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 56);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -195,7 +195,7 @@ static inline void mavlink_msg_hil_state_pack_chan_send(mavlink_channel_t chan,
 	put_int16_t_by_index(msg, 52, yacc); // Y acceleration (mg)
 	put_int16_t_by_index(msg, 54, zacc); // Z acceleration (mg)
 
-	mavlink_finalize_message_chan_send(msg, chan, 56, 191);
+	mavlink_finalize_message_chan_send(msg, chan, 56);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

@@ -48,7 +48,7 @@ static inline uint16_t mavlink_msg_ping_pack(uint8_t system_id, uint8_t componen
 	put_uint8_t_by_index(msg, 5, target_component); // 0: request ping from all receiving components, if greater than 0: message is a ping response and number is the system id of the requesting system
 	put_uint64_t_by_index(msg, 6, time); // Unix timestamp in microseconds
 
-	return mavlink_finalize_message(msg, system_id, component_id, 14, 92);
+	return mavlink_finalize_message(msg, system_id, component_id, 14);
 }
 
 /**
@@ -74,7 +74,7 @@ static inline uint16_t mavlink_msg_ping_pack_chan(uint8_t system_id, uint8_t com
 	put_uint8_t_by_index(msg, 5, target_component); // 0: request ping from all receiving components, if greater than 0: message is a ping response and number is the system id of the requesting system
 	put_uint64_t_by_index(msg, 6, time); // Unix timestamp in microseconds
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 92);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -99,7 +99,7 @@ static inline void mavlink_msg_ping_pack_chan_send(mavlink_channel_t chan,
 	put_uint8_t_by_index(msg, 5, target_component); // 0: request ping from all receiving components, if greater than 0: message is a ping response and number is the system id of the requesting system
 	put_uint64_t_by_index(msg, 6, time); // Unix timestamp in microseconds
 
-	mavlink_finalize_message_chan_send(msg, chan, 14, 92);
+	mavlink_finalize_message_chan_send(msg, chan, 14);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

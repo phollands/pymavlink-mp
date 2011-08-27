@@ -52,7 +52,7 @@ static inline uint16_t mavlink_msg_roll_pitch_yaw_speed_thrust_setpoint_pack(uin
 	put_float_by_index(msg, 16, yaw_speed); // Desired yaw angular speed in rad/s
 	put_float_by_index(msg, 20, thrust); // Collective thrust, normalized to 0 .. 1
 
-	return mavlink_finalize_message(msg, system_id, component_id, 24, 127);
+	return mavlink_finalize_message(msg, system_id, component_id, 24);
 }
 
 /**
@@ -80,7 +80,7 @@ static inline uint16_t mavlink_msg_roll_pitch_yaw_speed_thrust_setpoint_pack_cha
 	put_float_by_index(msg, 16, yaw_speed); // Desired yaw angular speed in rad/s
 	put_float_by_index(msg, 20, thrust); // Collective thrust, normalized to 0 .. 1
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24, 127);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -107,7 +107,7 @@ static inline void mavlink_msg_roll_pitch_yaw_speed_thrust_setpoint_pack_chan_se
 	put_float_by_index(msg, 16, yaw_speed); // Desired yaw angular speed in rad/s
 	put_float_by_index(msg, 20, thrust); // Collective thrust, normalized to 0 .. 1
 
-	mavlink_finalize_message_chan_send(msg, chan, 24, 127);
+	mavlink_finalize_message_chan_send(msg, chan, 24);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

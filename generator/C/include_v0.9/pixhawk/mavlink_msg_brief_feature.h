@@ -64,7 +64,7 @@ static inline uint16_t mavlink_msg_brief_feature_pack(uint8_t system_id, uint8_t
 	put_uint8_t_array_by_index(msg, 17, descriptor, 32); // Descriptor
 	put_float_by_index(msg, 49, response); // Harris operator response at this location
 
-	return mavlink_finalize_message(msg, system_id, component_id, 53, 254);
+	return mavlink_finalize_message(msg, system_id, component_id, 53);
 }
 
 /**
@@ -98,7 +98,7 @@ static inline uint16_t mavlink_msg_brief_feature_pack_chan(uint8_t system_id, ui
 	put_uint8_t_array_by_index(msg, 17, descriptor, 32); // Descriptor
 	put_float_by_index(msg, 49, response); // Harris operator response at this location
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 53, 254);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 53);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -131,7 +131,7 @@ static inline void mavlink_msg_brief_feature_pack_chan_send(mavlink_channel_t ch
 	put_uint8_t_array_by_index(msg, 17, descriptor, 32); // Descriptor
 	put_float_by_index(msg, 49, response); // Harris operator response at this location
 
-	mavlink_finalize_message_chan_send(msg, chan, 53, 254);
+	mavlink_finalize_message_chan_send(msg, chan, 53);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

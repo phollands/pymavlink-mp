@@ -60,7 +60,7 @@ static inline uint16_t mavlink_msg_nav_filter_bias_pack(uint8_t system_id, uint8
 	put_float_by_index(msg, 24, gyro_1); // b_f[1]
 	put_float_by_index(msg, 28, gyro_2); // b_f[2]
 
-	return mavlink_finalize_message(msg, system_id, component_id, 32, 34);
+	return mavlink_finalize_message(msg, system_id, component_id, 32);
 }
 
 /**
@@ -92,7 +92,7 @@ static inline uint16_t mavlink_msg_nav_filter_bias_pack_chan(uint8_t system_id, 
 	put_float_by_index(msg, 24, gyro_1); // b_f[1]
 	put_float_by_index(msg, 28, gyro_2); // b_f[2]
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 34);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -123,7 +123,7 @@ static inline void mavlink_msg_nav_filter_bias_pack_chan_send(mavlink_channel_t 
 	put_float_by_index(msg, 24, gyro_1); // b_f[1]
 	put_float_by_index(msg, 28, gyro_2); // b_f[2]
 
-	mavlink_finalize_message_chan_send(msg, chan, 32, 34);
+	mavlink_finalize_message_chan_send(msg, chan, 32);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

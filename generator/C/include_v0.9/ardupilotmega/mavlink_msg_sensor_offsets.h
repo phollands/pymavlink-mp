@@ -80,7 +80,7 @@ static inline uint16_t mavlink_msg_sensor_offsets_pack(uint8_t system_id, uint8_
 	put_float_by_index(msg, 34, accel_cal_y); // accel Y calibration
 	put_float_by_index(msg, 38, accel_cal_z); // accel Z calibration
 
-	return mavlink_finalize_message(msg, system_id, component_id, 42, 143);
+	return mavlink_finalize_message(msg, system_id, component_id, 42);
 }
 
 /**
@@ -122,7 +122,7 @@ static inline uint16_t mavlink_msg_sensor_offsets_pack_chan(uint8_t system_id, u
 	put_float_by_index(msg, 34, accel_cal_y); // accel Y calibration
 	put_float_by_index(msg, 38, accel_cal_z); // accel Z calibration
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 42, 143);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 42);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -163,7 +163,7 @@ static inline void mavlink_msg_sensor_offsets_pack_chan_send(mavlink_channel_t c
 	put_float_by_index(msg, 34, accel_cal_y); // accel Y calibration
 	put_float_by_index(msg, 38, accel_cal_z); // accel Z calibration
 
-	mavlink_finalize_message_chan_send(msg, chan, 42, 143);
+	mavlink_finalize_message_chan_send(msg, chan, 42);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

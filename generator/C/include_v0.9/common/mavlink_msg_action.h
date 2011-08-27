@@ -44,7 +44,7 @@ static inline uint16_t mavlink_msg_action_pack(uint8_t system_id, uint8_t compon
 	put_uint8_t_by_index(msg, 1, target_component); // The component executing the action
 	put_uint8_t_by_index(msg, 2, action); // The action id
 
-	return mavlink_finalize_message(msg, system_id, component_id, 3, 60);
+	return mavlink_finalize_message(msg, system_id, component_id, 3);
 }
 
 /**
@@ -68,7 +68,7 @@ static inline uint16_t mavlink_msg_action_pack_chan(uint8_t system_id, uint8_t c
 	put_uint8_t_by_index(msg, 1, target_component); // The component executing the action
 	put_uint8_t_by_index(msg, 2, action); // The action id
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3, 60);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 3);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -91,7 +91,7 @@ static inline void mavlink_msg_action_pack_chan_send(mavlink_channel_t chan,
 	put_uint8_t_by_index(msg, 1, target_component); // The component executing the action
 	put_uint8_t_by_index(msg, 2, action); // The action id
 
-	mavlink_finalize_message_chan_send(msg, chan, 3, 60);
+	mavlink_finalize_message_chan_send(msg, chan, 3);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

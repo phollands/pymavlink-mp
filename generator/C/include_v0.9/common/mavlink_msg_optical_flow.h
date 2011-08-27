@@ -56,7 +56,7 @@ static inline uint16_t mavlink_msg_optical_flow_pack(uint8_t system_id, uint8_t 
 	put_uint8_t_by_index(msg, 13, quality); // Optical flow quality / confidence. 0: bad, 255: maximum quality
 	put_float_by_index(msg, 14, ground_distance); // Ground distance in meters
 
-	return mavlink_finalize_message(msg, system_id, component_id, 18, 174);
+	return mavlink_finalize_message(msg, system_id, component_id, 18);
 }
 
 /**
@@ -86,7 +86,7 @@ static inline uint16_t mavlink_msg_optical_flow_pack_chan(uint8_t system_id, uin
 	put_uint8_t_by_index(msg, 13, quality); // Optical flow quality / confidence. 0: bad, 255: maximum quality
 	put_float_by_index(msg, 14, ground_distance); // Ground distance in meters
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 174);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -115,7 +115,7 @@ static inline void mavlink_msg_optical_flow_pack_chan_send(mavlink_channel_t cha
 	put_uint8_t_by_index(msg, 13, quality); // Optical flow quality / confidence. 0: bad, 255: maximum quality
 	put_float_by_index(msg, 14, ground_distance); // Ground distance in meters
 
-	mavlink_finalize_message_chan_send(msg, chan, 18, 174);
+	mavlink_finalize_message_chan_send(msg, chan, 18);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

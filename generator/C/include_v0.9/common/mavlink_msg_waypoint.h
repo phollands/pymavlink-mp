@@ -88,7 +88,7 @@ static inline uint16_t mavlink_msg_waypoint_pack(uint8_t system_id, uint8_t comp
 	put_float_by_index(msg, 28, y); // PARAM6 / y position: global: longitude
 	put_float_by_index(msg, 32, z); // PARAM7 / z position: global: altitude
 
-	return mavlink_finalize_message(msg, system_id, component_id, 36, 128);
+	return mavlink_finalize_message(msg, system_id, component_id, 36);
 }
 
 /**
@@ -134,7 +134,7 @@ static inline uint16_t mavlink_msg_waypoint_pack_chan(uint8_t system_id, uint8_t
 	put_float_by_index(msg, 28, y); // PARAM6 / y position: global: longitude
 	put_float_by_index(msg, 32, z); // PARAM7 / z position: global: altitude
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 36, 128);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 36);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -179,7 +179,7 @@ static inline void mavlink_msg_waypoint_pack_chan_send(mavlink_channel_t chan,
 	put_float_by_index(msg, 28, y); // PARAM6 / y position: global: longitude
 	put_float_by_index(msg, 32, z); // PARAM7 / z position: global: altitude
 
-	mavlink_finalize_message_chan_send(msg, chan, 36, 128);
+	mavlink_finalize_message_chan_send(msg, chan, 36);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

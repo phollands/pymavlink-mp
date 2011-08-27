@@ -56,7 +56,7 @@ static inline uint16_t mavlink_msg_sensor_bias_pack(uint8_t system_id, uint8_t c
 	put_float_by_index(msg, 16, gyBias); // Gyro Y bias (rad/s)
 	put_float_by_index(msg, 20, gzBias); // Gyro Z bias (rad/s)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 24, 168);
+	return mavlink_finalize_message(msg, system_id, component_id, 24);
 }
 
 /**
@@ -86,7 +86,7 @@ static inline uint16_t mavlink_msg_sensor_bias_pack_chan(uint8_t system_id, uint
 	put_float_by_index(msg, 16, gyBias); // Gyro Y bias (rad/s)
 	put_float_by_index(msg, 20, gzBias); // Gyro Z bias (rad/s)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24, 168);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 24);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -115,7 +115,7 @@ static inline void mavlink_msg_sensor_bias_pack_chan_send(mavlink_channel_t chan
 	put_float_by_index(msg, 16, gyBias); // Gyro Y bias (rad/s)
 	put_float_by_index(msg, 20, gzBias); // Gyro Z bias (rad/s)
 
-	mavlink_finalize_message_chan_send(msg, chan, 24, 168);
+	mavlink_finalize_message_chan_send(msg, chan, 24);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

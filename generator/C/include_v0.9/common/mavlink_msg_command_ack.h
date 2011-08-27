@@ -40,7 +40,7 @@ static inline uint16_t mavlink_msg_command_ack_pack(uint8_t system_id, uint8_t c
 	put_float_by_index(msg, 0, command); // Current airspeed in m/s
 	put_float_by_index(msg, 4, result); // 1: Action ACCEPTED and EXECUTED, 1: Action TEMPORARY REJECTED/DENIED, 2: Action PERMANENTLY DENIED, 3: Action UNKNOWN/UNSUPPORTED, 4: Requesting CONFIRMATION
 
-	return mavlink_finalize_message(msg, system_id, component_id, 8, 8);
+	return mavlink_finalize_message(msg, system_id, component_id, 8);
 }
 
 /**
@@ -62,7 +62,7 @@ static inline uint16_t mavlink_msg_command_ack_pack_chan(uint8_t system_id, uint
 	put_float_by_index(msg, 0, command); // Current airspeed in m/s
 	put_float_by_index(msg, 4, result); // 1: Action ACCEPTED and EXECUTED, 1: Action TEMPORARY REJECTED/DENIED, 2: Action PERMANENTLY DENIED, 3: Action UNKNOWN/UNSUPPORTED, 4: Requesting CONFIRMATION
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8, 8);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -83,7 +83,7 @@ static inline void mavlink_msg_command_ack_pack_chan_send(mavlink_channel_t chan
 	put_float_by_index(msg, 0, command); // Current airspeed in m/s
 	put_float_by_index(msg, 4, result); // 1: Action ACCEPTED and EXECUTED, 1: Action TEMPORARY REJECTED/DENIED, 2: Action PERMANENTLY DENIED, 3: Action UNKNOWN/UNSUPPORTED, 4: Requesting CONFIRMATION
 
-	mavlink_finalize_message_chan_send(msg, chan, 8, 8);
+	mavlink_finalize_message_chan_send(msg, chan, 8);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

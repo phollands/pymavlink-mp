@@ -60,7 +60,7 @@ static inline uint16_t mavlink_msg_gps_status_pack(uint8_t system_id, uint8_t co
 	put_int8_t_array_by_index(msg, 61, satellite_azimuth, 20); // Direction of satellite, 0: 0 deg, 255: 360 deg.
 	put_int8_t_array_by_index(msg, 81, satellite_snr, 20); // Signal to noise ratio of satellite
 
-	return mavlink_finalize_message(msg, system_id, component_id, 101, 110);
+	return mavlink_finalize_message(msg, system_id, component_id, 101);
 }
 
 /**
@@ -90,7 +90,7 @@ static inline uint16_t mavlink_msg_gps_status_pack_chan(uint8_t system_id, uint8
 	put_int8_t_array_by_index(msg, 61, satellite_azimuth, 20); // Direction of satellite, 0: 0 deg, 255: 360 deg.
 	put_int8_t_array_by_index(msg, 81, satellite_snr, 20); // Signal to noise ratio of satellite
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 101, 110);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 101);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -119,7 +119,7 @@ static inline void mavlink_msg_gps_status_pack_chan_send(mavlink_channel_t chan,
 	put_int8_t_array_by_index(msg, 61, satellite_azimuth, 20); // Direction of satellite, 0: 0 deg, 255: 360 deg.
 	put_int8_t_array_by_index(msg, 81, satellite_snr, 20); // Signal to noise ratio of satellite
 
-	mavlink_finalize_message_chan_send(msg, chan, 101, 110);
+	mavlink_finalize_message_chan_send(msg, chan, 101);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

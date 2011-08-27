@@ -60,7 +60,7 @@ static inline uint16_t mavlink_msg_vision_position_estimate_pack(uint8_t system_
 	put_float_by_index(msg, 24, pitch); // Pitch angle in rad
 	put_float_by_index(msg, 28, yaw); // Yaw angle in rad
 
-	return mavlink_finalize_message(msg, system_id, component_id, 32, 158);
+	return mavlink_finalize_message(msg, system_id, component_id, 32);
 }
 
 /**
@@ -92,7 +92,7 @@ static inline uint16_t mavlink_msg_vision_position_estimate_pack_chan(uint8_t sy
 	put_float_by_index(msg, 24, pitch); // Pitch angle in rad
 	put_float_by_index(msg, 28, yaw); // Yaw angle in rad
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32, 158);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 32);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -123,7 +123,7 @@ static inline void mavlink_msg_vision_position_estimate_pack_chan_send(mavlink_c
 	put_float_by_index(msg, 24, pitch); // Pitch angle in rad
 	put_float_by_index(msg, 28, yaw); // Yaw angle in rad
 
-	mavlink_finalize_message_chan_send(msg, chan, 32, 158);
+	mavlink_finalize_message_chan_send(msg, chan, 32);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

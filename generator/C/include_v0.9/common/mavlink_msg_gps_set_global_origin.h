@@ -52,7 +52,7 @@ static inline uint16_t mavlink_msg_gps_set_global_origin_pack(uint8_t system_id,
 	put_int32_t_by_index(msg, 6, longitude); // global position * 1E7
 	put_int32_t_by_index(msg, 10, altitude); // global position * 1000
 
-	return mavlink_finalize_message(msg, system_id, component_id, 14, 215);
+	return mavlink_finalize_message(msg, system_id, component_id, 14);
 }
 
 /**
@@ -80,7 +80,7 @@ static inline uint16_t mavlink_msg_gps_set_global_origin_pack_chan(uint8_t syste
 	put_int32_t_by_index(msg, 6, longitude); // global position * 1E7
 	put_int32_t_by_index(msg, 10, altitude); // global position * 1000
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 215);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -107,7 +107,7 @@ static inline void mavlink_msg_gps_set_global_origin_pack_chan_send(mavlink_chan
 	put_int32_t_by_index(msg, 6, longitude); // global position * 1E7
 	put_int32_t_by_index(msg, 10, altitude); // global position * 1000
 
-	mavlink_finalize_message_chan_send(msg, chan, 14, 215);
+	mavlink_finalize_message_chan_send(msg, chan, 14);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

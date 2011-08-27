@@ -48,7 +48,7 @@ static inline uint16_t mavlink_msg_scaled_pressure_pack(uint8_t system_id, uint8
 	put_float_by_index(msg, 12, press_diff); // Differential pressure 1 (hectopascal)
 	put_int16_t_by_index(msg, 16, temperature); // Temperature measurement (0.01 degrees celsius)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 18, 229);
+	return mavlink_finalize_message(msg, system_id, component_id, 18);
 }
 
 /**
@@ -74,7 +74,7 @@ static inline uint16_t mavlink_msg_scaled_pressure_pack_chan(uint8_t system_id, 
 	put_float_by_index(msg, 12, press_diff); // Differential pressure 1 (hectopascal)
 	put_int16_t_by_index(msg, 16, temperature); // Temperature measurement (0.01 degrees celsius)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18, 229);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 18);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -99,7 +99,7 @@ static inline void mavlink_msg_scaled_pressure_pack_chan_send(mavlink_channel_t 
 	put_float_by_index(msg, 12, press_diff); // Differential pressure 1 (hectopascal)
 	put_int16_t_by_index(msg, 16, temperature); // Temperature measurement (0.01 degrees celsius)
 
-	mavlink_finalize_message_chan_send(msg, chan, 18, 229);
+	mavlink_finalize_message_chan_send(msg, chan, 18);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

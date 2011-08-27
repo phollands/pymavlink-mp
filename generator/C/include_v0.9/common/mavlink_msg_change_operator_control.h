@@ -48,7 +48,7 @@ static inline uint16_t mavlink_msg_change_operator_control_pack(uint8_t system_i
 	put_uint8_t_by_index(msg, 2, version); // 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch.
 	put_char_array_by_index(msg, 3, passkey, 25); // Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
 
-	return mavlink_finalize_message(msg, system_id, component_id, 28, 217);
+	return mavlink_finalize_message(msg, system_id, component_id, 28);
 }
 
 /**
@@ -74,7 +74,7 @@ static inline uint16_t mavlink_msg_change_operator_control_pack_chan(uint8_t sys
 	put_uint8_t_by_index(msg, 2, version); // 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch.
 	put_char_array_by_index(msg, 3, passkey, 25); // Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 28, 217);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 28);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -99,7 +99,7 @@ static inline void mavlink_msg_change_operator_control_pack_chan_send(mavlink_ch
 	put_uint8_t_by_index(msg, 2, version); // 0: key as plaintext, 1-255: future, different hashing/encryption variants. The GCS should in general use the safest mode possible initially and then gradually move down the encryption level if it gets a NACK message indicating an encryption mismatch.
 	put_char_array_by_index(msg, 3, passkey, 25); // Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
 
-	mavlink_finalize_message_chan_send(msg, chan, 28, 217);
+	mavlink_finalize_message_chan_send(msg, chan, 28);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

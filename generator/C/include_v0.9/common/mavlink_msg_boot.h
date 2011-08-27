@@ -36,7 +36,7 @@ static inline uint16_t mavlink_msg_boot_pack(uint8_t system_id, uint8_t componen
 
 	put_uint32_t_by_index(msg, 0, version); // The onboard software version
 
-	return mavlink_finalize_message(msg, system_id, component_id, 4, 39);
+	return mavlink_finalize_message(msg, system_id, component_id, 4);
 }
 
 /**
@@ -56,7 +56,7 @@ static inline uint16_t mavlink_msg_boot_pack_chan(uint8_t system_id, uint8_t com
 
 	put_uint32_t_by_index(msg, 0, version); // The onboard software version
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4, 39);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -75,7 +75,7 @@ static inline void mavlink_msg_boot_pack_chan_send(mavlink_channel_t chan,
 
 	put_uint32_t_by_index(msg, 0, version); // The onboard software version
 
-	mavlink_finalize_message_chan_send(msg, chan, 4, 39);
+	mavlink_finalize_message_chan_send(msg, chan, 4);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

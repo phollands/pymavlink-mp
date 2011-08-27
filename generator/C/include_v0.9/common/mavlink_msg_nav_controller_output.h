@@ -64,7 +64,7 @@ static inline uint16_t mavlink_msg_nav_controller_output_pack(uint8_t system_id,
 	put_float_by_index(msg, 18, aspd_error); // Current airspeed error in meters/second
 	put_float_by_index(msg, 22, xtrack_error); // Current crosstrack error on x-y plane in meters
 
-	return mavlink_finalize_message(msg, system_id, component_id, 26, 57);
+	return mavlink_finalize_message(msg, system_id, component_id, 26);
 }
 
 /**
@@ -98,7 +98,7 @@ static inline uint16_t mavlink_msg_nav_controller_output_pack_chan(uint8_t syste
 	put_float_by_index(msg, 18, aspd_error); // Current airspeed error in meters/second
 	put_float_by_index(msg, 22, xtrack_error); // Current crosstrack error on x-y plane in meters
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26, 57);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -131,7 +131,7 @@ static inline void mavlink_msg_nav_controller_output_pack_chan_send(mavlink_chan
 	put_float_by_index(msg, 18, aspd_error); // Current airspeed error in meters/second
 	put_float_by_index(msg, 22, xtrack_error); // Current crosstrack error on x-y plane in meters
 
-	mavlink_finalize_message_chan_send(msg, chan, 26, 57);
+	mavlink_finalize_message_chan_send(msg, chan, 26);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

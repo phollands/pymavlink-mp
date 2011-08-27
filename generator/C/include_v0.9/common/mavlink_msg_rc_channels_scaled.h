@@ -68,7 +68,7 @@ static inline uint16_t mavlink_msg_rc_channels_scaled_pack(uint8_t system_id, ui
 	put_int16_t_by_index(msg, 14, chan8_scaled); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
 	put_uint8_t_by_index(msg, 16, rssi); // Receive signal strength indicator, 0: 0%, 255: 100%
 
-	return mavlink_finalize_message(msg, system_id, component_id, 17, 162);
+	return mavlink_finalize_message(msg, system_id, component_id, 17);
 }
 
 /**
@@ -104,7 +104,7 @@ static inline uint16_t mavlink_msg_rc_channels_scaled_pack_chan(uint8_t system_i
 	put_int16_t_by_index(msg, 14, chan8_scaled); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
 	put_uint8_t_by_index(msg, 16, rssi); // Receive signal strength indicator, 0: 0%, 255: 100%
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 17, 162);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 17);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -139,7 +139,7 @@ static inline void mavlink_msg_rc_channels_scaled_pack_chan_send(mavlink_channel
 	put_int16_t_by_index(msg, 14, chan8_scaled); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
 	put_uint8_t_by_index(msg, 16, rssi); // Receive signal strength indicator, 0: 0%, 255: 100%
 
-	mavlink_finalize_message_chan_send(msg, chan, 17, 162);
+	mavlink_finalize_message_chan_send(msg, chan, 17);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 

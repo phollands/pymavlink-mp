@@ -68,7 +68,7 @@ static inline uint16_t mavlink_msg_gps_raw_pack(uint8_t system_id, uint8_t compo
 	put_float_by_index(msg, 29, v); // GPS ground speed
 	put_float_by_index(msg, 33, hdg); // Compass heading in degrees, 0..360 degrees
 
-	return mavlink_finalize_message(msg, system_id, component_id, 37, 185);
+	return mavlink_finalize_message(msg, system_id, component_id, 37);
 }
 
 /**
@@ -104,7 +104,7 @@ static inline uint16_t mavlink_msg_gps_raw_pack_chan(uint8_t system_id, uint8_t 
 	put_float_by_index(msg, 29, v); // GPS ground speed
 	put_float_by_index(msg, 33, hdg); // Compass heading in degrees, 0..360 degrees
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 37, 185);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 37);
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -139,7 +139,7 @@ static inline void mavlink_msg_gps_raw_pack_chan_send(mavlink_channel_t chan,
 	put_float_by_index(msg, 29, v); // GPS ground speed
 	put_float_by_index(msg, 33, hdg); // Compass heading in degrees, 0..360 degrees
 
-	mavlink_finalize_message_chan_send(msg, chan, 37, 185);
+	mavlink_finalize_message_chan_send(msg, chan, 37);
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
