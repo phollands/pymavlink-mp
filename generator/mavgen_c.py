@@ -361,6 +361,19 @@ ${{message:	mavlink_test_${name_lower}(system_id, component_id);
 
     f.close()
 
+def copy_fixed_headers(directory, xml):
+    '''copy the fixed protocol headers to the target directory'''
+    import shutil
+    hlist = [ 'protocol.h', 'mavlink_helpers.h', 'mavlink_types.h', 'checksum.h' ]
+    basepath = os.path.dirname(os.path.realpath(__file__))
+    srcpath = os.path.join(basepath, 'C/include_v%s' % xml.wire_protocol_version)
+    print("Copying fixed headers")
+    for h in hlist:
+        src = os.path.realpath(os.path.join(srcpath, h))
+        dest = os.path.realpath(os.path.join(directory, h))
+        if src == dest:
+            continue
+        shutil.copy(src, dest)
 
 class mav_include(object):
     def __init__(self, base):
@@ -472,6 +485,7 @@ def generate_one(basename, xml):
     for m in xml.message:
         generate_message_h(directory, m)
     generate_testsuite_h(directory, xml)
+    copy_fixed_headers(basename, xml)
 
 
 def generate(basename, xml_list):
