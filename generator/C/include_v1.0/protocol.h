@@ -35,6 +35,7 @@
 
 /* always include the prototypes to ensure we don't get out of sync */
 MAVLINK_HELPER mavlink_status_t* mavlink_get_channel_status(uint8_t chan);
+#if MAVLINK_CRC_EXTRA
 MAVLINK_HELPER uint16_t mavlink_finalize_message_chan(mavlink_message_t* msg, uint8_t system_id, uint8_t component_id, 
 						      uint8_t chan, uint16_t length, uint8_t crc_extra);
 MAVLINK_HELPER uint16_t mavlink_finalize_message(mavlink_message_t* msg, uint8_t system_id, uint8_t component_id, 
@@ -43,6 +44,16 @@ MAVLINK_HELPER uint16_t mavlink_finalize_message(mavlink_message_t* msg, uint8_t
 MAVLINK_HELPER void mavlink_finalize_message_chan_send(mavlink_message_t* msg,
 						       mavlink_channel_t chan, uint16_t length, uint8_t crc_extra);
 #endif
+#else
+MAVLINK_HELPER uint16_t mavlink_finalize_message_chan(mavlink_message_t* msg, uint8_t system_id, uint8_t component_id, 
+						      uint8_t chan, uint16_t length);
+MAVLINK_HELPER uint16_t mavlink_finalize_message(mavlink_message_t* msg, uint8_t system_id, uint8_t component_id, 
+						 uint16_t length);
+#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
+MAVLINK_HELPER void mavlink_finalize_message_chan_send(mavlink_message_t* msg,
+						       mavlink_channel_t chan, uint16_t length);
+#endif
+#endif // MAVLINK_CRC_EXTRA
 MAVLINK_HELPER uint16_t mavlink_msg_to_send_buffer(uint8_t *buffer, const mavlink_message_t *msg);
 MAVLINK_HELPER void mavlink_start_checksum(mavlink_message_t* msg);
 MAVLINK_HELPER void mavlink_update_checksum(mavlink_message_t* msg, uint8_t c);

@@ -178,7 +178,7 @@ static inline uint16_t mavlink_msg_${name_lower}_pack(uint8_t system_id, uint8_t
 ${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
 }}
 
-	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length}, ${crc_extra});
+	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length}${crc_extra_arg});
 }
 
 /**
@@ -200,7 +200,7 @@ static inline uint16_t mavlink_msg_${name_lower}_pack_chan(uint8_t system_id, ui
 ${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
 }}
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length}, ${crc_extra});
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length}${crc_extra_arg});
 }
 
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
@@ -221,7 +221,7 @@ static inline void mavlink_msg_${name_lower}_pack_chan_send(mavlink_channel_t ch
 ${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
 }}
 
-	mavlink_finalize_message_chan_send(msg, chan, ${wire_length}, ${crc_extra});
+	mavlink_finalize_message_chan_send(msg, chan, ${wire_length}${crc_extra_arg});
 }
 #endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
@@ -427,6 +427,10 @@ def generate_one(basename, xml):
     # add some extra field attributes for convenience with arrays
     for m in xml.message:
         m.msg_name = m.name
+        if xml.crc_extra:
+            m.crc_extra_arg = ", %s" % m.crc_extra
+        else:
+            m.crc_extra_arg = ""
         for f in m.fields:
             if f.array_length != 0:
                 f.array_suffix = '[%u]' % f.array_length
