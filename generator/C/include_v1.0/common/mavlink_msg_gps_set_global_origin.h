@@ -11,6 +11,11 @@ typedef struct __mavlink_gps_set_global_origin_t
  uint8_t target_component; ///< Component ID
 } mavlink_gps_set_global_origin_t;
 
+#define MAVLINK_MSG_ID_GPS_SET_GLOBAL_ORIGIN_LEN 14
+#define MAVLINK_MSG_ID_48_LEN 14
+
+
+
 #define MAVLINK_MESSAGE_INFO_GPS_SET_GLOBAL_ORIGIN { \
 	"GPS_SET_GLOBAL_ORIGIN", \
 	5, \

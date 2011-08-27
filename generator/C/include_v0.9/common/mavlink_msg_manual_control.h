@@ -15,6 +15,11 @@ typedef struct __mavlink_manual_control_t
  uint8_t thrust_manual; ///< thrust auto:0, manual:1
 } mavlink_manual_control_t;
 
+#define MAVLINK_MSG_ID_MANUAL_CONTROL_LEN 21
+#define MAVLINK_MSG_ID_69_LEN 21
+
+
+
 #define MAVLINK_MESSAGE_INFO_MANUAL_CONTROL { \
 	"MANUAL_CONTROL", \
 	9, \

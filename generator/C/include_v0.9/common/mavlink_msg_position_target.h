@@ -10,6 +10,11 @@ typedef struct __mavlink_position_target_t
  float yaw; ///< yaw orientation in radians, 0 = NORTH
 } mavlink_position_target_t;
 
+#define MAVLINK_MSG_ID_POSITION_TARGET_LEN 16
+#define MAVLINK_MSG_ID_63_LEN 16
+
+
+
 #define MAVLINK_MESSAGE_INFO_POSITION_TARGET { \
 	"POSITION_TARGET", \
 	4, \

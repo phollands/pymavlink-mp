@@ -13,6 +13,11 @@ typedef struct __mavlink_safety_allowed_area_t
  uint8_t frame; ///< Coordinate frame, as defined by MAV_FRAME enum in mavlink_types.h. Can be either global, GPS, right-handed with Z axis up or local, right handed, Z axis down.
 } mavlink_safety_allowed_area_t;
 
+#define MAVLINK_MSG_ID_SAFETY_ALLOWED_AREA_LEN 25
+#define MAVLINK_MSG_ID_54_LEN 25
+
+
+
 #define MAVLINK_MESSAGE_INFO_SAFETY_ALLOWED_AREA { \
 	"SAFETY_ALLOWED_AREA", \
 	7, \

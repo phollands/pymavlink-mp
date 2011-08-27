@@ -9,6 +9,11 @@ typedef struct __mavlink_ualberta_sys_status_t
  uint8_t pilot; ///< Pilot mode, see UALBERTA_PILOT_MODE
 } mavlink_ualberta_sys_status_t;
 
+#define MAVLINK_MSG_ID_UALBERTA_SYS_STATUS_LEN 3
+#define MAVLINK_MSG_ID_222_LEN 3
+
+
+
 #define MAVLINK_MESSAGE_INFO_UALBERTA_SYS_STATUS { \
 	"UALBERTA_SYS_STATUS", \
 	3, \

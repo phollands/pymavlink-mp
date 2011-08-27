@@ -8,6 +8,11 @@ typedef struct __mavlink_waypoint_request_list_t
  uint8_t target_component; ///< Component ID
 } mavlink_waypoint_request_list_t;
 
+#define MAVLINK_MSG_ID_WAYPOINT_REQUEST_LIST_LEN 2
+#define MAVLINK_MSG_ID_43_LEN 2
+
+
+
 #define MAVLINK_MESSAGE_INFO_WAYPOINT_REQUEST_LIST { \
 	"WAYPOINT_REQUEST_LIST", \
 	2, \

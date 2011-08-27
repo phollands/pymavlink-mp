@@ -11,6 +11,11 @@ typedef struct __mavlink_request_data_stream_t
  uint8_t start_stop; ///< 1 to start sending, 0 to stop sending.
 } mavlink_request_data_stream_t;
 
+#define MAVLINK_MSG_ID_REQUEST_DATA_STREAM_LEN 6
+#define MAVLINK_MSG_ID_66_LEN 6
+
+
+
 #define MAVLINK_MESSAGE_INFO_REQUEST_DATA_STREAM { \
 	"REQUEST_DATA_STREAM", \
 	5, \

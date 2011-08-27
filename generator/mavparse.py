@@ -22,6 +22,7 @@ class MAVParseError(Exception):
 class MAVField(object):
     def __init__(self, name, type, xml, description=''):
         self.name = name
+        self.name_upper = name.upper()
         self.description = description
         self.array_length = 0
         self.omit_arg = False
@@ -196,6 +197,10 @@ class MAVXML(object):
                 self.enum[-1].entry[-1].param.append(MAVEnumParam(attrs['index']))
 
         def end_element(name):
+            in_element = '.'.join(in_element_list)
+            if in_element == "mavlink.enums.enum":
+                # add a ENUM_END
+                self.enum[-1].entry.append(MAVEnumEntry("%s_ENUM_END" % self.enum[-1].name, self.enum[-1].next_value))
             in_element_list.pop()
 
         def char_data(data):

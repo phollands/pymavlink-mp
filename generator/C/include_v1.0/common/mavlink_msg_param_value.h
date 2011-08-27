@@ -11,6 +11,11 @@ typedef struct __mavlink_param_value_t
  uint8_t param_type; ///< Onboard parameter type: 0: float, 1: uint8_t, 2: int8_t, 3: uint16_t, 4: int16_t, 5: uint32_t, 6: int32_t
 } mavlink_param_value_t;
 
+#define MAVLINK_MSG_ID_PARAM_VALUE_LEN 25
+#define MAVLINK_MSG_ID_22_LEN 25
+
+#define MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN 16
+
 #define MAVLINK_MESSAGE_INFO_PARAM_VALUE { \
 	"PARAM_VALUE", \
 	5, \

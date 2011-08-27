@@ -14,42 +14,12 @@
 # define MAVLINK_NEED_BYTE_SWAP (MAVLINK_ENDIAN != MAVLINK_LITTLE_ENDIAN)
 #endif
 
-#ifndef MAVLINK_STRICT_ALIASING
-#define MAVLINK_STRICT_ALIASING 1
+#ifndef MAVLINK_STACK_BUFFER
+#define MAVLINK_STACK_BUFFER 0
 #endif
 
 #ifndef MAVLINK_ALIGNED_FIELDS
 #define MAVLINK_ALIGNED_FIELDS (MAVLINK_ENDIAN == MAVLINK_LITTLE_ENDIAN)
-#endif
-
-/*
-  compilers are surprisingly bad at working out if a memcpy() will be
-  more space efficient than a type assignment. By defining these
-  macros you can tweak the code generation to suit your system
- */
-
-#ifndef MAVLINK_PUT_MEMCPY_16
-#define MAVLINK_PUT_MEMCPY_16 MAVLINK_STRICT_ALIASING
-#endif
-
-#ifndef MAVLINK_PUT_MEMCPY_32
-#define MAVLINK_PUT_MEMCPY_32 MAVLINK_STRICT_ALIASING
-#endif
-
-#ifndef MAVLINK_PUT_MEMCPY_64
-#define MAVLINK_PUT_MEMCPY_64 MAVLINK_STRICT_ALIASING
-#endif
-
-#ifndef MAVLINK_GET_MEMCPY_16
-#define MAVLINK_GET_MEMCPY_16 MAVLINK_STRICT_ALIASING
-#endif
-
-#ifndef MAVLINK_GET_MEMCPY_32
-#define MAVLINK_GET_MEMCPY_32 MAVLINK_STRICT_ALIASING
-#endif
-
-#ifndef MAVLINK_GET_MEMCPY_64
-#define MAVLINK_GET_MEMCPY_64 MAVLINK_STRICT_ALIASING
 #endif
 
 #ifndef MAVLINK_ASSERT
@@ -269,7 +239,7 @@ static inline void put_float_by_index(mavlink_message_t *msg, uint8_t wire_offse
 #if MAVLINK_NEED_BYTE_SWAP
 	generic_32bit g;
 	g.f = b;
-	put_uint32_t_by_index(g.i, wire_offset, buffer);
+	put_uint32_t_by_index(msg, wire_offset, g.i);
 #else
 	msg->payload.f[wire_offset/4] = b;
 #endif
@@ -287,7 +257,7 @@ static inline void put_double_by_index(mavlink_message_t *msg, uint8_t wire_offs
 #if MAVLINK_NEED_BYTE_SWAP
 	generic_64bit g;
 	g.d = b;
-	put_uint64_t_by_index(g.i, wire_offset, buffer);
+	put_uint64_t_by_index(msg, wire_offset, g.i);
 #else
 	msg->payload.d[wire_offset/8] = b;
 #endif
@@ -318,7 +288,7 @@ static inline void put_int8_t_array_by_index(mavlink_message_t *msg, uint8_t wir
 }
 
 #if MAVLINK_NEED_BYTE_SWAP
-#define PUT_ARRAY_BY_INDEX(TYPE) \
+#define PUT_ARRAY_BY_INDEX(TYPE, V) \
 static inline void put_ ## TYPE ##_array_by_index(mavlink_message_t *msg, uint8_t wire_offset, const TYPE *b, uint8_t array_length) \
 { \
 	uint16_t i; \
@@ -473,7 +443,7 @@ static inline uint16_t MAVLINK_MSG_RETURN_int8_t_array(const mavlink_message_t *
 }
 
 #if MAVLINK_NEED_BYTE_SWAP
-#define RETURN_ARRAY_BY_INDEX(TYPE) \
+#define RETURN_ARRAY_BY_INDEX(TYPE, V) \
 static inline uint16_t MAVLINK_MSG_RETURN_## TYPE ##_array(const mavlink_message_t *msg, TYPE *value, \
 							 uint8_t array_length, uint8_t wire_offset) \
 { \
@@ -512,11 +482,8 @@ RETURN_ARRAY_BY_INDEX(double,   d)
   use it if you know its OK for your architecture  
  */
 #define MAVLINK_ALIGNED_MESSAGE(msg, length) \
-union { \
-       uint64_t _uint64; \
-       uint8_t  _buf[MAVLINK_NUM_CHECKSUM_BYTES+MAVLINK_NUM_NON_PAYLOAD_BYTES+(length)]; \
-} _buffer; \
-mavlink_message_t *msg = (mavlink_message_t *)&_buffer._buf[0]
+uint64_t  _buf[(MAVLINK_NUM_CHECKSUM_BYTES+MAVLINK_NUM_NON_PAYLOAD_BYTES+(length)+7)/8]; \
+mavlink_message_t *msg = (mavlink_message_t *)&_buf[0]
 #else
 #define MAVLINK_ALIGNED_MESSAGE(msg, length) \
 	mavlink_message_t _msg;	\

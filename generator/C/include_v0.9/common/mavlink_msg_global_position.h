@@ -13,6 +13,11 @@ typedef struct __mavlink_global_position_t
  float vz; ///< Z Speed (in Altitude direction, positive: going up)
 } mavlink_global_position_t;
 
+#define MAVLINK_MSG_ID_GLOBAL_POSITION_LEN 32
+#define MAVLINK_MSG_ID_33_LEN 32
+
+
+
 #define MAVLINK_MESSAGE_INFO_GLOBAL_POSITION { \
 	"GLOBAL_POSITION", \
 	7, \

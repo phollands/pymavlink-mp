@@ -51,6 +51,7 @@ enum UALBERTA_AUTOPILOT_MODE
 	MODE_AUTO_PID_ATT=2, /*  | */
 	MODE_AUTO_PID_VEL=3, /*  | */
 	MODE_AUTO_PID_POS=4, /*  | */
+	UALBERTA_AUTOPILOT_MODE_ENUM_END=5, /*  | */
 };
 
 /** @brief Navigation filter mode */
@@ -60,6 +61,7 @@ enum UALBERTA_NAV_MODE
 	NAV_AHRS=1, /*  | */
 	NAV_INS_GPS_INIT=2, /*  | */
 	NAV_INS_GPS=3, /*  | */
+	UALBERTA_NAV_MODE_ENUM_END=4, /*  | */
 };
 
 /** @brief Mode currently commanded by pilot */
@@ -68,6 +70,7 @@ enum UALBERTA_PILOT_MODE
 	PILOT_MANUAL=0, /*  | */
 	PILOT_AUTO=1, /*  | */
 	PILOT_ROTO=2, /*  | */
+	UALBERTA_PILOT_MODE_ENUM_END=3, /*  | */
 };
 
 // MESSAGE DEFINITIONS

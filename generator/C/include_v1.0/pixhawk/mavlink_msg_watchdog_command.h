@@ -10,6 +10,11 @@ typedef struct __mavlink_watchdog_command_t
  uint8_t command_id; ///< Command ID
 } mavlink_watchdog_command_t;
 
+#define MAVLINK_MSG_ID_WATCHDOG_COMMAND_LEN 6
+#define MAVLINK_MSG_ID_183_LEN 6
+
+
+
 #define MAVLINK_MESSAGE_INFO_WATCHDOG_COMMAND { \
 	"WATCHDOG_COMMAND", \
 	4, \

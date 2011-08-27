@@ -9,6 +9,11 @@ typedef struct __mavlink_cpu_load_t
  uint8_t ctrlLoad; ///< Control DSC Load
 } mavlink_cpu_load_t;
 
+#define MAVLINK_MSG_ID_CPU_LOAD_LEN 4
+#define MAVLINK_MSG_ID_170_LEN 4
+
+
+
 #define MAVLINK_MESSAGE_INFO_CPU_LOAD { \
 	"CPU_LOAD", \
 	3, \

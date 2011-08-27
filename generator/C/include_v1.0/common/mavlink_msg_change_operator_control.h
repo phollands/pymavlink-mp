@@ -10,6 +10,11 @@ typedef struct __mavlink_change_operator_control_t
  char passkey[25]; ///< Password / Key, depending on version plaintext or encrypted. 25 or less characters, NULL terminated. The characters may involve A-Z, a-z, 0-9, and "!?,.-"
 } mavlink_change_operator_control_t;
 
+#define MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_LEN 28
+#define MAVLINK_MSG_ID_5_LEN 28
+
+#define MAVLINK_MSG_CHANGE_OPERATOR_CONTROL_FIELD_PASSKEY_LEN 25
+
 #define MAVLINK_MESSAGE_INFO_CHANGE_OPERATOR_CONTROL { \
 	"CHANGE_OPERATOR_CONTROL", \
 	4, \

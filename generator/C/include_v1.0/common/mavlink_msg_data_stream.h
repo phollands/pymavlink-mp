@@ -9,6 +9,11 @@ typedef struct __mavlink_data_stream_t
  uint8_t on_off; ///< 1 stream is enabled, 0 stream is stopped.
 } mavlink_data_stream_t;
 
+#define MAVLINK_MSG_ID_DATA_STREAM_LEN 4
+#define MAVLINK_MSG_ID_67_LEN 4
+
+
+
 #define MAVLINK_MESSAGE_INFO_DATA_STREAM { \
 	"DATA_STREAM", \
 	3, \

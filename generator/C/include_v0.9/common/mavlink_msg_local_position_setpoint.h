@@ -10,6 +10,11 @@ typedef struct __mavlink_local_position_setpoint_t
  float yaw; ///< Desired yaw angle
 } mavlink_local_position_setpoint_t;
 
+#define MAVLINK_MSG_ID_LOCAL_POSITION_SETPOINT_LEN 16
+#define MAVLINK_MSG_ID_51_LEN 16
+
+
+
 #define MAVLINK_MESSAGE_INFO_LOCAL_POSITION_SETPOINT { \
 	"LOCAL_POSITION_SETPOINT", \
 	4, \

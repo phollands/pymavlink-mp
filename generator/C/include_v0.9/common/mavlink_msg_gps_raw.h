@@ -15,6 +15,11 @@ typedef struct __mavlink_gps_raw_t
  float hdg; ///< Compass heading in degrees, 0..360 degrees
 } mavlink_gps_raw_t;
 
+#define MAVLINK_MSG_ID_GPS_RAW_LEN 37
+#define MAVLINK_MSG_ID_32_LEN 37
+
+
+
 #define MAVLINK_MESSAGE_INFO_GPS_RAW { \
 	"GPS_RAW", \
 	9, \

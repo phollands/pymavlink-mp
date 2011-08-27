@@ -8,6 +8,11 @@ typedef struct __mavlink_named_value_int_t
  int32_t value; ///< Signed integer value
 } mavlink_named_value_int_t;
 
+#define MAVLINK_MSG_ID_NAMED_VALUE_INT_LEN 14
+#define MAVLINK_MSG_ID_253_LEN 14
+
+#define MAVLINK_MSG_NAMED_VALUE_INT_FIELD_NAME_LEN 10
+
 #define MAVLINK_MESSAGE_INFO_NAMED_VALUE_INT { \
 	"NAMED_VALUE_INT", \
 	2, \

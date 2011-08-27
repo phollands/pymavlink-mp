@@ -10,6 +10,11 @@ typedef struct __mavlink_ping_t
  uint64_t time; ///< Unix timestamp in microseconds
 } mavlink_ping_t;
 
+#define MAVLINK_MSG_ID_PING_LEN 14
+#define MAVLINK_MSG_ID_3_LEN 14
+
+
+
 #define MAVLINK_MESSAGE_INFO_PING { \
 	"PING", \
 	4, \

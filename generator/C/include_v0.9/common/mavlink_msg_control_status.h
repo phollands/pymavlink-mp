@@ -14,6 +14,11 @@ typedef struct __mavlink_control_status_t
  uint8_t control_pos_yaw; ///< 0: Yaw angle control disabled, 1: enabled
 } mavlink_control_status_t;
 
+#define MAVLINK_MSG_ID_CONTROL_STATUS_LEN 8
+#define MAVLINK_MSG_ID_52_LEN 8
+
+
+
 #define MAVLINK_MESSAGE_INFO_CONTROL_STATUS { \
 	"CONTROL_STATUS", \
 	8, \

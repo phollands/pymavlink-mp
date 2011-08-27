@@ -61,7 +61,7 @@ enum MAV_ACTION
 #define MAVLINK_MAX_PACKET_LEN (MAVLINK_MAX_PAYLOAD_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES) ///< Maximum packet length
 
 typedef struct param_union {
-	struct {
+	union {
 		float param_float;
 		int32_t param_int32;
 		uint32_t param_uint32;

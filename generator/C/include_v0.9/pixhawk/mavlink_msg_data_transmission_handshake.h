@@ -11,6 +11,11 @@ typedef struct __mavlink_data_transmission_handshake_t
  uint8_t jpg_quality; ///< JPEG quality out of [1,100]
 } mavlink_data_transmission_handshake_t;
 
+#define MAVLINK_MSG_ID_DATA_TRANSMISSION_HANDSHAKE_LEN 8
+#define MAVLINK_MSG_ID_193_LEN 8
+
+
+
 #define MAVLINK_MESSAGE_INFO_DATA_TRANSMISSION_HANDSHAKE { \
 	"DATA_TRANSMISSION_HANDSHAKE", \
 	5, \

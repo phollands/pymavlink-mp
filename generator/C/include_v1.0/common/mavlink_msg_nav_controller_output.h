@@ -14,6 +14,11 @@ typedef struct __mavlink_nav_controller_output_t
  uint16_t wp_dist; ///< Distance to active waypoint in meters
 } mavlink_nav_controller_output_t;
 
+#define MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT_LEN 26
+#define MAVLINK_MSG_ID_62_LEN 26
+
+
+
 #define MAVLINK_MESSAGE_INFO_NAV_CONTROLLER_OUTPUT { \
 	"NAV_CONTROLLER_OUTPUT", \
 	8, \

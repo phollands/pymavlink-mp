@@ -14,6 +14,11 @@ typedef struct __mavlink_command_t
  float param4; ///< Parameter 4, as defined by MAV_CMD enum.
 } mavlink_command_t;
 
+#define MAVLINK_MSG_ID_COMMAND_LEN 20
+#define MAVLINK_MSG_ID_75_LEN 20
+
+
+
 #define MAVLINK_MESSAGE_INFO_COMMAND { \
 	"COMMAND", \
 	8, \

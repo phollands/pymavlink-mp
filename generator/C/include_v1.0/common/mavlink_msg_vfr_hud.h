@@ -12,6 +12,11 @@ typedef struct __mavlink_vfr_hud_t
  uint16_t throttle; ///< Current throttle setting in integer percent, 0 to 100
 } mavlink_vfr_hud_t;
 
+#define MAVLINK_MSG_ID_VFR_HUD_LEN 20
+#define MAVLINK_MSG_ID_74_LEN 20
+
+
+
 #define MAVLINK_MESSAGE_INFO_VFR_HUD { \
 	"VFR_HUD", \
 	6, \

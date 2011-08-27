@@ -18,6 +18,11 @@ typedef struct __mavlink_sensor_offsets_t
  float accel_cal_z; ///< accel Z calibration
 } mavlink_sensor_offsets_t;
 
+#define MAVLINK_MSG_ID_SENSOR_OFFSETS_LEN 42
+#define MAVLINK_MSG_ID_150_LEN 42
+
+
+
 #define MAVLINK_MESSAGE_INFO_SENSOR_OFFSETS { \
 	"SENSOR_OFFSETS", \
 	12, \

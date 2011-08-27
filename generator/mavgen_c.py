@@ -146,6 +146,12 @@ ${{ordered_fields: ${type} ${name}${array_suffix}; ///< ${description}
 }}
 } mavlink_${name_lower}_t;
 
+#define MAVLINK_MSG_ID_${name}_LEN ${wire_length}
+#define MAVLINK_MSG_ID_${id}_LEN ${wire_length}
+
+${{array_fields:#define MAVLINK_MSG_${msg_name}_FIELD_${name_upper}_LEN ${array_length}
+}}
+
 #define MAVLINK_MESSAGE_INFO_${name} { \\
 	"${name}", \\
 	${num_fields}, \\
@@ -355,6 +361,19 @@ ${{message:	mavlink_test_${name_lower}(system_id, component_id);
 
     f.close()
 
+def copy_fixed_headers(directory, xml):
+    '''copy the fixed protocol headers to the target directory'''
+    import shutil
+    hlist = [ 'protocol.h', 'mavlink_helpers.h', 'mavlink_types.h', 'checksum.h' ]
+    basepath = os.path.dirname(os.path.realpath(__file__))
+    srcpath = os.path.join(basepath, 'C/include_v%s' % xml.wire_protocol_version)
+    print("Copying fixed headers")
+    for h in hlist:
+        src = os.path.realpath(os.path.join(srcpath, h))
+        dest = os.path.realpath(os.path.join(directory, h))
+        if src == dest:
+            continue
+        shutil.copy(src, dest)
 
 class mav_include(object):
     def __init__(self, base):
@@ -407,6 +426,7 @@ def generate_one(basename, xml):
 
     # add some extra field attributes for convenience with arrays
     for m in xml.message:
+        m.msg_name = m.name
         for f in m.fields:
             if f.array_length != 0:
                 f.array_suffix = '[%u]' % f.array_length
@@ -449,7 +469,10 @@ def generate_one(basename, xml):
     # cope with uint8_t_mavlink_version
     for m in xml.message:
         m.arg_fields = []
+        m.array_fields = []
         for f in m.fields:
+            if f.array_length != 0:
+                m.array_fields.append(f)
             if not f.omit_arg:
                 m.arg_fields.append(f)
                 f.putname = f.name
@@ -462,6 +485,7 @@ def generate_one(basename, xml):
     for m in xml.message:
         generate_message_h(directory, m)
     generate_testsuite_h(directory, xml)
+    copy_fixed_headers(basename, xml)
 
 
 def generate(basename, xml_list):

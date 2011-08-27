@@ -17,6 +17,11 @@ typedef struct __mavlink_point_of_interest_connection_t
  char name[26]; ///< POI connection name
 } mavlink_point_of_interest_connection_t;
 
+#define MAVLINK_MSG_ID_POINT_OF_INTEREST_CONNECTION_LEN 55
+#define MAVLINK_MSG_ID_192_LEN 55
+
+#define MAVLINK_MSG_POINT_OF_INTEREST_CONNECTION_FIELD_NAME_LEN 26
+
 #define MAVLINK_MESSAGE_INFO_POINT_OF_INTEREST_CONNECTION { \
 	"POINT_OF_INTEREST_CONNECTION", \
 	11, \

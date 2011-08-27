@@ -13,6 +13,11 @@ typedef struct __mavlink_raw_aux_t
  int32_t baro; ///< Barometric pressure (hecto Pascal)
 } mavlink_raw_aux_t;
 
+#define MAVLINK_MSG_ID_RAW_AUX_LEN 16
+#define MAVLINK_MSG_ID_172_LEN 16
+
+
+
 #define MAVLINK_MESSAGE_INFO_RAW_AUX { \
 	"RAW_AUX", \
 	7, \

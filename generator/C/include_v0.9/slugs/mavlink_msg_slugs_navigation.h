@@ -15,6 +15,11 @@ typedef struct __mavlink_slugs_navigation_t
  uint8_t toWP; ///< Destination WP
 } mavlink_slugs_navigation_t;
 
+#define MAVLINK_MSG_ID_SLUGS_NAVIGATION_LEN 30
+#define MAVLINK_MSG_ID_176_LEN 30
+
+
+
 #define MAVLINK_MESSAGE_INFO_SLUGS_NAVIGATION { \
 	"SLUGS_NAVIGATION", \
 	9, \

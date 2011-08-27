@@ -9,6 +9,11 @@ typedef struct __mavlink_gps_local_origin_set_t
  int32_t altitude; ///< Altitude(WGS84), expressed as * 1000
 } mavlink_gps_local_origin_set_t;
 
+#define MAVLINK_MSG_ID_GPS_LOCAL_ORIGIN_SET_LEN 12
+#define MAVLINK_MSG_ID_49_LEN 12
+
+
+
 #define MAVLINK_MESSAGE_INFO_GPS_LOCAL_ORIGIN_SET { \
 	"GPS_LOCAL_ORIGIN_SET", \
 	3, \

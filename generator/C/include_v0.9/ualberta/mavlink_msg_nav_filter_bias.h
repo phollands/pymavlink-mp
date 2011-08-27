@@ -13,6 +13,11 @@ typedef struct __mavlink_nav_filter_bias_t
  float gyro_2; ///< b_f[2]
 } mavlink_nav_filter_bias_t;
 
+#define MAVLINK_MSG_ID_NAV_FILTER_BIAS_LEN 32
+#define MAVLINK_MSG_ID_220_LEN 32
+
+
+
 #define MAVLINK_MESSAGE_INFO_NAV_FILTER_BIAS { \
 	"NAV_FILTER_BIAS", \
 	7, \

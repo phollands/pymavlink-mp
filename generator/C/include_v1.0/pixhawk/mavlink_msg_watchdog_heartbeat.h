@@ -8,6 +8,11 @@ typedef struct __mavlink_watchdog_heartbeat_t
  uint16_t process_count; ///< Number of processes
 } mavlink_watchdog_heartbeat_t;
 
+#define MAVLINK_MSG_ID_WATCHDOG_HEARTBEAT_LEN 4
+#define MAVLINK_MSG_ID_180_LEN 4
+
+
+
 #define MAVLINK_MESSAGE_INFO_WATCHDOG_HEARTBEAT { \
 	"WATCHDOG_HEARTBEAT", \
 	2, \

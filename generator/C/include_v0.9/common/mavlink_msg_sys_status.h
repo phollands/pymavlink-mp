@@ -13,6 +13,11 @@ typedef struct __mavlink_sys_status_t
  uint16_t packet_drop; ///< Dropped packets (packets that were corrupted on reception on the MAV)
 } mavlink_sys_status_t;
 
+#define MAVLINK_MSG_ID_SYS_STATUS_LEN 11
+#define MAVLINK_MSG_ID_34_LEN 11
+
+
+
 #define MAVLINK_MESSAGE_INFO_SYS_STATUS { \
 	"SYS_STATUS", \
 	7, \

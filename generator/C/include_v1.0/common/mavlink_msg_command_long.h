@@ -17,6 +17,11 @@ typedef struct __mavlink_command_long_t
  uint8_t confirmation; ///< 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
 } mavlink_command_long_t;
 
+#define MAVLINK_MSG_ID_COMMAND_LONG_LEN 32
+#define MAVLINK_MSG_ID_76_LEN 32
+
+
+
 #define MAVLINK_MESSAGE_INFO_COMMAND_LONG { \
 	"COMMAND_LONG", \
 	11, \

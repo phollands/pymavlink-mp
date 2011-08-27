@@ -13,6 +13,11 @@ typedef struct __mavlink_vision_position_estimate_t
  float yaw; ///< Yaw angle in rad
 } mavlink_vision_position_estimate_t;
 
+#define MAVLINK_MSG_ID_VISION_POSITION_ESTIMATE_LEN 32
+#define MAVLINK_MSG_ID_156_LEN 32
+
+
+
 #define MAVLINK_MESSAGE_INFO_VISION_POSITION_ESTIMATE { \
 	"VISION_POSITION_ESTIMATE", \
 	7, \

@@ -12,6 +12,11 @@ typedef struct __mavlink_position_control_offset_set_t
  float yaw; ///< yaw orientation offset in radians, 0 = NORTH
 } mavlink_position_control_offset_set_t;
 
+#define MAVLINK_MSG_ID_POSITION_CONTROL_OFFSET_SET_LEN 18
+#define MAVLINK_MSG_ID_160_LEN 18
+
+
+
 #define MAVLINK_MESSAGE_INFO_POSITION_CONTROL_OFFSET_SET { \
 	"POSITION_CONTROL_OFFSET_SET", \
 	6, \

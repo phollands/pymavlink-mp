@@ -20,6 +20,11 @@ typedef struct __mavlink_waypoint_t
  float z; ///< PARAM7 / z position: global: altitude
 } mavlink_waypoint_t;
 
+#define MAVLINK_MSG_ID_WAYPOINT_LEN 36
+#define MAVLINK_MSG_ID_39_LEN 36
+
+
+
 #define MAVLINK_MESSAGE_INFO_WAYPOINT { \
 	"WAYPOINT", \
 	14, \

@@ -86,6 +86,7 @@ enum MAV_CMD
 	MAV_CMD_DO_LAST=240, /* NOP - This command is only used to mark the upper limit of the DO commands in the enumeration |Empty| Empty| Empty| Empty| Empty| Empty| Empty|  */
 	MAV_CMD_PREFLIGHT_CALIBRATION=241, /* Trigger calibration. This command will be only accepted if in pre-flight mode. |Gyro calibration: 0: no, 1: yes| Magnetometer calibration: 0: no, 1: yes| Ground pressure: 0: no, 1: yes| Radio calibration: 0: no, 1: yes| Empty| Empty| Empty|  */
 	MAV_CMD_PREFLIGHT_STORAGE=245, /* Request storage of different parameter values and logs. This command will be only accepted if in pre-flight mode. |Parameter storage: 0: READ FROM FLASH/EEPROM, 1: WRITE CURRENT TO FLASH/EEPROM| Mission storage: 0: READ FROM FLASH/EEPROM, 1: WRITE CURRENT TO FLASH/EEPROM| Reserved| Reserved| Empty| Empty| Empty|  */
+	MAV_CMD_ENUM_END=246, /*  | */
 };
 
 /** @brief Data stream IDs. A data stream is not a fixed set of messages, but rather a
@@ -103,6 +104,7 @@ enum MAV_DATA_STREAM
 	MAV_DATA_STREAM_EXTRA1=10, /* Dependent on the autopilot | */
 	MAV_DATA_STREAM_EXTRA2=11, /* Dependent on the autopilot | */
 	MAV_DATA_STREAM_EXTRA3=12, /* Dependent on the autopilot | */
+	MAV_DATA_STREAM_ENUM_END=13, /*  | */
 };
 
 /** @brief  The ROI (region of interest) for the vehicle. This can be
@@ -116,6 +118,7 @@ enum MAV_ROI
 	MAV_ROI_WPINDEX=2, /* Point toward given waypoint. | */
 	MAV_ROI_LOCATION=3, /* Point toward fixed location. | */
 	MAV_ROI_TARGET=4, /* Point toward of given id. | */
+	MAV_ROI_ENUM_END=5, /*  | */
 };
 
 // MESSAGE DEFINITIONS

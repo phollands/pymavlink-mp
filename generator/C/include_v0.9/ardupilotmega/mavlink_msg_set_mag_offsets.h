@@ -11,6 +11,11 @@ typedef struct __mavlink_set_mag_offsets_t
  int16_t mag_ofs_z; ///< magnetometer Z offset
 } mavlink_set_mag_offsets_t;
 
+#define MAVLINK_MSG_ID_SET_MAG_OFFSETS_LEN 8
+#define MAVLINK_MSG_ID_151_LEN 8
+
+
+
 #define MAVLINK_MESSAGE_INFO_SET_MAG_OFFSETS { \
 	"SET_MAG_OFFSETS", \
 	5, \

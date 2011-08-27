@@ -8,6 +8,11 @@ typedef struct __mavlink_set_altitude_t
  uint32_t mode; ///< The new altitude in meters
 } mavlink_set_altitude_t;
 
+#define MAVLINK_MSG_ID_SET_ALTITUDE_LEN 5
+#define MAVLINK_MSG_ID_65_LEN 5
+
+
+
 #define MAVLINK_MESSAGE_INFO_SET_ALTITUDE { \
 	"SET_ALTITUDE", \
 	2, \

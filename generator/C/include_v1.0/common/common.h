@@ -49,6 +49,7 @@ enum MAV_DATA_TYPE
 	MAV_DATA_TYPE_FLOAT=0, /* IEEE-754 floating point number | */
 	MAV_DATA_TYPE_UINT32=1, /* 32 bit unsigned integer (C99: uint32_t) | */
 	MAV_DATA_TYPE_INT32=2, /* 32 bit signed integer (C99: int32_t) | */
+	MAV_DATA_TYPE_ENUM_END=3, /*  | */
 };
 
 /** @brief Micro air vehicle / autopilot classes. This identifies the individual model. */
@@ -66,6 +67,7 @@ enum MAV_AUTOPILOT
 	MAV_AUTOPILOT_PPZ=9, /* PPZ UAV - http://nongnu.org/paparazzi | */
 	MAV_AUTOPILOT_UDB=10, /* UAV Dev Board | */
 	MAV_AUTOPILOT_FP=11, /* FlexiPilot | */
+	MAV_AUTOPILOT_ENUM_END=12, /*  | */
 };
 
 /** @brief MAV safety override. This is a top-level safety override. Independent of the general state machine this mode shall ensure the safe operation. the MAV_SAFETY state should ONLY be switchable in the MAV_STATE_STANDBY state and NOT in flight. */
@@ -74,6 +76,7 @@ enum MAV_SAFETY
 	MAV_SAFETY_HIL=0, /* MAV safety lock set to hardware in the loop simulation. All motors / actuators are blocked, but internal software is full operational. | */
 	MAV_SAFETY_DISARMED=1, /* MAV safety set to disarmed. Motors are BLOCKED. Independent of the system mode and navigation mode all actuators are blocked. | */
 	MAV_SAFETY_ARMED=2, /* MAV safety set to armed. Motors are ready / could be started. All actuators are active. | */
+	MAV_SAFETY_ENUM_END=3, /*  | */
 };
 
 /** @brief  */
@@ -85,6 +88,7 @@ enum MAV_MODE
 	MAV_MODE_GUIDED=3, /* System is allowed to be active, under autonomous control, manual setpoint | */
 	MAV_MODE_AUTO=4, /* System is allowed to be active, under autonomous control and navigation (the trajectory is decided onboard and not pre-programmed by waypoints) | */
 	MAV_MODE_TEST=5, /* UNDEFINED mode. This solely depends on the autopilot - use with caution, intended for developers only. | */
+	MAV_MODE_ENUM_END=6, /*  | */
 };
 
 /** @brief  */
@@ -108,6 +112,7 @@ enum MAV_FLIGHT_MODE
 	MAV_FLIGHT_MODE_TEST1=15, /* Custom test mode, depends on individual autopilot. | */
 	MAV_FLIGHT_MODE_TEST2=16, /* Custom test mode, depends on individual autopilot. | */
 	MAV_FLIGHT_MODE_TEST3=17, /* Custom test mode, depends on individual autopilot. | */
+	MAV_FLIGHT_MODE_ENUM_END=18, /*  | */
 };
 
 /** @brief  */
@@ -121,6 +126,7 @@ enum MAV_STATE
 	MAV_STATE_CRITICAL=5, /* System is in a non-normal flight mode. It can however still navigate. | */
 	MAV_STATE_EMERGENCY=6, /* System is in a non-normal flight mode. It lost control over parts or over the whole airframe. It is in mayday and going down. | */
 	MAV_STATE_POWEROFF=7, /* System just initialized its power-down sequence, will shut down now. | */
+	MAV_STATE_ENUM_END=8, /*  | */
 };
 
 /** @brief  */
@@ -143,6 +149,7 @@ enum MAV_TYPE
 	MAV_TYPE_OCTOROTOR=14, /* Octorotor | */
 	MAV_TYPE_TRICOPTER=15, /* Octorotor | */
 	MAV_TYPE_FLAPPING_WING=16, /* Flapping wing | */
+	MAV_TYPE_ENUM_END=17, /*  | */
 };
 
 /** @brief  */
@@ -173,6 +180,7 @@ enum MAV_COMPONENT
 	MAV_COMP_ID_SERVO12=151, /*  | */
 	MAV_COMP_ID_SERVO13=152, /*  | */
 	MAV_COMP_ID_SERVO14=153, /*  | */
+	MAV_COMPONENT_ENUM_END=154, /*  | */
 };
 
 /** @brief  */
@@ -183,6 +191,7 @@ enum MAV_FRAME
 	MAV_FRAME_MISSION=2, /* NOT a coordinate frame, indicates a mission command. | */
 	MAV_FRAME_GLOBAL_RELATIVE_ALT=3, /* Global coordinate frame, WGS84 coordinate system, relative altitude over ground with respect to the home position. First value / x: latitude, second value / y: longitude, third value / z: positive altitude with 0 being at the altitude of the home location. | */
 	MAV_FRAME_LOCAL_ENU=4, /* Local coordinate frame, Z-down (x: east, y: north, z: up) | */
+	MAV_FRAME_ENUM_END=5, /*  | */
 };
 
 /** @brief  */
@@ -194,6 +203,7 @@ enum MAVLINK_DATA_STREAM_TYPE
 	MAVLINK_DATA_STREAM_IMG_RAW32U=3, /*  | */
 	MAVLINK_DATA_STREAM_IMG_PGM=4, /*  | */
 	MAVLINK_DATA_STREAM_IMG_PNG=5, /*  | */
+	MAVLINK_DATA_STREAM_TYPE_ENUM_END=6, /*  | */
 };
 
 /** @brief Commands to be executed by the MAV. They can be executed on user request,
@@ -234,6 +244,7 @@ enum MAV_CMD
 	MAV_CMD_DO_LAST=240, /* NOP - This command is only used to mark the upper limit of the DO commands in the enumeration |Empty| Empty| Empty| Empty| Empty| Empty| Empty|  */
 	MAV_CMD_PREFLIGHT_CALIBRATION=241, /* Trigger calibration. This command will be only accepted if in pre-flight mode. |Gyro calibration: 0: no, 1: yes| Magnetometer calibration: 0: no, 1: yes| Ground pressure: 0: no, 1: yes| Radio calibration: 0: no, 1: yes| Empty| Empty| Empty|  */
 	MAV_CMD_PREFLIGHT_STORAGE=245, /* Request storage of different parameter values and logs. This command will be only accepted if in pre-flight mode. |Parameter storage: 0: READ FROM FLASH/EEPROM, 1: WRITE CURRENT TO FLASH/EEPROM| Mission storage: 0: READ FROM FLASH/EEPROM, 1: WRITE CURRENT TO FLASH/EEPROM| Reserved| Reserved| Empty| Empty| Empty|  */
+	MAV_CMD_ENUM_END=246, /*  | */
 };
 
 /** @brief Data stream IDs. A data stream is not a fixed set of messages, but rather a
@@ -251,6 +262,7 @@ enum MAV_DATA_STREAM
 	MAV_DATA_STREAM_EXTRA1=10, /* Dependent on the autopilot | */
 	MAV_DATA_STREAM_EXTRA2=11, /* Dependent on the autopilot | */
 	MAV_DATA_STREAM_EXTRA3=12, /* Dependent on the autopilot | */
+	MAV_DATA_STREAM_ENUM_END=13, /*  | */
 };
 
 /** @brief  The ROI (region of interest) for the vehicle. This can be
@@ -264,6 +276,7 @@ enum MAV_ROI
 	MAV_ROI_WPINDEX=2, /* Point toward given waypoint. | */
 	MAV_ROI_LOCATION=3, /* Point toward fixed location. | */
 	MAV_ROI_TARGET=4, /* Point toward of given id. | */
+	MAV_ROI_ENUM_END=5, /*  | */
 };
 
 // MESSAGE DEFINITIONS

@@ -88,6 +88,7 @@ class MAVLink_message(object):
 MAV_DATA_TYPE_FLOAT = 0 # IEEE-754 floating point number
 MAV_DATA_TYPE_UINT32 = 1 # 32 bit unsigned integer (C99: uint32_t)
 MAV_DATA_TYPE_INT32 = 2 # 32 bit signed integer (C99: int32_t)
+MAV_DATA_TYPE_ENUM_END = 3 # 
 
 # MAV_AUTOPILOT
 MAV_AUTOPILOT_GENERIC = 0 # Generic autopilot, full support for everything
@@ -103,6 +104,7 @@ MAV_AUTOPILOT_INVALID = 8 # No valid autopilot, e.g. a GCS or other MAVLink comp
 MAV_AUTOPILOT_PPZ = 9 # PPZ UAV - http://nongnu.org/paparazzi
 MAV_AUTOPILOT_UDB = 10 # UAV Dev Board
 MAV_AUTOPILOT_FP = 11 # FlexiPilot
+MAV_AUTOPILOT_ENUM_END = 12 # 
 
 # MAV_SAFETY
 MAV_SAFETY_HIL = 0 # MAV safety lock set to hardware in the loop simulation. All motors /
@@ -113,6 +115,7 @@ MAV_SAFETY_DISARMED = 1 # MAV safety set to disarmed. Motors are BLOCKED. Indepe
                         # actuators are blocked.
 MAV_SAFETY_ARMED = 2 # MAV safety set to armed. Motors are ready / could be started. All
                         # actuators are active.
+MAV_SAFETY_ENUM_END = 3 # 
 
 # MAV_MODE
 MAV_MODE_PREFLIGHT = 0 # System is not ready to fly, booting, calibrating, etc.
@@ -127,6 +130,7 @@ MAV_MODE_AUTO = 4 # System is allowed to be active, under autonomous control and
                         # onboard and not pre-programmed by waypoints)
 MAV_MODE_TEST = 5 # UNDEFINED mode. This solely depends on the autopilot - use with
                         # caution, intended for developers only.
+MAV_MODE_ENUM_END = 6 # 
 
 # MAV_FLIGHT_MODE
 MAV_FLIGHT_MODE_PREFLIGHT = 0 # System is currently on ground.
@@ -184,6 +188,7 @@ MAV_FLIGHT_MODE_STABILIZE_CURSOR_CONTROL = 14 # Fly by wire mode, user is only d
 MAV_FLIGHT_MODE_TEST1 = 15 # Custom test mode, depends on individual autopilot.
 MAV_FLIGHT_MODE_TEST2 = 16 # Custom test mode, depends on individual autopilot.
 MAV_FLIGHT_MODE_TEST3 = 17 # Custom test mode, depends on individual autopilot.
+MAV_FLIGHT_MODE_ENUM_END = 18 # 
 
 # MAV_STATE
 MAV_STATE_UNINIT = 0 # Uninitialized system, state is unknown.
@@ -196,6 +201,7 @@ MAV_STATE_EMERGENCY = 6 # System is in a non-normal flight mode. It lost control
                         # over the whole airframe. It is in mayday and
                         # going down.
 MAV_STATE_POWEROFF = 7 # System just initialized its power-down sequence, will shut down now.
+MAV_STATE_ENUM_END = 8 # 
 
 # MAV_TYPE
 MAV_TYPE_GENERIC = 0 # Generic micro air vehicle.
@@ -215,6 +221,7 @@ MAV_TYPE_HEXAROTOR = 13 # Hexarotor
 MAV_TYPE_OCTOROTOR = 14 # Octorotor
 MAV_TYPE_TRICOPTER = 15 # Octorotor
 MAV_TYPE_FLAPPING_WING = 16 # Flapping wing
+MAV_TYPE_ENUM_END = 17 # 
 
 # MAV_COMPONENT
 MAV_COMP_ID_GPS = 220 # 
@@ -242,6 +249,7 @@ MAV_COMP_ID_SERVO11 = 150 #
 MAV_COMP_ID_SERVO12 = 151 # 
 MAV_COMP_ID_SERVO13 = 152 # 
 MAV_COMP_ID_SERVO14 = 153 # 
+MAV_COMPONENT_ENUM_END = 154 # 
 
 # MAV_FRAME
 MAV_FRAME_GLOBAL = 0 # Global coordinate frame, WGS84 coordinate system. First value / x:
@@ -257,6 +265,7 @@ MAV_FRAME_GLOBAL_RELATIVE_ALT = 3 # Global coordinate frame, WGS84 coordinate sy
                         # positive altitude with 0 being at the
                         # altitude of the home location.
 MAV_FRAME_LOCAL_ENU = 4 # Local coordinate frame, Z-down (x: east, y: north, z: up)
+MAV_FRAME_ENUM_END = 5 # 
 
 # MAVLINK_DATA_STREAM_TYPE
 MAVLINK_DATA_STREAM_IMG_JPEG = 0 # 
@@ -265,6 +274,7 @@ MAVLINK_DATA_STREAM_IMG_RAW8U = 2 #
 MAVLINK_DATA_STREAM_IMG_RAW32U = 3 # 
 MAVLINK_DATA_STREAM_IMG_PGM = 4 # 
 MAVLINK_DATA_STREAM_IMG_PNG = 5 # 
+MAVLINK_DATA_STREAM_TYPE_ENUM_END = 6 # 
 
 # MAV_CMD
 MAV_CMD_NAV_WAYPOINT = 16 # Navigate to waypoint.
@@ -313,6 +323,7 @@ MAV_CMD_PREFLIGHT_CALIBRATION = 241 # Trigger calibration. This command will be 
                         # flight mode.
 MAV_CMD_PREFLIGHT_STORAGE = 245 # Request storage of different parameter values and logs. This command
                         # will be only accepted if in pre-flight mode.
+MAV_CMD_ENUM_END = 246 # 
 
 # MAV_DATA_STREAM
 MAV_DATA_STREAM_ALL = 0 # Enable all data streams
@@ -325,6 +336,7 @@ MAV_DATA_STREAM_POSITION = 6 # Enable LOCAL_POSITION, GLOBAL_POSITION/GLOBAL_POS
 MAV_DATA_STREAM_EXTRA1 = 10 # Dependent on the autopilot
 MAV_DATA_STREAM_EXTRA2 = 11 # Dependent on the autopilot
 MAV_DATA_STREAM_EXTRA3 = 12 # Dependent on the autopilot
+MAV_DATA_STREAM_ENUM_END = 13 # 
 
 # MAV_ROI
 MAV_ROI_NONE = 0 # No region of interest.
@@ -332,6 +344,7 @@ MAV_ROI_WPNEXT = 1 # Point toward next waypoint.
 MAV_ROI_WPINDEX = 2 # Point toward given waypoint.
 MAV_ROI_LOCATION = 3 # Point toward fixed location.
 MAV_ROI_TARGET = 4 # Point toward of given id.
+MAV_ROI_ENUM_END = 5 # 
 
 # message IDs
 MAVLINK_MSG_ID_BAD_DATA = -1

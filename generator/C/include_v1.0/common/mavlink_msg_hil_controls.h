@@ -17,6 +17,11 @@ typedef struct __mavlink_hil_controls_t
  uint8_t nav_mode; ///< Navigation mode (MAV_NAV_MODE)
 } mavlink_hil_controls_t;
 
+#define MAVLINK_MSG_ID_HIL_CONTROLS_LEN 42
+#define MAVLINK_MSG_ID_91_LEN 42
+
+
+
 #define MAVLINK_MESSAGE_INFO_HIL_CONTROLS { \
 	"HIL_CONTROLS", \
 	11, \

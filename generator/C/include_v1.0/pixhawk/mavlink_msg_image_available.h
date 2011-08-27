@@ -29,6 +29,11 @@ typedef struct __mavlink_image_available_t
  uint8_t channels; ///< Image channels
 } mavlink_image_available_t;
 
+#define MAVLINK_MSG_ID_IMAGE_AVAILABLE_LEN 92
+#define MAVLINK_MSG_ID_154_LEN 92
+
+
+
 #define MAVLINK_MESSAGE_INFO_IMAGE_AVAILABLE { \
 	"IMAGE_AVAILABLE", \
 	23, \

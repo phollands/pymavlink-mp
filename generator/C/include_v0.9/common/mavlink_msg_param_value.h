@@ -10,6 +10,11 @@ typedef struct __mavlink_param_value_t
  uint16_t param_index; ///< Index of this onboard parameter
 } mavlink_param_value_t;
 
+#define MAVLINK_MSG_ID_PARAM_VALUE_LEN 23
+#define MAVLINK_MSG_ID_22_LEN 23
+
+#define MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN 15
+
 #define MAVLINK_MESSAGE_INFO_PARAM_VALUE { \
 	"PARAM_VALUE", \
 	4, \

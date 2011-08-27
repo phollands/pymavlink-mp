@@ -14,6 +14,11 @@ typedef struct __mavlink_brief_feature_t
  uint8_t descriptor[32]; ///< Descriptor
 } mavlink_brief_feature_t;
 
+#define MAVLINK_MSG_ID_BRIEF_FEATURE_LEN 53
+#define MAVLINK_MSG_ID_195_LEN 53
+
+#define MAVLINK_MSG_BRIEF_FEATURE_FIELD_DESCRIPTOR_LEN 32
+
 #define MAVLINK_MESSAGE_INFO_BRIEF_FEATURE { \
 	"BRIEF_FEATURE", \
 	8, \

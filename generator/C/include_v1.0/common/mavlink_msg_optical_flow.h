@@ -12,6 +12,11 @@ typedef struct __mavlink_optical_flow_t
  uint8_t quality; ///< Optical flow quality / confidence. 0: bad, 255: maximum quality
 } mavlink_optical_flow_t;
 
+#define MAVLINK_MSG_ID_OPTICAL_FLOW_LEN 18
+#define MAVLINK_MSG_ID_100_LEN 18
+
+
+
 #define MAVLINK_MESSAGE_INFO_OPTICAL_FLOW { \
 	"OPTICAL_FLOW", \
 	6, \

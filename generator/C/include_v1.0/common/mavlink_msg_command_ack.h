@@ -8,6 +8,11 @@ typedef struct __mavlink_command_ack_t
  float result; ///< 1: Action ACCEPTED and EXECUTED, 1: Action TEMPORARY REJECTED/DENIED, 2: Action PERMANENTLY DENIED, 3: Action UNKNOWN/UNSUPPORTED, 4: Requesting CONFIRMATION
 } mavlink_command_ack_t;
 
+#define MAVLINK_MSG_ID_COMMAND_ACK_LEN 8
+#define MAVLINK_MSG_ID_77_LEN 8
+
+
+
 #define MAVLINK_MESSAGE_INFO_COMMAND_ACK { \
 	"COMMAND_ACK", \
 	2, \

@@ -13,6 +13,11 @@ typedef struct __mavlink_gps_date_time_t
  uint8_t visSat; ///< Visible sattelites reported by Gps  
 } mavlink_gps_date_time_t;
 
+#define MAVLINK_MSG_ID_GPS_DATE_TIME_LEN 7
+#define MAVLINK_MSG_ID_179_LEN 7
+
+
+
 #define MAVLINK_MESSAGE_INFO_GPS_DATE_TIME { \
 	"GPS_DATE_TIME", \
 	7, \

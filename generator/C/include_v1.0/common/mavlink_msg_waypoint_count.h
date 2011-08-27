@@ -9,6 +9,11 @@ typedef struct __mavlink_waypoint_count_t
  uint8_t target_component; ///< Component ID
 } mavlink_waypoint_count_t;
 
+#define MAVLINK_MSG_ID_WAYPOINT_COUNT_LEN 4
+#define MAVLINK_MSG_ID_44_LEN 4
+
+
+
 #define MAVLINK_MESSAGE_INFO_WAYPOINT_COUNT { \
 	"WAYPOINT_COUNT", \
 	3, \

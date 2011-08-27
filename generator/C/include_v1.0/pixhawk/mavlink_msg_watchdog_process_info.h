@@ -11,6 +11,12 @@ typedef struct __mavlink_watchdog_process_info_t
  char arguments[147]; ///< Process arguments
 } mavlink_watchdog_process_info_t;
 
+#define MAVLINK_MSG_ID_WATCHDOG_PROCESS_INFO_LEN 255
+#define MAVLINK_MSG_ID_181_LEN 255
+
+#define MAVLINK_MSG_WATCHDOG_PROCESS_INFO_FIELD_NAME_LEN 100
+#define MAVLINK_MSG_WATCHDOG_PROCESS_INFO_FIELD_ARGUMENTS_LEN 147
+
 #define MAVLINK_MESSAGE_INFO_WATCHDOG_PROCESS_INFO { \
 	"WATCHDOG_PROCESS_INFO", \
 	5, \
