@@ -150,7 +150,11 @@ static inline void byte_copy_8(uint8_t *dst, const uint8_t *src)
  */
 static inline void put_char_array_by_index(mavlink_message_t *msg, uint8_t wire_offset, const char *b, uint8_t array_length)
 {
-	memcpy(&msg->payload.c[wire_offset], b, array_length);
+	if (b == NULL) {
+		memset(&msg->payload.c[wire_offset], 0, array_length);
+	} else {
+		memcpy(&msg->payload.c[wire_offset], b, array_length);
+	}
 }
 
 /*
@@ -158,7 +162,11 @@ static inline void put_char_array_by_index(mavlink_message_t *msg, uint8_t wire_
  */
 static inline void put_uint8_t_array_by_index(mavlink_message_t *msg, uint8_t wire_offset, const uint8_t *b, uint8_t array_length)
 {
-	memcpy(&msg->payload.u8[wire_offset], b, array_length);
+	if (b == NULL) {
+		memset(&msg->payload.u8[wire_offset], 0, array_length);
+	} else {
+		memcpy(&msg->payload.u8[wire_offset], b, array_length);
+	}
 }
 
 /*
@@ -166,23 +174,35 @@ static inline void put_uint8_t_array_by_index(mavlink_message_t *msg, uint8_t wi
  */
 static inline void put_int8_t_array_by_index(mavlink_message_t *msg, uint8_t wire_offset, const int8_t *b, uint8_t array_length)
 {
-	memcpy(&msg->payload.i8[wire_offset], b, array_length);
+	if (b == NULL) {
+		memset(&msg->payload.i8[wire_offset], 0, array_length);
+	} else {
+		memcpy(&msg->payload.i8[wire_offset], b, array_length);
+	}
 }
 
 #if MAVLINK_NEED_BYTE_SWAP
 #define PUT_ARRAY_BY_INDEX(TYPE, V) \
 static inline void put_ ## TYPE ##_array_by_index(mavlink_message_t *msg, uint8_t wire_offset, const TYPE *b, uint8_t array_length) \
 { \
-	uint16_t i; \
-	for (i=0; i<array_length; i++) { \
-		put_## TYPE ##_by_index(msg, wire_offset+(i*sizeof(b[0])), b[i]); \
+	if (b == NULL) { \
+		memset(&msg->payload.u8[wire_offset], 0, array_length*sizeof(TYPE)); \
+	} else { \
+		uint16_t i; \
+		for (i=0; i<array_length; i++) { \
+			put_## TYPE ##_by_index(msg, wire_offset+(i*sizeof(TYPE)), b[i]); \
+		} \
 	} \
 }
 #else
 #define PUT_ARRAY_BY_INDEX(TYPE, V)					\
 static inline void put_ ## TYPE ##_array_by_index(mavlink_message_t *msg, uint8_t wire_offset, const TYPE *b, uint8_t array_length) \
 { \
-	memcpy(&msg->payload.V[wire_offset/sizeof(TYPE)], b, array_length*sizeof(TYPE)); \
+	if (b == NULL) { \
+		memset(&msg->payload.u8[wire_offset], 0, array_length*sizeof(TYPE)); \
+	} else { \
+		memcpy(&msg->payload.V[wire_offset/sizeof(TYPE)], b, array_length*sizeof(TYPE)); \
+	} \
 }
 #endif
 
@@ -276,7 +296,7 @@ static inline uint16_t MAVLINK_MSG_RETURN_## TYPE ##_array(const mavlink_message
 							 uint8_t array_length, uint8_t wire_offset) \
 { \
 	memcpy(value, &msg->payload.V[wire_offset/sizeof(TYPE)], array_length*sizeof(TYPE)); \
-	return array_length*sizeof(value[0]); \
+	return array_length*sizeof(TYPE); \
 }
 #endif
 
