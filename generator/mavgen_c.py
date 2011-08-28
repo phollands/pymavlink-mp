@@ -207,29 +207,6 @@ ${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putna
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length}${crc_extra_arg});
 }
 
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a ${name_lower} message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
-${{arg_fields: * @param ${name} ${description}
-}}
- */
-static inline void mavlink_msg_${name_lower}_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           ${{arg_fields:${array_const}${type} ${array_prefix}${name},}})
-{
-	msg->msgid = MAVLINK_MSG_ID_${name};
-
-${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
-}}
-
-	mavlink_finalize_message_chan_send(msg, chan, ${wire_length}${crc_extra_arg});
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-
 /**
  * @brief Encode a ${name_lower} struct into a message
  *
@@ -255,7 +232,12 @@ ${{arg_fields: * @param ${name} ${description}
 static inline void mavlink_msg_${name_lower}_send(mavlink_channel_t chan,${{arg_fields: ${array_const}${type} ${array_prefix}${name},}})
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, ${wire_length});
-	mavlink_msg_${name_lower}_pack_chan_send(chan, msg,${{arg_fields: ${name},}});
+	msg->msgid = MAVLINK_MSG_ID_${name};
+
+${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
+}}
+
+	mavlink_finalize_message_chan_send(msg, chan, ${wire_length}${crc_extra_arg});
 }
 
 #endif
@@ -346,8 +328,7 @@ static void mavlink_test_${name_lower}(uint8_t system_id, uint8_t component_id)
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
         	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-	mavlink_msg_${name_lower}_pack_chan_send(MAVLINK_COMM_1, &msg ${{arg_fields:, packet1.${name} }});
-	mavlink_msg_${name_lower}_send(MAVLINK_COMM_2 ${{arg_fields:, packet1.${name} }});
+	mavlink_msg_${name_lower}_send(MAVLINK_COMM_1 ${{arg_fields:, packet1.${name} }});
 }
 }}
 
