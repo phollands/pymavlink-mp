@@ -22,7 +22,7 @@ testmav1.0_${TESTPROTOCOL}: testmav.c
 	$(CC) $(CFLAGS) -I../include_v1.0 -I../include_v1.0/${TESTPROTOCOL} -o $@ testmav.c
 
 testmav1.0_${TESTPROTOCOL}_stackbuffer: testmav.c
-	$(CC) $(CFLAGS) -DMAVLINK_STACK_BUFFER=1 -I../include_v1.0 -I../include_v1.0/${TESTPROTOCOL} -o $@ testmav.c
+	$(CC) $(CFLAGS) -DMAVLINK_STACK_BUFFER=1 -fno-strict-aliasing -I../include_v1.0 -I../include_v1.0/${TESTPROTOCOL} -o $@ testmav.c
 
 testmav0.9_${TESTPROTOCOL}: testmav.c
 	$(CC) $(CFLAGS) -I../include_v0.9 -I../include_v0.9/${TESTPROTOCOL} -o $@ testmav.c
