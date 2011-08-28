@@ -103,8 +103,8 @@ MAVLINK_HELPER void mavlink_finalize_message_chan_send(mavlink_message_t* msg,
  */
 MAVLINK_HELPER uint16_t mavlink_msg_to_send_buffer(uint8_t *buffer, const mavlink_message_t *msg)
 {
-	memcpy(buffer, (uint8_t *)&msg->magic, msg->len + MAVLINK_NUM_NON_PAYLOAD_BYTES);
-	return msg->len + MAVLINK_NUM_NON_PAYLOAD_BYTES;
+	memcpy(buffer, (uint8_t *)&msg->magic, MAVLINK_NUM_NON_PAYLOAD_BYTES + (uint16_t)msg->len);
+	return MAVLINK_NUM_NON_PAYLOAD_BYTES + (uint16_t)msg->len;
 }
 
 union __mavlink_bitfield {
@@ -451,7 +451,7 @@ MAVLINK_HELPER void mavlink_send_uart(mavlink_channel_t chan, mavlink_message_t*
 #ifdef MAVLINK_SEND_UART_BYTES
 	/* this is the more efficient approach, if the platform
 	   defines it */
-	MAVLINK_SEND_UART_BYTES(chan, (uint8_t *)&msg->magic, msg->len + MAVLINK_NUM_NON_PAYLOAD_BYTES);
+	MAVLINK_SEND_UART_BYTES(chan, (uint8_t *)&msg->magic, MAVLINK_NUM_NON_PAYLOAD_BYTES + (uint16_t)msg->len);
 #else
 	/* fallback to one byte at a time */
 	uint8_t *buffer = (uint8_t *)&msg->magic;
