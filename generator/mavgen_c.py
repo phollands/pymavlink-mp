@@ -50,6 +50,10 @@ def generate_mavlink_h(directory, xml):
 #define MAVLINK_ENDIAN ${mavlink_endian}
 #endif
 
+#ifndef MAVLINK_ALIGNED_FIELDS
+#define MAVLINK_ALIGNED_FIELDS ${aligned_fields_define}
+#endif
+
 #ifndef MAVLINK_CRC_EXTRA
 #define MAVLINK_CRC_EXTRA ${crc_extra_define}
 #endif
@@ -396,6 +400,11 @@ def generate_one(basename, xml):
         xml.crc_extra_define = "1"
     else:
         xml.crc_extra_define = "0"
+
+    if xml.sort_fields:
+        xml.aligned_fields_define = "1"
+    else:
+        xml.aligned_fields_define = "0"
 
     # work out the included headers
     xml.include_list = []
