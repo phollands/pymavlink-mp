@@ -95,39 +95,6 @@ static inline uint16_t mavlink_msg_object_detection_event_pack_chan(uint8_t syst
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 36);
 }
 
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a object_detection_event message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param time Timestamp in milliseconds since system boot
- * @param object_id Object ID
- * @param type Object type: 0: image, 1: letter, 2: ground vehicle, 3: air vehicle, 4: surface vehicle, 5: sub-surface vehicle, 6: human, 7: animal
- * @param name Name of the object as defined by the detector
- * @param quality Detection quality / confidence. 0: bad, 255: maximum confidence
- * @param bearing Angle of the object with respect to the body frame in NED coordinates in radians. 0: front
- * @param distance Ground distance in meters
- */
-static inline void mavlink_msg_object_detection_event_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           uint32_t time,uint16_t object_id,uint8_t type,const char *name,uint8_t quality,float bearing,float distance)
-{
-	msg->msgid = MAVLINK_MSG_ID_OBJECT_DETECTION_EVENT;
-
-	put_uint32_t_by_index(msg, 0, time); // Timestamp in milliseconds since system boot
-	put_uint16_t_by_index(msg, 4, object_id); // Object ID
-	put_uint8_t_by_index(msg, 6, type); // Object type: 0: image, 1: letter, 2: ground vehicle, 3: air vehicle, 4: surface vehicle, 5: sub-surface vehicle, 6: human, 7: animal
-	put_char_array_by_index(msg, 7, name, 20); // Name of the object as defined by the detector
-	put_uint8_t_by_index(msg, 27, quality); // Detection quality / confidence. 0: bad, 255: maximum confidence
-	put_float_by_index(msg, 28, bearing); // Angle of the object with respect to the body frame in NED coordinates in radians. 0: front
-	put_float_by_index(msg, 32, distance); // Ground distance in meters
-
-	mavlink_finalize_message_chan_send(msg, chan, 36);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-
 /**
  * @brief Encode a object_detection_event struct into a message
  *
@@ -158,7 +125,17 @@ static inline uint16_t mavlink_msg_object_detection_event_encode(uint8_t system_
 static inline void mavlink_msg_object_detection_event_send(mavlink_channel_t chan, uint32_t time, uint16_t object_id, uint8_t type, const char *name, uint8_t quality, float bearing, float distance)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 36);
-	mavlink_msg_object_detection_event_pack_chan_send(chan, msg, time, object_id, type, name, quality, bearing, distance);
+	msg->msgid = MAVLINK_MSG_ID_OBJECT_DETECTION_EVENT;
+
+	put_uint32_t_by_index(msg, 0, time); // Timestamp in milliseconds since system boot
+	put_uint16_t_by_index(msg, 4, object_id); // Object ID
+	put_uint8_t_by_index(msg, 6, type); // Object type: 0: image, 1: letter, 2: ground vehicle, 3: air vehicle, 4: surface vehicle, 5: sub-surface vehicle, 6: human, 7: animal
+	put_char_array_by_index(msg, 7, name, 20); // Name of the object as defined by the detector
+	put_uint8_t_by_index(msg, 27, quality); // Detection quality / confidence. 0: bad, 255: maximum confidence
+	put_float_by_index(msg, 28, bearing); // Angle of the object with respect to the body frame in NED coordinates in radians. 0: front
+	put_float_by_index(msg, 32, distance); // Ground distance in meters
+
+	mavlink_finalize_message_chan_send(msg, chan, 36);
 }
 
 #endif

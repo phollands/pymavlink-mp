@@ -65,29 +65,6 @@ static inline uint16_t mavlink_msg_set_altitude_pack_chan(uint8_t system_id, uin
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 5);
 }
 
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a set_altitude message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param target The system setting the altitude
- * @param mode The new altitude in meters
- */
-static inline void mavlink_msg_set_altitude_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           uint8_t target,uint32_t mode)
-{
-	msg->msgid = MAVLINK_MSG_ID_SET_ALTITUDE;
-
-	put_uint8_t_by_index(msg, 0, target); // The system setting the altitude
-	put_uint32_t_by_index(msg, 1, mode); // The new altitude in meters
-
-	mavlink_finalize_message_chan_send(msg, chan, 5);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-
 /**
  * @brief Encode a set_altitude struct into a message
  *
@@ -113,7 +90,12 @@ static inline uint16_t mavlink_msg_set_altitude_encode(uint8_t system_id, uint8_
 static inline void mavlink_msg_set_altitude_send(mavlink_channel_t chan, uint8_t target, uint32_t mode)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 5);
-	mavlink_msg_set_altitude_pack_chan_send(chan, msg, target, mode);
+	msg->msgid = MAVLINK_MSG_ID_SET_ALTITUDE;
+
+	put_uint8_t_by_index(msg, 0, target); // The system setting the altitude
+	put_uint32_t_by_index(msg, 1, mode); // The new altitude in meters
+
+	mavlink_finalize_message_chan_send(msg, chan, 5);
 }
 
 #endif

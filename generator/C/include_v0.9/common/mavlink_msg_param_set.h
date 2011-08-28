@@ -77,33 +77,6 @@ static inline uint16_t mavlink_msg_param_set_pack_chan(uint8_t system_id, uint8_
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 21);
 }
 
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a param_set message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param target_system System ID
- * @param target_component Component ID
- * @param param_id Onboard parameter id
- * @param param_value Onboard parameter value
- */
-static inline void mavlink_msg_param_set_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           uint8_t target_system,uint8_t target_component,const int8_t *param_id,float param_value)
-{
-	msg->msgid = MAVLINK_MSG_ID_PARAM_SET;
-
-	put_uint8_t_by_index(msg, 0, target_system); // System ID
-	put_uint8_t_by_index(msg, 1, target_component); // Component ID
-	put_int8_t_array_by_index(msg, 2, param_id, 15); // Onboard parameter id
-	put_float_by_index(msg, 17, param_value); // Onboard parameter value
-
-	mavlink_finalize_message_chan_send(msg, chan, 21);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-
 /**
  * @brief Encode a param_set struct into a message
  *
@@ -131,7 +104,14 @@ static inline uint16_t mavlink_msg_param_set_encode(uint8_t system_id, uint8_t c
 static inline void mavlink_msg_param_set_send(mavlink_channel_t chan, uint8_t target_system, uint8_t target_component, const int8_t *param_id, float param_value)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 21);
-	mavlink_msg_param_set_pack_chan_send(chan, msg, target_system, target_component, param_id, param_value);
+	msg->msgid = MAVLINK_MSG_ID_PARAM_SET;
+
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_int8_t_array_by_index(msg, 2, param_id, 15); // Onboard parameter id
+	put_float_by_index(msg, 17, param_value); // Onboard parameter value
+
+	mavlink_finalize_message_chan_send(msg, chan, 21);
 }
 
 #endif

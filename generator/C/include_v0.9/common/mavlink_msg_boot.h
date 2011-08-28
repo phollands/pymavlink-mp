@@ -59,27 +59,6 @@ static inline uint16_t mavlink_msg_boot_pack_chan(uint8_t system_id, uint8_t com
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 4);
 }
 
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a boot message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param version The onboard software version
- */
-static inline void mavlink_msg_boot_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           uint32_t version)
-{
-	msg->msgid = MAVLINK_MSG_ID_BOOT;
-
-	put_uint32_t_by_index(msg, 0, version); // The onboard software version
-
-	mavlink_finalize_message_chan_send(msg, chan, 4);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-
 /**
  * @brief Encode a boot struct into a message
  *
@@ -104,7 +83,11 @@ static inline uint16_t mavlink_msg_boot_encode(uint8_t system_id, uint8_t compon
 static inline void mavlink_msg_boot_send(mavlink_channel_t chan, uint32_t version)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 4);
-	mavlink_msg_boot_pack_chan_send(chan, msg, version);
+	msg->msgid = MAVLINK_MSG_ID_BOOT;
+
+	put_uint32_t_by_index(msg, 0, version); // The onboard software version
+
+	mavlink_finalize_message_chan_send(msg, chan, 4);
 }
 
 #endif

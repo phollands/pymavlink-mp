@@ -95,39 +95,6 @@ static inline uint16_t mavlink_msg_sys_status_pack_chan(uint8_t system_id, uint8
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 11);
 }
 
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a sys_status message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param mode System mode, see MAV_MODE ENUM in mavlink/include/mavlink_types.h
- * @param nav_mode Navigation mode, see MAV_NAV_MODE ENUM
- * @param status System status flag, see MAV_STATUS ENUM
- * @param load Maximum usage in percent of the mainloop time, (0%: 0, 100%: 1000) should be always below 1000
- * @param vbat Battery voltage, in millivolts (1 = 1 millivolt)
- * @param battery_remaining Remaining battery energy: (0%: 0, 100%: 1000)
- * @param packet_drop Dropped packets (packets that were corrupted on reception on the MAV)
- */
-static inline void mavlink_msg_sys_status_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           uint8_t mode,uint8_t nav_mode,uint8_t status,uint16_t load,uint16_t vbat,uint16_t battery_remaining,uint16_t packet_drop)
-{
-	msg->msgid = MAVLINK_MSG_ID_SYS_STATUS;
-
-	put_uint8_t_by_index(msg, 0, mode); // System mode, see MAV_MODE ENUM in mavlink/include/mavlink_types.h
-	put_uint8_t_by_index(msg, 1, nav_mode); // Navigation mode, see MAV_NAV_MODE ENUM
-	put_uint8_t_by_index(msg, 2, status); // System status flag, see MAV_STATUS ENUM
-	put_uint16_t_by_index(msg, 3, load); // Maximum usage in percent of the mainloop time, (0%: 0, 100%: 1000) should be always below 1000
-	put_uint16_t_by_index(msg, 5, vbat); // Battery voltage, in millivolts (1 = 1 millivolt)
-	put_uint16_t_by_index(msg, 7, battery_remaining); // Remaining battery energy: (0%: 0, 100%: 1000)
-	put_uint16_t_by_index(msg, 9, packet_drop); // Dropped packets (packets that were corrupted on reception on the MAV)
-
-	mavlink_finalize_message_chan_send(msg, chan, 11);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-
 /**
  * @brief Encode a sys_status struct into a message
  *
@@ -158,7 +125,17 @@ static inline uint16_t mavlink_msg_sys_status_encode(uint8_t system_id, uint8_t 
 static inline void mavlink_msg_sys_status_send(mavlink_channel_t chan, uint8_t mode, uint8_t nav_mode, uint8_t status, uint16_t load, uint16_t vbat, uint16_t battery_remaining, uint16_t packet_drop)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 11);
-	mavlink_msg_sys_status_pack_chan_send(chan, msg, mode, nav_mode, status, load, vbat, battery_remaining, packet_drop);
+	msg->msgid = MAVLINK_MSG_ID_SYS_STATUS;
+
+	put_uint8_t_by_index(msg, 0, mode); // System mode, see MAV_MODE ENUM in mavlink/include/mavlink_types.h
+	put_uint8_t_by_index(msg, 1, nav_mode); // Navigation mode, see MAV_NAV_MODE ENUM
+	put_uint8_t_by_index(msg, 2, status); // System status flag, see MAV_STATUS ENUM
+	put_uint16_t_by_index(msg, 3, load); // Maximum usage in percent of the mainloop time, (0%: 0, 100%: 1000) should be always below 1000
+	put_uint16_t_by_index(msg, 5, vbat); // Battery voltage, in millivolts (1 = 1 millivolt)
+	put_uint16_t_by_index(msg, 7, battery_remaining); // Remaining battery energy: (0%: 0, 100%: 1000)
+	put_uint16_t_by_index(msg, 9, packet_drop); // Dropped packets (packets that were corrupted on reception on the MAV)
+
+	mavlink_finalize_message_chan_send(msg, chan, 11);
 }
 
 #endif
