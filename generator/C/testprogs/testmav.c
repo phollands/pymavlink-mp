@@ -7,7 +7,7 @@
 #include <stddef.h>
 
 #define MAVLINK_USE_CONVENIENCE_FUNCTIONS
-#define MAVLINK_COMM_NUM_BUFFERS 3
+#define MAVLINK_COMM_NUM_BUFFERS 2
 
 #include <mavlink_types.h>
 static mavlink_system_t mavlink_system = {42,11,};
@@ -137,7 +137,7 @@ int main(void)
 {
 	mavlink_channel_t chan;
 	mavlink_test_all(11, 10);
-	for (chan=MAVLINK_COMM_0; chan<=MAVLINK_COMM_2; chan++) {
+	for (chan=MAVLINK_COMM_0; chan<=MAVLINK_COMM_1; chan++) {
 		printf("Received %u messages on channel %u OK\n", 
 		       chan_counts[chan], (unsigned)chan);
 	}
