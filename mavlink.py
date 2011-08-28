@@ -6,7 +6,7 @@ Generated from: ardupilotmega.xml,common.xml
 Note: this file has been auto-generated. DO NOT EDIT
 '''
 
-import struct, array, mavutil
+import struct, array, mavutil, time
 
 class MAVLink_header(object):
     '''MAVLink message header'''
@@ -1680,6 +1680,12 @@ class MAVLink(object):
                 self.little_endian = False
                 self.crc_extra = False
                 self.sort_fields = False
+                self.total_packets_sent = 0
+                self.total_bytes_sent = 0
+                self.total_packets_received = 0
+                self.total_bytes_received = 0
+                self.total_receive_errors = 0
+                self.startup_time = time.time()
 
         def set_callback(self, callback, *args, **kwargs):
             self.callback = callback
@@ -1691,6 +1697,8 @@ class MAVLink(object):
                 buf = mavmsg.pack(self)
                 self.file.write(buf)
                 self.seq = (self.seq + 1) % 255
+                self.total_packets_sent += 1
+                self.total_bytes_sent += len(buf)
 
         def bytes_needed(self):
             '''return number of bytes needed for next parsing stage'''
@@ -1705,6 +1713,7 @@ class MAVLink(object):
                 self.buf.fromstring(c)
             else:
                 self.buf.extend(c)
+            self.total_bytes_received += len(c)
             if len(self.buf) >= 1 and self.buf[0] != 85:
                 magic = self.buf[0]
                 self.buf = self.buf[1:]
@@ -1713,10 +1722,12 @@ class MAVLink(object):
                     if self.callback:
                         self.callback(m, *self.callback_args, **self.callback_kwargs)
                     self.expected_length = 6
+                    self.total_receive_errors += 1
                     return m
                 if self.have_prefix_error:
                     return None
                 self.have_prefix_error = True
+                self.total_receive_errors += 1
                 raise MAVError("invalid MAVLink prefix '%s'" % magic) 
             self.have_prefix_error = False
             if len(self.buf) >= 2:
@@ -1729,10 +1740,13 @@ class MAVLink(object):
                 if self.robust_parsing:
                     try:
                         m = self.decode(mbuf)
+                        self.total_packets_received += 1
                     except MAVError as reason:
                         m = MAVLink_bad_data(mbuf, reason.message)
+                        self.total_receive_errors += 1
                 else:
                     m = self.decode(mbuf)
+                    self.total_packets_received += 1
                 if self.callback:
                     self.callback(m, *self.callback_args, **self.callback_kwargs)
                 return m
