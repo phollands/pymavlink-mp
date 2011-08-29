@@ -16,7 +16,7 @@ typedef struct __mavlink_sys_status_t
  uint16_t errors_count2; ///< Autopilot-specific errors
  uint16_t errors_count3; ///< Autopilot-specific errors
  uint16_t errors_count4; ///< Autopilot-specific errors
- int8_t battery_remainig; ///< Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
+ int8_t battery_remaining; ///< Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
 } mavlink_sys_status_t;
 
 #define MAVLINK_MSG_ID_SYS_STATUS_LEN 31
@@ -39,7 +39,7 @@ typedef struct __mavlink_sys_status_t
          { "errors_count2", MAVLINK_TYPE_UINT16_T, 0, 24, offsetof(mavlink_sys_status_t, errors_count2) }, \
          { "errors_count3", MAVLINK_TYPE_UINT16_T, 0, 26, offsetof(mavlink_sys_status_t, errors_count3) }, \
          { "errors_count4", MAVLINK_TYPE_UINT16_T, 0, 28, offsetof(mavlink_sys_status_t, errors_count4) }, \
-         { "battery_remainig", MAVLINK_TYPE_INT8_T, 0, 30, offsetof(mavlink_sys_status_t, battery_remainig) }, \
+         { "battery_remaining", MAVLINK_TYPE_INT8_T, 0, 30, offsetof(mavlink_sys_status_t, battery_remaining) }, \
          } \
 }
 
@@ -57,7 +57,7 @@ typedef struct __mavlink_sys_status_t
  * @param voltage_battery Battery voltage, in millivolts (1 = 1 millivolt)
  * @param current_battery Battery current, in 10*milliamperes (1 = 10 milliampere), -1: autopilot does not measure the current
  * @param watt Watts consumed from this battery since startup
- * @param battery_remainig Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
+ * @param battery_remaining Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
  * @param errors_comm Communication errors (UART, I2C, SPI, CAN), dropped packets on all links (packets that were corrupted on reception on the MAV)
  * @param errors_count1 Autopilot-specific errors
  * @param errors_count2 Autopilot-specific errors
@@ -66,7 +66,7 @@ typedef struct __mavlink_sys_status_t
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_sys_status_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, uint16_t watt, int8_t battery_remainig, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4)
+						       uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, uint16_t watt, int8_t battery_remaining, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4)
 {
 	msg->msgid = MAVLINK_MSG_ID_SYS_STATUS;
 
@@ -82,9 +82,9 @@ static inline uint16_t mavlink_msg_sys_status_pack(uint8_t system_id, uint8_t co
 	put_uint16_t_by_index(msg, 24, errors_count2); // Autopilot-specific errors
 	put_uint16_t_by_index(msg, 26, errors_count3); // Autopilot-specific errors
 	put_uint16_t_by_index(msg, 28, errors_count4); // Autopilot-specific errors
-	put_int8_t_by_index(msg, 30, battery_remainig); // Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
+	put_int8_t_by_index(msg, 30, battery_remaining); // Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
 
-	return mavlink_finalize_message(msg, system_id, component_id, 31, 96);
+	return mavlink_finalize_message(msg, system_id, component_id, 31, 236);
 }
 
 /**
@@ -100,7 +100,7 @@ static inline uint16_t mavlink_msg_sys_status_pack(uint8_t system_id, uint8_t co
  * @param voltage_battery Battery voltage, in millivolts (1 = 1 millivolt)
  * @param current_battery Battery current, in 10*milliamperes (1 = 10 milliampere), -1: autopilot does not measure the current
  * @param watt Watts consumed from this battery since startup
- * @param battery_remainig Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
+ * @param battery_remaining Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
  * @param errors_comm Communication errors (UART, I2C, SPI, CAN), dropped packets on all links (packets that were corrupted on reception on the MAV)
  * @param errors_count1 Autopilot-specific errors
  * @param errors_count2 Autopilot-specific errors
@@ -110,7 +110,7 @@ static inline uint16_t mavlink_msg_sys_status_pack(uint8_t system_id, uint8_t co
  */
 static inline uint16_t mavlink_msg_sys_status_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           uint32_t onboard_control_sensors_present,uint32_t onboard_control_sensors_enabled,uint32_t onboard_control_sensors_health,uint16_t load,uint16_t voltage_battery,int16_t current_battery,uint16_t watt,int8_t battery_remainig,uint16_t errors_comm,uint16_t errors_count1,uint16_t errors_count2,uint16_t errors_count3,uint16_t errors_count4)
+						           uint32_t onboard_control_sensors_present,uint32_t onboard_control_sensors_enabled,uint32_t onboard_control_sensors_health,uint16_t load,uint16_t voltage_battery,int16_t current_battery,uint16_t watt,int8_t battery_remaining,uint16_t errors_comm,uint16_t errors_count1,uint16_t errors_count2,uint16_t errors_count3,uint16_t errors_count4)
 {
 	msg->msgid = MAVLINK_MSG_ID_SYS_STATUS;
 
@@ -126,9 +126,9 @@ static inline uint16_t mavlink_msg_sys_status_pack_chan(uint8_t system_id, uint8
 	put_uint16_t_by_index(msg, 24, errors_count2); // Autopilot-specific errors
 	put_uint16_t_by_index(msg, 26, errors_count3); // Autopilot-specific errors
 	put_uint16_t_by_index(msg, 28, errors_count4); // Autopilot-specific errors
-	put_int8_t_by_index(msg, 30, battery_remainig); // Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
+	put_int8_t_by_index(msg, 30, battery_remaining); // Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 31, 96);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 31, 236);
 }
 
 /**
@@ -141,7 +141,7 @@ static inline uint16_t mavlink_msg_sys_status_pack_chan(uint8_t system_id, uint8
  */
 static inline uint16_t mavlink_msg_sys_status_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_sys_status_t* sys_status)
 {
-	return mavlink_msg_sys_status_pack(system_id, component_id, msg, sys_status->onboard_control_sensors_present, sys_status->onboard_control_sensors_enabled, sys_status->onboard_control_sensors_health, sys_status->load, sys_status->voltage_battery, sys_status->current_battery, sys_status->watt, sys_status->battery_remainig, sys_status->errors_comm, sys_status->errors_count1, sys_status->errors_count2, sys_status->errors_count3, sys_status->errors_count4);
+	return mavlink_msg_sys_status_pack(system_id, component_id, msg, sys_status->onboard_control_sensors_present, sys_status->onboard_control_sensors_enabled, sys_status->onboard_control_sensors_health, sys_status->load, sys_status->voltage_battery, sys_status->current_battery, sys_status->watt, sys_status->battery_remaining, sys_status->errors_comm, sys_status->errors_count1, sys_status->errors_count2, sys_status->errors_count3, sys_status->errors_count4);
 }
 
 /**
@@ -155,7 +155,7 @@ static inline uint16_t mavlink_msg_sys_status_encode(uint8_t system_id, uint8_t 
  * @param voltage_battery Battery voltage, in millivolts (1 = 1 millivolt)
  * @param current_battery Battery current, in 10*milliamperes (1 = 10 milliampere), -1: autopilot does not measure the current
  * @param watt Watts consumed from this battery since startup
- * @param battery_remainig Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
+ * @param battery_remaining Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
  * @param errors_comm Communication errors (UART, I2C, SPI, CAN), dropped packets on all links (packets that were corrupted on reception on the MAV)
  * @param errors_count1 Autopilot-specific errors
  * @param errors_count2 Autopilot-specific errors
@@ -164,7 +164,7 @@ static inline uint16_t mavlink_msg_sys_status_encode(uint8_t system_id, uint8_t 
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_sys_status_send(mavlink_channel_t chan, uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, uint16_t watt, int8_t battery_remainig, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4)
+static inline void mavlink_msg_sys_status_send(mavlink_channel_t chan, uint32_t onboard_control_sensors_present, uint32_t onboard_control_sensors_enabled, uint32_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, int16_t current_battery, uint16_t watt, int8_t battery_remaining, uint16_t errors_comm, uint16_t errors_count1, uint16_t errors_count2, uint16_t errors_count3, uint16_t errors_count4)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 31);
 	msg->msgid = MAVLINK_MSG_ID_SYS_STATUS;
@@ -181,9 +181,9 @@ static inline void mavlink_msg_sys_status_send(mavlink_channel_t chan, uint32_t 
 	put_uint16_t_by_index(msg, 24, errors_count2); // Autopilot-specific errors
 	put_uint16_t_by_index(msg, 26, errors_count3); // Autopilot-specific errors
 	put_uint16_t_by_index(msg, 28, errors_count4); // Autopilot-specific errors
-	put_int8_t_by_index(msg, 30, battery_remainig); // Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
+	put_int8_t_by_index(msg, 30, battery_remaining); // Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
 
-	mavlink_finalize_message_chan_send(msg, chan, 31, 96);
+	mavlink_finalize_message_chan_send(msg, chan, 31, 236);
 }
 
 #endif
@@ -262,11 +262,11 @@ static inline uint16_t mavlink_msg_sys_status_get_watt(const mavlink_message_t* 
 }
 
 /**
- * @brief Get field battery_remainig from sys_status message
+ * @brief Get field battery_remaining from sys_status message
  *
  * @return Remaining battery energy: (0%: 0, 100%: 200%), -1: autopilot estimate the remaining battery
  */
-static inline int8_t mavlink_msg_sys_status_get_battery_remainig(const mavlink_message_t* msg)
+static inline int8_t mavlink_msg_sys_status_get_battery_remaining(const mavlink_message_t* msg)
 {
 	return MAVLINK_MSG_RETURN_int8_t(msg,  30);
 }
@@ -342,7 +342,7 @@ static inline void mavlink_msg_sys_status_decode(const mavlink_message_t* msg, m
 	sys_status->errors_count2 = mavlink_msg_sys_status_get_errors_count2(msg);
 	sys_status->errors_count3 = mavlink_msg_sys_status_get_errors_count3(msg);
 	sys_status->errors_count4 = mavlink_msg_sys_status_get_errors_count4(msg);
-	sys_status->battery_remainig = mavlink_msg_sys_status_get_battery_remainig(msg);
+	sys_status->battery_remaining = mavlink_msg_sys_status_get_battery_remaining(msg);
 #else
 	memcpy(sys_status, MAVLINK_PAYLOAD(msg), 31);
 #endif
