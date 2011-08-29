@@ -46,8 +46,7 @@ static void mavlink_test_heartbeat(uint8_t system_id, uint8_t component_id)
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
         	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-	mavlink_msg_heartbeat_pack_chan_send(MAVLINK_COMM_1, &msg , packet1.type , packet1.autopilot );
-	mavlink_msg_heartbeat_send(MAVLINK_COMM_2 , packet1.type , packet1.autopilot );
+	mavlink_msg_heartbeat_send(MAVLINK_COMM_1 , packet1.type , packet1.autopilot );
 }
 
 static void mavlink_test_minimal(uint8_t system_id, uint8_t component_id)

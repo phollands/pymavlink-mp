@@ -60,7 +60,7 @@ static inline uint16_t mavlink_msg_position_control_setpoint_set_pack(uint8_t sy
 	put_float_by_index(msg, 12, z); // z position
 	put_float_by_index(msg, 16, yaw); // yaw orientation in radians, 0 = NORTH
 
-	return mavlink_finalize_message(msg, system_id, component_id, 20, 218);
+	return mavlink_finalize_message(msg, system_id, component_id, 20);
 }
 
 /**
@@ -92,41 +92,8 @@ static inline uint16_t mavlink_msg_position_control_setpoint_set_pack_chan(uint8
 	put_float_by_index(msg, 12, z); // z position
 	put_float_by_index(msg, 16, yaw); // yaw orientation in radians, 0 = NORTH
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20, 218);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20);
 }
-
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a position_control_setpoint_set message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param target_system System ID
- * @param target_component Component ID
- * @param id ID of waypoint, 0 for plain position
- * @param x x position
- * @param y y position
- * @param z z position
- * @param yaw yaw orientation in radians, 0 = NORTH
- */
-static inline void mavlink_msg_position_control_setpoint_set_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           uint8_t target_system,uint8_t target_component,uint16_t id,float x,float y,float z,float yaw)
-{
-	msg->msgid = MAVLINK_MSG_ID_POSITION_CONTROL_SETPOINT_SET;
-
-	put_uint8_t_by_index(msg, 0, target_system); // System ID
-	put_uint8_t_by_index(msg, 1, target_component); // Component ID
-	put_uint16_t_by_index(msg, 2, id); // ID of waypoint, 0 for plain position
-	put_float_by_index(msg, 4, x); // x position
-	put_float_by_index(msg, 8, y); // y position
-	put_float_by_index(msg, 12, z); // z position
-	put_float_by_index(msg, 16, yaw); // yaw orientation in radians, 0 = NORTH
-
-	mavlink_finalize_message_chan_send(msg, chan, 20, 218);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
 
 /**
  * @brief Encode a position_control_setpoint_set struct into a message
@@ -158,7 +125,17 @@ static inline uint16_t mavlink_msg_position_control_setpoint_set_encode(uint8_t 
 static inline void mavlink_msg_position_control_setpoint_set_send(mavlink_channel_t chan, uint8_t target_system, uint8_t target_component, uint16_t id, float x, float y, float z, float yaw)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 20);
-	mavlink_msg_position_control_setpoint_set_pack_chan_send(chan, msg, target_system, target_component, id, x, y, z, yaw);
+	msg->msgid = MAVLINK_MSG_ID_POSITION_CONTROL_SETPOINT_SET;
+
+	put_uint8_t_by_index(msg, 0, target_system); // System ID
+	put_uint8_t_by_index(msg, 1, target_component); // Component ID
+	put_uint16_t_by_index(msg, 2, id); // ID of waypoint, 0 for plain position
+	put_float_by_index(msg, 4, x); // x position
+	put_float_by_index(msg, 8, y); // y position
+	put_float_by_index(msg, 12, z); // z position
+	put_float_by_index(msg, 16, yaw); // yaw orientation in radians, 0 = NORTH
+
+	mavlink_finalize_message_chan_send(msg, chan, 20);
 }
 
 #endif

@@ -40,7 +40,7 @@ static inline uint16_t mavlink_msg_named_value_float_pack(uint8_t system_id, uin
 	put_char_array_by_index(msg, 0, name, 10); // Name of the debug variable
 	put_float_by_index(msg, 10, value); // Floating point value
 
-	return mavlink_finalize_message(msg, system_id, component_id, 14, 224);
+	return mavlink_finalize_message(msg, system_id, component_id, 14);
 }
 
 /**
@@ -62,31 +62,8 @@ static inline uint16_t mavlink_msg_named_value_float_pack_chan(uint8_t system_id
 	put_char_array_by_index(msg, 0, name, 10); // Name of the debug variable
 	put_float_by_index(msg, 10, value); // Floating point value
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 224);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14);
 }
-
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a named_value_float message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param name Name of the debug variable
- * @param value Floating point value
- */
-static inline void mavlink_msg_named_value_float_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           const char *name,float value)
-{
-	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_FLOAT;
-
-	put_char_array_by_index(msg, 0, name, 10); // Name of the debug variable
-	put_float_by_index(msg, 10, value); // Floating point value
-
-	mavlink_finalize_message_chan_send(msg, chan, 14, 224);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
 
 /**
  * @brief Encode a named_value_float struct into a message
@@ -113,7 +90,12 @@ static inline uint16_t mavlink_msg_named_value_float_encode(uint8_t system_id, u
 static inline void mavlink_msg_named_value_float_send(mavlink_channel_t chan, const char *name, float value)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 14);
-	mavlink_msg_named_value_float_pack_chan_send(chan, msg, name, value);
+	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_FLOAT;
+
+	put_char_array_by_index(msg, 0, name, 10); // Name of the debug variable
+	put_float_by_index(msg, 10, value); // Floating point value
+
+	mavlink_finalize_message_chan_send(msg, chan, 14);
 }
 
 #endif

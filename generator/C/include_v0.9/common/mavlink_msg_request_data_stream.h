@@ -52,7 +52,7 @@ static inline uint16_t mavlink_msg_request_data_stream_pack(uint8_t system_id, u
 	put_uint16_t_by_index(msg, 3, req_message_rate); // Update rate in Hertz
 	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
 
-	return mavlink_finalize_message(msg, system_id, component_id, 6, 193);
+	return mavlink_finalize_message(msg, system_id, component_id, 6);
 }
 
 /**
@@ -80,37 +80,8 @@ static inline uint16_t mavlink_msg_request_data_stream_pack_chan(uint8_t system_
 	put_uint16_t_by_index(msg, 3, req_message_rate); // Update rate in Hertz
 	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6, 193);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 6);
 }
-
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a request_data_stream message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param target_system The target requested to send the message stream.
- * @param target_component The target requested to send the message stream.
- * @param req_stream_id The ID of the requested message type
- * @param req_message_rate Update rate in Hertz
- * @param start_stop 1 to start sending, 0 to stop sending.
- */
-static inline void mavlink_msg_request_data_stream_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           uint8_t target_system,uint8_t target_component,uint8_t req_stream_id,uint16_t req_message_rate,uint8_t start_stop)
-{
-	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
-
-	put_uint8_t_by_index(msg, 0, target_system); // The target requested to send the message stream.
-	put_uint8_t_by_index(msg, 1, target_component); // The target requested to send the message stream.
-	put_uint8_t_by_index(msg, 2, req_stream_id); // The ID of the requested message type
-	put_uint16_t_by_index(msg, 3, req_message_rate); // Update rate in Hertz
-	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
-
-	mavlink_finalize_message_chan_send(msg, chan, 6, 193);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
 
 /**
  * @brief Encode a request_data_stream struct into a message
@@ -140,7 +111,15 @@ static inline uint16_t mavlink_msg_request_data_stream_encode(uint8_t system_id,
 static inline void mavlink_msg_request_data_stream_send(mavlink_channel_t chan, uint8_t target_system, uint8_t target_component, uint8_t req_stream_id, uint16_t req_message_rate, uint8_t start_stop)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 6);
-	mavlink_msg_request_data_stream_pack_chan_send(chan, msg, target_system, target_component, req_stream_id, req_message_rate, start_stop);
+	msg->msgid = MAVLINK_MSG_ID_REQUEST_DATA_STREAM;
+
+	put_uint8_t_by_index(msg, 0, target_system); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 1, target_component); // The target requested to send the message stream.
+	put_uint8_t_by_index(msg, 2, req_stream_id); // The ID of the requested message type
+	put_uint16_t_by_index(msg, 3, req_message_rate); // Update rate in Hertz
+	put_uint8_t_by_index(msg, 5, start_stop); // 1 to start sending, 0 to stop sending.
+
+	mavlink_finalize_message_chan_send(msg, chan, 6);
 }
 
 #endif

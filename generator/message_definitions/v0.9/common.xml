@@ -899,6 +899,16 @@ of the controller before actual flight and to assist with tuning controller para
                <field type="uint8_t" name="quality">Optical flow quality / confidence. 0: bad, 255: maximum quality</field>
                <field type="float" name="ground_distance">Ground distance in meters</field>
           </message>
+          <message id="140" name="OBJECT_DETECTION_EVENT">
+               <description>Object has been detected</description>
+               <field type="uint32_t" name="time">Timestamp in milliseconds since system boot</field>
+               <field type="uint16_t" name="object_id">Object ID</field>
+               <field type="uint8_t" name="type">Object type: 0: image, 1: letter, 2: ground vehicle, 3: air vehicle, 4: surface vehicle, 5: sub-surface vehicle, 6: human, 7: animal</field>
+               <field type="char[20]" name="name">Name of the object as defined by the detector</field>
+               <field type="uint8_t" name="quality">Detection quality / confidence. 0: bad, 255: maximum confidence</field>
+               <field type="float" name="bearing">Angle of the object with respect to the body frame in NED coordinates in radians. 0: front</field>
+               <field type="float" name="distance">Ground distance in meters</field>
+          </message>
           <!-- MESSAGE IDs 80 - 250: Space for custom messages in individual projectname_messages.xml files -->
           <message id="251" name="DEBUG_VECT">
                <field type="char[10]" name="name">Name</field>

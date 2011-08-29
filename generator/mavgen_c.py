@@ -50,6 +50,10 @@ def generate_mavlink_h(directory, xml):
 #define MAVLINK_ENDIAN ${mavlink_endian}
 #endif
 
+#ifndef MAVLINK_ALIGNED_FIELDS
+#define MAVLINK_ALIGNED_FIELDS ${aligned_fields_define}
+#endif
+
 #ifndef MAVLINK_CRC_EXTRA
 #define MAVLINK_CRC_EXTRA ${crc_extra_define}
 #endif
@@ -178,7 +182,7 @@ static inline uint16_t mavlink_msg_${name_lower}_pack(uint8_t system_id, uint8_t
 ${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
 }}
 
-	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length}, ${crc_extra});
+	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length}${crc_extra_arg});
 }
 
 /**
@@ -200,31 +204,8 @@ static inline uint16_t mavlink_msg_${name_lower}_pack_chan(uint8_t system_id, ui
 ${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
 }}
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length}, ${crc_extra});
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length}${crc_extra_arg});
 }
-
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a ${name_lower} message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
-${{arg_fields: * @param ${name} ${description}
-}}
- */
-static inline void mavlink_msg_${name_lower}_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           ${{arg_fields:${array_const}${type} ${array_prefix}${name},}})
-{
-	msg->msgid = MAVLINK_MSG_ID_${name};
-
-${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
-}}
-
-	mavlink_finalize_message_chan_send(msg, chan, ${wire_length}, ${crc_extra});
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
 
 /**
  * @brief Encode a ${name_lower} struct into a message
@@ -251,7 +232,12 @@ ${{arg_fields: * @param ${name} ${description}
 static inline void mavlink_msg_${name_lower}_send(mavlink_channel_t chan,${{arg_fields: ${array_const}${type} ${array_prefix}${name},}})
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, ${wire_length});
-	mavlink_msg_${name_lower}_pack_chan_send(chan, msg,${{arg_fields: ${name},}});
+	msg->msgid = MAVLINK_MSG_ID_${name};
+
+${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
+}}
+
+	mavlink_finalize_message_chan_send(msg, chan, ${wire_length}${crc_extra_arg});
 }
 
 #endif
@@ -342,8 +328,7 @@ static void mavlink_test_${name_lower}(uint8_t system_id, uint8_t component_id)
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
         	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-	mavlink_msg_${name_lower}_pack_chan_send(MAVLINK_COMM_1, &msg ${{arg_fields:, packet1.${name} }});
-	mavlink_msg_${name_lower}_send(MAVLINK_COMM_2 ${{arg_fields:, packet1.${name} }});
+	mavlink_msg_${name_lower}_send(MAVLINK_COMM_1 ${{arg_fields:, packet1.${name} }});
 }
 }}
 
@@ -397,6 +382,11 @@ def generate_one(basename, xml):
     else:
         xml.crc_extra_define = "0"
 
+    if xml.sort_fields:
+        xml.aligned_fields_define = "1"
+    else:
+        xml.aligned_fields_define = "0"
+
     # work out the included headers
     xml.include_list = []
     for i in xml.include:
@@ -427,6 +417,10 @@ def generate_one(basename, xml):
     # add some extra field attributes for convenience with arrays
     for m in xml.message:
         m.msg_name = m.name
+        if xml.crc_extra:
+            m.crc_extra_arg = ", %s" % m.crc_extra
+        else:
+            m.crc_extra_arg = ""
         for f in m.fields:
             if f.array_length != 0:
                 f.array_suffix = '[%u]' % f.array_length
@@ -485,7 +479,6 @@ def generate_one(basename, xml):
     for m in xml.message:
         generate_message_h(directory, m)
     generate_testsuite_h(directory, xml)
-    copy_fixed_headers(basename, xml)
 
 
 def generate(basename, xml_list):
@@ -493,3 +486,4 @@ def generate(basename, xml_list):
 
     for xml in xml_list:
         generate_one(basename, xml)
+    copy_fixed_headers(basename, xml_list[0])

@@ -6,7 +6,7 @@ Generated from: ardupilotmega.xml,common.xml
 Note: this file has been auto-generated. DO NOT EDIT
 '''
 
-import struct, array, mavutil
+import struct, array, mavutil, time
 
 class MAVLink_header(object):
     '''MAVLink message header'''
@@ -228,6 +228,7 @@ MAVLINK_MSG_ID_VFR_HUD = 74
 MAVLINK_MSG_ID_COMMAND = 75
 MAVLINK_MSG_ID_COMMAND_ACK = 76
 MAVLINK_MSG_ID_OPTICAL_FLOW = 100
+MAVLINK_MSG_ID_OBJECT_DETECTION_EVENT = 140
 MAVLINK_MSG_ID_DEBUG_VECT = 251
 MAVLINK_MSG_ID_NAMED_VALUE_FLOAT = 252
 MAVLINK_MSG_ID_NAMED_VALUE_INT = 253
@@ -1461,6 +1462,24 @@ class MAVLink_optical_flow_message(MAVLink_message):
         def pack(self, mav):
                 return MAVLink_message.pack(self, mav, 174, struct.pack('>QBhhBf', self.time, self.sensor_id, self.flow_x, self.flow_y, self.quality, self.ground_distance))
 
+class MAVLink_object_detection_event_message(MAVLink_message):
+        '''
+        Object has been detected
+        '''
+        def __init__(self, time, object_id, type, name, quality, bearing, distance):
+                MAVLink_message.__init__(self, MAVLINK_MSG_ID_OBJECT_DETECTION_EVENT, 'OBJECT_DETECTION_EVENT')
+                self._fieldnames = ['time', 'object_id', 'type', 'name', 'quality', 'bearing', 'distance']
+                self.time = time
+                self.object_id = object_id
+                self.type = type
+                self.name = name
+                self.quality = quality
+                self.bearing = bearing
+                self.distance = distance
+
+        def pack(self, mav):
+                return MAVLink_message.pack(self, mav, 155, struct.pack('>IHB20sBff', self.time, self.object_id, self.type, self.name, self.quality, self.bearing, self.distance))
+
 class MAVLink_debug_vect_message(MAVLink_message):
         '''
 
@@ -1608,6 +1627,7 @@ mavlink_map = {
         MAVLINK_MSG_ID_COMMAND : ( '>BBBBffff', MAVLink_command_message, [0, 1, 2, 3, 4, 5, 6, 7], 131 ),
         MAVLINK_MSG_ID_COMMAND_ACK : ( '>ff', MAVLink_command_ack_message, [0, 1], 8 ),
         MAVLINK_MSG_ID_OPTICAL_FLOW : ( '>QBhhBf', MAVLink_optical_flow_message, [0, 1, 2, 3, 4, 5], 174 ),
+        MAVLINK_MSG_ID_OBJECT_DETECTION_EVENT : ( '>IHB20sBff', MAVLink_object_detection_event_message, [0, 1, 2, 3, 4, 5, 6], 155 ),
         MAVLINK_MSG_ID_DEBUG_VECT : ( '>10sQfff', MAVLink_debug_vect_message, [0, 1, 2, 3, 4], 178 ),
         MAVLINK_MSG_ID_NAMED_VALUE_FLOAT : ( '>10sf', MAVLink_named_value_float_message, [0, 1], 224 ),
         MAVLINK_MSG_ID_NAMED_VALUE_INT : ( '>10si', MAVLink_named_value_int_message, [0, 1], 60 ),
@@ -1660,6 +1680,12 @@ class MAVLink(object):
                 self.little_endian = False
                 self.crc_extra = False
                 self.sort_fields = False
+                self.total_packets_sent = 0
+                self.total_bytes_sent = 0
+                self.total_packets_received = 0
+                self.total_bytes_received = 0
+                self.total_receive_errors = 0
+                self.startup_time = time.time()
 
         def set_callback(self, callback, *args, **kwargs):
             self.callback = callback
@@ -1671,6 +1697,8 @@ class MAVLink(object):
                 buf = mavmsg.pack(self)
                 self.file.write(buf)
                 self.seq = (self.seq + 1) % 255
+                self.total_packets_sent += 1
+                self.total_bytes_sent += len(buf)
 
         def bytes_needed(self):
             '''return number of bytes needed for next parsing stage'''
@@ -1685,6 +1713,7 @@ class MAVLink(object):
                 self.buf.fromstring(c)
             else:
                 self.buf.extend(c)
+            self.total_bytes_received += len(c)
             if len(self.buf) >= 1 and self.buf[0] != 85:
                 magic = self.buf[0]
                 self.buf = self.buf[1:]
@@ -1693,10 +1722,12 @@ class MAVLink(object):
                     if self.callback:
                         self.callback(m, *self.callback_args, **self.callback_kwargs)
                     self.expected_length = 6
+                    self.total_receive_errors += 1
                     return m
                 if self.have_prefix_error:
                     return None
                 self.have_prefix_error = True
+                self.total_receive_errors += 1
                 raise MAVError("invalid MAVLink prefix '%s'" % magic) 
             self.have_prefix_error = False
             if len(self.buf) >= 2:
@@ -1709,10 +1740,13 @@ class MAVLink(object):
                 if self.robust_parsing:
                     try:
                         m = self.decode(mbuf)
+                        self.total_packets_received += 1
                     except MAVError as reason:
                         m = MAVLink_bad_data(mbuf, reason.message)
+                        self.total_receive_errors += 1
                 else:
                     m = self.decode(mbuf)
+                    self.total_packets_received += 1
                 if self.callback:
                     self.callback(m, *self.callback_args, **self.callback_kwargs)
                 return m
@@ -3984,6 +4018,38 @@ class MAVLink(object):
 
                 '''
                 return self.send(self.optical_flow_encode(time, sensor_id, flow_x, flow_y, quality, ground_distance))
+            
+        def object_detection_event_encode(self, time, object_id, type, name, quality, bearing, distance):
+                '''
+                Object has been detected
+
+                time                      : Timestamp in milliseconds since system boot (uint32_t)
+                object_id                 : Object ID (uint16_t)
+                type                      : Object type: 0: image, 1: letter, 2: ground vehicle, 3: air vehicle, 4: surface vehicle, 5: sub-surface vehicle, 6: human, 7: animal (uint8_t)
+                name                      : Name of the object as defined by the detector (char)
+                quality                   : Detection quality / confidence. 0: bad, 255: maximum confidence (uint8_t)
+                bearing                   : Angle of the object with respect to the body frame in NED coordinates in radians. 0: front (float)
+                distance                  : Ground distance in meters (float)
+
+                '''
+                msg = MAVLink_object_detection_event_message(time, object_id, type, name, quality, bearing, distance)
+                msg.pack(self)
+                return msg
+            
+        def object_detection_event_send(self, time, object_id, type, name, quality, bearing, distance):
+                '''
+                Object has been detected
+
+                time                      : Timestamp in milliseconds since system boot (uint32_t)
+                object_id                 : Object ID (uint16_t)
+                type                      : Object type: 0: image, 1: letter, 2: ground vehicle, 3: air vehicle, 4: surface vehicle, 5: sub-surface vehicle, 6: human, 7: animal (uint8_t)
+                name                      : Name of the object as defined by the detector (char)
+                quality                   : Detection quality / confidence. 0: bad, 255: maximum confidence (uint8_t)
+                bearing                   : Angle of the object with respect to the body frame in NED coordinates in radians. 0: front (float)
+                distance                  : Ground distance in meters (float)
+
+                '''
+                return self.send(self.object_detection_event_encode(time, object_id, type, name, quality, bearing, distance))
             
         def debug_vect_encode(self, name, usec, x, y, z):
                 '''

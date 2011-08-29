@@ -40,7 +40,7 @@ static inline uint16_t mavlink_msg_debug_pack(uint8_t system_id, uint8_t compone
 	put_uint8_t_by_index(msg, 0, ind); // index of debug variable
 	put_float_by_index(msg, 1, value); // DEBUG value
 
-	return mavlink_finalize_message(msg, system_id, component_id, 5, 7);
+	return mavlink_finalize_message(msg, system_id, component_id, 5);
 }
 
 /**
@@ -62,31 +62,8 @@ static inline uint16_t mavlink_msg_debug_pack_chan(uint8_t system_id, uint8_t co
 	put_uint8_t_by_index(msg, 0, ind); // index of debug variable
 	put_float_by_index(msg, 1, value); // DEBUG value
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 5, 7);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 5);
 }
-
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a debug message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param ind index of debug variable
- * @param value DEBUG value
- */
-static inline void mavlink_msg_debug_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           uint8_t ind,float value)
-{
-	msg->msgid = MAVLINK_MSG_ID_DEBUG;
-
-	put_uint8_t_by_index(msg, 0, ind); // index of debug variable
-	put_float_by_index(msg, 1, value); // DEBUG value
-
-	mavlink_finalize_message_chan_send(msg, chan, 5, 7);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
 
 /**
  * @brief Encode a debug struct into a message
@@ -113,7 +90,12 @@ static inline uint16_t mavlink_msg_debug_encode(uint8_t system_id, uint8_t compo
 static inline void mavlink_msg_debug_send(mavlink_channel_t chan, uint8_t ind, float value)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 5);
-	mavlink_msg_debug_pack_chan_send(chan, msg, ind, value);
+	msg->msgid = MAVLINK_MSG_ID_DEBUG;
+
+	put_uint8_t_by_index(msg, 0, ind); // index of debug variable
+	put_float_by_index(msg, 1, value); // DEBUG value
+
+	mavlink_finalize_message_chan_send(msg, chan, 5);
 }
 
 #endif

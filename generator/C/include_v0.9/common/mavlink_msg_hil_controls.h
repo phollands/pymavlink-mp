@@ -60,7 +60,7 @@ static inline uint16_t mavlink_msg_hil_controls_pack(uint8_t system_id, uint8_t 
 	put_uint8_t_by_index(msg, 24, mode); // System mode (MAV_MODE)
 	put_uint8_t_by_index(msg, 25, nav_mode); // Navigation mode (MAV_NAV_MODE)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 26, 236);
+	return mavlink_finalize_message(msg, system_id, component_id, 26);
 }
 
 /**
@@ -92,41 +92,8 @@ static inline uint16_t mavlink_msg_hil_controls_pack_chan(uint8_t system_id, uin
 	put_uint8_t_by_index(msg, 24, mode); // System mode (MAV_MODE)
 	put_uint8_t_by_index(msg, 25, nav_mode); // Navigation mode (MAV_NAV_MODE)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26, 236);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26);
 }
-
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a hil_controls message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param time_us Timestamp (microseconds since UNIX epoch or microseconds since system boot)
- * @param roll_ailerons Control output -3 .. 1
- * @param pitch_elevator Control output -1 .. 1
- * @param yaw_rudder Control output -1 .. 1
- * @param throttle Throttle 0 .. 1
- * @param mode System mode (MAV_MODE)
- * @param nav_mode Navigation mode (MAV_NAV_MODE)
- */
-static inline void mavlink_msg_hil_controls_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           uint64_t time_us,float roll_ailerons,float pitch_elevator,float yaw_rudder,float throttle,uint8_t mode,uint8_t nav_mode)
-{
-	msg->msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
-
-	put_uint64_t_by_index(msg, 0, time_us); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(msg, 8, roll_ailerons); // Control output -3 .. 1
-	put_float_by_index(msg, 12, pitch_elevator); // Control output -1 .. 1
-	put_float_by_index(msg, 16, yaw_rudder); // Control output -1 .. 1
-	put_float_by_index(msg, 20, throttle); // Throttle 0 .. 1
-	put_uint8_t_by_index(msg, 24, mode); // System mode (MAV_MODE)
-	put_uint8_t_by_index(msg, 25, nav_mode); // Navigation mode (MAV_NAV_MODE)
-
-	mavlink_finalize_message_chan_send(msg, chan, 26, 236);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
 
 /**
  * @brief Encode a hil_controls struct into a message
@@ -158,7 +125,17 @@ static inline uint16_t mavlink_msg_hil_controls_encode(uint8_t system_id, uint8_
 static inline void mavlink_msg_hil_controls_send(mavlink_channel_t chan, uint64_t time_us, float roll_ailerons, float pitch_elevator, float yaw_rudder, float throttle, uint8_t mode, uint8_t nav_mode)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 26);
-	mavlink_msg_hil_controls_pack_chan_send(chan, msg, time_us, roll_ailerons, pitch_elevator, yaw_rudder, throttle, mode, nav_mode);
+	msg->msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
+
+	put_uint64_t_by_index(msg, 0, time_us); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
+	put_float_by_index(msg, 8, roll_ailerons); // Control output -3 .. 1
+	put_float_by_index(msg, 12, pitch_elevator); // Control output -1 .. 1
+	put_float_by_index(msg, 16, yaw_rudder); // Control output -1 .. 1
+	put_float_by_index(msg, 20, throttle); // Throttle 0 .. 1
+	put_uint8_t_by_index(msg, 24, mode); // System mode (MAV_MODE)
+	put_uint8_t_by_index(msg, 25, nav_mode); // Navigation mode (MAV_NAV_MODE)
+
+	mavlink_finalize_message_chan_send(msg, chan, 26);
 }
 
 #endif

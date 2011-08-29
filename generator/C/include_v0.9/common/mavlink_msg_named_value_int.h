@@ -40,7 +40,7 @@ static inline uint16_t mavlink_msg_named_value_int_pack(uint8_t system_id, uint8
 	put_char_array_by_index(msg, 0, name, 10); // Name of the debug variable
 	put_int32_t_by_index(msg, 10, value); // Signed integer value
 
-	return mavlink_finalize_message(msg, system_id, component_id, 14, 60);
+	return mavlink_finalize_message(msg, system_id, component_id, 14);
 }
 
 /**
@@ -62,31 +62,8 @@ static inline uint16_t mavlink_msg_named_value_int_pack_chan(uint8_t system_id, 
 	put_char_array_by_index(msg, 0, name, 10); // Name of the debug variable
 	put_int32_t_by_index(msg, 10, value); // Signed integer value
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14, 60);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 14);
 }
-
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a named_value_int message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param name Name of the debug variable
- * @param value Signed integer value
- */
-static inline void mavlink_msg_named_value_int_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           const char *name,int32_t value)
-{
-	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
-
-	put_char_array_by_index(msg, 0, name, 10); // Name of the debug variable
-	put_int32_t_by_index(msg, 10, value); // Signed integer value
-
-	mavlink_finalize_message_chan_send(msg, chan, 14, 60);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
 
 /**
  * @brief Encode a named_value_int struct into a message
@@ -113,7 +90,12 @@ static inline uint16_t mavlink_msg_named_value_int_encode(uint8_t system_id, uin
 static inline void mavlink_msg_named_value_int_send(mavlink_channel_t chan, const char *name, int32_t value)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 14);
-	mavlink_msg_named_value_int_pack_chan_send(chan, msg, name, value);
+	msg->msgid = MAVLINK_MSG_ID_NAMED_VALUE_INT;
+
+	put_char_array_by_index(msg, 0, name, 10); // Name of the debug variable
+	put_int32_t_by_index(msg, 10, value); // Signed integer value
+
+	mavlink_finalize_message_chan_send(msg, chan, 14);
 }
 
 #endif

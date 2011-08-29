@@ -48,7 +48,7 @@ static inline uint16_t mavlink_msg_param_value_pack(uint8_t system_id, uint8_t c
 	put_uint16_t_by_index(msg, 19, param_count); // Total number of onboard parameters
 	put_uint16_t_by_index(msg, 21, param_index); // Index of this onboard parameter
 
-	return mavlink_finalize_message(msg, system_id, component_id, 23, 162);
+	return mavlink_finalize_message(msg, system_id, component_id, 23);
 }
 
 /**
@@ -74,35 +74,8 @@ static inline uint16_t mavlink_msg_param_value_pack_chan(uint8_t system_id, uint
 	put_uint16_t_by_index(msg, 19, param_count); // Total number of onboard parameters
 	put_uint16_t_by_index(msg, 21, param_index); // Index of this onboard parameter
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 23, 162);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 23);
 }
-
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a param_value message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param param_id Onboard parameter id
- * @param param_value Onboard parameter value
- * @param param_count Total number of onboard parameters
- * @param param_index Index of this onboard parameter
- */
-static inline void mavlink_msg_param_value_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           const int8_t *param_id,float param_value,uint16_t param_count,uint16_t param_index)
-{
-	msg->msgid = MAVLINK_MSG_ID_PARAM_VALUE;
-
-	put_int8_t_array_by_index(msg, 0, param_id, 15); // Onboard parameter id
-	put_float_by_index(msg, 15, param_value); // Onboard parameter value
-	put_uint16_t_by_index(msg, 19, param_count); // Total number of onboard parameters
-	put_uint16_t_by_index(msg, 21, param_index); // Index of this onboard parameter
-
-	mavlink_finalize_message_chan_send(msg, chan, 23, 162);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
 
 /**
  * @brief Encode a param_value struct into a message
@@ -131,7 +104,14 @@ static inline uint16_t mavlink_msg_param_value_encode(uint8_t system_id, uint8_t
 static inline void mavlink_msg_param_value_send(mavlink_channel_t chan, const int8_t *param_id, float param_value, uint16_t param_count, uint16_t param_index)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 23);
-	mavlink_msg_param_value_pack_chan_send(chan, msg, param_id, param_value, param_count, param_index);
+	msg->msgid = MAVLINK_MSG_ID_PARAM_VALUE;
+
+	put_int8_t_array_by_index(msg, 0, param_id, 15); // Onboard parameter id
+	put_float_by_index(msg, 15, param_value); // Onboard parameter value
+	put_uint16_t_by_index(msg, 19, param_count); // Total number of onboard parameters
+	put_uint16_t_by_index(msg, 21, param_index); // Index of this onboard parameter
+
+	mavlink_finalize_message_chan_send(msg, chan, 23);
 }
 
 #endif

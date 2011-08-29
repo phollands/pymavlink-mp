@@ -40,7 +40,7 @@ static inline uint16_t mavlink_msg_action_ack_pack(uint8_t system_id, uint8_t co
 	put_uint8_t_by_index(msg, 0, action); // The action id
 	put_uint8_t_by_index(msg, 1, result); // 0: Action DENIED, 1: Action executed
 
-	return mavlink_finalize_message(msg, system_id, component_id, 2, 219);
+	return mavlink_finalize_message(msg, system_id, component_id, 2);
 }
 
 /**
@@ -62,31 +62,8 @@ static inline uint16_t mavlink_msg_action_ack_pack_chan(uint8_t system_id, uint8
 	put_uint8_t_by_index(msg, 0, action); // The action id
 	put_uint8_t_by_index(msg, 1, result); // 0: Action DENIED, 1: Action executed
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 219);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2);
 }
-
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a action_ack message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param action The action id
- * @param result 0: Action DENIED, 1: Action executed
- */
-static inline void mavlink_msg_action_ack_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           uint8_t action,uint8_t result)
-{
-	msg->msgid = MAVLINK_MSG_ID_ACTION_ACK;
-
-	put_uint8_t_by_index(msg, 0, action); // The action id
-	put_uint8_t_by_index(msg, 1, result); // 0: Action DENIED, 1: Action executed
-
-	mavlink_finalize_message_chan_send(msg, chan, 2, 219);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
 
 /**
  * @brief Encode a action_ack struct into a message
@@ -113,7 +90,12 @@ static inline uint16_t mavlink_msg_action_ack_encode(uint8_t system_id, uint8_t 
 static inline void mavlink_msg_action_ack_send(mavlink_channel_t chan, uint8_t action, uint8_t result)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 2);
-	mavlink_msg_action_ack_pack_chan_send(chan, msg, action, result);
+	msg->msgid = MAVLINK_MSG_ID_ACTION_ACK;
+
+	put_uint8_t_by_index(msg, 0, action); // The action id
+	put_uint8_t_by_index(msg, 1, result); // 0: Action DENIED, 1: Action executed
+
+	mavlink_finalize_message_chan_send(msg, chan, 2);
 }
 
 #endif

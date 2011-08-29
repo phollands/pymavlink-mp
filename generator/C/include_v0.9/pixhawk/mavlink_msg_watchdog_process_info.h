@@ -53,7 +53,7 @@ static inline uint16_t mavlink_msg_watchdog_process_info_pack(uint8_t system_id,
 	put_char_array_by_index(msg, 104, arguments, 147); // Process arguments
 	put_int32_t_by_index(msg, 251, timeout); // Timeout (seconds)
 
-	return mavlink_finalize_message(msg, system_id, component_id, 255, 110);
+	return mavlink_finalize_message(msg, system_id, component_id, 255);
 }
 
 /**
@@ -81,37 +81,8 @@ static inline uint16_t mavlink_msg_watchdog_process_info_pack_chan(uint8_t syste
 	put_char_array_by_index(msg, 104, arguments, 147); // Process arguments
 	put_int32_t_by_index(msg, 251, timeout); // Timeout (seconds)
 
-	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 255, 110);
+	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 255);
 }
-
-#ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
-/**
- * @brief Pack a watchdog_process_info message on a channel and send
- * @param chan The MAVLink channel this message was sent over
- * @param msg The MAVLink message to compress the data into
- * @param watchdog_id Watchdog ID
- * @param process_id Process ID
- * @param name Process name
- * @param arguments Process arguments
- * @param timeout Timeout (seconds)
- */
-static inline void mavlink_msg_watchdog_process_info_pack_chan_send(mavlink_channel_t chan,
-							   mavlink_message_t* msg,
-						           uint16_t watchdog_id,uint16_t process_id,const char *name,const char *arguments,int32_t timeout)
-{
-	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_PROCESS_INFO;
-
-	put_uint16_t_by_index(msg, 0, watchdog_id); // Watchdog ID
-	put_uint16_t_by_index(msg, 2, process_id); // Process ID
-	put_char_array_by_index(msg, 4, name, 100); // Process name
-	put_char_array_by_index(msg, 104, arguments, 147); // Process arguments
-	put_int32_t_by_index(msg, 251, timeout); // Timeout (seconds)
-
-	mavlink_finalize_message_chan_send(msg, chan, 255, 110);
-}
-#endif // MAVLINK_USE_CONVENIENCE_FUNCTIONS
-
 
 /**
  * @brief Encode a watchdog_process_info struct into a message
@@ -141,7 +112,15 @@ static inline uint16_t mavlink_msg_watchdog_process_info_encode(uint8_t system_i
 static inline void mavlink_msg_watchdog_process_info_send(mavlink_channel_t chan, uint16_t watchdog_id, uint16_t process_id, const char *name, const char *arguments, int32_t timeout)
 {
 	MAVLINK_ALIGNED_MESSAGE(msg, 255);
-	mavlink_msg_watchdog_process_info_pack_chan_send(chan, msg, watchdog_id, process_id, name, arguments, timeout);
+	msg->msgid = MAVLINK_MSG_ID_WATCHDOG_PROCESS_INFO;
+
+	put_uint16_t_by_index(msg, 0, watchdog_id); // Watchdog ID
+	put_uint16_t_by_index(msg, 2, process_id); // Process ID
+	put_char_array_by_index(msg, 4, name, 100); // Process name
+	put_char_array_by_index(msg, 104, arguments, 147); // Process arguments
+	put_int32_t_by_index(msg, 251, timeout); // Timeout (seconds)
+
+	mavlink_finalize_message_chan_send(msg, chan, 255);
 }
 
 #endif
