@@ -15,6 +15,8 @@ static mavlink_system_t mavlink_system = {42,11,};
 #define MAVLINK_ASSERT(x) assert(x)
 static void comm_send_ch(mavlink_channel_t chan, uint8_t c);
 
+static mavlink_message_t last_msg;
+
 #include <mavlink.h>
 #include <testsuite.h>
 
@@ -105,10 +107,9 @@ static void print_message(mavlink_message_t *msg)
 
 static void comm_send_ch(mavlink_channel_t chan, uint8_t c)
 {
-	mavlink_message_t msg;
 	mavlink_status_t status;
-	if (mavlink_parse_char(chan, c, &msg, &status)) {
-		print_message(&msg);
+	if (mavlink_parse_char(chan, c, &last_msg, &status)) {
+		print_message(&last_msg);
 		chan_counts[chan]++;
 		/* channel 0 gets 3 messages per message, because of
 		   the channel defaults for _pack() and _encode() */
@@ -121,9 +122,9 @@ static void comm_send_ch(mavlink_channel_t chan, uint8_t c)
 			       (unsigned)chan, chan_counts[chan], status.current_rx_seq);
 			error_count++;
 		}
-		if (message_lengths[msg.msgid] != msg.len) {
+		if (message_lengths[last_msg.msgid] != last_msg.len) {
 			printf("Incorrect message length %u for message %u - expected %u\n", 
-			       (unsigned)msg.len, (unsigned)msg.msgid, message_lengths[msg.msgid]);
+			       (unsigned)last_msg.len, (unsigned)last_msg.msgid, message_lengths[last_msg.msgid]);
 			error_count++;
 		}
 	}
@@ -136,7 +137,7 @@ static void comm_send_ch(mavlink_channel_t chan, uint8_t c)
 int main(void)
 {
 	mavlink_channel_t chan;
-	mavlink_test_all(11, 10);
+	mavlink_test_all(11, 10, &last_msg);
 	for (chan=MAVLINK_COMM_0; chan<=MAVLINK_COMM_1; chan++) {
 		printf("Received %u messages on channel %u OK\n", 
 		       chan_counts[chan], (unsigned)chan);

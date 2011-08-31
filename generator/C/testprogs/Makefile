@@ -8,11 +8,18 @@ all:
 test:
 	for p in ${ALLPROTOCOLS}; do make -f Makefile testprogs TESTPROTOCOL=$$p || exit 1; done
 
+valgrindtest:
+	for p in ${ALLPROTOCOLS}; do make -f Makefile valgrindprogs TESTPROTOCOL=$$p || exit 1; done
+
 build: testmav0.9_${TESTPROTOCOL} testmav1.0_${TESTPROTOCOL}
 
 testprogs: testmav0.9_${TESTPROTOCOL} testmav1.0_${TESTPROTOCOL}
 	./testmav0.9_${TESTPROTOCOL}
 	./testmav1.0_${TESTPROTOCOL}
+
+valgrindprogs: testmav0.9_${TESTPROTOCOL} testmav1.0_${TESTPROTOCOL}
+	valgrind -q ./testmav0.9_${TESTPROTOCOL}
+	valgrind -q ./testmav1.0_${TESTPROTOCOL}
 
 clean:
 	rm -f *.o *~ testmav1.0* testmav0.9*

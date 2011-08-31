@@ -324,15 +324,15 @@ extern "C" {
 
 #ifndef MAVLINK_TEST_ALL
 #define MAVLINK_TEST_ALL
-${{include_list:static void mavlink_test_${base}(uint8_t, uint8_t);
+${{include_list:static void mavlink_test_${base}(uint8_t, uint8_t, mavlink_message_t *last_msg);
 }}
-static void mavlink_test_${basename}(uint8_t, uint8_t);
+static void mavlink_test_${basename}(uint8_t, uint8_t, mavlink_message_t *last_msg);
 
-static void mavlink_test_all(uint8_t system_id, uint8_t component_id)
+static void mavlink_test_all(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
-${{include_list:	mavlink_test_${base}(system_id, component_id);
+${{include_list:	mavlink_test_${base}(system_id, component_id, last_msg);
 }}
-	mavlink_test_${basename}(system_id, component_id);
+	mavlink_test_${basename}(system_id, component_id, last_msg);
 }
 #endif
 
@@ -340,33 +340,54 @@ ${{include_list:#include "../${base}/testsuite.h"
 }}
 
 ${{message:
-static void mavlink_test_${name_lower}(uint8_t system_id, uint8_t component_id)
+static void mavlink_test_${name_lower}(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-	mavlink_${name_lower}_t packet2, packet1 = {
+	mavlink_${name_lower}_t packet_in = {
 		${{ordered_fields:${c_test_value},
 	}}};
-	if (sizeof(packet2) != ${wire_length}) {
-		packet2 = packet1; // cope with alignment within the packet
-	}
+	mavlink_${name_lower}_t packet1, packet2;
+        memset(&packet1, 0, sizeof(packet1));
+        ${{scalar_fields:	packet1.${name} = packet_in.${name};
+        }}
+        ${{array_fields:	memcpy(packet1.${name}, packet_in.${name}, sizeof(${type})*${array_length});
+        }}
+
+        memset(&packet2, 0, sizeof(packet2));
 	mavlink_msg_${name_lower}_encode(system_id, component_id, &msg, &packet1);
 	mavlink_msg_${name_lower}_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
 	mavlink_msg_${name_lower}_pack(system_id, component_id, &msg ${{arg_fields:, packet1.${name} }});
+	mavlink_msg_${name_lower}_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
 	mavlink_msg_${name_lower}_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg ${{arg_fields:, packet1.${name} }});
+	mavlink_msg_${name_lower}_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
         mavlink_msg_to_send_buffer(buffer, &msg);
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
         	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
+	mavlink_msg_${name_lower}_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+        
+        memset(&packet2, 0, sizeof(packet2));
 	mavlink_msg_${name_lower}_send(MAVLINK_COMM_1 ${{arg_fields:, packet1.${name} }});
+	mavlink_msg_${name_lower}_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 }}
 
-static void mavlink_test_${basename}(uint8_t system_id, uint8_t component_id)
+static void mavlink_test_${basename}(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
-${{message:	mavlink_test_${name_lower}(system_id, component_id);
+${{message:	mavlink_test_${name_lower}(system_id, component_id, last_msg);
 }}
 }
 
