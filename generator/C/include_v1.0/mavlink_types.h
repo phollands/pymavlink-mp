@@ -1,8 +1,6 @@
 #ifndef MAVLINK_TYPES_H_
 #define MAVLINK_TYPES_H_
 
-#include "inttypes.h"
-
 enum MAV_ACTION
 {
     MAV_ACTION_HOLD = 0,

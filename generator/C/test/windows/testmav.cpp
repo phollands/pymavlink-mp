@@ -1,10 +1,12 @@
-/*
-  simple MAVLink testsuite for C
- */
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <stddef.h>
+// testmav.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include "stdio.h"
+#include "stdint.h"
+#include "stddef.h"
+#include "assert.h"
+
 
 #define MAVLINK_USE_CONVENIENCE_FUNCTIONS
 #define MAVLINK_COMM_NUM_BUFFERS 2
@@ -17,8 +19,8 @@ static void comm_send_ch(mavlink_channel_t chan, uint8_t c);
 
 static mavlink_message_t last_msg;
 
-#include <mavlink.h>
-#include <testsuite.h>
+#include <common/mavlink.h>
+#include <common/testsuite.h>
 
 static unsigned chan_counts[MAVLINK_COMM_NUM_BUFFERS];
 
@@ -133,10 +135,10 @@ static void comm_send_ch(mavlink_channel_t chan, uint8_t c)
 		error_count++;
 	}
 }
-
-int main(void)
+	
+int _tmain(int argc, _TCHAR* argv[])
 {
-	mavlink_channel_t chan;
+	int chan;
 	mavlink_test_all(11, 10, &last_msg);
 	for (chan=MAVLINK_COMM_0; chan<=MAVLINK_COMM_1; chan++) {
 		printf("Received %u messages on channel %u OK\n", 
@@ -144,9 +146,8 @@ int main(void)
 	}
 	if (error_count != 0) {
 		printf("Error count %u\n", error_count);
-		exit(1);
+		return(1);
 	}
 	printf("No errors detected\n");
 	return 0;
 }
-
