@@ -121,7 +121,7 @@ typedef struct __mavlink_message_info {
 	const mavlink_field_info_t fields[MAVLINK_MAX_FIELDS]; // field information
 } mavlink_message_info_t;
 
-#define _MAV_PAYLOAD(msg) ((char *)(&msg->payload64[0]))
+#define _MAV_PAYLOAD(msg) ((char *)(&(msg)->payload64[0]))
 
 // checksum is immediately after the payload bytes
 #define mavlink_ck_a(msg) *(msg->len + (uint8_t *)_MAV_PAYLOAD(msg))
