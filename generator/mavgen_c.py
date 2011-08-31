@@ -464,7 +464,7 @@ def generate_one(basename, xml):
         if name is not None:
             xml.message_info_array += 'MAVLINK_MESSAGE_INFO_%s, ' % name
         else:
-            xml.message_info_array += '{}, '
+            xml.message_info_array += '{NULL}, '
     xml.message_info_array = xml.message_info_array[:-2]
 
     # add some extra field attributes for convenience with arrays
