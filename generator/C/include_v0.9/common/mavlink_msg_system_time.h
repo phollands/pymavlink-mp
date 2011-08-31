@@ -32,10 +32,19 @@ typedef struct __mavlink_system_time_t
 static inline uint16_t mavlink_msg_system_time_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
 						       uint64_t time_usec)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[8];
+	_mav_put_uint64_t(buf, 0, time_usec);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 8);
+#else
+	mavlink_system_time_t packet;
+	packet.time_usec = time_usec;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 8);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
-
-	put_uint64_t_by_index(msg, 0, time_usec); // Timestamp of the master clock in microseconds since UNIX epoch.
-
 	return mavlink_finalize_message(msg, system_id, component_id, 8);
 }
 
@@ -52,10 +61,19 @@ static inline uint16_t mavlink_msg_system_time_pack_chan(uint8_t system_id, uint
 							   mavlink_message_t* msg,
 						           uint64_t time_usec)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[8];
+	_mav_put_uint64_t(buf, 0, time_usec);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 8);
+#else
+	mavlink_system_time_t packet;
+	packet.time_usec = time_usec;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 8);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
-
-	put_uint64_t_by_index(msg, 0, time_usec); // Timestamp of the master clock in microseconds since UNIX epoch.
-
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 8);
 }
 
@@ -82,12 +100,17 @@ static inline uint16_t mavlink_msg_system_time_encode(uint8_t system_id, uint8_t
 
 static inline void mavlink_msg_system_time_send(mavlink_channel_t chan, uint64_t time_usec)
 {
-	MAVLINK_ALIGNED_MESSAGE(msg, 8);
-	msg->msgid = MAVLINK_MSG_ID_SYSTEM_TIME;
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[8];
+	_mav_put_uint64_t(buf, 0, time_usec);
 
-	put_uint64_t_by_index(msg, 0, time_usec); // Timestamp of the master clock in microseconds since UNIX epoch.
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SYSTEM_TIME, buf, 8);
+#else
+	mavlink_system_time_t packet;
+	packet.time_usec = time_usec;
 
-	mavlink_finalize_message_chan_send(msg, chan, 8);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SYSTEM_TIME, (const char *)&packet, 8);
+#endif
 }
 
 #endif
@@ -102,7 +125,7 @@ static inline void mavlink_msg_system_time_send(mavlink_channel_t chan, uint64_t
  */
 static inline uint64_t mavlink_msg_system_time_get_time_usec(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint64_t(msg,  0);
+	return _MAV_RETURN_uint64_t(msg,  0);
 }
 
 /**
@@ -116,6 +139,6 @@ static inline void mavlink_msg_system_time_decode(const mavlink_message_t* msg, 
 #if MAVLINK_NEED_BYTE_SWAP
 	system_time->time_usec = mavlink_msg_system_time_get_time_usec(msg);
 #else
-	memcpy(system_time, MAVLINK_PAYLOAD(msg), 8);
+	memcpy(system_time, _MAV_PAYLOAD(msg), 8);
 #endif
 }

@@ -56,18 +56,35 @@ typedef struct __mavlink_rc_channels_scaled_t
 static inline uint16_t mavlink_msg_rc_channels_scaled_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
 						       int16_t chan1_scaled, int16_t chan2_scaled, int16_t chan3_scaled, int16_t chan4_scaled, int16_t chan5_scaled, int16_t chan6_scaled, int16_t chan7_scaled, int16_t chan8_scaled, uint8_t rssi)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[17];
+	_mav_put_int16_t(buf, 0, chan1_scaled);
+	_mav_put_int16_t(buf, 2, chan2_scaled);
+	_mav_put_int16_t(buf, 4, chan3_scaled);
+	_mav_put_int16_t(buf, 6, chan4_scaled);
+	_mav_put_int16_t(buf, 8, chan5_scaled);
+	_mav_put_int16_t(buf, 10, chan6_scaled);
+	_mav_put_int16_t(buf, 12, chan7_scaled);
+	_mav_put_int16_t(buf, 14, chan8_scaled);
+	_mav_put_uint8_t(buf, 16, rssi);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 17);
+#else
+	mavlink_rc_channels_scaled_t packet;
+	packet.chan1_scaled = chan1_scaled;
+	packet.chan2_scaled = chan2_scaled;
+	packet.chan3_scaled = chan3_scaled;
+	packet.chan4_scaled = chan4_scaled;
+	packet.chan5_scaled = chan5_scaled;
+	packet.chan6_scaled = chan6_scaled;
+	packet.chan7_scaled = chan7_scaled;
+	packet.chan8_scaled = chan8_scaled;
+	packet.rssi = rssi;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 17);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
-
-	put_int16_t_by_index(msg, 0, chan1_scaled); // RC channel 1 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 2, chan2_scaled); // RC channel 2 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 4, chan3_scaled); // RC channel 3 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 6, chan4_scaled); // RC channel 4 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 8, chan5_scaled); // RC channel 5 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 10, chan6_scaled); // RC channel 6 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 12, chan7_scaled); // RC channel 7 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 14, chan8_scaled); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_uint8_t_by_index(msg, 16, rssi); // Receive signal strength indicator, 0: 0%, 255: 100%
-
 	return mavlink_finalize_message(msg, system_id, component_id, 17, 162);
 }
 
@@ -92,18 +109,35 @@ static inline uint16_t mavlink_msg_rc_channels_scaled_pack_chan(uint8_t system_i
 							   mavlink_message_t* msg,
 						           int16_t chan1_scaled,int16_t chan2_scaled,int16_t chan3_scaled,int16_t chan4_scaled,int16_t chan5_scaled,int16_t chan6_scaled,int16_t chan7_scaled,int16_t chan8_scaled,uint8_t rssi)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[17];
+	_mav_put_int16_t(buf, 0, chan1_scaled);
+	_mav_put_int16_t(buf, 2, chan2_scaled);
+	_mav_put_int16_t(buf, 4, chan3_scaled);
+	_mav_put_int16_t(buf, 6, chan4_scaled);
+	_mav_put_int16_t(buf, 8, chan5_scaled);
+	_mav_put_int16_t(buf, 10, chan6_scaled);
+	_mav_put_int16_t(buf, 12, chan7_scaled);
+	_mav_put_int16_t(buf, 14, chan8_scaled);
+	_mav_put_uint8_t(buf, 16, rssi);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 17);
+#else
+	mavlink_rc_channels_scaled_t packet;
+	packet.chan1_scaled = chan1_scaled;
+	packet.chan2_scaled = chan2_scaled;
+	packet.chan3_scaled = chan3_scaled;
+	packet.chan4_scaled = chan4_scaled;
+	packet.chan5_scaled = chan5_scaled;
+	packet.chan6_scaled = chan6_scaled;
+	packet.chan7_scaled = chan7_scaled;
+	packet.chan8_scaled = chan8_scaled;
+	packet.rssi = rssi;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 17);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
-
-	put_int16_t_by_index(msg, 0, chan1_scaled); // RC channel 1 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 2, chan2_scaled); // RC channel 2 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 4, chan3_scaled); // RC channel 3 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 6, chan4_scaled); // RC channel 4 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 8, chan5_scaled); // RC channel 5 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 10, chan6_scaled); // RC channel 6 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 12, chan7_scaled); // RC channel 7 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 14, chan8_scaled); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_uint8_t_by_index(msg, 16, rssi); // Receive signal strength indicator, 0: 0%, 255: 100%
-
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 17, 162);
 }
 
@@ -138,20 +172,33 @@ static inline uint16_t mavlink_msg_rc_channels_scaled_encode(uint8_t system_id, 
 
 static inline void mavlink_msg_rc_channels_scaled_send(mavlink_channel_t chan, int16_t chan1_scaled, int16_t chan2_scaled, int16_t chan3_scaled, int16_t chan4_scaled, int16_t chan5_scaled, int16_t chan6_scaled, int16_t chan7_scaled, int16_t chan8_scaled, uint8_t rssi)
 {
-	MAVLINK_ALIGNED_MESSAGE(msg, 17);
-	msg->msgid = MAVLINK_MSG_ID_RC_CHANNELS_SCALED;
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[17];
+	_mav_put_int16_t(buf, 0, chan1_scaled);
+	_mav_put_int16_t(buf, 2, chan2_scaled);
+	_mav_put_int16_t(buf, 4, chan3_scaled);
+	_mav_put_int16_t(buf, 6, chan4_scaled);
+	_mav_put_int16_t(buf, 8, chan5_scaled);
+	_mav_put_int16_t(buf, 10, chan6_scaled);
+	_mav_put_int16_t(buf, 12, chan7_scaled);
+	_mav_put_int16_t(buf, 14, chan8_scaled);
+	_mav_put_uint8_t(buf, 16, rssi);
 
-	put_int16_t_by_index(msg, 0, chan1_scaled); // RC channel 1 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 2, chan2_scaled); // RC channel 2 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 4, chan3_scaled); // RC channel 3 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 6, chan4_scaled); // RC channel 4 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 8, chan5_scaled); // RC channel 5 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 10, chan6_scaled); // RC channel 6 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 12, chan7_scaled); // RC channel 7 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_int16_t_by_index(msg, 14, chan8_scaled); // RC channel 8 value scaled, (-100%) -10000, (0%) 0, (100%) 10000
-	put_uint8_t_by_index(msg, 16, rssi); // Receive signal strength indicator, 0: 0%, 255: 100%
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_RC_CHANNELS_SCALED, buf, 17, 162);
+#else
+	mavlink_rc_channels_scaled_t packet;
+	packet.chan1_scaled = chan1_scaled;
+	packet.chan2_scaled = chan2_scaled;
+	packet.chan3_scaled = chan3_scaled;
+	packet.chan4_scaled = chan4_scaled;
+	packet.chan5_scaled = chan5_scaled;
+	packet.chan6_scaled = chan6_scaled;
+	packet.chan7_scaled = chan7_scaled;
+	packet.chan8_scaled = chan8_scaled;
+	packet.rssi = rssi;
 
-	mavlink_finalize_message_chan_send(msg, chan, 17, 162);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_RC_CHANNELS_SCALED, (const char *)&packet, 17, 162);
+#endif
 }
 
 #endif
@@ -166,7 +213,7 @@ static inline void mavlink_msg_rc_channels_scaled_send(mavlink_channel_t chan, i
  */
 static inline int16_t mavlink_msg_rc_channels_scaled_get_chan1_scaled(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int16_t(msg,  0);
+	return _MAV_RETURN_int16_t(msg,  0);
 }
 
 /**
@@ -176,7 +223,7 @@ static inline int16_t mavlink_msg_rc_channels_scaled_get_chan1_scaled(const mavl
  */
 static inline int16_t mavlink_msg_rc_channels_scaled_get_chan2_scaled(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int16_t(msg,  2);
+	return _MAV_RETURN_int16_t(msg,  2);
 }
 
 /**
@@ -186,7 +233,7 @@ static inline int16_t mavlink_msg_rc_channels_scaled_get_chan2_scaled(const mavl
  */
 static inline int16_t mavlink_msg_rc_channels_scaled_get_chan3_scaled(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int16_t(msg,  4);
+	return _MAV_RETURN_int16_t(msg,  4);
 }
 
 /**
@@ -196,7 +243,7 @@ static inline int16_t mavlink_msg_rc_channels_scaled_get_chan3_scaled(const mavl
  */
 static inline int16_t mavlink_msg_rc_channels_scaled_get_chan4_scaled(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int16_t(msg,  6);
+	return _MAV_RETURN_int16_t(msg,  6);
 }
 
 /**
@@ -206,7 +253,7 @@ static inline int16_t mavlink_msg_rc_channels_scaled_get_chan4_scaled(const mavl
  */
 static inline int16_t mavlink_msg_rc_channels_scaled_get_chan5_scaled(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int16_t(msg,  8);
+	return _MAV_RETURN_int16_t(msg,  8);
 }
 
 /**
@@ -216,7 +263,7 @@ static inline int16_t mavlink_msg_rc_channels_scaled_get_chan5_scaled(const mavl
  */
 static inline int16_t mavlink_msg_rc_channels_scaled_get_chan6_scaled(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int16_t(msg,  10);
+	return _MAV_RETURN_int16_t(msg,  10);
 }
 
 /**
@@ -226,7 +273,7 @@ static inline int16_t mavlink_msg_rc_channels_scaled_get_chan6_scaled(const mavl
  */
 static inline int16_t mavlink_msg_rc_channels_scaled_get_chan7_scaled(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int16_t(msg,  12);
+	return _MAV_RETURN_int16_t(msg,  12);
 }
 
 /**
@@ -236,7 +283,7 @@ static inline int16_t mavlink_msg_rc_channels_scaled_get_chan7_scaled(const mavl
  */
 static inline int16_t mavlink_msg_rc_channels_scaled_get_chan8_scaled(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int16_t(msg,  14);
+	return _MAV_RETURN_int16_t(msg,  14);
 }
 
 /**
@@ -246,7 +293,7 @@ static inline int16_t mavlink_msg_rc_channels_scaled_get_chan8_scaled(const mavl
  */
 static inline uint8_t mavlink_msg_rc_channels_scaled_get_rssi(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  16);
+	return _MAV_RETURN_uint8_t(msg,  16);
 }
 
 /**
@@ -268,6 +315,6 @@ static inline void mavlink_msg_rc_channels_scaled_decode(const mavlink_message_t
 	rc_channels_scaled->chan8_scaled = mavlink_msg_rc_channels_scaled_get_chan8_scaled(msg);
 	rc_channels_scaled->rssi = mavlink_msg_rc_channels_scaled_get_rssi(msg);
 #else
-	memcpy(rc_channels_scaled, MAVLINK_PAYLOAD(msg), 17);
+	memcpy(rc_channels_scaled, _MAV_PAYLOAD(msg), 17);
 #endif
 }

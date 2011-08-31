@@ -35,11 +35,21 @@ typedef struct __mavlink_set_flight_mode_t
 static inline uint16_t mavlink_msg_set_flight_mode_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
 						       uint8_t target, uint8_t flight_mode)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[2];
+	_mav_put_uint8_t(buf, 0, target);
+	_mav_put_uint8_t(buf, 1, flight_mode);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 2);
+#else
+	mavlink_set_flight_mode_t packet;
+	packet.target = target;
+	packet.flight_mode = flight_mode;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 2);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_SET_FLIGHT_MODE;
-
-	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
-	put_uint8_t_by_index(msg, 1, flight_mode); // The new navigation mode
-
 	return mavlink_finalize_message(msg, system_id, component_id, 2, 194);
 }
 
@@ -57,11 +67,21 @@ static inline uint16_t mavlink_msg_set_flight_mode_pack_chan(uint8_t system_id, 
 							   mavlink_message_t* msg,
 						           uint8_t target,uint8_t flight_mode)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[2];
+	_mav_put_uint8_t(buf, 0, target);
+	_mav_put_uint8_t(buf, 1, flight_mode);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 2);
+#else
+	mavlink_set_flight_mode_t packet;
+	packet.target = target;
+	packet.flight_mode = flight_mode;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 2);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_SET_FLIGHT_MODE;
-
-	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
-	put_uint8_t_by_index(msg, 1, flight_mode); // The new navigation mode
-
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 2, 194);
 }
 
@@ -89,13 +109,19 @@ static inline uint16_t mavlink_msg_set_flight_mode_encode(uint8_t system_id, uin
 
 static inline void mavlink_msg_set_flight_mode_send(mavlink_channel_t chan, uint8_t target, uint8_t flight_mode)
 {
-	MAVLINK_ALIGNED_MESSAGE(msg, 2);
-	msg->msgid = MAVLINK_MSG_ID_SET_FLIGHT_MODE;
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[2];
+	_mav_put_uint8_t(buf, 0, target);
+	_mav_put_uint8_t(buf, 1, flight_mode);
 
-	put_uint8_t_by_index(msg, 0, target); // The system setting the mode
-	put_uint8_t_by_index(msg, 1, flight_mode); // The new navigation mode
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SET_FLIGHT_MODE, buf, 2, 194);
+#else
+	mavlink_set_flight_mode_t packet;
+	packet.target = target;
+	packet.flight_mode = flight_mode;
 
-	mavlink_finalize_message_chan_send(msg, chan, 2, 194);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SET_FLIGHT_MODE, (const char *)&packet, 2, 194);
+#endif
 }
 
 #endif
@@ -110,7 +136,7 @@ static inline void mavlink_msg_set_flight_mode_send(mavlink_channel_t chan, uint
  */
 static inline uint8_t mavlink_msg_set_flight_mode_get_target(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  0);
+	return _MAV_RETURN_uint8_t(msg,  0);
 }
 
 /**
@@ -120,7 +146,7 @@ static inline uint8_t mavlink_msg_set_flight_mode_get_target(const mavlink_messa
  */
 static inline uint8_t mavlink_msg_set_flight_mode_get_flight_mode(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  1);
+	return _MAV_RETURN_uint8_t(msg,  1);
 }
 
 /**
@@ -135,6 +161,6 @@ static inline void mavlink_msg_set_flight_mode_decode(const mavlink_message_t* m
 	set_flight_mode->target = mavlink_msg_set_flight_mode_get_target(msg);
 	set_flight_mode->flight_mode = mavlink_msg_set_flight_mode_get_flight_mode(msg);
 #else
-	memcpy(set_flight_mode, MAVLINK_PAYLOAD(msg), 2);
+	memcpy(set_flight_mode, _MAV_PAYLOAD(msg), 2);
 #endif
 }

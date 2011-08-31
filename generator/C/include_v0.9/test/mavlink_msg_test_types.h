@@ -105,31 +105,59 @@ typedef struct __mavlink_test_types_t
 static inline uint16_t mavlink_msg_test_types_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
 						       char c, const char *s, uint8_t u8, uint16_t u16, uint32_t u32, uint64_t u64, int8_t s8, int16_t s16, int32_t s32, int64_t s64, float f, double d, const uint8_t *u8_array, const uint16_t *u16_array, const uint32_t *u32_array, const uint64_t *u64_array, const int8_t *s8_array, const int16_t *s16_array, const int32_t *s32_array, const int64_t *s64_array, const float *f_array, const double *d_array)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[179];
+	_mav_put_char(buf, 0, c);
+	_mav_put_uint8_t(buf, 11, u8);
+	_mav_put_uint16_t(buf, 12, u16);
+	_mav_put_uint32_t(buf, 14, u32);
+	_mav_put_uint64_t(buf, 18, u64);
+	_mav_put_int8_t(buf, 26, s8);
+	_mav_put_int16_t(buf, 27, s16);
+	_mav_put_int32_t(buf, 29, s32);
+	_mav_put_int64_t(buf, 33, s64);
+	_mav_put_float(buf, 41, f);
+	_mav_put_double(buf, 45, d);
+	_mav_put_char_array(buf, 1, s, 10);
+	_mav_put_uint8_t_array(buf, 53, u8_array, 3);
+	_mav_put_uint16_t_array(buf, 56, u16_array, 3);
+	_mav_put_uint32_t_array(buf, 62, u32_array, 3);
+	_mav_put_uint64_t_array(buf, 74, u64_array, 3);
+	_mav_put_int8_t_array(buf, 98, s8_array, 3);
+	_mav_put_int16_t_array(buf, 101, s16_array, 3);
+	_mav_put_int32_t_array(buf, 107, s32_array, 3);
+	_mav_put_int64_t_array(buf, 119, s64_array, 3);
+	_mav_put_float_array(buf, 143, f_array, 3);
+	_mav_put_double_array(buf, 155, d_array, 3);
+        memcpy(_MAV_PAYLOAD(msg), buf, 179);
+#else
+	mavlink_test_types_t packet;
+	packet.c = c;
+	packet.u8 = u8;
+	packet.u16 = u16;
+	packet.u32 = u32;
+	packet.u64 = u64;
+	packet.s8 = s8;
+	packet.s16 = s16;
+	packet.s32 = s32;
+	packet.s64 = s64;
+	packet.f = f;
+	packet.d = d;
+	memcpy(packet.s, s, sizeof(char)*10);
+	memcpy(packet.u8_array, u8_array, sizeof(uint8_t)*3);
+	memcpy(packet.u16_array, u16_array, sizeof(uint16_t)*3);
+	memcpy(packet.u32_array, u32_array, sizeof(uint32_t)*3);
+	memcpy(packet.u64_array, u64_array, sizeof(uint64_t)*3);
+	memcpy(packet.s8_array, s8_array, sizeof(int8_t)*3);
+	memcpy(packet.s16_array, s16_array, sizeof(int16_t)*3);
+	memcpy(packet.s32_array, s32_array, sizeof(int32_t)*3);
+	memcpy(packet.s64_array, s64_array, sizeof(int64_t)*3);
+	memcpy(packet.f_array, f_array, sizeof(float)*3);
+	memcpy(packet.d_array, d_array, sizeof(double)*3);
+        memcpy(_MAV_PAYLOAD(msg), &packet, 179);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_TEST_TYPES;
-
-	put_char_by_index(msg, 0, c); // char
-	put_char_array_by_index(msg, 1, s, 10); // string
-	put_uint8_t_by_index(msg, 11, u8); // uint8_t
-	put_uint16_t_by_index(msg, 12, u16); // uint16_t
-	put_uint32_t_by_index(msg, 14, u32); // uint32_t
-	put_uint64_t_by_index(msg, 18, u64); // uint64_t
-	put_int8_t_by_index(msg, 26, s8); // int8_t
-	put_int16_t_by_index(msg, 27, s16); // int16_t
-	put_int32_t_by_index(msg, 29, s32); // int32_t
-	put_int64_t_by_index(msg, 33, s64); // int64_t
-	put_float_by_index(msg, 41, f); // float
-	put_double_by_index(msg, 45, d); // double
-	put_uint8_t_array_by_index(msg, 53, u8_array, 3); // uint8_t_array
-	put_uint16_t_array_by_index(msg, 56, u16_array, 3); // uint16_t_array
-	put_uint32_t_array_by_index(msg, 62, u32_array, 3); // uint32_t_array
-	put_uint64_t_array_by_index(msg, 74, u64_array, 3); // uint64_t_array
-	put_int8_t_array_by_index(msg, 98, s8_array, 3); // int8_t_array
-	put_int16_t_array_by_index(msg, 101, s16_array, 3); // int16_t_array
-	put_int32_t_array_by_index(msg, 107, s32_array, 3); // int32_t_array
-	put_int64_t_array_by_index(msg, 119, s64_array, 3); // int64_t_array
-	put_float_array_by_index(msg, 143, f_array, 3); // float_array
-	put_double_array_by_index(msg, 155, d_array, 3); // double_array
-
 	return mavlink_finalize_message(msg, system_id, component_id, 179);
 }
 
@@ -167,31 +195,59 @@ static inline uint16_t mavlink_msg_test_types_pack_chan(uint8_t system_id, uint8
 							   mavlink_message_t* msg,
 						           char c,const char *s,uint8_t u8,uint16_t u16,uint32_t u32,uint64_t u64,int8_t s8,int16_t s16,int32_t s32,int64_t s64,float f,double d,const uint8_t *u8_array,const uint16_t *u16_array,const uint32_t *u32_array,const uint64_t *u64_array,const int8_t *s8_array,const int16_t *s16_array,const int32_t *s32_array,const int64_t *s64_array,const float *f_array,const double *d_array)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[179];
+	_mav_put_char(buf, 0, c);
+	_mav_put_uint8_t(buf, 11, u8);
+	_mav_put_uint16_t(buf, 12, u16);
+	_mav_put_uint32_t(buf, 14, u32);
+	_mav_put_uint64_t(buf, 18, u64);
+	_mav_put_int8_t(buf, 26, s8);
+	_mav_put_int16_t(buf, 27, s16);
+	_mav_put_int32_t(buf, 29, s32);
+	_mav_put_int64_t(buf, 33, s64);
+	_mav_put_float(buf, 41, f);
+	_mav_put_double(buf, 45, d);
+	_mav_put_char_array(buf, 1, s, 10);
+	_mav_put_uint8_t_array(buf, 53, u8_array, 3);
+	_mav_put_uint16_t_array(buf, 56, u16_array, 3);
+	_mav_put_uint32_t_array(buf, 62, u32_array, 3);
+	_mav_put_uint64_t_array(buf, 74, u64_array, 3);
+	_mav_put_int8_t_array(buf, 98, s8_array, 3);
+	_mav_put_int16_t_array(buf, 101, s16_array, 3);
+	_mav_put_int32_t_array(buf, 107, s32_array, 3);
+	_mav_put_int64_t_array(buf, 119, s64_array, 3);
+	_mav_put_float_array(buf, 143, f_array, 3);
+	_mav_put_double_array(buf, 155, d_array, 3);
+        memcpy(_MAV_PAYLOAD(msg), buf, 179);
+#else
+	mavlink_test_types_t packet;
+	packet.c = c;
+	packet.u8 = u8;
+	packet.u16 = u16;
+	packet.u32 = u32;
+	packet.u64 = u64;
+	packet.s8 = s8;
+	packet.s16 = s16;
+	packet.s32 = s32;
+	packet.s64 = s64;
+	packet.f = f;
+	packet.d = d;
+	memcpy(packet.s, s, sizeof(char)*10);
+	memcpy(packet.u8_array, u8_array, sizeof(uint8_t)*3);
+	memcpy(packet.u16_array, u16_array, sizeof(uint16_t)*3);
+	memcpy(packet.u32_array, u32_array, sizeof(uint32_t)*3);
+	memcpy(packet.u64_array, u64_array, sizeof(uint64_t)*3);
+	memcpy(packet.s8_array, s8_array, sizeof(int8_t)*3);
+	memcpy(packet.s16_array, s16_array, sizeof(int16_t)*3);
+	memcpy(packet.s32_array, s32_array, sizeof(int32_t)*3);
+	memcpy(packet.s64_array, s64_array, sizeof(int64_t)*3);
+	memcpy(packet.f_array, f_array, sizeof(float)*3);
+	memcpy(packet.d_array, d_array, sizeof(double)*3);
+        memcpy(_MAV_PAYLOAD(msg), &packet, 179);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_TEST_TYPES;
-
-	put_char_by_index(msg, 0, c); // char
-	put_char_array_by_index(msg, 1, s, 10); // string
-	put_uint8_t_by_index(msg, 11, u8); // uint8_t
-	put_uint16_t_by_index(msg, 12, u16); // uint16_t
-	put_uint32_t_by_index(msg, 14, u32); // uint32_t
-	put_uint64_t_by_index(msg, 18, u64); // uint64_t
-	put_int8_t_by_index(msg, 26, s8); // int8_t
-	put_int16_t_by_index(msg, 27, s16); // int16_t
-	put_int32_t_by_index(msg, 29, s32); // int32_t
-	put_int64_t_by_index(msg, 33, s64); // int64_t
-	put_float_by_index(msg, 41, f); // float
-	put_double_by_index(msg, 45, d); // double
-	put_uint8_t_array_by_index(msg, 53, u8_array, 3); // uint8_t_array
-	put_uint16_t_array_by_index(msg, 56, u16_array, 3); // uint16_t_array
-	put_uint32_t_array_by_index(msg, 62, u32_array, 3); // uint32_t_array
-	put_uint64_t_array_by_index(msg, 74, u64_array, 3); // uint64_t_array
-	put_int8_t_array_by_index(msg, 98, s8_array, 3); // int8_t_array
-	put_int16_t_array_by_index(msg, 101, s16_array, 3); // int16_t_array
-	put_int32_t_array_by_index(msg, 107, s32_array, 3); // int32_t_array
-	put_int64_t_array_by_index(msg, 119, s64_array, 3); // int64_t_array
-	put_float_array_by_index(msg, 143, f_array, 3); // float_array
-	put_double_array_by_index(msg, 155, d_array, 3); // double_array
-
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 179);
 }
 
@@ -239,33 +295,57 @@ static inline uint16_t mavlink_msg_test_types_encode(uint8_t system_id, uint8_t 
 
 static inline void mavlink_msg_test_types_send(mavlink_channel_t chan, char c, const char *s, uint8_t u8, uint16_t u16, uint32_t u32, uint64_t u64, int8_t s8, int16_t s16, int32_t s32, int64_t s64, float f, double d, const uint8_t *u8_array, const uint16_t *u16_array, const uint32_t *u32_array, const uint64_t *u64_array, const int8_t *s8_array, const int16_t *s16_array, const int32_t *s32_array, const int64_t *s64_array, const float *f_array, const double *d_array)
 {
-	MAVLINK_ALIGNED_MESSAGE(msg, 179);
-	msg->msgid = MAVLINK_MSG_ID_TEST_TYPES;
-
-	put_char_by_index(msg, 0, c); // char
-	put_char_array_by_index(msg, 1, s, 10); // string
-	put_uint8_t_by_index(msg, 11, u8); // uint8_t
-	put_uint16_t_by_index(msg, 12, u16); // uint16_t
-	put_uint32_t_by_index(msg, 14, u32); // uint32_t
-	put_uint64_t_by_index(msg, 18, u64); // uint64_t
-	put_int8_t_by_index(msg, 26, s8); // int8_t
-	put_int16_t_by_index(msg, 27, s16); // int16_t
-	put_int32_t_by_index(msg, 29, s32); // int32_t
-	put_int64_t_by_index(msg, 33, s64); // int64_t
-	put_float_by_index(msg, 41, f); // float
-	put_double_by_index(msg, 45, d); // double
-	put_uint8_t_array_by_index(msg, 53, u8_array, 3); // uint8_t_array
-	put_uint16_t_array_by_index(msg, 56, u16_array, 3); // uint16_t_array
-	put_uint32_t_array_by_index(msg, 62, u32_array, 3); // uint32_t_array
-	put_uint64_t_array_by_index(msg, 74, u64_array, 3); // uint64_t_array
-	put_int8_t_array_by_index(msg, 98, s8_array, 3); // int8_t_array
-	put_int16_t_array_by_index(msg, 101, s16_array, 3); // int16_t_array
-	put_int32_t_array_by_index(msg, 107, s32_array, 3); // int32_t_array
-	put_int64_t_array_by_index(msg, 119, s64_array, 3); // int64_t_array
-	put_float_array_by_index(msg, 143, f_array, 3); // float_array
-	put_double_array_by_index(msg, 155, d_array, 3); // double_array
-
-	mavlink_finalize_message_chan_send(msg, chan, 179);
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[179];
+	_mav_put_char(buf, 0, c);
+	_mav_put_uint8_t(buf, 11, u8);
+	_mav_put_uint16_t(buf, 12, u16);
+	_mav_put_uint32_t(buf, 14, u32);
+	_mav_put_uint64_t(buf, 18, u64);
+	_mav_put_int8_t(buf, 26, s8);
+	_mav_put_int16_t(buf, 27, s16);
+	_mav_put_int32_t(buf, 29, s32);
+	_mav_put_int64_t(buf, 33, s64);
+	_mav_put_float(buf, 41, f);
+	_mav_put_double(buf, 45, d);
+	_mav_put_char_array(buf, 1, s, 10);
+	_mav_put_uint8_t_array(buf, 53, u8_array, 3);
+	_mav_put_uint16_t_array(buf, 56, u16_array, 3);
+	_mav_put_uint32_t_array(buf, 62, u32_array, 3);
+	_mav_put_uint64_t_array(buf, 74, u64_array, 3);
+	_mav_put_int8_t_array(buf, 98, s8_array, 3);
+	_mav_put_int16_t_array(buf, 101, s16_array, 3);
+	_mav_put_int32_t_array(buf, 107, s32_array, 3);
+	_mav_put_int64_t_array(buf, 119, s64_array, 3);
+	_mav_put_float_array(buf, 143, f_array, 3);
+	_mav_put_double_array(buf, 155, d_array, 3);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_TEST_TYPES, buf, 179);
+#else
+	mavlink_test_types_t packet;
+	packet.c = c;
+	packet.u8 = u8;
+	packet.u16 = u16;
+	packet.u32 = u32;
+	packet.u64 = u64;
+	packet.s8 = s8;
+	packet.s16 = s16;
+	packet.s32 = s32;
+	packet.s64 = s64;
+	packet.f = f;
+	packet.d = d;
+	memcpy(packet.s, s, sizeof(char)*10);
+	memcpy(packet.u8_array, u8_array, sizeof(uint8_t)*3);
+	memcpy(packet.u16_array, u16_array, sizeof(uint16_t)*3);
+	memcpy(packet.u32_array, u32_array, sizeof(uint32_t)*3);
+	memcpy(packet.u64_array, u64_array, sizeof(uint64_t)*3);
+	memcpy(packet.s8_array, s8_array, sizeof(int8_t)*3);
+	memcpy(packet.s16_array, s16_array, sizeof(int16_t)*3);
+	memcpy(packet.s32_array, s32_array, sizeof(int32_t)*3);
+	memcpy(packet.s64_array, s64_array, sizeof(int64_t)*3);
+	memcpy(packet.f_array, f_array, sizeof(float)*3);
+	memcpy(packet.d_array, d_array, sizeof(double)*3);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_TEST_TYPES, (const char *)&packet, 179);
+#endif
 }
 
 #endif
@@ -280,7 +360,7 @@ static inline void mavlink_msg_test_types_send(mavlink_channel_t chan, char c, c
  */
 static inline char mavlink_msg_test_types_get_c(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_char(msg,  0);
+	return _MAV_RETURN_char(msg,  0);
 }
 
 /**
@@ -290,7 +370,7 @@ static inline char mavlink_msg_test_types_get_c(const mavlink_message_t* msg)
  */
 static inline uint16_t mavlink_msg_test_types_get_s(const mavlink_message_t* msg, char *s)
 {
-	return MAVLINK_MSG_RETURN_char_array(msg, s, 10,  1);
+	return _MAV_RETURN_char_array(msg, s, 10,  1);
 }
 
 /**
@@ -300,7 +380,7 @@ static inline uint16_t mavlink_msg_test_types_get_s(const mavlink_message_t* msg
  */
 static inline uint8_t mavlink_msg_test_types_get_u8(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  11);
+	return _MAV_RETURN_uint8_t(msg,  11);
 }
 
 /**
@@ -310,7 +390,7 @@ static inline uint8_t mavlink_msg_test_types_get_u8(const mavlink_message_t* msg
  */
 static inline uint16_t mavlink_msg_test_types_get_u16(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  12);
+	return _MAV_RETURN_uint16_t(msg,  12);
 }
 
 /**
@@ -320,7 +400,7 @@ static inline uint16_t mavlink_msg_test_types_get_u16(const mavlink_message_t* m
  */
 static inline uint32_t mavlink_msg_test_types_get_u32(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint32_t(msg,  14);
+	return _MAV_RETURN_uint32_t(msg,  14);
 }
 
 /**
@@ -330,7 +410,7 @@ static inline uint32_t mavlink_msg_test_types_get_u32(const mavlink_message_t* m
  */
 static inline uint64_t mavlink_msg_test_types_get_u64(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint64_t(msg,  18);
+	return _MAV_RETURN_uint64_t(msg,  18);
 }
 
 /**
@@ -340,7 +420,7 @@ static inline uint64_t mavlink_msg_test_types_get_u64(const mavlink_message_t* m
  */
 static inline int8_t mavlink_msg_test_types_get_s8(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int8_t(msg,  26);
+	return _MAV_RETURN_int8_t(msg,  26);
 }
 
 /**
@@ -350,7 +430,7 @@ static inline int8_t mavlink_msg_test_types_get_s8(const mavlink_message_t* msg)
  */
 static inline int16_t mavlink_msg_test_types_get_s16(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int16_t(msg,  27);
+	return _MAV_RETURN_int16_t(msg,  27);
 }
 
 /**
@@ -360,7 +440,7 @@ static inline int16_t mavlink_msg_test_types_get_s16(const mavlink_message_t* ms
  */
 static inline int32_t mavlink_msg_test_types_get_s32(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int32_t(msg,  29);
+	return _MAV_RETURN_int32_t(msg,  29);
 }
 
 /**
@@ -370,7 +450,7 @@ static inline int32_t mavlink_msg_test_types_get_s32(const mavlink_message_t* ms
  */
 static inline int64_t mavlink_msg_test_types_get_s64(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int64_t(msg,  33);
+	return _MAV_RETURN_int64_t(msg,  33);
 }
 
 /**
@@ -380,7 +460,7 @@ static inline int64_t mavlink_msg_test_types_get_s64(const mavlink_message_t* ms
  */
 static inline float mavlink_msg_test_types_get_f(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  41);
+	return _MAV_RETURN_float(msg,  41);
 }
 
 /**
@@ -390,7 +470,7 @@ static inline float mavlink_msg_test_types_get_f(const mavlink_message_t* msg)
  */
 static inline double mavlink_msg_test_types_get_d(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_double(msg,  45);
+	return _MAV_RETURN_double(msg,  45);
 }
 
 /**
@@ -400,7 +480,7 @@ static inline double mavlink_msg_test_types_get_d(const mavlink_message_t* msg)
  */
 static inline uint16_t mavlink_msg_test_types_get_u8_array(const mavlink_message_t* msg, uint8_t *u8_array)
 {
-	return MAVLINK_MSG_RETURN_uint8_t_array(msg, u8_array, 3,  53);
+	return _MAV_RETURN_uint8_t_array(msg, u8_array, 3,  53);
 }
 
 /**
@@ -410,7 +490,7 @@ static inline uint16_t mavlink_msg_test_types_get_u8_array(const mavlink_message
  */
 static inline uint16_t mavlink_msg_test_types_get_u16_array(const mavlink_message_t* msg, uint16_t *u16_array)
 {
-	return MAVLINK_MSG_RETURN_uint16_t_array(msg, u16_array, 3,  56);
+	return _MAV_RETURN_uint16_t_array(msg, u16_array, 3,  56);
 }
 
 /**
@@ -420,7 +500,7 @@ static inline uint16_t mavlink_msg_test_types_get_u16_array(const mavlink_messag
  */
 static inline uint16_t mavlink_msg_test_types_get_u32_array(const mavlink_message_t* msg, uint32_t *u32_array)
 {
-	return MAVLINK_MSG_RETURN_uint32_t_array(msg, u32_array, 3,  62);
+	return _MAV_RETURN_uint32_t_array(msg, u32_array, 3,  62);
 }
 
 /**
@@ -430,7 +510,7 @@ static inline uint16_t mavlink_msg_test_types_get_u32_array(const mavlink_messag
  */
 static inline uint16_t mavlink_msg_test_types_get_u64_array(const mavlink_message_t* msg, uint64_t *u64_array)
 {
-	return MAVLINK_MSG_RETURN_uint64_t_array(msg, u64_array, 3,  74);
+	return _MAV_RETURN_uint64_t_array(msg, u64_array, 3,  74);
 }
 
 /**
@@ -440,7 +520,7 @@ static inline uint16_t mavlink_msg_test_types_get_u64_array(const mavlink_messag
  */
 static inline uint16_t mavlink_msg_test_types_get_s8_array(const mavlink_message_t* msg, int8_t *s8_array)
 {
-	return MAVLINK_MSG_RETURN_int8_t_array(msg, s8_array, 3,  98);
+	return _MAV_RETURN_int8_t_array(msg, s8_array, 3,  98);
 }
 
 /**
@@ -450,7 +530,7 @@ static inline uint16_t mavlink_msg_test_types_get_s8_array(const mavlink_message
  */
 static inline uint16_t mavlink_msg_test_types_get_s16_array(const mavlink_message_t* msg, int16_t *s16_array)
 {
-	return MAVLINK_MSG_RETURN_int16_t_array(msg, s16_array, 3,  101);
+	return _MAV_RETURN_int16_t_array(msg, s16_array, 3,  101);
 }
 
 /**
@@ -460,7 +540,7 @@ static inline uint16_t mavlink_msg_test_types_get_s16_array(const mavlink_messag
  */
 static inline uint16_t mavlink_msg_test_types_get_s32_array(const mavlink_message_t* msg, int32_t *s32_array)
 {
-	return MAVLINK_MSG_RETURN_int32_t_array(msg, s32_array, 3,  107);
+	return _MAV_RETURN_int32_t_array(msg, s32_array, 3,  107);
 }
 
 /**
@@ -470,7 +550,7 @@ static inline uint16_t mavlink_msg_test_types_get_s32_array(const mavlink_messag
  */
 static inline uint16_t mavlink_msg_test_types_get_s64_array(const mavlink_message_t* msg, int64_t *s64_array)
 {
-	return MAVLINK_MSG_RETURN_int64_t_array(msg, s64_array, 3,  119);
+	return _MAV_RETURN_int64_t_array(msg, s64_array, 3,  119);
 }
 
 /**
@@ -480,7 +560,7 @@ static inline uint16_t mavlink_msg_test_types_get_s64_array(const mavlink_messag
  */
 static inline uint16_t mavlink_msg_test_types_get_f_array(const mavlink_message_t* msg, float *f_array)
 {
-	return MAVLINK_MSG_RETURN_float_array(msg, f_array, 3,  143);
+	return _MAV_RETURN_float_array(msg, f_array, 3,  143);
 }
 
 /**
@@ -490,7 +570,7 @@ static inline uint16_t mavlink_msg_test_types_get_f_array(const mavlink_message_
  */
 static inline uint16_t mavlink_msg_test_types_get_d_array(const mavlink_message_t* msg, double *d_array)
 {
-	return MAVLINK_MSG_RETURN_double_array(msg, d_array, 3,  155);
+	return _MAV_RETURN_double_array(msg, d_array, 3,  155);
 }
 
 /**
@@ -525,6 +605,6 @@ static inline void mavlink_msg_test_types_decode(const mavlink_message_t* msg, m
 	mavlink_msg_test_types_get_f_array(msg, test_types->f_array);
 	mavlink_msg_test_types_get_d_array(msg, test_types->d_array);
 #else
-	memcpy(test_types, MAVLINK_PAYLOAD(msg), 179);
+	memcpy(test_types, _MAV_PAYLOAD(msg), 179);
 #endif
 }

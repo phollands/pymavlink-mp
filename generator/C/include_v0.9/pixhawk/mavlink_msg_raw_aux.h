@@ -50,16 +50,31 @@ typedef struct __mavlink_raw_aux_t
 static inline uint16_t mavlink_msg_raw_aux_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
 						       uint16_t adc1, uint16_t adc2, uint16_t adc3, uint16_t adc4, uint16_t vbat, int16_t temp, int32_t baro)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[16];
+	_mav_put_uint16_t(buf, 0, adc1);
+	_mav_put_uint16_t(buf, 2, adc2);
+	_mav_put_uint16_t(buf, 4, adc3);
+	_mav_put_uint16_t(buf, 6, adc4);
+	_mav_put_uint16_t(buf, 8, vbat);
+	_mav_put_int16_t(buf, 10, temp);
+	_mav_put_int32_t(buf, 12, baro);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 16);
+#else
+	mavlink_raw_aux_t packet;
+	packet.adc1 = adc1;
+	packet.adc2 = adc2;
+	packet.adc3 = adc3;
+	packet.adc4 = adc4;
+	packet.vbat = vbat;
+	packet.temp = temp;
+	packet.baro = baro;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 16);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_RAW_AUX;
-
-	put_uint16_t_by_index(msg, 0, adc1); // ADC1 (J405 ADC3, LPC2148 AD0.6)
-	put_uint16_t_by_index(msg, 2, adc2); // ADC2 (J405 ADC5, LPC2148 AD0.2)
-	put_uint16_t_by_index(msg, 4, adc3); // ADC3 (J405 ADC6, LPC2148 AD0.1)
-	put_uint16_t_by_index(msg, 6, adc4); // ADC4 (J405 ADC7, LPC2148 AD1.3)
-	put_uint16_t_by_index(msg, 8, vbat); // Battery voltage
-	put_int16_t_by_index(msg, 10, temp); // Temperature (degrees celcius)
-	put_int32_t_by_index(msg, 12, baro); // Barometric pressure (hecto Pascal)
-
 	return mavlink_finalize_message(msg, system_id, component_id, 16);
 }
 
@@ -82,16 +97,31 @@ static inline uint16_t mavlink_msg_raw_aux_pack_chan(uint8_t system_id, uint8_t 
 							   mavlink_message_t* msg,
 						           uint16_t adc1,uint16_t adc2,uint16_t adc3,uint16_t adc4,uint16_t vbat,int16_t temp,int32_t baro)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[16];
+	_mav_put_uint16_t(buf, 0, adc1);
+	_mav_put_uint16_t(buf, 2, adc2);
+	_mav_put_uint16_t(buf, 4, adc3);
+	_mav_put_uint16_t(buf, 6, adc4);
+	_mav_put_uint16_t(buf, 8, vbat);
+	_mav_put_int16_t(buf, 10, temp);
+	_mav_put_int32_t(buf, 12, baro);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 16);
+#else
+	mavlink_raw_aux_t packet;
+	packet.adc1 = adc1;
+	packet.adc2 = adc2;
+	packet.adc3 = adc3;
+	packet.adc4 = adc4;
+	packet.vbat = vbat;
+	packet.temp = temp;
+	packet.baro = baro;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 16);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_RAW_AUX;
-
-	put_uint16_t_by_index(msg, 0, adc1); // ADC1 (J405 ADC3, LPC2148 AD0.6)
-	put_uint16_t_by_index(msg, 2, adc2); // ADC2 (J405 ADC5, LPC2148 AD0.2)
-	put_uint16_t_by_index(msg, 4, adc3); // ADC3 (J405 ADC6, LPC2148 AD0.1)
-	put_uint16_t_by_index(msg, 6, adc4); // ADC4 (J405 ADC7, LPC2148 AD1.3)
-	put_uint16_t_by_index(msg, 8, vbat); // Battery voltage
-	put_int16_t_by_index(msg, 10, temp); // Temperature (degrees celcius)
-	put_int32_t_by_index(msg, 12, baro); // Barometric pressure (hecto Pascal)
-
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 16);
 }
 
@@ -124,18 +154,29 @@ static inline uint16_t mavlink_msg_raw_aux_encode(uint8_t system_id, uint8_t com
 
 static inline void mavlink_msg_raw_aux_send(mavlink_channel_t chan, uint16_t adc1, uint16_t adc2, uint16_t adc3, uint16_t adc4, uint16_t vbat, int16_t temp, int32_t baro)
 {
-	MAVLINK_ALIGNED_MESSAGE(msg, 16);
-	msg->msgid = MAVLINK_MSG_ID_RAW_AUX;
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[16];
+	_mav_put_uint16_t(buf, 0, adc1);
+	_mav_put_uint16_t(buf, 2, adc2);
+	_mav_put_uint16_t(buf, 4, adc3);
+	_mav_put_uint16_t(buf, 6, adc4);
+	_mav_put_uint16_t(buf, 8, vbat);
+	_mav_put_int16_t(buf, 10, temp);
+	_mav_put_int32_t(buf, 12, baro);
 
-	put_uint16_t_by_index(msg, 0, adc1); // ADC1 (J405 ADC3, LPC2148 AD0.6)
-	put_uint16_t_by_index(msg, 2, adc2); // ADC2 (J405 ADC5, LPC2148 AD0.2)
-	put_uint16_t_by_index(msg, 4, adc3); // ADC3 (J405 ADC6, LPC2148 AD0.1)
-	put_uint16_t_by_index(msg, 6, adc4); // ADC4 (J405 ADC7, LPC2148 AD1.3)
-	put_uint16_t_by_index(msg, 8, vbat); // Battery voltage
-	put_int16_t_by_index(msg, 10, temp); // Temperature (degrees celcius)
-	put_int32_t_by_index(msg, 12, baro); // Barometric pressure (hecto Pascal)
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_RAW_AUX, buf, 16);
+#else
+	mavlink_raw_aux_t packet;
+	packet.adc1 = adc1;
+	packet.adc2 = adc2;
+	packet.adc3 = adc3;
+	packet.adc4 = adc4;
+	packet.vbat = vbat;
+	packet.temp = temp;
+	packet.baro = baro;
 
-	mavlink_finalize_message_chan_send(msg, chan, 16);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_RAW_AUX, (const char *)&packet, 16);
+#endif
 }
 
 #endif
@@ -150,7 +191,7 @@ static inline void mavlink_msg_raw_aux_send(mavlink_channel_t chan, uint16_t adc
  */
 static inline uint16_t mavlink_msg_raw_aux_get_adc1(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  0);
+	return _MAV_RETURN_uint16_t(msg,  0);
 }
 
 /**
@@ -160,7 +201,7 @@ static inline uint16_t mavlink_msg_raw_aux_get_adc1(const mavlink_message_t* msg
  */
 static inline uint16_t mavlink_msg_raw_aux_get_adc2(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  2);
+	return _MAV_RETURN_uint16_t(msg,  2);
 }
 
 /**
@@ -170,7 +211,7 @@ static inline uint16_t mavlink_msg_raw_aux_get_adc2(const mavlink_message_t* msg
  */
 static inline uint16_t mavlink_msg_raw_aux_get_adc3(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  4);
+	return _MAV_RETURN_uint16_t(msg,  4);
 }
 
 /**
@@ -180,7 +221,7 @@ static inline uint16_t mavlink_msg_raw_aux_get_adc3(const mavlink_message_t* msg
  */
 static inline uint16_t mavlink_msg_raw_aux_get_adc4(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  6);
+	return _MAV_RETURN_uint16_t(msg,  6);
 }
 
 /**
@@ -190,7 +231,7 @@ static inline uint16_t mavlink_msg_raw_aux_get_adc4(const mavlink_message_t* msg
  */
 static inline uint16_t mavlink_msg_raw_aux_get_vbat(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  8);
+	return _MAV_RETURN_uint16_t(msg,  8);
 }
 
 /**
@@ -200,7 +241,7 @@ static inline uint16_t mavlink_msg_raw_aux_get_vbat(const mavlink_message_t* msg
  */
 static inline int16_t mavlink_msg_raw_aux_get_temp(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int16_t(msg,  10);
+	return _MAV_RETURN_int16_t(msg,  10);
 }
 
 /**
@@ -210,7 +251,7 @@ static inline int16_t mavlink_msg_raw_aux_get_temp(const mavlink_message_t* msg)
  */
 static inline int32_t mavlink_msg_raw_aux_get_baro(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_int32_t(msg,  12);
+	return _MAV_RETURN_int32_t(msg,  12);
 }
 
 /**
@@ -230,6 +271,6 @@ static inline void mavlink_msg_raw_aux_decode(const mavlink_message_t* msg, mavl
 	raw_aux->temp = mavlink_msg_raw_aux_get_temp(msg);
 	raw_aux->baro = mavlink_msg_raw_aux_get_baro(msg);
 #else
-	memcpy(raw_aux, MAVLINK_PAYLOAD(msg), 16);
+	memcpy(raw_aux, _MAV_PAYLOAD(msg), 16);
 #endif
 }

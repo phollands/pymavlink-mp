@@ -65,21 +65,41 @@ typedef struct __mavlink_sys_status_t
 static inline uint16_t mavlink_msg_sys_status_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
 						       uint16_t onboard_control_sensors_present, uint16_t onboard_control_sensors_enabled, uint16_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, uint16_t current_battery, uint16_t watt, uint8_t battery_percent, uint16_t errors_uart, uint16_t errors_i2c, uint16_t errors_spi, uint16_t errors_can)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[23];
+	_mav_put_uint16_t(buf, 0, onboard_control_sensors_present);
+	_mav_put_uint16_t(buf, 2, onboard_control_sensors_enabled);
+	_mav_put_uint16_t(buf, 4, onboard_control_sensors_health);
+	_mav_put_uint16_t(buf, 6, load);
+	_mav_put_uint16_t(buf, 8, voltage_battery);
+	_mav_put_uint16_t(buf, 10, current_battery);
+	_mav_put_uint16_t(buf, 12, watt);
+	_mav_put_uint16_t(buf, 14, errors_uart);
+	_mav_put_uint16_t(buf, 16, errors_i2c);
+	_mav_put_uint16_t(buf, 18, errors_spi);
+	_mav_put_uint16_t(buf, 20, errors_can);
+	_mav_put_uint8_t(buf, 22, battery_percent);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 23);
+#else
+	mavlink_sys_status_t packet;
+	packet.onboard_control_sensors_present = onboard_control_sensors_present;
+	packet.onboard_control_sensors_enabled = onboard_control_sensors_enabled;
+	packet.onboard_control_sensors_health = onboard_control_sensors_health;
+	packet.load = load;
+	packet.voltage_battery = voltage_battery;
+	packet.current_battery = current_battery;
+	packet.watt = watt;
+	packet.errors_uart = errors_uart;
+	packet.errors_i2c = errors_i2c;
+	packet.errors_spi = errors_spi;
+	packet.errors_can = errors_can;
+	packet.battery_percent = battery_percent;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 23);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_SYS_STATUS;
-
-	put_uint16_t_by_index(msg, 0, onboard_control_sensors_present); // Bitmask showing which onboard controllers and sensors are present. Value of 0: not present. Value of 1: present. Indices: 0: 3D gyro, 1: 3D acc, 2: 3D mag, 3: absolute pressure, 4: differential pressure, 5: GPS, 6: optical flow, 7: computer vision position, 8: laser based position, 9: external ground-truth (Vicon or Leica). Controllers: 10: 3D angular rate control 11: attitude stabilization, 12: yaw position, 13: z/altitude control, 14: x/y position control, 15: motor outputs / control
-	put_uint16_t_by_index(msg, 2, onboard_control_sensors_enabled); // Bitmask showing which onboard controllers and sensors are enabled:  Value of 0: not enabled. Value of 1: enabled. Indices: 0: 3D gyro, 1: 3D acc, 2: 3D mag, 3: absolute pressure, 4: differential pressure, 5: GPS, 6: optical flow, 7: computer vision position, 8: laser based position, 9: external ground-truth (Vicon or Leica). Controllers: 10: 3D angular rate control 11: attitude stabilization, 12: yaw position, 13: z/altitude control, 14: x/y position control, 15: motor outputs / control
-	put_uint16_t_by_index(msg, 4, onboard_control_sensors_health); // Bitmask showing which onboard controllers and sensors are operational or have an error:  Value of 0: not enabled. Value of 1: enabled. Indices: 0: 3D gyro, 1: 3D acc, 2: 3D mag, 3: absolute pressure, 4: differential pressure, 5: GPS, 6: optical flow, 7: computer vision position, 8: laser based position, 9: external ground-truth (Vicon or Leica). Controllers: 10: 3D angular rate control 11: attitude stabilization, 12: yaw position, 13: z/altitude control, 14: x/y position control, 15: motor outputs / control
-	put_uint16_t_by_index(msg, 6, load); // Maximum usage in percent of the mainloop time, (0%: 0, 100%: 1000) should be always below 1000
-	put_uint16_t_by_index(msg, 8, voltage_battery); // Battery voltage, in millivolts (1 = 1 millivolt)
-	put_uint16_t_by_index(msg, 10, current_battery); // Battery current, in milliamperes (1 = 1 milliampere)
-	put_uint16_t_by_index(msg, 12, watt); // Watts consumed from this battery since startup
-	put_uint16_t_by_index(msg, 14, errors_uart); // Dropped packets on all links (packets that were corrupted on reception on the MAV)
-	put_uint16_t_by_index(msg, 16, errors_i2c); // Dropped packets on all links (packets that were corrupted on reception)
-	put_uint16_t_by_index(msg, 18, errors_spi); // Dropped packets on all links (packets that were corrupted on reception)
-	put_uint16_t_by_index(msg, 20, errors_can); // Dropped packets on all links (packets that were corrupted on reception)
-	put_uint8_t_by_index(msg, 22, battery_percent); // Remaining battery energy: (0%: 0, 100%: 255)
-
 	return mavlink_finalize_message(msg, system_id, component_id, 23, 114);
 }
 
@@ -107,21 +127,41 @@ static inline uint16_t mavlink_msg_sys_status_pack_chan(uint8_t system_id, uint8
 							   mavlink_message_t* msg,
 						           uint16_t onboard_control_sensors_present,uint16_t onboard_control_sensors_enabled,uint16_t onboard_control_sensors_health,uint16_t load,uint16_t voltage_battery,uint16_t current_battery,uint16_t watt,uint8_t battery_percent,uint16_t errors_uart,uint16_t errors_i2c,uint16_t errors_spi,uint16_t errors_can)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[23];
+	_mav_put_uint16_t(buf, 0, onboard_control_sensors_present);
+	_mav_put_uint16_t(buf, 2, onboard_control_sensors_enabled);
+	_mav_put_uint16_t(buf, 4, onboard_control_sensors_health);
+	_mav_put_uint16_t(buf, 6, load);
+	_mav_put_uint16_t(buf, 8, voltage_battery);
+	_mav_put_uint16_t(buf, 10, current_battery);
+	_mav_put_uint16_t(buf, 12, watt);
+	_mav_put_uint16_t(buf, 14, errors_uart);
+	_mav_put_uint16_t(buf, 16, errors_i2c);
+	_mav_put_uint16_t(buf, 18, errors_spi);
+	_mav_put_uint16_t(buf, 20, errors_can);
+	_mav_put_uint8_t(buf, 22, battery_percent);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 23);
+#else
+	mavlink_sys_status_t packet;
+	packet.onboard_control_sensors_present = onboard_control_sensors_present;
+	packet.onboard_control_sensors_enabled = onboard_control_sensors_enabled;
+	packet.onboard_control_sensors_health = onboard_control_sensors_health;
+	packet.load = load;
+	packet.voltage_battery = voltage_battery;
+	packet.current_battery = current_battery;
+	packet.watt = watt;
+	packet.errors_uart = errors_uart;
+	packet.errors_i2c = errors_i2c;
+	packet.errors_spi = errors_spi;
+	packet.errors_can = errors_can;
+	packet.battery_percent = battery_percent;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 23);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_SYS_STATUS;
-
-	put_uint16_t_by_index(msg, 0, onboard_control_sensors_present); // Bitmask showing which onboard controllers and sensors are present. Value of 0: not present. Value of 1: present. Indices: 0: 3D gyro, 1: 3D acc, 2: 3D mag, 3: absolute pressure, 4: differential pressure, 5: GPS, 6: optical flow, 7: computer vision position, 8: laser based position, 9: external ground-truth (Vicon or Leica). Controllers: 10: 3D angular rate control 11: attitude stabilization, 12: yaw position, 13: z/altitude control, 14: x/y position control, 15: motor outputs / control
-	put_uint16_t_by_index(msg, 2, onboard_control_sensors_enabled); // Bitmask showing which onboard controllers and sensors are enabled:  Value of 0: not enabled. Value of 1: enabled. Indices: 0: 3D gyro, 1: 3D acc, 2: 3D mag, 3: absolute pressure, 4: differential pressure, 5: GPS, 6: optical flow, 7: computer vision position, 8: laser based position, 9: external ground-truth (Vicon or Leica). Controllers: 10: 3D angular rate control 11: attitude stabilization, 12: yaw position, 13: z/altitude control, 14: x/y position control, 15: motor outputs / control
-	put_uint16_t_by_index(msg, 4, onboard_control_sensors_health); // Bitmask showing which onboard controllers and sensors are operational or have an error:  Value of 0: not enabled. Value of 1: enabled. Indices: 0: 3D gyro, 1: 3D acc, 2: 3D mag, 3: absolute pressure, 4: differential pressure, 5: GPS, 6: optical flow, 7: computer vision position, 8: laser based position, 9: external ground-truth (Vicon or Leica). Controllers: 10: 3D angular rate control 11: attitude stabilization, 12: yaw position, 13: z/altitude control, 14: x/y position control, 15: motor outputs / control
-	put_uint16_t_by_index(msg, 6, load); // Maximum usage in percent of the mainloop time, (0%: 0, 100%: 1000) should be always below 1000
-	put_uint16_t_by_index(msg, 8, voltage_battery); // Battery voltage, in millivolts (1 = 1 millivolt)
-	put_uint16_t_by_index(msg, 10, current_battery); // Battery current, in milliamperes (1 = 1 milliampere)
-	put_uint16_t_by_index(msg, 12, watt); // Watts consumed from this battery since startup
-	put_uint16_t_by_index(msg, 14, errors_uart); // Dropped packets on all links (packets that were corrupted on reception on the MAV)
-	put_uint16_t_by_index(msg, 16, errors_i2c); // Dropped packets on all links (packets that were corrupted on reception)
-	put_uint16_t_by_index(msg, 18, errors_spi); // Dropped packets on all links (packets that were corrupted on reception)
-	put_uint16_t_by_index(msg, 20, errors_can); // Dropped packets on all links (packets that were corrupted on reception)
-	put_uint8_t_by_index(msg, 22, battery_percent); // Remaining battery energy: (0%: 0, 100%: 255)
-
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 23, 114);
 }
 
@@ -159,23 +199,39 @@ static inline uint16_t mavlink_msg_sys_status_encode(uint8_t system_id, uint8_t 
 
 static inline void mavlink_msg_sys_status_send(mavlink_channel_t chan, uint16_t onboard_control_sensors_present, uint16_t onboard_control_sensors_enabled, uint16_t onboard_control_sensors_health, uint16_t load, uint16_t voltage_battery, uint16_t current_battery, uint16_t watt, uint8_t battery_percent, uint16_t errors_uart, uint16_t errors_i2c, uint16_t errors_spi, uint16_t errors_can)
 {
-	MAVLINK_ALIGNED_MESSAGE(msg, 23);
-	msg->msgid = MAVLINK_MSG_ID_SYS_STATUS;
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[23];
+	_mav_put_uint16_t(buf, 0, onboard_control_sensors_present);
+	_mav_put_uint16_t(buf, 2, onboard_control_sensors_enabled);
+	_mav_put_uint16_t(buf, 4, onboard_control_sensors_health);
+	_mav_put_uint16_t(buf, 6, load);
+	_mav_put_uint16_t(buf, 8, voltage_battery);
+	_mav_put_uint16_t(buf, 10, current_battery);
+	_mav_put_uint16_t(buf, 12, watt);
+	_mav_put_uint16_t(buf, 14, errors_uart);
+	_mav_put_uint16_t(buf, 16, errors_i2c);
+	_mav_put_uint16_t(buf, 18, errors_spi);
+	_mav_put_uint16_t(buf, 20, errors_can);
+	_mav_put_uint8_t(buf, 22, battery_percent);
 
-	put_uint16_t_by_index(msg, 0, onboard_control_sensors_present); // Bitmask showing which onboard controllers and sensors are present. Value of 0: not present. Value of 1: present. Indices: 0: 3D gyro, 1: 3D acc, 2: 3D mag, 3: absolute pressure, 4: differential pressure, 5: GPS, 6: optical flow, 7: computer vision position, 8: laser based position, 9: external ground-truth (Vicon or Leica). Controllers: 10: 3D angular rate control 11: attitude stabilization, 12: yaw position, 13: z/altitude control, 14: x/y position control, 15: motor outputs / control
-	put_uint16_t_by_index(msg, 2, onboard_control_sensors_enabled); // Bitmask showing which onboard controllers and sensors are enabled:  Value of 0: not enabled. Value of 1: enabled. Indices: 0: 3D gyro, 1: 3D acc, 2: 3D mag, 3: absolute pressure, 4: differential pressure, 5: GPS, 6: optical flow, 7: computer vision position, 8: laser based position, 9: external ground-truth (Vicon or Leica). Controllers: 10: 3D angular rate control 11: attitude stabilization, 12: yaw position, 13: z/altitude control, 14: x/y position control, 15: motor outputs / control
-	put_uint16_t_by_index(msg, 4, onboard_control_sensors_health); // Bitmask showing which onboard controllers and sensors are operational or have an error:  Value of 0: not enabled. Value of 1: enabled. Indices: 0: 3D gyro, 1: 3D acc, 2: 3D mag, 3: absolute pressure, 4: differential pressure, 5: GPS, 6: optical flow, 7: computer vision position, 8: laser based position, 9: external ground-truth (Vicon or Leica). Controllers: 10: 3D angular rate control 11: attitude stabilization, 12: yaw position, 13: z/altitude control, 14: x/y position control, 15: motor outputs / control
-	put_uint16_t_by_index(msg, 6, load); // Maximum usage in percent of the mainloop time, (0%: 0, 100%: 1000) should be always below 1000
-	put_uint16_t_by_index(msg, 8, voltage_battery); // Battery voltage, in millivolts (1 = 1 millivolt)
-	put_uint16_t_by_index(msg, 10, current_battery); // Battery current, in milliamperes (1 = 1 milliampere)
-	put_uint16_t_by_index(msg, 12, watt); // Watts consumed from this battery since startup
-	put_uint16_t_by_index(msg, 14, errors_uart); // Dropped packets on all links (packets that were corrupted on reception on the MAV)
-	put_uint16_t_by_index(msg, 16, errors_i2c); // Dropped packets on all links (packets that were corrupted on reception)
-	put_uint16_t_by_index(msg, 18, errors_spi); // Dropped packets on all links (packets that were corrupted on reception)
-	put_uint16_t_by_index(msg, 20, errors_can); // Dropped packets on all links (packets that were corrupted on reception)
-	put_uint8_t_by_index(msg, 22, battery_percent); // Remaining battery energy: (0%: 0, 100%: 255)
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SYS_STATUS, buf, 23, 114);
+#else
+	mavlink_sys_status_t packet;
+	packet.onboard_control_sensors_present = onboard_control_sensors_present;
+	packet.onboard_control_sensors_enabled = onboard_control_sensors_enabled;
+	packet.onboard_control_sensors_health = onboard_control_sensors_health;
+	packet.load = load;
+	packet.voltage_battery = voltage_battery;
+	packet.current_battery = current_battery;
+	packet.watt = watt;
+	packet.errors_uart = errors_uart;
+	packet.errors_i2c = errors_i2c;
+	packet.errors_spi = errors_spi;
+	packet.errors_can = errors_can;
+	packet.battery_percent = battery_percent;
 
-	mavlink_finalize_message_chan_send(msg, chan, 23, 114);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SYS_STATUS, (const char *)&packet, 23, 114);
+#endif
 }
 
 #endif
@@ -190,7 +246,7 @@ static inline void mavlink_msg_sys_status_send(mavlink_channel_t chan, uint16_t 
  */
 static inline uint16_t mavlink_msg_sys_status_get_onboard_control_sensors_present(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  0);
+	return _MAV_RETURN_uint16_t(msg,  0);
 }
 
 /**
@@ -200,7 +256,7 @@ static inline uint16_t mavlink_msg_sys_status_get_onboard_control_sensors_presen
  */
 static inline uint16_t mavlink_msg_sys_status_get_onboard_control_sensors_enabled(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  2);
+	return _MAV_RETURN_uint16_t(msg,  2);
 }
 
 /**
@@ -210,7 +266,7 @@ static inline uint16_t mavlink_msg_sys_status_get_onboard_control_sensors_enable
  */
 static inline uint16_t mavlink_msg_sys_status_get_onboard_control_sensors_health(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  4);
+	return _MAV_RETURN_uint16_t(msg,  4);
 }
 
 /**
@@ -220,7 +276,7 @@ static inline uint16_t mavlink_msg_sys_status_get_onboard_control_sensors_health
  */
 static inline uint16_t mavlink_msg_sys_status_get_load(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  6);
+	return _MAV_RETURN_uint16_t(msg,  6);
 }
 
 /**
@@ -230,7 +286,7 @@ static inline uint16_t mavlink_msg_sys_status_get_load(const mavlink_message_t* 
  */
 static inline uint16_t mavlink_msg_sys_status_get_voltage_battery(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  8);
+	return _MAV_RETURN_uint16_t(msg,  8);
 }
 
 /**
@@ -240,7 +296,7 @@ static inline uint16_t mavlink_msg_sys_status_get_voltage_battery(const mavlink_
  */
 static inline uint16_t mavlink_msg_sys_status_get_current_battery(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  10);
+	return _MAV_RETURN_uint16_t(msg,  10);
 }
 
 /**
@@ -250,7 +306,7 @@ static inline uint16_t mavlink_msg_sys_status_get_current_battery(const mavlink_
  */
 static inline uint16_t mavlink_msg_sys_status_get_watt(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  12);
+	return _MAV_RETURN_uint16_t(msg,  12);
 }
 
 /**
@@ -260,7 +316,7 @@ static inline uint16_t mavlink_msg_sys_status_get_watt(const mavlink_message_t* 
  */
 static inline uint8_t mavlink_msg_sys_status_get_battery_percent(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  22);
+	return _MAV_RETURN_uint8_t(msg,  22);
 }
 
 /**
@@ -270,7 +326,7 @@ static inline uint8_t mavlink_msg_sys_status_get_battery_percent(const mavlink_m
  */
 static inline uint16_t mavlink_msg_sys_status_get_errors_uart(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  14);
+	return _MAV_RETURN_uint16_t(msg,  14);
 }
 
 /**
@@ -280,7 +336,7 @@ static inline uint16_t mavlink_msg_sys_status_get_errors_uart(const mavlink_mess
  */
 static inline uint16_t mavlink_msg_sys_status_get_errors_i2c(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  16);
+	return _MAV_RETURN_uint16_t(msg,  16);
 }
 
 /**
@@ -290,7 +346,7 @@ static inline uint16_t mavlink_msg_sys_status_get_errors_i2c(const mavlink_messa
  */
 static inline uint16_t mavlink_msg_sys_status_get_errors_spi(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  18);
+	return _MAV_RETURN_uint16_t(msg,  18);
 }
 
 /**
@@ -300,7 +356,7 @@ static inline uint16_t mavlink_msg_sys_status_get_errors_spi(const mavlink_messa
  */
 static inline uint16_t mavlink_msg_sys_status_get_errors_can(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint16_t(msg,  20);
+	return _MAV_RETURN_uint16_t(msg,  20);
 }
 
 /**
@@ -325,6 +381,6 @@ static inline void mavlink_msg_sys_status_decode(const mavlink_message_t* msg, m
 	sys_status->errors_can = mavlink_msg_sys_status_get_errors_can(msg);
 	sys_status->battery_percent = mavlink_msg_sys_status_get_battery_percent(msg);
 #else
-	memcpy(sys_status, MAVLINK_PAYLOAD(msg), 23);
+	memcpy(sys_status, _MAV_PAYLOAD(msg), 23);
 #endif
 }

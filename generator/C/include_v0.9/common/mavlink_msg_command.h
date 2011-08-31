@@ -53,17 +53,33 @@ typedef struct __mavlink_command_t
 static inline uint16_t mavlink_msg_command_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
 						       uint8_t target_system, uint8_t target_component, uint8_t command, uint8_t confirmation, float param1, float param2, float param3, float param4)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[20];
+	_mav_put_uint8_t(buf, 0, target_system);
+	_mav_put_uint8_t(buf, 1, target_component);
+	_mav_put_uint8_t(buf, 2, command);
+	_mav_put_uint8_t(buf, 3, confirmation);
+	_mav_put_float(buf, 4, param1);
+	_mav_put_float(buf, 8, param2);
+	_mav_put_float(buf, 12, param3);
+	_mav_put_float(buf, 16, param4);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 20);
+#else
+	mavlink_command_t packet;
+	packet.target_system = target_system;
+	packet.target_component = target_component;
+	packet.command = command;
+	packet.confirmation = confirmation;
+	packet.param1 = param1;
+	packet.param2 = param2;
+	packet.param3 = param3;
+	packet.param4 = param4;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 20);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_COMMAND;
-
-	put_uint8_t_by_index(msg, 0, target_system); // System which should execute the command
-	put_uint8_t_by_index(msg, 1, target_component); // Component which should execute the command, 0 for all components
-	put_uint8_t_by_index(msg, 2, command); // Command ID, as defined by MAV_CMD enum.
-	put_uint8_t_by_index(msg, 3, confirmation); // 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
-	put_float_by_index(msg, 4, param1); // Parameter 1, as defined by MAV_CMD enum.
-	put_float_by_index(msg, 8, param2); // Parameter 2, as defined by MAV_CMD enum.
-	put_float_by_index(msg, 12, param3); // Parameter 3, as defined by MAV_CMD enum.
-	put_float_by_index(msg, 16, param4); // Parameter 4, as defined by MAV_CMD enum.
-
 	return mavlink_finalize_message(msg, system_id, component_id, 20);
 }
 
@@ -87,17 +103,33 @@ static inline uint16_t mavlink_msg_command_pack_chan(uint8_t system_id, uint8_t 
 							   mavlink_message_t* msg,
 						           uint8_t target_system,uint8_t target_component,uint8_t command,uint8_t confirmation,float param1,float param2,float param3,float param4)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[20];
+	_mav_put_uint8_t(buf, 0, target_system);
+	_mav_put_uint8_t(buf, 1, target_component);
+	_mav_put_uint8_t(buf, 2, command);
+	_mav_put_uint8_t(buf, 3, confirmation);
+	_mav_put_float(buf, 4, param1);
+	_mav_put_float(buf, 8, param2);
+	_mav_put_float(buf, 12, param3);
+	_mav_put_float(buf, 16, param4);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 20);
+#else
+	mavlink_command_t packet;
+	packet.target_system = target_system;
+	packet.target_component = target_component;
+	packet.command = command;
+	packet.confirmation = confirmation;
+	packet.param1 = param1;
+	packet.param2 = param2;
+	packet.param3 = param3;
+	packet.param4 = param4;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 20);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_COMMAND;
-
-	put_uint8_t_by_index(msg, 0, target_system); // System which should execute the command
-	put_uint8_t_by_index(msg, 1, target_component); // Component which should execute the command, 0 for all components
-	put_uint8_t_by_index(msg, 2, command); // Command ID, as defined by MAV_CMD enum.
-	put_uint8_t_by_index(msg, 3, confirmation); // 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
-	put_float_by_index(msg, 4, param1); // Parameter 1, as defined by MAV_CMD enum.
-	put_float_by_index(msg, 8, param2); // Parameter 2, as defined by MAV_CMD enum.
-	put_float_by_index(msg, 12, param3); // Parameter 3, as defined by MAV_CMD enum.
-	put_float_by_index(msg, 16, param4); // Parameter 4, as defined by MAV_CMD enum.
-
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 20);
 }
 
@@ -131,19 +163,31 @@ static inline uint16_t mavlink_msg_command_encode(uint8_t system_id, uint8_t com
 
 static inline void mavlink_msg_command_send(mavlink_channel_t chan, uint8_t target_system, uint8_t target_component, uint8_t command, uint8_t confirmation, float param1, float param2, float param3, float param4)
 {
-	MAVLINK_ALIGNED_MESSAGE(msg, 20);
-	msg->msgid = MAVLINK_MSG_ID_COMMAND;
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[20];
+	_mav_put_uint8_t(buf, 0, target_system);
+	_mav_put_uint8_t(buf, 1, target_component);
+	_mav_put_uint8_t(buf, 2, command);
+	_mav_put_uint8_t(buf, 3, confirmation);
+	_mav_put_float(buf, 4, param1);
+	_mav_put_float(buf, 8, param2);
+	_mav_put_float(buf, 12, param3);
+	_mav_put_float(buf, 16, param4);
 
-	put_uint8_t_by_index(msg, 0, target_system); // System which should execute the command
-	put_uint8_t_by_index(msg, 1, target_component); // Component which should execute the command, 0 for all components
-	put_uint8_t_by_index(msg, 2, command); // Command ID, as defined by MAV_CMD enum.
-	put_uint8_t_by_index(msg, 3, confirmation); // 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
-	put_float_by_index(msg, 4, param1); // Parameter 1, as defined by MAV_CMD enum.
-	put_float_by_index(msg, 8, param2); // Parameter 2, as defined by MAV_CMD enum.
-	put_float_by_index(msg, 12, param3); // Parameter 3, as defined by MAV_CMD enum.
-	put_float_by_index(msg, 16, param4); // Parameter 4, as defined by MAV_CMD enum.
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_COMMAND, buf, 20);
+#else
+	mavlink_command_t packet;
+	packet.target_system = target_system;
+	packet.target_component = target_component;
+	packet.command = command;
+	packet.confirmation = confirmation;
+	packet.param1 = param1;
+	packet.param2 = param2;
+	packet.param3 = param3;
+	packet.param4 = param4;
 
-	mavlink_finalize_message_chan_send(msg, chan, 20);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_COMMAND, (const char *)&packet, 20);
+#endif
 }
 
 #endif
@@ -158,7 +202,7 @@ static inline void mavlink_msg_command_send(mavlink_channel_t chan, uint8_t targ
  */
 static inline uint8_t mavlink_msg_command_get_target_system(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  0);
+	return _MAV_RETURN_uint8_t(msg,  0);
 }
 
 /**
@@ -168,7 +212,7 @@ static inline uint8_t mavlink_msg_command_get_target_system(const mavlink_messag
  */
 static inline uint8_t mavlink_msg_command_get_target_component(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  1);
+	return _MAV_RETURN_uint8_t(msg,  1);
 }
 
 /**
@@ -178,7 +222,7 @@ static inline uint8_t mavlink_msg_command_get_target_component(const mavlink_mes
  */
 static inline uint8_t mavlink_msg_command_get_command(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  2);
+	return _MAV_RETURN_uint8_t(msg,  2);
 }
 
 /**
@@ -188,7 +232,7 @@ static inline uint8_t mavlink_msg_command_get_command(const mavlink_message_t* m
  */
 static inline uint8_t mavlink_msg_command_get_confirmation(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  3);
+	return _MAV_RETURN_uint8_t(msg,  3);
 }
 
 /**
@@ -198,7 +242,7 @@ static inline uint8_t mavlink_msg_command_get_confirmation(const mavlink_message
  */
 static inline float mavlink_msg_command_get_param1(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  4);
+	return _MAV_RETURN_float(msg,  4);
 }
 
 /**
@@ -208,7 +252,7 @@ static inline float mavlink_msg_command_get_param1(const mavlink_message_t* msg)
  */
 static inline float mavlink_msg_command_get_param2(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  8);
+	return _MAV_RETURN_float(msg,  8);
 }
 
 /**
@@ -218,7 +262,7 @@ static inline float mavlink_msg_command_get_param2(const mavlink_message_t* msg)
  */
 static inline float mavlink_msg_command_get_param3(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  12);
+	return _MAV_RETURN_float(msg,  12);
 }
 
 /**
@@ -228,7 +272,7 @@ static inline float mavlink_msg_command_get_param3(const mavlink_message_t* msg)
  */
 static inline float mavlink_msg_command_get_param4(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  16);
+	return _MAV_RETURN_float(msg,  16);
 }
 
 /**
@@ -249,6 +293,6 @@ static inline void mavlink_msg_command_decode(const mavlink_message_t* msg, mavl
 	command->param3 = mavlink_msg_command_get_param3(msg);
 	command->param4 = mavlink_msg_command_get_param4(msg);
 #else
-	memcpy(command, MAVLINK_PAYLOAD(msg), 20);
+	memcpy(command, _MAV_PAYLOAD(msg), 20);
 #endif
 }
