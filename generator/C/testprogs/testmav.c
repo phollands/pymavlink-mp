@@ -29,37 +29,37 @@ static void print_one_field(mavlink_message_t *msg, const mavlink_field_info_t *
 {
 	switch (f->type) {
 	case MAVLINK_TYPE_CHAR:
-		printf("%c", MAVLINK_MSG_RETURN_char(msg, f->wire_offset+idx*1));
+		printf("%c", _MAV_RETURN_char(msg, f->wire_offset+idx*1));
 		break;
 	case MAVLINK_TYPE_UINT8_T:
-		printf("%u", MAVLINK_MSG_RETURN_uint8_t(msg, f->wire_offset+idx*1));
+		printf("%u", _MAV_RETURN_uint8_t(msg, f->wire_offset+idx*1));
 		break;
 	case MAVLINK_TYPE_INT8_T:
-		printf("%d", MAVLINK_MSG_RETURN_int8_t(msg, f->wire_offset+idx*1));
+		printf("%d", _MAV_RETURN_int8_t(msg, f->wire_offset+idx*1));
 		break;
 	case MAVLINK_TYPE_UINT16_T:
-		printf("%u", MAVLINK_MSG_RETURN_uint16_t(msg, f->wire_offset+idx*2));
+		printf("%u", _MAV_RETURN_uint16_t(msg, f->wire_offset+idx*2));
 		break;
 	case MAVLINK_TYPE_INT16_T:
-		printf("%d", MAVLINK_MSG_RETURN_int16_t(msg, f->wire_offset+idx*2));
+		printf("%d", _MAV_RETURN_int16_t(msg, f->wire_offset+idx*2));
 		break;
 	case MAVLINK_TYPE_UINT32_T:
-		printf("%lu", (unsigned long)MAVLINK_MSG_RETURN_uint32_t(msg, f->wire_offset+idx*4));
+		printf("%lu", (unsigned long)_MAV_RETURN_uint32_t(msg, f->wire_offset+idx*4));
 		break;
 	case MAVLINK_TYPE_INT32_T:
-		printf("%ld", (long)MAVLINK_MSG_RETURN_int32_t(msg, f->wire_offset+idx*4));
+		printf("%ld", (long)_MAV_RETURN_int32_t(msg, f->wire_offset+idx*4));
 		break;
 	case MAVLINK_TYPE_UINT64_T:
-		printf("%llu", (unsigned long long)MAVLINK_MSG_RETURN_uint64_t(msg, f->wire_offset+idx*8));
+		printf("%llu", (unsigned long long)_MAV_RETURN_uint64_t(msg, f->wire_offset+idx*8));
 		break;
 	case MAVLINK_TYPE_INT64_T:
-		printf("%lld", (long long)MAVLINK_MSG_RETURN_int64_t(msg, f->wire_offset+idx*8));
+		printf("%lld", (long long)_MAV_RETURN_int64_t(msg, f->wire_offset+idx*8));
 		break;
 	case MAVLINK_TYPE_FLOAT:
-		printf("%f", (double)MAVLINK_MSG_RETURN_float(msg, f->wire_offset+idx*4));
+		printf("%f", (double)_MAV_RETURN_float(msg, f->wire_offset+idx*4));
 		break;
 	case MAVLINK_TYPE_DOUBLE:
-		printf("%f", MAVLINK_MSG_RETURN_double(msg, f->wire_offset+idx*8));
+		printf("%f", _MAV_RETURN_double(msg, f->wire_offset+idx*8));
 		break;
 	}
 }
@@ -75,7 +75,7 @@ static void print_field(mavlink_message_t *msg, const mavlink_field_info_t *f)
 		/* print an array */
 		if (f->type == MAVLINK_TYPE_CHAR) {
 			printf("'%.*s'", f->array_length,
-			       f->wire_offset+(const char *)MAVLINK_PAYLOAD(msg));
+			       f->wire_offset+(const char *)_MAV_PAYLOAD(msg));
 			
 		} else {
 			printf("[ ");

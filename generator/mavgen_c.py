@@ -177,11 +177,23 @@ ${{arg_fields: * @param ${name} ${description}
 static inline uint16_t mavlink_msg_${name_lower}_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
 						      ${{arg_fields: ${array_const}${type} ${array_prefix}${name},}})
 {
-	msg->msgid = MAVLINK_MSG_ID_${name};
-
-${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[${wire_length}];
+${{scalar_fields:	_mav_put_${type}(buf, ${wire_offset}, ${putname});
 }}
+${{array_fields:	_mav_put_${type}_array(buf, ${wire_offset}, ${name}, ${array_length});
+}}
+        memcpy(_MAV_PAYLOAD(msg), buf, ${wire_length});
+#else
+	mavlink_${name_lower}_t packet;
+${{scalar_fields:	packet.${name} = ${putname};
+}}
+${{array_fields:	memcpy(packet.${name}, ${name}, sizeof(${type})*${array_length});
+}}
+        memcpy(_MAV_PAYLOAD(msg), &packet, ${wire_length});
+#endif
 
+	msg->msgid = MAVLINK_MSG_ID_${name};
 	return mavlink_finalize_message(msg, system_id, component_id, ${wire_length}${crc_extra_arg});
 }
 
@@ -199,11 +211,23 @@ static inline uint16_t mavlink_msg_${name_lower}_pack_chan(uint8_t system_id, ui
 							   mavlink_message_t* msg,
 						           ${{arg_fields:${array_const}${type} ${array_prefix}${name},}})
 {
-	msg->msgid = MAVLINK_MSG_ID_${name};
-
-${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[${wire_length}];
+${{scalar_fields:	_mav_put_${type}(buf, ${wire_offset}, ${putname});
 }}
+${{array_fields:	_mav_put_${type}_array(buf, ${wire_offset}, ${name}, ${array_length});
+}}
+        memcpy(_MAV_PAYLOAD(msg), buf, ${wire_length});
+#else
+	mavlink_${name_lower}_t packet;
+${{scalar_fields:	packet.${name} = ${putname};
+}}
+${{array_fields:	memcpy(packet.${name}, ${name}, sizeof(${type})*${array_length});
+}}
+        memcpy(_MAV_PAYLOAD(msg), &packet, ${wire_length});
+#endif
 
+	msg->msgid = MAVLINK_MSG_ID_${name};
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, ${wire_length}${crc_extra_arg});
 }
 
@@ -231,13 +255,21 @@ ${{arg_fields: * @param ${name} ${description}
 
 static inline void mavlink_msg_${name_lower}_send(mavlink_channel_t chan,${{arg_fields: ${array_const}${type} ${array_prefix}${name},}})
 {
-	MAVLINK_ALIGNED_MESSAGE(msg, ${wire_length});
-	msg->msgid = MAVLINK_MSG_ID_${name};
-
-${{ordered_fields:	put_${type}${array_tag}_by_index(msg, ${wire_offset}, ${putname}${array_arg}); // ${description}
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[${wire_length}];
+${{scalar_fields:	_mav_put_${type}(buf, ${wire_offset}, ${putname});
 }}
-
-	mavlink_finalize_message_chan_send(msg, chan, ${wire_length}${crc_extra_arg});
+${{array_fields:	_mav_put_${type}_array(buf, ${wire_offset}, ${name}, ${array_length});
+}}
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_${name}, buf, ${wire_length}${crc_extra_arg});
+#else
+	mavlink_${name_lower}_t packet;
+${{scalar_fields:	packet.${name} = ${putname};
+}}
+${{array_fields:	memcpy(packet.${name}, ${name}, sizeof(${type})*${array_length});
+}}
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_${name}, (const char *)&packet, ${wire_length}${crc_extra_arg});
+#endif
 }
 
 #endif
@@ -252,7 +284,7 @@ ${{fields:
  */
 static inline ${return_type} mavlink_msg_${name_lower}_get_${name}(const mavlink_message_t* msg${get_arg})
 {
-	return MAVLINK_MSG_RETURN_${type}${array_tag}(msg, ${array_return_arg} ${wire_offset});
+	return _MAV_RETURN_${type}${array_tag}(msg, ${array_return_arg} ${wire_offset});
 }
 }}
 
@@ -268,7 +300,7 @@ static inline void mavlink_msg_${name_lower}_decode(const mavlink_message_t* msg
 ${{ordered_fields:	${decode_left}mavlink_msg_${name_lower}_get_${name}(msg${decode_right});
 }}
 #else
-	memcpy(${name_lower}, MAVLINK_PAYLOAD(msg), ${wire_length});
+	memcpy(${name_lower}, _MAV_PAYLOAD(msg), ${wire_length});
 #endif
 }
 ''', m)
@@ -464,9 +496,13 @@ def generate_one(basename, xml):
     for m in xml.message:
         m.arg_fields = []
         m.array_fields = []
-        for f in m.fields:
+        m.scalar_fields = []
+        for f in m.ordered_fields:
             if f.array_length != 0:
                 m.array_fields.append(f)
+            else:
+                m.scalar_fields.append(f)
+        for f in m.fields:
             if not f.omit_arg:
                 m.arg_fields.append(f)
                 f.putname = f.name
