@@ -17,9 +17,9 @@ typedef struct __mavlink_slugs_action_t
 #define MAVLINK_MESSAGE_INFO_SLUGS_ACTION { \
 	"SLUGS_ACTION", \
 	3, \
-	{  { "target", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_slugs_action_t, target) }, \
-         { "actionId", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_slugs_action_t, actionId) }, \
-         { "actionVal", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_slugs_action_t, actionVal) }, \
+	{  { "target", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_slugs_action_t, target) }, \
+         { "actionId", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_slugs_action_t, actionId) }, \
+         { "actionVal", NULL, MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_slugs_action_t, actionVal) }, \
          } \
 }
 

@@ -8,7 +8,7 @@
 	       <field type="char[10]" name="s">string</field>
                <field type="uint8_t" name="u8">uint8_t</field>
                <field type="uint16_t" name="u16">uint16_t</field>
-               <field type="uint32_t" name="u32">uint32_t</field>
+               <field type="uint32_t" name="u32" print_format="0x%08x">uint32_t</field>
                <field type="uint64_t" name="u64">uint64_t</field>
                <field type="int8_t" name="s8">int8_t</field>
                <field type="int16_t" name="s16">int16_t</field>

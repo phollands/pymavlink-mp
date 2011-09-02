@@ -20,12 +20,12 @@ typedef struct __mavlink_position_control_offset_set_t
 #define MAVLINK_MESSAGE_INFO_POSITION_CONTROL_OFFSET_SET { \
 	"POSITION_CONTROL_OFFSET_SET", \
 	6, \
-	{  { "target_system", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_position_control_offset_set_t, target_system) }, \
-         { "target_component", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_position_control_offset_set_t, target_component) }, \
-         { "x", MAVLINK_TYPE_FLOAT, 0, 2, offsetof(mavlink_position_control_offset_set_t, x) }, \
-         { "y", MAVLINK_TYPE_FLOAT, 0, 6, offsetof(mavlink_position_control_offset_set_t, y) }, \
-         { "z", MAVLINK_TYPE_FLOAT, 0, 10, offsetof(mavlink_position_control_offset_set_t, z) }, \
-         { "yaw", MAVLINK_TYPE_FLOAT, 0, 14, offsetof(mavlink_position_control_offset_set_t, yaw) }, \
+	{  { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_position_control_offset_set_t, target_system) }, \
+         { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_position_control_offset_set_t, target_component) }, \
+         { "x", NULL, MAVLINK_TYPE_FLOAT, 0, 2, offsetof(mavlink_position_control_offset_set_t, x) }, \
+         { "y", NULL, MAVLINK_TYPE_FLOAT, 0, 6, offsetof(mavlink_position_control_offset_set_t, y) }, \
+         { "z", NULL, MAVLINK_TYPE_FLOAT, 0, 10, offsetof(mavlink_position_control_offset_set_t, z) }, \
+         { "yaw", NULL, MAVLINK_TYPE_FLOAT, 0, 14, offsetof(mavlink_position_control_offset_set_t, yaw) }, \
          } \
 }
 

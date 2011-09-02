@@ -21,13 +21,13 @@ typedef struct __mavlink_marker_t
 #define MAVLINK_MESSAGE_INFO_MARKER { \
 	"MARKER", \
 	7, \
-	{  { "id", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_marker_t, id) }, \
-         { "x", MAVLINK_TYPE_FLOAT, 0, 2, offsetof(mavlink_marker_t, x) }, \
-         { "y", MAVLINK_TYPE_FLOAT, 0, 6, offsetof(mavlink_marker_t, y) }, \
-         { "z", MAVLINK_TYPE_FLOAT, 0, 10, offsetof(mavlink_marker_t, z) }, \
-         { "roll", MAVLINK_TYPE_FLOAT, 0, 14, offsetof(mavlink_marker_t, roll) }, \
-         { "pitch", MAVLINK_TYPE_FLOAT, 0, 18, offsetof(mavlink_marker_t, pitch) }, \
-         { "yaw", MAVLINK_TYPE_FLOAT, 0, 22, offsetof(mavlink_marker_t, yaw) }, \
+	{  { "id", NULL, MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_marker_t, id) }, \
+         { "x", NULL, MAVLINK_TYPE_FLOAT, 0, 2, offsetof(mavlink_marker_t, x) }, \
+         { "y", NULL, MAVLINK_TYPE_FLOAT, 0, 6, offsetof(mavlink_marker_t, y) }, \
+         { "z", NULL, MAVLINK_TYPE_FLOAT, 0, 10, offsetof(mavlink_marker_t, z) }, \
+         { "roll", NULL, MAVLINK_TYPE_FLOAT, 0, 14, offsetof(mavlink_marker_t, roll) }, \
+         { "pitch", NULL, MAVLINK_TYPE_FLOAT, 0, 18, offsetof(mavlink_marker_t, pitch) }, \
+         { "yaw", NULL, MAVLINK_TYPE_FLOAT, 0, 22, offsetof(mavlink_marker_t, yaw) }, \
          } \
 }
 

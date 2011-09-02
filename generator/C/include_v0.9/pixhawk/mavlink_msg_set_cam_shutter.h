@@ -20,12 +20,12 @@ typedef struct __mavlink_set_cam_shutter_t
 #define MAVLINK_MESSAGE_INFO_SET_CAM_SHUTTER { \
 	"SET_CAM_SHUTTER", \
 	6, \
-	{  { "cam_no", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_set_cam_shutter_t, cam_no) }, \
-         { "cam_mode", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_set_cam_shutter_t, cam_mode) }, \
-         { "trigger_pin", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_set_cam_shutter_t, trigger_pin) }, \
-         { "interval", MAVLINK_TYPE_UINT16_T, 0, 3, offsetof(mavlink_set_cam_shutter_t, interval) }, \
-         { "exposure", MAVLINK_TYPE_UINT16_T, 0, 5, offsetof(mavlink_set_cam_shutter_t, exposure) }, \
-         { "gain", MAVLINK_TYPE_FLOAT, 0, 7, offsetof(mavlink_set_cam_shutter_t, gain) }, \
+	{  { "cam_no", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_set_cam_shutter_t, cam_no) }, \
+         { "cam_mode", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_set_cam_shutter_t, cam_mode) }, \
+         { "trigger_pin", NULL, MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_set_cam_shutter_t, trigger_pin) }, \
+         { "interval", NULL, MAVLINK_TYPE_UINT16_T, 0, 3, offsetof(mavlink_set_cam_shutter_t, interval) }, \
+         { "exposure", NULL, MAVLINK_TYPE_UINT16_T, 0, 5, offsetof(mavlink_set_cam_shutter_t, exposure) }, \
+         { "gain", NULL, MAVLINK_TYPE_FLOAT, 0, 7, offsetof(mavlink_set_cam_shutter_t, gain) }, \
          } \
 }
 

@@ -22,14 +22,14 @@ typedef struct __mavlink_brief_feature_t
 #define MAVLINK_MESSAGE_INFO_BRIEF_FEATURE { \
 	"BRIEF_FEATURE", \
 	8, \
-	{  { "x", MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_brief_feature_t, x) }, \
-         { "y", MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_brief_feature_t, y) }, \
-         { "z", MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_brief_feature_t, z) }, \
-         { "orientation_assignment", MAVLINK_TYPE_UINT8_T, 0, 12, offsetof(mavlink_brief_feature_t, orientation_assignment) }, \
-         { "size", MAVLINK_TYPE_UINT16_T, 0, 13, offsetof(mavlink_brief_feature_t, size) }, \
-         { "orientation", MAVLINK_TYPE_UINT16_T, 0, 15, offsetof(mavlink_brief_feature_t, orientation) }, \
-         { "descriptor", MAVLINK_TYPE_UINT8_T, 32, 17, offsetof(mavlink_brief_feature_t, descriptor) }, \
-         { "response", MAVLINK_TYPE_FLOAT, 0, 49, offsetof(mavlink_brief_feature_t, response) }, \
+	{  { "x", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_brief_feature_t, x) }, \
+         { "y", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_brief_feature_t, y) }, \
+         { "z", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_brief_feature_t, z) }, \
+         { "orientation_assignment", NULL, MAVLINK_TYPE_UINT8_T, 0, 12, offsetof(mavlink_brief_feature_t, orientation_assignment) }, \
+         { "size", NULL, MAVLINK_TYPE_UINT16_T, 0, 13, offsetof(mavlink_brief_feature_t, size) }, \
+         { "orientation", NULL, MAVLINK_TYPE_UINT16_T, 0, 15, offsetof(mavlink_brief_feature_t, orientation) }, \
+         { "descriptor", NULL, MAVLINK_TYPE_UINT8_T, 32, 17, offsetof(mavlink_brief_feature_t, descriptor) }, \
+         { "response", NULL, MAVLINK_TYPE_FLOAT, 0, 49, offsetof(mavlink_brief_feature_t, response) }, \
          } \
 }
 

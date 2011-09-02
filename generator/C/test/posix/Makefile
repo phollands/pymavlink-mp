@@ -25,7 +25,7 @@ clean:
 	rm -f *.o *~ testmav1.0* testmav0.9*
 
 testmav1.0_${TESTPROTOCOL}: testmav.c
-	$(CC) $(CFLAGS) -I../include_v1.0 -I../include_v1.0/${TESTPROTOCOL} -o $@ testmav.c
+	$(CC) $(CFLAGS) -I../../include_v1.0 -I../../include_v1.0/${TESTPROTOCOL} -o $@ testmav.c
 
 testmav0.9_${TESTPROTOCOL}: testmav.c
-	$(CC) $(CFLAGS) -I../include_v0.9 -I../include_v0.9/${TESTPROTOCOL} -o $@ testmav.c
+	$(CC) $(CFLAGS) -I../../include_v0.9 -I../../include_v0.9/${TESTPROTOCOL} -o $@ testmav.c
