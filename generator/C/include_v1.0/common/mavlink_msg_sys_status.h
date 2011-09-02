@@ -26,18 +26,18 @@ typedef struct __mavlink_sys_status_t
 #define MAVLINK_MESSAGE_INFO_SYS_STATUS { \
 	"SYS_STATUS", \
 	12, \
-	{  { "onboard_control_sensors_present", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_sys_status_t, onboard_control_sensors_present) }, \
-         { "onboard_control_sensors_enabled", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_sys_status_t, onboard_control_sensors_enabled) }, \
-         { "onboard_control_sensors_health", MAVLINK_TYPE_UINT16_T, 0, 4, offsetof(mavlink_sys_status_t, onboard_control_sensors_health) }, \
-         { "load", MAVLINK_TYPE_UINT16_T, 0, 6, offsetof(mavlink_sys_status_t, load) }, \
-         { "voltage_battery", MAVLINK_TYPE_UINT16_T, 0, 8, offsetof(mavlink_sys_status_t, voltage_battery) }, \
-         { "current_battery", MAVLINK_TYPE_UINT16_T, 0, 10, offsetof(mavlink_sys_status_t, current_battery) }, \
-         { "watt", MAVLINK_TYPE_UINT16_T, 0, 12, offsetof(mavlink_sys_status_t, watt) }, \
-         { "errors_uart", MAVLINK_TYPE_UINT16_T, 0, 14, offsetof(mavlink_sys_status_t, errors_uart) }, \
-         { "errors_i2c", MAVLINK_TYPE_UINT16_T, 0, 16, offsetof(mavlink_sys_status_t, errors_i2c) }, \
-         { "errors_spi", MAVLINK_TYPE_UINT16_T, 0, 18, offsetof(mavlink_sys_status_t, errors_spi) }, \
-         { "errors_can", MAVLINK_TYPE_UINT16_T, 0, 20, offsetof(mavlink_sys_status_t, errors_can) }, \
-         { "battery_percent", MAVLINK_TYPE_UINT8_T, 0, 22, offsetof(mavlink_sys_status_t, battery_percent) }, \
+	{  { "onboard_control_sensors_present", "0x%04x", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_sys_status_t, onboard_control_sensors_present) }, \
+         { "onboard_control_sensors_enabled", "0x%04x", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_sys_status_t, onboard_control_sensors_enabled) }, \
+         { "onboard_control_sensors_health", "0x%04x", MAVLINK_TYPE_UINT16_T, 0, 4, offsetof(mavlink_sys_status_t, onboard_control_sensors_health) }, \
+         { "load", NULL, MAVLINK_TYPE_UINT16_T, 0, 6, offsetof(mavlink_sys_status_t, load) }, \
+         { "voltage_battery", NULL, MAVLINK_TYPE_UINT16_T, 0, 8, offsetof(mavlink_sys_status_t, voltage_battery) }, \
+         { "current_battery", NULL, MAVLINK_TYPE_UINT16_T, 0, 10, offsetof(mavlink_sys_status_t, current_battery) }, \
+         { "watt", NULL, MAVLINK_TYPE_UINT16_T, 0, 12, offsetof(mavlink_sys_status_t, watt) }, \
+         { "errors_uart", NULL, MAVLINK_TYPE_UINT16_T, 0, 14, offsetof(mavlink_sys_status_t, errors_uart) }, \
+         { "errors_i2c", NULL, MAVLINK_TYPE_UINT16_T, 0, 16, offsetof(mavlink_sys_status_t, errors_i2c) }, \
+         { "errors_spi", NULL, MAVLINK_TYPE_UINT16_T, 0, 18, offsetof(mavlink_sys_status_t, errors_spi) }, \
+         { "errors_can", NULL, MAVLINK_TYPE_UINT16_T, 0, 20, offsetof(mavlink_sys_status_t, errors_can) }, \
+         { "battery_percent", NULL, MAVLINK_TYPE_UINT8_T, 0, 22, offsetof(mavlink_sys_status_t, battery_percent) }, \
          } \
 }
 

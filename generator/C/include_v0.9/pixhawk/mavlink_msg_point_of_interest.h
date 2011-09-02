@@ -22,14 +22,14 @@ typedef struct __mavlink_point_of_interest_t
 #define MAVLINK_MESSAGE_INFO_POINT_OF_INTEREST { \
 	"POINT_OF_INTEREST", \
 	8, \
-	{  { "type", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_point_of_interest_t, type) }, \
-         { "color", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_point_of_interest_t, color) }, \
-         { "coordinate_system", MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_point_of_interest_t, coordinate_system) }, \
-         { "timeout", MAVLINK_TYPE_UINT16_T, 0, 3, offsetof(mavlink_point_of_interest_t, timeout) }, \
-         { "x", MAVLINK_TYPE_FLOAT, 0, 5, offsetof(mavlink_point_of_interest_t, x) }, \
-         { "y", MAVLINK_TYPE_FLOAT, 0, 9, offsetof(mavlink_point_of_interest_t, y) }, \
-         { "z", MAVLINK_TYPE_FLOAT, 0, 13, offsetof(mavlink_point_of_interest_t, z) }, \
-         { "name", MAVLINK_TYPE_CHAR, 26, 17, offsetof(mavlink_point_of_interest_t, name) }, \
+	{  { "type", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_point_of_interest_t, type) }, \
+         { "color", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_point_of_interest_t, color) }, \
+         { "coordinate_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_point_of_interest_t, coordinate_system) }, \
+         { "timeout", NULL, MAVLINK_TYPE_UINT16_T, 0, 3, offsetof(mavlink_point_of_interest_t, timeout) }, \
+         { "x", NULL, MAVLINK_TYPE_FLOAT, 0, 5, offsetof(mavlink_point_of_interest_t, x) }, \
+         { "y", NULL, MAVLINK_TYPE_FLOAT, 0, 9, offsetof(mavlink_point_of_interest_t, y) }, \
+         { "z", NULL, MAVLINK_TYPE_FLOAT, 0, 13, offsetof(mavlink_point_of_interest_t, z) }, \
+         { "name", NULL, MAVLINK_TYPE_CHAR, 26, 17, offsetof(mavlink_point_of_interest_t, name) }, \
          } \
 }
 

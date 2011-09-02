@@ -19,11 +19,11 @@ typedef struct __mavlink_position_control_setpoint_t
 #define MAVLINK_MESSAGE_INFO_POSITION_CONTROL_SETPOINT { \
 	"POSITION_CONTROL_SETPOINT", \
 	5, \
-	{  { "id", MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_position_control_setpoint_t, id) }, \
-         { "x", MAVLINK_TYPE_FLOAT, 0, 2, offsetof(mavlink_position_control_setpoint_t, x) }, \
-         { "y", MAVLINK_TYPE_FLOAT, 0, 6, offsetof(mavlink_position_control_setpoint_t, y) }, \
-         { "z", MAVLINK_TYPE_FLOAT, 0, 10, offsetof(mavlink_position_control_setpoint_t, z) }, \
-         { "yaw", MAVLINK_TYPE_FLOAT, 0, 14, offsetof(mavlink_position_control_setpoint_t, yaw) }, \
+	{  { "id", NULL, MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_position_control_setpoint_t, id) }, \
+         { "x", NULL, MAVLINK_TYPE_FLOAT, 0, 2, offsetof(mavlink_position_control_setpoint_t, x) }, \
+         { "y", NULL, MAVLINK_TYPE_FLOAT, 0, 6, offsetof(mavlink_position_control_setpoint_t, y) }, \
+         { "z", NULL, MAVLINK_TYPE_FLOAT, 0, 10, offsetof(mavlink_position_control_setpoint_t, z) }, \
+         { "yaw", NULL, MAVLINK_TYPE_FLOAT, 0, 14, offsetof(mavlink_position_control_setpoint_t, yaw) }, \
          } \
 }
 

@@ -17,9 +17,9 @@ typedef struct __mavlink_cpu_load_t
 #define MAVLINK_MESSAGE_INFO_CPU_LOAD { \
 	"CPU_LOAD", \
 	3, \
-	{  { "sensLoad", MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_cpu_load_t, sensLoad) }, \
-         { "ctrlLoad", MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_cpu_load_t, ctrlLoad) }, \
-         { "batVolt", MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_cpu_load_t, batVolt) }, \
+	{  { "sensLoad", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_cpu_load_t, sensLoad) }, \
+         { "ctrlLoad", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_cpu_load_t, ctrlLoad) }, \
+         { "batVolt", NULL, MAVLINK_TYPE_UINT16_T, 0, 2, offsetof(mavlink_cpu_load_t, batVolt) }, \
          } \
 }
 
