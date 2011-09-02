@@ -50,16 +50,31 @@ typedef struct __mavlink_hil_controls_t
 static inline uint16_t mavlink_msg_hil_controls_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
 						       uint64_t time_us, float roll_ailerons, float pitch_elevator, float yaw_rudder, float throttle, uint8_t mode, uint8_t nav_mode)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[26];
+	_mav_put_uint64_t(buf, 0, time_us);
+	_mav_put_float(buf, 8, roll_ailerons);
+	_mav_put_float(buf, 12, pitch_elevator);
+	_mav_put_float(buf, 16, yaw_rudder);
+	_mav_put_float(buf, 20, throttle);
+	_mav_put_uint8_t(buf, 24, mode);
+	_mav_put_uint8_t(buf, 25, nav_mode);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 26);
+#else
+	mavlink_hil_controls_t packet;
+	packet.time_us = time_us;
+	packet.roll_ailerons = roll_ailerons;
+	packet.pitch_elevator = pitch_elevator;
+	packet.yaw_rudder = yaw_rudder;
+	packet.throttle = throttle;
+	packet.mode = mode;
+	packet.nav_mode = nav_mode;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 26);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
-
-	put_uint64_t_by_index(msg, 0, time_us); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(msg, 8, roll_ailerons); // Control output -3 .. 1
-	put_float_by_index(msg, 12, pitch_elevator); // Control output -1 .. 1
-	put_float_by_index(msg, 16, yaw_rudder); // Control output -1 .. 1
-	put_float_by_index(msg, 20, throttle); // Throttle 0 .. 1
-	put_uint8_t_by_index(msg, 24, mode); // System mode (MAV_MODE)
-	put_uint8_t_by_index(msg, 25, nav_mode); // Navigation mode (MAV_NAV_MODE)
-
 	return mavlink_finalize_message(msg, system_id, component_id, 26);
 }
 
@@ -82,16 +97,31 @@ static inline uint16_t mavlink_msg_hil_controls_pack_chan(uint8_t system_id, uin
 							   mavlink_message_t* msg,
 						           uint64_t time_us,float roll_ailerons,float pitch_elevator,float yaw_rudder,float throttle,uint8_t mode,uint8_t nav_mode)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[26];
+	_mav_put_uint64_t(buf, 0, time_us);
+	_mav_put_float(buf, 8, roll_ailerons);
+	_mav_put_float(buf, 12, pitch_elevator);
+	_mav_put_float(buf, 16, yaw_rudder);
+	_mav_put_float(buf, 20, throttle);
+	_mav_put_uint8_t(buf, 24, mode);
+	_mav_put_uint8_t(buf, 25, nav_mode);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 26);
+#else
+	mavlink_hil_controls_t packet;
+	packet.time_us = time_us;
+	packet.roll_ailerons = roll_ailerons;
+	packet.pitch_elevator = pitch_elevator;
+	packet.yaw_rudder = yaw_rudder;
+	packet.throttle = throttle;
+	packet.mode = mode;
+	packet.nav_mode = nav_mode;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 26);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
-
-	put_uint64_t_by_index(msg, 0, time_us); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(msg, 8, roll_ailerons); // Control output -3 .. 1
-	put_float_by_index(msg, 12, pitch_elevator); // Control output -1 .. 1
-	put_float_by_index(msg, 16, yaw_rudder); // Control output -1 .. 1
-	put_float_by_index(msg, 20, throttle); // Throttle 0 .. 1
-	put_uint8_t_by_index(msg, 24, mode); // System mode (MAV_MODE)
-	put_uint8_t_by_index(msg, 25, nav_mode); // Navigation mode (MAV_NAV_MODE)
-
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 26);
 }
 
@@ -124,18 +154,29 @@ static inline uint16_t mavlink_msg_hil_controls_encode(uint8_t system_id, uint8_
 
 static inline void mavlink_msg_hil_controls_send(mavlink_channel_t chan, uint64_t time_us, float roll_ailerons, float pitch_elevator, float yaw_rudder, float throttle, uint8_t mode, uint8_t nav_mode)
 {
-	MAVLINK_ALIGNED_MESSAGE(msg, 26);
-	msg->msgid = MAVLINK_MSG_ID_HIL_CONTROLS;
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[26];
+	_mav_put_uint64_t(buf, 0, time_us);
+	_mav_put_float(buf, 8, roll_ailerons);
+	_mav_put_float(buf, 12, pitch_elevator);
+	_mav_put_float(buf, 16, yaw_rudder);
+	_mav_put_float(buf, 20, throttle);
+	_mav_put_uint8_t(buf, 24, mode);
+	_mav_put_uint8_t(buf, 25, nav_mode);
 
-	put_uint64_t_by_index(msg, 0, time_us); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_float_by_index(msg, 8, roll_ailerons); // Control output -3 .. 1
-	put_float_by_index(msg, 12, pitch_elevator); // Control output -1 .. 1
-	put_float_by_index(msg, 16, yaw_rudder); // Control output -1 .. 1
-	put_float_by_index(msg, 20, throttle); // Throttle 0 .. 1
-	put_uint8_t_by_index(msg, 24, mode); // System mode (MAV_MODE)
-	put_uint8_t_by_index(msg, 25, nav_mode); // Navigation mode (MAV_NAV_MODE)
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HIL_CONTROLS, buf, 26);
+#else
+	mavlink_hil_controls_t packet;
+	packet.time_us = time_us;
+	packet.roll_ailerons = roll_ailerons;
+	packet.pitch_elevator = pitch_elevator;
+	packet.yaw_rudder = yaw_rudder;
+	packet.throttle = throttle;
+	packet.mode = mode;
+	packet.nav_mode = nav_mode;
 
-	mavlink_finalize_message_chan_send(msg, chan, 26);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HIL_CONTROLS, (const char *)&packet, 26);
+#endif
 }
 
 #endif
@@ -150,7 +191,7 @@ static inline void mavlink_msg_hil_controls_send(mavlink_channel_t chan, uint64_
  */
 static inline uint64_t mavlink_msg_hil_controls_get_time_us(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint64_t(msg,  0);
+	return _MAV_RETURN_uint64_t(msg,  0);
 }
 
 /**
@@ -160,7 +201,7 @@ static inline uint64_t mavlink_msg_hil_controls_get_time_us(const mavlink_messag
  */
 static inline float mavlink_msg_hil_controls_get_roll_ailerons(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  8);
+	return _MAV_RETURN_float(msg,  8);
 }
 
 /**
@@ -170,7 +211,7 @@ static inline float mavlink_msg_hil_controls_get_roll_ailerons(const mavlink_mes
  */
 static inline float mavlink_msg_hil_controls_get_pitch_elevator(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  12);
+	return _MAV_RETURN_float(msg,  12);
 }
 
 /**
@@ -180,7 +221,7 @@ static inline float mavlink_msg_hil_controls_get_pitch_elevator(const mavlink_me
  */
 static inline float mavlink_msg_hil_controls_get_yaw_rudder(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  16);
+	return _MAV_RETURN_float(msg,  16);
 }
 
 /**
@@ -190,7 +231,7 @@ static inline float mavlink_msg_hil_controls_get_yaw_rudder(const mavlink_messag
  */
 static inline float mavlink_msg_hil_controls_get_throttle(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  20);
+	return _MAV_RETURN_float(msg,  20);
 }
 
 /**
@@ -200,7 +241,7 @@ static inline float mavlink_msg_hil_controls_get_throttle(const mavlink_message_
  */
 static inline uint8_t mavlink_msg_hil_controls_get_mode(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  24);
+	return _MAV_RETURN_uint8_t(msg,  24);
 }
 
 /**
@@ -210,7 +251,7 @@ static inline uint8_t mavlink_msg_hil_controls_get_mode(const mavlink_message_t*
  */
 static inline uint8_t mavlink_msg_hil_controls_get_nav_mode(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  25);
+	return _MAV_RETURN_uint8_t(msg,  25);
 }
 
 /**
@@ -230,6 +271,6 @@ static inline void mavlink_msg_hil_controls_decode(const mavlink_message_t* msg,
 	hil_controls->mode = mavlink_msg_hil_controls_get_mode(msg);
 	hil_controls->nav_mode = mavlink_msg_hil_controls_get_nav_mode(msg);
 #else
-	memcpy(hil_controls, MAVLINK_PAYLOAD(msg), 26);
+	memcpy(hil_controls, _MAV_PAYLOAD(msg), 26);
 #endif
 }

@@ -44,14 +44,25 @@ typedef struct __mavlink_debug_vect_t
 static inline uint16_t mavlink_msg_debug_vect_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
 						       const char *name, uint64_t usec, float x, float y, float z)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[30];
+	_mav_put_uint64_t(buf, 10, usec);
+	_mav_put_float(buf, 18, x);
+	_mav_put_float(buf, 22, y);
+	_mav_put_float(buf, 26, z);
+	_mav_put_char_array(buf, 0, name, 10);
+        memcpy(_MAV_PAYLOAD(msg), buf, 30);
+#else
+	mavlink_debug_vect_t packet;
+	packet.usec = usec;
+	packet.x = x;
+	packet.y = y;
+	packet.z = z;
+	memcpy(packet.name, name, sizeof(char)*10);
+        memcpy(_MAV_PAYLOAD(msg), &packet, 30);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_DEBUG_VECT;
-
-	put_char_array_by_index(msg, 0, name, 10); // Name
-	put_uint64_t_by_index(msg, 10, usec); // Timestamp
-	put_float_by_index(msg, 18, x); // x
-	put_float_by_index(msg, 22, y); // y
-	put_float_by_index(msg, 26, z); // z
-
 	return mavlink_finalize_message(msg, system_id, component_id, 30);
 }
 
@@ -72,14 +83,25 @@ static inline uint16_t mavlink_msg_debug_vect_pack_chan(uint8_t system_id, uint8
 							   mavlink_message_t* msg,
 						           const char *name,uint64_t usec,float x,float y,float z)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[30];
+	_mav_put_uint64_t(buf, 10, usec);
+	_mav_put_float(buf, 18, x);
+	_mav_put_float(buf, 22, y);
+	_mav_put_float(buf, 26, z);
+	_mav_put_char_array(buf, 0, name, 10);
+        memcpy(_MAV_PAYLOAD(msg), buf, 30);
+#else
+	mavlink_debug_vect_t packet;
+	packet.usec = usec;
+	packet.x = x;
+	packet.y = y;
+	packet.z = z;
+	memcpy(packet.name, name, sizeof(char)*10);
+        memcpy(_MAV_PAYLOAD(msg), &packet, 30);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_DEBUG_VECT;
-
-	put_char_array_by_index(msg, 0, name, 10); // Name
-	put_uint64_t_by_index(msg, 10, usec); // Timestamp
-	put_float_by_index(msg, 18, x); // x
-	put_float_by_index(msg, 22, y); // y
-	put_float_by_index(msg, 26, z); // z
-
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 30);
 }
 
@@ -110,16 +132,23 @@ static inline uint16_t mavlink_msg_debug_vect_encode(uint8_t system_id, uint8_t 
 
 static inline void mavlink_msg_debug_vect_send(mavlink_channel_t chan, const char *name, uint64_t usec, float x, float y, float z)
 {
-	MAVLINK_ALIGNED_MESSAGE(msg, 30);
-	msg->msgid = MAVLINK_MSG_ID_DEBUG_VECT;
-
-	put_char_array_by_index(msg, 0, name, 10); // Name
-	put_uint64_t_by_index(msg, 10, usec); // Timestamp
-	put_float_by_index(msg, 18, x); // x
-	put_float_by_index(msg, 22, y); // y
-	put_float_by_index(msg, 26, z); // z
-
-	mavlink_finalize_message_chan_send(msg, chan, 30);
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[30];
+	_mav_put_uint64_t(buf, 10, usec);
+	_mav_put_float(buf, 18, x);
+	_mav_put_float(buf, 22, y);
+	_mav_put_float(buf, 26, z);
+	_mav_put_char_array(buf, 0, name, 10);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_DEBUG_VECT, buf, 30);
+#else
+	mavlink_debug_vect_t packet;
+	packet.usec = usec;
+	packet.x = x;
+	packet.y = y;
+	packet.z = z;
+	memcpy(packet.name, name, sizeof(char)*10);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_DEBUG_VECT, (const char *)&packet, 30);
+#endif
 }
 
 #endif
@@ -134,7 +163,7 @@ static inline void mavlink_msg_debug_vect_send(mavlink_channel_t chan, const cha
  */
 static inline uint16_t mavlink_msg_debug_vect_get_name(const mavlink_message_t* msg, char *name)
 {
-	return MAVLINK_MSG_RETURN_char_array(msg, name, 10,  0);
+	return _MAV_RETURN_char_array(msg, name, 10,  0);
 }
 
 /**
@@ -144,7 +173,7 @@ static inline uint16_t mavlink_msg_debug_vect_get_name(const mavlink_message_t* 
  */
 static inline uint64_t mavlink_msg_debug_vect_get_usec(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint64_t(msg,  10);
+	return _MAV_RETURN_uint64_t(msg,  10);
 }
 
 /**
@@ -154,7 +183,7 @@ static inline uint64_t mavlink_msg_debug_vect_get_usec(const mavlink_message_t* 
  */
 static inline float mavlink_msg_debug_vect_get_x(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  18);
+	return _MAV_RETURN_float(msg,  18);
 }
 
 /**
@@ -164,7 +193,7 @@ static inline float mavlink_msg_debug_vect_get_x(const mavlink_message_t* msg)
  */
 static inline float mavlink_msg_debug_vect_get_y(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  22);
+	return _MAV_RETURN_float(msg,  22);
 }
 
 /**
@@ -174,7 +203,7 @@ static inline float mavlink_msg_debug_vect_get_y(const mavlink_message_t* msg)
  */
 static inline float mavlink_msg_debug_vect_get_z(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  26);
+	return _MAV_RETURN_float(msg,  26);
 }
 
 /**
@@ -192,6 +221,6 @@ static inline void mavlink_msg_debug_vect_decode(const mavlink_message_t* msg, m
 	debug_vect->y = mavlink_msg_debug_vect_get_y(msg);
 	debug_vect->z = mavlink_msg_debug_vect_get_z(msg);
 #else
-	memcpy(debug_vect, MAVLINK_PAYLOAD(msg), 30);
+	memcpy(debug_vect, _MAV_PAYLOAD(msg), 30);
 #endif
 }

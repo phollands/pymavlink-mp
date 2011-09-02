@@ -15,6 +15,8 @@ static mavlink_system_t mavlink_system = {42,11,};
 #define MAVLINK_ASSERT(x) assert(x)
 static void comm_send_ch(mavlink_channel_t chan, uint8_t c);
 
+static mavlink_message_t last_msg;
+
 #include <mavlink.h>
 #include <testsuite.h>
 
@@ -29,37 +31,37 @@ static void print_one_field(mavlink_message_t *msg, const mavlink_field_info_t *
 {
 	switch (f->type) {
 	case MAVLINK_TYPE_CHAR:
-		printf("%c", MAVLINK_MSG_RETURN_char(msg, f->wire_offset+idx*1));
+		printf("%c", _MAV_RETURN_char(msg, f->wire_offset+idx*1));
 		break;
 	case MAVLINK_TYPE_UINT8_T:
-		printf("%u", MAVLINK_MSG_RETURN_uint8_t(msg, f->wire_offset+idx*1));
+		printf("%u", _MAV_RETURN_uint8_t(msg, f->wire_offset+idx*1));
 		break;
 	case MAVLINK_TYPE_INT8_T:
-		printf("%d", MAVLINK_MSG_RETURN_int8_t(msg, f->wire_offset+idx*1));
+		printf("%d", _MAV_RETURN_int8_t(msg, f->wire_offset+idx*1));
 		break;
 	case MAVLINK_TYPE_UINT16_T:
-		printf("%u", MAVLINK_MSG_RETURN_uint16_t(msg, f->wire_offset+idx*2));
+		printf("%u", _MAV_RETURN_uint16_t(msg, f->wire_offset+idx*2));
 		break;
 	case MAVLINK_TYPE_INT16_T:
-		printf("%d", MAVLINK_MSG_RETURN_int16_t(msg, f->wire_offset+idx*2));
+		printf("%d", _MAV_RETURN_int16_t(msg, f->wire_offset+idx*2));
 		break;
 	case MAVLINK_TYPE_UINT32_T:
-		printf("%lu", (unsigned long)MAVLINK_MSG_RETURN_uint32_t(msg, f->wire_offset+idx*4));
+		printf("%lu", (unsigned long)_MAV_RETURN_uint32_t(msg, f->wire_offset+idx*4));
 		break;
 	case MAVLINK_TYPE_INT32_T:
-		printf("%ld", (long)MAVLINK_MSG_RETURN_int32_t(msg, f->wire_offset+idx*4));
+		printf("%ld", (long)_MAV_RETURN_int32_t(msg, f->wire_offset+idx*4));
 		break;
 	case MAVLINK_TYPE_UINT64_T:
-		printf("%llu", (unsigned long long)MAVLINK_MSG_RETURN_uint64_t(msg, f->wire_offset+idx*8));
+		printf("%llu", (unsigned long long)_MAV_RETURN_uint64_t(msg, f->wire_offset+idx*8));
 		break;
 	case MAVLINK_TYPE_INT64_T:
-		printf("%lld", (long long)MAVLINK_MSG_RETURN_int64_t(msg, f->wire_offset+idx*8));
+		printf("%lld", (long long)_MAV_RETURN_int64_t(msg, f->wire_offset+idx*8));
 		break;
 	case MAVLINK_TYPE_FLOAT:
-		printf("%f", (double)MAVLINK_MSG_RETURN_float(msg, f->wire_offset+idx*4));
+		printf("%f", (double)_MAV_RETURN_float(msg, f->wire_offset+idx*4));
 		break;
 	case MAVLINK_TYPE_DOUBLE:
-		printf("%f", MAVLINK_MSG_RETURN_double(msg, f->wire_offset+idx*8));
+		printf("%f", _MAV_RETURN_double(msg, f->wire_offset+idx*8));
 		break;
 	}
 }
@@ -75,7 +77,7 @@ static void print_field(mavlink_message_t *msg, const mavlink_field_info_t *f)
 		/* print an array */
 		if (f->type == MAVLINK_TYPE_CHAR) {
 			printf("'%.*s'", f->array_length,
-			       f->wire_offset+(const char *)MAVLINK_PAYLOAD(msg));
+			       f->wire_offset+(const char *)_MAV_PAYLOAD(msg));
 			
 		} else {
 			printf("[ ");
@@ -105,10 +107,9 @@ static void print_message(mavlink_message_t *msg)
 
 static void comm_send_ch(mavlink_channel_t chan, uint8_t c)
 {
-	mavlink_message_t msg;
 	mavlink_status_t status;
-	if (mavlink_parse_char(chan, c, &msg, &status)) {
-		print_message(&msg);
+	if (mavlink_parse_char(chan, c, &last_msg, &status)) {
+		print_message(&last_msg);
 		chan_counts[chan]++;
 		/* channel 0 gets 3 messages per message, because of
 		   the channel defaults for _pack() and _encode() */
@@ -121,9 +122,9 @@ static void comm_send_ch(mavlink_channel_t chan, uint8_t c)
 			       (unsigned)chan, chan_counts[chan], status.current_rx_seq);
 			error_count++;
 		}
-		if (message_lengths[msg.msgid] != msg.len) {
+		if (message_lengths[last_msg.msgid] != last_msg.len) {
 			printf("Incorrect message length %u for message %u - expected %u\n", 
-			       (unsigned)msg.len, (unsigned)msg.msgid, message_lengths[msg.msgid]);
+			       (unsigned)last_msg.len, (unsigned)last_msg.msgid, message_lengths[last_msg.msgid]);
 			error_count++;
 		}
 	}
@@ -136,7 +137,7 @@ static void comm_send_ch(mavlink_channel_t chan, uint8_t c)
 int main(void)
 {
 	mavlink_channel_t chan;
-	mavlink_test_all(11, 10);
+	mavlink_test_all(11, 10, &last_msg);
 	for (chan=MAVLINK_COMM_0; chan<=MAVLINK_COMM_1; chan++) {
 		printf("Received %u messages on channel %u OK\n", 
 		       chan_counts[chan], (unsigned)chan);

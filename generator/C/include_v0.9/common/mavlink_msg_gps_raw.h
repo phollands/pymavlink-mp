@@ -56,18 +56,35 @@ typedef struct __mavlink_gps_raw_t
 static inline uint16_t mavlink_msg_gps_raw_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
 						       uint64_t usec, uint8_t fix_type, float lat, float lon, float alt, float eph, float epv, float v, float hdg)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[37];
+	_mav_put_uint64_t(buf, 0, usec);
+	_mav_put_uint8_t(buf, 8, fix_type);
+	_mav_put_float(buf, 9, lat);
+	_mav_put_float(buf, 13, lon);
+	_mav_put_float(buf, 17, alt);
+	_mav_put_float(buf, 21, eph);
+	_mav_put_float(buf, 25, epv);
+	_mav_put_float(buf, 29, v);
+	_mav_put_float(buf, 33, hdg);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 37);
+#else
+	mavlink_gps_raw_t packet;
+	packet.usec = usec;
+	packet.fix_type = fix_type;
+	packet.lat = lat;
+	packet.lon = lon;
+	packet.alt = alt;
+	packet.eph = eph;
+	packet.epv = epv;
+	packet.v = v;
+	packet.hdg = hdg;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 37);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_GPS_RAW;
-
-	put_uint64_t_by_index(msg, 0, usec); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_uint8_t_by_index(msg, 8, fix_type); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
-	put_float_by_index(msg, 9, lat); // Latitude in degrees
-	put_float_by_index(msg, 13, lon); // Longitude in degrees
-	put_float_by_index(msg, 17, alt); // Altitude in meters
-	put_float_by_index(msg, 21, eph); // GPS HDOP
-	put_float_by_index(msg, 25, epv); // GPS VDOP
-	put_float_by_index(msg, 29, v); // GPS ground speed
-	put_float_by_index(msg, 33, hdg); // Compass heading in degrees, 0..360 degrees
-
 	return mavlink_finalize_message(msg, system_id, component_id, 37);
 }
 
@@ -92,18 +109,35 @@ static inline uint16_t mavlink_msg_gps_raw_pack_chan(uint8_t system_id, uint8_t 
 							   mavlink_message_t* msg,
 						           uint64_t usec,uint8_t fix_type,float lat,float lon,float alt,float eph,float epv,float v,float hdg)
 {
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[37];
+	_mav_put_uint64_t(buf, 0, usec);
+	_mav_put_uint8_t(buf, 8, fix_type);
+	_mav_put_float(buf, 9, lat);
+	_mav_put_float(buf, 13, lon);
+	_mav_put_float(buf, 17, alt);
+	_mav_put_float(buf, 21, eph);
+	_mav_put_float(buf, 25, epv);
+	_mav_put_float(buf, 29, v);
+	_mav_put_float(buf, 33, hdg);
+
+        memcpy(_MAV_PAYLOAD(msg), buf, 37);
+#else
+	mavlink_gps_raw_t packet;
+	packet.usec = usec;
+	packet.fix_type = fix_type;
+	packet.lat = lat;
+	packet.lon = lon;
+	packet.alt = alt;
+	packet.eph = eph;
+	packet.epv = epv;
+	packet.v = v;
+	packet.hdg = hdg;
+
+        memcpy(_MAV_PAYLOAD(msg), &packet, 37);
+#endif
+
 	msg->msgid = MAVLINK_MSG_ID_GPS_RAW;
-
-	put_uint64_t_by_index(msg, 0, usec); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_uint8_t_by_index(msg, 8, fix_type); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
-	put_float_by_index(msg, 9, lat); // Latitude in degrees
-	put_float_by_index(msg, 13, lon); // Longitude in degrees
-	put_float_by_index(msg, 17, alt); // Altitude in meters
-	put_float_by_index(msg, 21, eph); // GPS HDOP
-	put_float_by_index(msg, 25, epv); // GPS VDOP
-	put_float_by_index(msg, 29, v); // GPS ground speed
-	put_float_by_index(msg, 33, hdg); // Compass heading in degrees, 0..360 degrees
-
 	return mavlink_finalize_message_chan(msg, system_id, component_id, chan, 37);
 }
 
@@ -138,20 +172,33 @@ static inline uint16_t mavlink_msg_gps_raw_encode(uint8_t system_id, uint8_t com
 
 static inline void mavlink_msg_gps_raw_send(mavlink_channel_t chan, uint64_t usec, uint8_t fix_type, float lat, float lon, float alt, float eph, float epv, float v, float hdg)
 {
-	MAVLINK_ALIGNED_MESSAGE(msg, 37);
-	msg->msgid = MAVLINK_MSG_ID_GPS_RAW;
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+	char buf[37];
+	_mav_put_uint64_t(buf, 0, usec);
+	_mav_put_uint8_t(buf, 8, fix_type);
+	_mav_put_float(buf, 9, lat);
+	_mav_put_float(buf, 13, lon);
+	_mav_put_float(buf, 17, alt);
+	_mav_put_float(buf, 21, eph);
+	_mav_put_float(buf, 25, epv);
+	_mav_put_float(buf, 29, v);
+	_mav_put_float(buf, 33, hdg);
 
-	put_uint64_t_by_index(msg, 0, usec); // Timestamp (microseconds since UNIX epoch or microseconds since system boot)
-	put_uint8_t_by_index(msg, 8, fix_type); // 0-1: no fix, 2: 2D fix, 3: 3D fix. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
-	put_float_by_index(msg, 9, lat); // Latitude in degrees
-	put_float_by_index(msg, 13, lon); // Longitude in degrees
-	put_float_by_index(msg, 17, alt); // Altitude in meters
-	put_float_by_index(msg, 21, eph); // GPS HDOP
-	put_float_by_index(msg, 25, epv); // GPS VDOP
-	put_float_by_index(msg, 29, v); // GPS ground speed
-	put_float_by_index(msg, 33, hdg); // Compass heading in degrees, 0..360 degrees
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_GPS_RAW, buf, 37);
+#else
+	mavlink_gps_raw_t packet;
+	packet.usec = usec;
+	packet.fix_type = fix_type;
+	packet.lat = lat;
+	packet.lon = lon;
+	packet.alt = alt;
+	packet.eph = eph;
+	packet.epv = epv;
+	packet.v = v;
+	packet.hdg = hdg;
 
-	mavlink_finalize_message_chan_send(msg, chan, 37);
+	_mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_GPS_RAW, (const char *)&packet, 37);
+#endif
 }
 
 #endif
@@ -166,7 +213,7 @@ static inline void mavlink_msg_gps_raw_send(mavlink_channel_t chan, uint64_t use
  */
 static inline uint64_t mavlink_msg_gps_raw_get_usec(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint64_t(msg,  0);
+	return _MAV_RETURN_uint64_t(msg,  0);
 }
 
 /**
@@ -176,7 +223,7 @@ static inline uint64_t mavlink_msg_gps_raw_get_usec(const mavlink_message_t* msg
  */
 static inline uint8_t mavlink_msg_gps_raw_get_fix_type(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_uint8_t(msg,  8);
+	return _MAV_RETURN_uint8_t(msg,  8);
 }
 
 /**
@@ -186,7 +233,7 @@ static inline uint8_t mavlink_msg_gps_raw_get_fix_type(const mavlink_message_t* 
  */
 static inline float mavlink_msg_gps_raw_get_lat(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  9);
+	return _MAV_RETURN_float(msg,  9);
 }
 
 /**
@@ -196,7 +243,7 @@ static inline float mavlink_msg_gps_raw_get_lat(const mavlink_message_t* msg)
  */
 static inline float mavlink_msg_gps_raw_get_lon(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  13);
+	return _MAV_RETURN_float(msg,  13);
 }
 
 /**
@@ -206,7 +253,7 @@ static inline float mavlink_msg_gps_raw_get_lon(const mavlink_message_t* msg)
  */
 static inline float mavlink_msg_gps_raw_get_alt(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  17);
+	return _MAV_RETURN_float(msg,  17);
 }
 
 /**
@@ -216,7 +263,7 @@ static inline float mavlink_msg_gps_raw_get_alt(const mavlink_message_t* msg)
  */
 static inline float mavlink_msg_gps_raw_get_eph(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  21);
+	return _MAV_RETURN_float(msg,  21);
 }
 
 /**
@@ -226,7 +273,7 @@ static inline float mavlink_msg_gps_raw_get_eph(const mavlink_message_t* msg)
  */
 static inline float mavlink_msg_gps_raw_get_epv(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  25);
+	return _MAV_RETURN_float(msg,  25);
 }
 
 /**
@@ -236,7 +283,7 @@ static inline float mavlink_msg_gps_raw_get_epv(const mavlink_message_t* msg)
  */
 static inline float mavlink_msg_gps_raw_get_v(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  29);
+	return _MAV_RETURN_float(msg,  29);
 }
 
 /**
@@ -246,7 +293,7 @@ static inline float mavlink_msg_gps_raw_get_v(const mavlink_message_t* msg)
  */
 static inline float mavlink_msg_gps_raw_get_hdg(const mavlink_message_t* msg)
 {
-	return MAVLINK_MSG_RETURN_float(msg,  33);
+	return _MAV_RETURN_float(msg,  33);
 }
 
 /**
@@ -268,6 +315,6 @@ static inline void mavlink_msg_gps_raw_decode(const mavlink_message_t* msg, mavl
 	gps_raw->v = mavlink_msg_gps_raw_get_v(msg);
 	gps_raw->hdg = mavlink_msg_gps_raw_get_hdg(msg);
 #else
-	memcpy(gps_raw, MAVLINK_PAYLOAD(msg), 37);
+	memcpy(gps_raw, _MAV_PAYLOAD(msg), 37);
 #endif
 }
