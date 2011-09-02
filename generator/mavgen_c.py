@@ -159,7 +159,7 @@ ${{array_fields:#define MAVLINK_MSG_${msg_name}_FIELD_${name_upper}_LEN ${array_
 #define MAVLINK_MESSAGE_INFO_${name} { \\
 	"${name}", \\
 	${num_fields}, \\
-	{ ${{ordered_fields: { "${name}", MAVLINK_TYPE_${type_upper}, ${array_length}, ${wire_offset}, offsetof(mavlink_${name_lower}_t, ${name}) }, \\
+	{ ${{ordered_fields: { "${name}", ${c_print_format}, MAVLINK_TYPE_${type_upper}, ${array_length}, ${wire_offset}, offsetof(mavlink_${name_lower}_t, ${name}) }, \\
         }} } \\
 }
 
@@ -475,6 +475,10 @@ def generate_one(basename, xml):
         else:
             m.crc_extra_arg = ""
         for f in m.fields:
+            if f.print_format is None:
+                f.c_print_format = 'NULL'
+            else:
+                f.c_print_format = '"%s"' % f.print_format
             if f.array_length != 0:
                 f.array_suffix = '[%u]' % f.array_length
                 f.array_prefix = '*'

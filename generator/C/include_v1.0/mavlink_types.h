@@ -105,6 +105,7 @@ typedef enum {
 
 typedef struct __mavlink_field_info {
 	const char *name;             // name of this field
+	const char *print_format;     // printing format hint, or NULL
 	mavlink_message_type_t type;  // type of this field
 	unsigned array_length;        // if non-zero, field is an array
 	unsigned wire_offset;         // offset of each field in the payload
