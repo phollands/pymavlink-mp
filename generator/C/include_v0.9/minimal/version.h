@@ -5,9 +5,8 @@
 #ifndef MAVLINK_VERSION_H
 #define MAVLINK_VERSION_H
 
-#define MAVLINK_BUILD_DATE "Fri Sep  2 18:14:37 2011"
+#define MAVLINK_BUILD_DATE "Sun Sep  4 18:15:04 2011"
 #define MAVLINK_WIRE_PROTOCOL_VERSION "0.9"
-
-#include "mavlink.h"
-
+#define MAVLINK_MAX_DIALECT_PAYLOAD_SIZE 3
+ 
 #endif // MAVLINK_VERSION_H
