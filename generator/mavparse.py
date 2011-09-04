@@ -237,6 +237,7 @@ class MAVXML(object):
         self.message_lengths = [ 0 ] * 256
         self.message_crcs = [ 0 ] * 256
         self.message_names = [ None ] * 256
+        self.largest_payload = 0
 
         for m in self.message:
             m.wire_length = 0
@@ -263,6 +264,8 @@ class MAVXML(object):
             self.message_lengths[m.id] = m.wire_length
             self.message_names[m.id] = m.name
             self.message_crcs[m.id] = m.crc_extra
+            if m.wire_length > self.largest_payload:
+                self.largest_payload = m.wire_length
 
             if m.wire_length+8 > 64:
                 print("Warning: message %s is longer than 64 bytes long (%u bytes)" % (m.name, m.wire_length+8))

@@ -45,7 +45,14 @@ for x in xml[:]:
                 x.message_lengths[idx] = xml[-1].message_lengths[idx]
                 x.message_crcs[idx] = xml[-1].message_crcs[idx]
                 x.message_names[idx] = xml[-1].message_names[idx]
-        
+
+# work out max payload size across all includes
+largest_payload = 0
+for x in xml:
+    if x.largest_payload > largest_payload:
+        largest_payload = x.largest_payload
+for x in xml:
+    x.largest_payload = largest_payload
 
 if mavparse.check_duplicates(xml):
     sys.exit(1)
