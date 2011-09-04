@@ -1918,7 +1918,7 @@ class MAVLink(object):
                 '''
                 return self.send(self.meminfo_encode(brkval, freemem))
             
-        def heartbeat_encode(self, type, autopilot, mavlink_version):
+        def heartbeat_encode(self, type, autopilot, mavlink_version=2):
                 '''
                 The heartbeat message shows that a system is present and responding.
                 The type of the MAV and Autopilot hardware allow the
@@ -1935,7 +1935,7 @@ class MAVLink(object):
                 msg.pack(self)
                 return msg
             
-        def heartbeat_send(self, type, autopilot, mavlink_version):
+        def heartbeat_send(self, type, autopilot, mavlink_version=2):
                 '''
                 The heartbeat message shows that a system is present and responding.
                 The type of the MAV and Autopilot hardware allow the

@@ -367,8 +367,16 @@ def generate_methods(outf, msgs):
     for m in msgs:
         comment = "%s\n\n%s" % (wrapper.fill(m.description.strip()), field_descriptions(m.fields))
 
+        selffieldnames = 'self, '
+        for f in m.fields:
+            if f.omit_arg:
+                selffieldnames += '%s=%s, ' % (f.name, f.const_value)
+            else:
+                selffieldnames += '%s, ' % f.name
+        selffieldnames = selffieldnames[:-2]
+
         sub = {'NAMELOWER'      : m.name.lower(),
-               'SELFFIELDNAMES' : ", ".join(["self"]+m.fieldnames),
+               'SELFFIELDNAMES' : selffieldnames,
                'COMMENT'        : comment,
                'FIELDNAMES'     : ", ".join(m.fieldnames)}
 
