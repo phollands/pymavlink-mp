@@ -2039,7 +2039,7 @@ class MAVLink(object):
                 '''
                 return self.send(self.set_mag_offsets_encode(target_system, target_component, mag_ofs_x, mag_ofs_y, mag_ofs_z))
             
-        def heartbeat_encode(self, type, autopilot, base_mode, custom_mode, system_status, mavlink_version):
+        def heartbeat_encode(self, type, autopilot, base_mode, custom_mode, system_status, mavlink_version=3):
                 '''
                 The heartbeat message shows that a system is present and responding.
                 The type of the MAV and Autopilot hardware allow the
@@ -2059,7 +2059,7 @@ class MAVLink(object):
                 msg.pack(self)
                 return msg
             
-        def heartbeat_send(self, type, autopilot, base_mode, custom_mode, system_status, mavlink_version):
+        def heartbeat_send(self, type, autopilot, base_mode, custom_mode, system_status, mavlink_version=3):
                 '''
                 The heartbeat message shows that a system is present and responding.
                 The type of the MAV and Autopilot hardware allow the
