@@ -91,7 +91,7 @@ class mavfile(object):
             if len(s) == 0 and len(self.mav.buf) == 0:
                 return None
             if self.logfile_raw:
-                self.logfile_raw.write(s)
+                self.logfile_raw.write(str(s))
             msg = self.mav.parse_char(s)
             if msg:
                 self.post_message(msg)
