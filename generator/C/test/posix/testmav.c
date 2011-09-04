@@ -10,6 +10,11 @@
 #define MAVLINK_USE_CONVENIENCE_FUNCTIONS
 #define MAVLINK_COMM_NUM_BUFFERS 2
 
+// this trick allows us to make mavlink_message_t as small as possible
+// for this dialect, which saves some memory
+#include <version.h>
+#define MAVLINK_MAX_PAYLOAD_LEN MAVLINK_MAX_DIALECT_PAYLOAD_SIZE
+
 #include <mavlink_types.h>
 static mavlink_system_t mavlink_system = {42,11,};
 
