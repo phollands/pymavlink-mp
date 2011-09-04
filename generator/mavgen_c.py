@@ -24,9 +24,8 @@ def generate_version_h(directory, xml):
 
 #define MAVLINK_BUILD_DATE "${parse_time}"
 #define MAVLINK_WIRE_PROTOCOL_VERSION "${wire_protocol_version}"
-
-#include "mavlink.h"
-
+#define MAVLINK_MAX_DIALECT_PAYLOAD_SIZE ${largest_payload}
+ 
 #endif // MAVLINK_VERSION_H
 ''', xml)
     f.close()
