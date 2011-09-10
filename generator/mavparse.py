@@ -298,6 +298,14 @@ def check_duplicates(xml):
                     x.filename, m.linenumber,
                     msgmap[m.id]))
                 return True
+            fieldset = set()
+            for f in m.fields:
+                if f.name in fieldset:
+                    print("ERROR: Duplicate field %s in message %s (%s:%u)" % (
+                        f.name, m.name,
+                        x.filename, m.linenumber))
+                    return True
+                fieldset.add(f.name)
             msgmap[m.id] = '%s (%s:%u)' % (m.name, x.filename, m.linenumber)
     return False
 
